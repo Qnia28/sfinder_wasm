@@ -1,0 +1,2 @@
+import{calculateCover,calculateCoverPercent,calculateCongruent,calculateCongruentCover}from'./batch-features.mjs';
+export async function runBatchWorkerRequest(r){switch(r.kind){case'cover':return calculateCover(r.input);case'coverpercent':return calculateCoverPercent(r.input);case'congruent':return calculateCongruent(r.input);case'congruentcover':return calculateCongruentCover(r.input);default:throw new Error(`unknown batch request ${r.kind}`)}}

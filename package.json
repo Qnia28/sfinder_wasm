@@ -1,0 +1,19 @@
+{
+  "name": "sfinder-wasm",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:wasm": "bash scripts/build-wasm.sh",
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "test:rust": "bash scripts/test-rust.sh",
+    "generate:legal": "bash scripts/generate-legal.sh",
+    "test:all": "npm run test:rust && npm test",
+    "test:batch": "node --test --test-concurrency=1 tests/batch-*.test.mjs",
+    "bench:hard-minimals": "node scripts/benchmark-hard-minimals.mjs"
+  },
+  "dependencies": {
+    "tetris-fumen": "1.1.3"
+  },
+  "description": "Browser-native Rust/WASM engine for Tetris Perfect Clear analysis with selected solution-finder compatibility",
+  "license": "GPL-3.0-only"
+}

@@ -1,0 +1,3 @@
+import test from'node:test';import assert from'node:assert/strict';import{createWasmSolver}from'../src/wasm-backend.mjs';import{calculateFourthDistribution}from'../src/fourth.mjs';
+const C='v115@9gwhQ4HewhR4Gewhg0Q4BtEewhi0BtNeAgH';
+test('4th detail distribution matches golden',async()=>{const s=await createWasmSolver(4);try{const r=calculateFourthDistribution({sourceFumen:C,hold:'T',nextPair:'TO',solver:s});assert.equal(r.pathPattern,'T,T,O,[LJISZ]p4');assert.equal(r.savePattern,'T,T,O,[^TO]p4');assert.deepEqual([r.solved,r.total],[120,120]);assert.deepEqual(r.ranks.map(x=>x.count),[20,2,0,11,28,22,0,33,0,3,1,0,0]);assert.deepEqual(r.ranks.map(x=>x.cumulativeCount),[20,22,22,33,61,83,83,116,116,119,120,120,120])}finally{s.close()}});

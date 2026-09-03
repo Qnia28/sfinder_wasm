@@ -1,0 +1,4 @@
+import test from'node:test';import assert from'node:assert/strict';import{createWasmSolver}from'../src/wasm-backend.mjs';import{calculateChance,decodeAndValidate,UnsupportedClearHeightError,BoardExceedsClearHeightError}from'../src/features.mjs';
+test('2-line positive oracle',async()=>{const s=await createWasmSolver(2);try{assert.equal(calculateChance({sourceFumen:'v115@vhAAgH',pattern:'OOOOO',clear:2,solver:s}).success,1)}finally{s.close()}});
+test('3-line positive oracle',async()=>{const s=await createWasmSolver(3);try{assert.equal(calculateChance({sourceFumen:'v115@HhB8leAgH',pattern:'OOOOOII',clear:3,solver:s}).success,1)}finally{s.close()}});
+test('height validation',()=>{assert.throws(()=>decodeAndValidate('v115@vhAAgH',7),UnsupportedClearHeightError);assert.throws(()=>decodeAndValidate('v115@HhB8leAgH',2),BoardExceedsClearHeightError)});

@@ -1,0 +1,4 @@
+import test from'node:test';import assert from'node:assert/strict';import{decoder}from'tetris-fumen';import{calculateCoverPercent}from'../src/batch-features.mjs';
+const F='v115@ThR4BeBtCeR4zhBtKeAgH';
+function sig(page){let s='';for(let y=3;y>=0;y--){for(let x=0;x<10;x++)s+=page.field.at(x,y);s+='\n'}return s}
+test('ezcoverpercent golden: exact one field and 8.57/61.67 metadata',async()=>{const r=await calculateCoverPercent({sourceFumen:F,pattern:'*p7',clear:4,mode:'normal',mirror:'no'});assert.equal(r.covered,432);assert.equal(r.total,5040);assert.equal(r.count,1);assert.equal(r.solutions[0].covered,432);assert.equal(r.solutions[0].solve,3108);assert.equal(r.solutions[0].solveTotal,5040);assert.ok(Math.abs(r.solutions[0].solvePercent-61.6666666667)<1e-6);const pages=decoder.decode(r.fumen),source=decoder.decode(F);assert.equal(pages.length,1);assert.equal(sig(pages[0]),sig(source[0]));assert.equal(pages[0].comment,'Cover: 8.57, Solve: 61.67');});

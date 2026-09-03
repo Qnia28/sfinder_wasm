@@ -1,0 +1,2 @@
+import test from'node:test';import assert from'node:assert/strict';import{runBatchWorkerRequest}from'../src/batch-worker-runtime.mjs';
+test('batch worker runtime routes cover and congruent',async()=>{const a=await runBatchWorkerRequest({kind:'cover',input:{sourceFumen:'v115@ThR4BeBtCeR4zhBtKeAgH',pattern:'*p7'}});assert.equal(a.covered,432);const b=await runBatchWorkerRequest({kind:'congruent',input:{sourceFumen:'v115@ThR4BeBtCeR4zhBtKeAgH',pattern:'*p7'}});assert.equal(b.count,1);});
