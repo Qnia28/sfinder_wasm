@@ -1,11 +1,13 @@
+use pc_core::queue_trie::{QueueTrie, QueueTrieScratch};
 use pc_core::{
     CELLS, FULL_ROW, FastSet, Physics, Piece, normalize_after_placement, tspin_kind_exact,
 };
 use std::cell::RefCell;
+use std::rc::Rc;
 
 use crate::common::{locked_next_board, physics};
 
-const MAX_OPERATIONS: usize = 10;
+const MAX_OPERATIONS: usize = 15;
 const MAX_QUEUE_LEN: usize = 21;
 
 #[derive(Clone, Copy)]
@@ -17,7 +19,7 @@ struct BatchOperation {
 #[derive(Clone, Copy)]
 struct BatchVariant {
     ids: u64,
-    clears: u32,
+    clears: u64,
     tspins: u32,
     pc_mask: u16,
 }
@@ -26,12 +28,13 @@ struct BatchVariant {
 struct TerminalKey {
     order: u64,
     ids: u64,
-    clears: u32,
+    clears: u64,
     depth: u8,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 struct StructuralKey {
+    prefix: u64,
     board: u64,
     remaining: u16,
     cleared_rows: u8,
@@ -55,19 +58,19 @@ struct StructuralNode {
 
 #[derive(Clone, Copy)]
 struct ClearInfo {
-    available: [u8; 4],
+    available: [u8; 6],
     len: u8,
     complete: u8,
 }
 
-fn clear_info_table(height: u8) -> [ClearInfo; 16] {
+fn clear_info_table(height: u8) -> [ClearInfo; 64] {
     let empty = ClearInfo {
-        available: [0; 4],
+        available: [0; 6],
         len: 0,
         complete: 0,
     };
-    let mut out = [empty; 16];
-    for mask in 0..16u8 {
+    let mut out = [empty; 64];
+    for mask in 0..64u8 {
         let mut info = empty;
         info.complete = mask.count_ones() as u8;
         for row in 0..height {
@@ -81,12 +84,12 @@ fn clear_info_table(height: u8) -> [ClearInfo; 16] {
     out
 }
 
-fn mapped_masks(operations: &[BatchOperation], height: u8) -> Vec<[u64; 16]> {
+fn mapped_masks(operations: &[BatchOperation], height: u8) -> Vec<[u64; 64]> {
     operations
         .iter()
         .map(|op| {
-            let mut maps = [0u64; 16];
-            for cleared in 0..16u8 {
+            let mut maps = [0u64; 64];
+            for cleared in 0..64u8 {
                 maps[cleared as usize] = map_original_mask(op.mask, cleared, height);
             }
             maps
@@ -100,7 +103,7 @@ fn advance_cleared_fast(
     current_mask: u64,
     cleared_rows: u8,
     height: u8,
-    infos: &[ClearInfo; 16],
+    infos: &[ClearInfo; 64],
 ) -> u8 {
     let info = infos[cleared_rows as usize];
     let raw = board | current_mask;
@@ -164,9 +167,10 @@ fn mode_terminal_accepts(mode: u8, state: u8, last_piece: u8, last_clear: u8) ->
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 struct VariantSeenKey {
+    ids: u64,
     board: u64,
     order: u64,
-    clears: u32,
+    clears: u64,
     remaining: u16,
     cleared_rows: u8,
     depth: u8,
@@ -176,7 +180,7 @@ fn variant_mode_accepts(
     mode: u8,
     operations: &[BatchOperation],
     ids: u64,
-    clears: u32,
+    clears: u64,
     tspins: u32,
     pc_mask: u16,
     depth: u8,
@@ -247,7 +251,7 @@ struct VariantSearchState {
     depth: u8,
     order: u64,
     ids: u64,
-    clears: u32,
+    clears: u64,
     tspins: u32,
     pc_mask: u16,
 }
@@ -283,6 +287,7 @@ impl VariantSearch<'_> {
         }
 
         let seen_key = VariantSeenKey {
+            ids: st.ids,
             board: st.board,
             order: st.order,
             clears: st.clears,
@@ -328,7 +333,7 @@ impl VariantSearch<'_> {
                 depth: st.depth + 1,
                 order: st.order | ((op.piece as u64) << shift3),
                 ids: st.ids | ((id as u64) << shift4),
-                clears: st.clears | (new_lines << shift3),
+                clears: st.clears | ((new_lines as u64) << shift3),
                 tspins: st.tspins | ((spin as u32) << shift2),
                 pc_mask: st.pc_mask | ((pc_after as u16) << st.depth),
             });
@@ -376,9 +381,10 @@ fn run_variant_engine(
 }
 
 struct DagBuilder<'a> {
+    queue_filter: Option<QueuePrefixCache>,
     operations: &'a [BatchOperation],
-    maps: &'a [[u64; 16]],
-    clear_infos: &'a [ClearInfo; 16],
+    maps: &'a [[u64; 64]],
+    clear_infos: &'a [ClearInfo; 64],
     height: u8,
     physics: Physics,
     mode: u8,
@@ -408,6 +414,20 @@ impl DagBuilder<'_> {
             let op_id = remaining.trailing_zeros() as usize;
             remaining &= remaining - 1;
             let op = self.operations[op_id];
+            let depth = self.operations.len() - key.remaining.count_ones() as usize;
+            let next_prefix = if let Some(filter) = &mut self.queue_filter {
+                let prefix = key.prefix | ((op.piece as u64) << (depth * 3));
+                if filter
+                    .viable(prefix, depth as u8 + 1)
+                    .iter()
+                    .all(|&word| word == 0)
+                {
+                    continue;
+                }
+                prefix
+            } else {
+                0
+            };
             let cells = self.maps[op_id][key.cleared_rows as usize];
             if cells == 0 {
                 continue;
@@ -443,11 +463,15 @@ impl DagBuilder<'_> {
                 continue;
             };
             let next = self.build(StructuralKey {
+                prefix: next_prefix,
                 board: next_board,
                 remaining: key.remaining & !(1 << op_id),
                 cleared_rows: next_cleared,
                 mode_state: next_mode_state,
             });
+            if !self.nodes[next].terminal && self.nodes[next].edges.is_empty() {
+                continue;
+            }
             edges.push(StructuralEdge {
                 id: op_id as u8,
                 next,
@@ -461,38 +485,46 @@ impl DagBuilder<'_> {
     }
 }
 
-struct QueuePrefixCache<'a> {
-    queues: &'a [(u64, u8)],
+struct QueuePrefixCache {
+    cache_bytes: usize,
+    trie: QueueTrie,
+    scratch: QueueTrieScratch,
     use_hold: bool,
-    words: usize,
-    cache: pc_core::FastMap<u64, Vec<u64>>,
+    cache: pc_core::FastMap<u64, Rc<[u64]>>,
 }
-
-impl QueuePrefixCache<'_> {
-    fn new(queues: &[(u64, u8)], use_hold: bool) -> QueuePrefixCache<'_> {
-        QueuePrefixCache {
-            queues,
+impl QueuePrefixCache {
+    fn new(queues: &[(u64, u8)], use_hold: bool) -> Self {
+        let bits: Vec<_> = queues.iter().map(|q| q.0).collect();
+        let lens: Vec<_> = queues.iter().map(|q| q.1).collect();
+        let trie = QueueTrie::new(&bits, &lens).expect("validated batch queues");
+        let scratch = QueueTrieScratch::new(trie.node_count());
+        Self {
+            cache_bytes: 0,
+            trie,
+            scratch,
             use_hold,
-            words: queues.len().div_ceil(64),
             cache: pc_core::FastMap::default(),
         }
     }
-
-    fn viable(&mut self, order: u64, len: u8) -> Vec<u64> {
-        if self.queues.is_empty() {
-            return Vec::new();
-        }
+    fn viable(&mut self, order: u64, len: u8) -> Rc<[u64]> {
         let key = order | ((len as u64) << 48);
         if let Some(bits) = self.cache.get(&key) {
-            return bits.clone();
+            return Rc::clone(bits);
         }
-        let mut bits = vec![0u64; self.words];
-        for (qi, &(queue, queue_len)) in self.queues.iter().enumerate() {
-            if queue_buildable(queue, queue_len, order, len, self.use_hold) {
-                bits[qi >> 6] |= 1u64 << (qi & 63);
-            }
+        // Cover stores zero-based piece codes; the common order API uses 1..7.
+        let mut encoded = 0u64;
+        for i in 0..len {
+            encoded |= (((order >> (i as u32 * 3)) & 7) + 1) << (i as u32 * 3);
         }
-        self.cache.insert(key, bits.clone());
+        let bits: Rc<[u64]> = self
+            .trie
+            .coverage_for_order(encoded, len, self.use_hold, &mut self.scratch)
+            .into();
+        let bytes = bits.len() * 8 + 48;
+        if self.cache_bytes + bytes <= 16 * 1024 * 1024 {
+            self.cache_bytes += bytes;
+            self.cache.insert(key, Rc::clone(&bits));
+        }
         bits
     }
 }
@@ -514,7 +546,7 @@ thread_local! {
 fn normalize_base(base: u64, height: u8) -> (u64, u8) {
     let mut cleared_rows = 0u8;
     let mut complete = 0u8;
-    let mut incomplete = [0u64; 4];
+    let mut incomplete = [0u64; 6];
     let mut incomplete_len = 0usize;
     for y in 0..height {
         let row = (base >> (y as u32 * 10)) & FULL_ROW;
@@ -538,7 +570,7 @@ fn normalize_base(base: u64, height: u8) -> (u64, u8) {
 
 #[inline]
 fn map_original_mask(mask: u64, cleared_rows: u8, height: u8) -> u64 {
-    let mut available = [0u8; 4];
+    let mut available = [0u8; 6];
     let mut n = 0usize;
     for r in 0..height {
         if cleared_rows & (1 << r) == 0 {
@@ -558,7 +590,7 @@ fn map_original_mask(mask: u64, cleared_rows: u8, height: u8) -> u64 {
 
 #[inline]
 fn advance_cleared(board: u64, current_mask: u64, cleared_rows: u8, height: u8) -> u8 {
-    let mut available = [0u8; 4];
+    let mut available = [0u8; 6];
     let mut n = 0usize;
     for r in 0..height {
         if cleared_rows & (1 << r) == 0 {
@@ -669,25 +701,30 @@ struct PathState {
     depth: u8,
     order: u64,
     ids: u64,
-    clears: u32,
+    clears: u64,
     tspins: u32,
     pc_mask: u16,
     queue_live: bool,
 }
 
 struct PathCollector<'a> {
+    product_seen: FastSet<(usize, u8, u8)>,
+    coverage_only: bool,
     operations: &'a [BatchOperation],
     nodes: &'a [StructuralNode],
     mode: u8,
     terminal: FastSet<TerminalKey>,
     variants: Vec<BatchVariant>,
-    queue_cache: QueuePrefixCache<'a>,
+    queue_cache: QueuePrefixCache,
     covered_bits: Vec<u64>,
     prefix_prune: bool,
 }
 
 impl PathCollector<'_> {
     fn recurse(&mut self, node_id: usize, st: PathState, last_piece: u8, last_clear: u8) {
+        if self.coverage_only && !self.product_seen.insert((node_id, last_piece, last_clear)) {
+            return;
+        }
         let node = &self.nodes[node_id];
         if node.terminal {
             if !mode_terminal_accepts(self.mode, node.mode_state, last_piece, last_clear) {
@@ -695,9 +732,12 @@ impl PathCollector<'_> {
             }
             if st.queue_live && !self.covered_bits.is_empty() {
                 let bits = self.queue_cache.viable(st.order, st.depth);
-                for (dst, src) in self.covered_bits.iter_mut().zip(bits) {
+                for (dst, src) in self.covered_bits.iter_mut().zip(bits.iter()) {
                     *dst |= src;
                 }
+            }
+            if self.coverage_only {
+                return;
             }
             let key = TerminalKey {
                 order: st.order,
@@ -723,7 +763,7 @@ impl PathCollector<'_> {
             let shift2 = st.depth as u32 * 2;
             let next_order = st.order | ((op.piece as u64) << shift3);
             let mut queue_live = st.queue_live;
-            if self.prefix_prune && queue_live && !self.queue_cache.queues.is_empty() {
+            if self.prefix_prune && queue_live {
                 let bits = self.queue_cache.viable(next_order, st.depth + 1);
                 queue_live = bits.iter().any(|&x| x != 0);
             }
@@ -733,7 +773,7 @@ impl PathCollector<'_> {
                     depth: st.depth + 1,
                     order: next_order,
                     ids: st.ids | ((edge.id as u64) << shift4),
-                    clears: st.clears | ((edge.clear_lines as u32) << shift3),
+                    clears: st.clears | ((edge.clear_lines as u64) << shift3),
                     tspins: st.tspins | ((edge.spin as u32) << shift2),
                     pc_mask: st.pc_mask | ((edge.pc_after as u16) << st.depth),
                     queue_live,
@@ -837,8 +877,8 @@ fn valid_orders_for_tiling(
     #[allow(clippy::too_many_arguments)]
     fn walk(
         operations: &[BatchOperation],
-        maps: &[[u64; 16]],
-        infos: &[ClearInfo; 16],
+        maps: &[[u64; 64]],
+        infos: &[ClearInfo; 64],
         queues: &[(u64, u8)],
         use_hold: bool,
         height: u8,
@@ -1060,6 +1100,7 @@ fn run_congruent(
 }
 
 fn run_engine(
+    coverage_only: bool,
     ws: &mut BatchWorkspace,
     base: u64,
     height: u8,
@@ -1067,10 +1108,15 @@ fn run_engine(
     mode: u8,
     use_hold: bool,
 ) -> bool {
-    if !(2..=4).contains(&height) || ws.operations.len() > MAX_OPERATIONS || mode > 15 {
+    if !(2..=6).contains(&height) || ws.operations.len() > MAX_OPERATIONS || mode > 15 {
         return false;
     }
     if ws.queues.is_empty() {
+        if coverage_only {
+            ws.covered.clear();
+            ws.variants.clear();
+            return true;
+        }
         return run_variant_engine(ws, base, height, physics, mode);
     }
     let (board, cleared_rows) = normalize_base(base, height);
@@ -1078,6 +1124,7 @@ fn run_engine(
     let infos = clear_info_table(height);
     let count = ws.operations.len();
     let mut builder = DagBuilder {
+        queue_filter: coverage_only.then(|| QueuePrefixCache::new(&ws.queues, use_hold)),
         operations: &ws.operations,
         maps: &maps,
         clear_infos: &infos,
@@ -1088,6 +1135,7 @@ fn run_engine(
         nodes: Vec::new(),
     };
     let root = builder.build(StructuralKey {
+        prefix: 0,
         board,
         remaining: if count == 0 { 0 } else { (1u16 << count) - 1 },
         cleared_rows,
@@ -1095,12 +1143,17 @@ fn run_engine(
     });
     let covered_words = ws.queues.len().div_ceil(64);
     let mut collector = PathCollector {
+        product_seen: FastSet::default(),
+        coverage_only,
         operations: &ws.operations,
         nodes: &builder.nodes,
         mode,
         terminal: FastSet::default(),
         variants: Vec::new(),
-        queue_cache: QueuePrefixCache::new(&ws.queues, use_hold),
+        queue_cache: builder
+            .queue_filter
+            .take()
+            .unwrap_or_else(|| QueuePrefixCache::new(&ws.queues, use_hold)),
         covered_bits: vec![0u64; covered_words],
         prefix_prune: ws.queues.len() <= 512,
     };
@@ -1133,7 +1186,7 @@ fn run_engine(
             .get(qi >> 6)
             .is_some_and(|word| word & (1u64 << (qi & 63)) != 0)
         {
-            ws.covered[qi] = 1;
+            ws.covered[collector.queue_cache.trie.perm[qi] as usize] = 1;
         }
     }
     true
@@ -1168,7 +1221,7 @@ pub extern "C" fn batch_engine_add_operation(piece: u32, mask: u64) -> u32 {
 
 #[unsafe(no_mangle)]
 pub extern "C" fn batch_engine_add_queue(queue: u64, len: u32) -> u32 {
-    if len as usize > MAX_QUEUE_LEN {
+    if len as usize > MAX_QUEUE_LEN || (0..len).any(|i| ((queue >> (i * 3)) & 7) >= 7) {
         return 0;
     }
     WORKSPACE.with(|cell| {
@@ -1188,6 +1241,7 @@ pub extern "C" fn batch_engine_run(
     WORKSPACE.with(|cell| {
         let mut ws = cell.borrow_mut();
         if !run_engine(
+            false,
             &mut ws,
             base,
             height as u8,
@@ -1298,6 +1352,16 @@ pub extern "C" fn batch_engine_variant_clears(index: u32) -> u32 {
         cell.borrow()
             .variants
             .get(index as usize)
+            .map_or(0, |v| v.clears as u32)
+    })
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn batch_engine_variant_clears64(index: u32) -> u64 {
+    WORKSPACE.with(|cell| {
+        cell.borrow()
+            .variants
+            .get(index as usize)
             .map_or(0, |v| v.clears)
     })
 }
@@ -1330,5 +1394,32 @@ pub extern "C" fn batch_engine_case_covered(index: u32) -> u32 {
             .get(index as usize)
             .copied()
             .unwrap_or(0) as u32
+    })
+}
+
+// This API intentionally returns coverage only; all-variant callers retain the
+// unfiltered geometry DAG and its complete trace contract.
+#[unsafe(no_mangle)]
+pub extern "C" fn batch_engine_run_coverage(
+    base: u64,
+    height: u32,
+    physics_id: u32,
+    mode: u32,
+    use_hold: u32,
+) -> u32 {
+    WORKSPACE.with(|cell| {
+        let mut ws = cell.borrow_mut();
+        if !run_engine(
+            true,
+            &mut ws,
+            base,
+            height as u8,
+            physics(physics_id),
+            mode as u8,
+            use_hold != 0,
+        ) {
+            return u32::MAX;
+        }
+        ws.covered.iter().map(|&x| x as u32).sum()
     })
 }

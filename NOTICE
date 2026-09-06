@@ -1,0 +1,15 @@
+sfinder-wasm 3.0.0
+Project-owned source is licensed under the Apache License, Version 2.0.
+Third-party licenses remain in force. See THIRD_PARTY_NOTICES.md and third_party/.
+
+OR-Tools: Copyright Google LLC and OR-Tools contributors (Apache-2.0).
+or-tools-wasm: Axelwickm/or-tools-wasm contributors (Apache-2.0).
+CP-SAT was rebuilt against OR-Tools 9.15 with the port's WASM bridge, LTO,
+SIMD, native WASM exceptions and awaited JSPI initialization.
+The browser CP-SAT bundle and loader were modified for sfinder-wasm to keep only
+CP-SAT JSPI assets and disable the unused upstream executor-worker factory.
+The sfinder adapter owns its Worker and selects direct execution.
+
+Eigen source retains its original MPL-2.0/permissive licenses.
+Source: third_party/source/Eigen-3.4.0/; see third_party/ORTools/Eigen/SOURCE.md.
+No third-party component is relicensed by the project Apache-2.0 declaration.

@@ -253,6 +253,8 @@ struct QualityHistogramState {
     quality_values: Vec<u32>,
     row_classes: Vec<QualityRowClass>,
     sol_to_classes: Vec<Vec<(usize, u32)>>,
+    // DFS removes candidates in reverse insertion order. Each class therefore
+    // needs a stack of prefix maxima, not a sorted multiset of active ranks.
     class_active_qualities: Vec<Vec<u32>>,
     histogram: Vec<usize>,
 }
@@ -319,9 +321,8 @@ impl QualityHistogramState {
         for &(class_id, rank) in &self.sol_to_classes[solution as usize] {
             let active = &mut self.class_active_qualities[class_id];
             let old_max = active.last().copied().unwrap_or(0);
-            let pos = active.partition_point(|&value| value < rank);
-            active.insert(pos, rank);
-            let new_max = *active.last().expect("quality rank was inserted");
+            let new_max = old_max.max(rank);
+            active.push(new_max);
             if old_max != new_max {
                 let multiplicity = self.row_classes[class_id].multiplicity;
                 self.histogram[old_max as usize] -= multiplicity;
@@ -331,14 +332,12 @@ impl QualityHistogramState {
     }
 
     fn pop(&mut self, solution: u32) {
-        for &(class_id, rank) in &self.sol_to_classes[solution as usize] {
+        for &(class_id, _) in &self.sol_to_classes[solution as usize] {
             let active = &mut self.class_active_qualities[class_id];
             let old_max = *active
                 .last()
                 .expect("selected solution quality must be active");
-            let pos = active.partition_point(|&value| value < rank);
-            debug_assert!(pos < active.len() && active[pos] == rank);
-            active.remove(pos);
+            active.pop();
             let new_max = active.last().copied().unwrap_or(0);
             if old_max != new_max {
                 let multiplicity = self.row_classes[class_id].multiplicity;

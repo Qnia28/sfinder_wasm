@@ -1,0 +1,57 @@
+{
+  "defaultLicense": {
+    "copyright": [
+      "The Rust Project Developers (see https://thanks.rust-lang.org)"
+    ],
+    "spdx": "Apache-2.0 OR MIT"
+  },
+  "exceptions": [
+    {
+      "children": [],
+      "license": {
+        "copyright": [
+          "2014 Alex Crichton",
+          "The Rust Project Developers (see https://thanks.rust-lang.org)"
+        ],
+        "spdx": "Apache-2.0 OR MIT"
+      },
+      "name": "library/backtrace",
+      "type": "directory"
+    },
+    {
+      "license": {
+        "copyright": [
+          "1991-2024 Unicode, Inc"
+        ],
+        "spdx": "Unicode-3.0"
+      },
+      "name": "library/core/src/unicode/unicode_data.rs",
+      "type": "file"
+    },
+    {
+      "children": [],
+      "license": {
+        "copyright": [
+          "2019 The Crossbeam Project Developers",
+          "The Rust Project Developers (see https://thanks.rust-lang.org)"
+        ],
+        "spdx": "Apache-2.0 OR MIT"
+      },
+      "name": "library/std/src/sync/mpmc",
+      "type": "directory"
+    },
+    {
+      "license": {
+        "copyright": [
+          "2016 The Fuchsia Authors",
+          "The Rust Project Developers (see https://thanks.rust-lang.org)"
+        ],
+        "spdx": "BSD-2-Clause AND (Apache-2.0 OR MIT)"
+      },
+      "name": "library/std/src/sys/sync/mutex/fuchsia.rs",
+      "type": "file"
+    }
+  ],
+  "source": "https://raw.githubusercontent.com/rust-lang/rust/1159e78c4747b02ef996e55082b704c09b970588/license-metadata.json",
+  "scope": "Rust in-tree library source; target-specific unused source exceptions retained conservatively"
+}

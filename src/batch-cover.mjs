@@ -4,9 +4,10 @@ function normalizeCases(queues){
  return queues.map((entry,index)=>typeof entry==='string'?{caseId:`legacy:${index}`,queue:entry}:entry);
 }
 
-function evaluateTarget(target,{cases,height,reachability,useHold,mode,projector,isMirror=false}){
+function evaluateTarget(target,{cases,height,reachability,useHold,mode,projector,isMirror=false,coverageOnly=false}){
  const{_batchHeight,...publicTarget}=target;
- const accelerated=reachability?.coverTarget?.({base:target.base,operations:target.operations,cases,mode,useHold});
+ if(coverageOnly){delete publicTarget.variants;delete publicTarget.orders;}
+ const accelerated=reachability?.coverTarget?.({base:target.base,operations:target.operations,cases,mode,useHold,coverageOnly});
  let variants,coveredCases;
  if(accelerated){variants=accelerated.variants;coveredCases=cases.filter((_,i)=>accelerated.covered[i]);}
  else{
@@ -22,28 +23,28 @@ function evaluateTarget(target,{cases,height,reachability,useHold,mode,projector
   ...publicTarget,
   mirror:isMirror,
   mode,
-  variants,
-  orders,
+  ...(coverageOnly?{}:{variants,orders}),
   coveredCaseIds:coveredCases.map(entry=>entry.caseId),
   covered:coveredCases.map(entry=>entry.queue),
   coverage:coveredCases.length,
  };
 }
 
-export function coverTargets({targets,queues,height=4,reachability,reachabilityForHeight=null,useHold=true,mirror=false,mode='normal'}){
+export function coverTargets({targets,queues,height=4,reachability,reachabilityForHeight=null,useHold=true,mirror=false,mode='normal',coverageOnly=false}){
  mode=normalizeCoverMode(mode);
- const cases=normalizeCases(queues),targetResults=[],coveredUnion=new Set(),projector=createQueueOrderProjector(cases);
+ const cases=normalizeCases(queues),targetResults=[],coveredUnion=new Set(),projector={coveredIndices(...args){if(!queueProjector)queueProjector=createQueueOrderProjector(cases);return queueProjector.coveredIndices(...args)}};
+ let queueProjector;
  for(const target of targets){
   const targetHeight=target._batchHeight??height;
   const targetReachability=reachabilityForHeight?reachabilityForHeight(targetHeight):reachability;
   if(!targetReachability)throw new Error(`missing batch reachability for height ${targetHeight}`);
-  const original=evaluateTarget(target,{cases,height:targetHeight,reachability:targetReachability,useHold,mode,projector});
+  const original=evaluateTarget(target,{cases,height:targetHeight,reachability:targetReachability,useHold,mode,projector,coverageOnly});
   for(const caseId of original.coveredCaseIds)coveredUnion.add(caseId);
   const {coveredCaseIds:originalIds,...publicOriginal}=original;
   targetResults.push(publicOriginal);
   if(mirror){
    const mt=mirrorOperations(target.base,target.operations,targetHeight);
-   const mirrored=evaluateTarget({...target,base:mt.base,operations:mt.operations},{cases,height:targetHeight,reachability:targetReachability,useHold,mode,projector,isMirror:true});
+   const mirrored=evaluateTarget({...target,base:mt.base,operations:mt.operations},{cases,height:targetHeight,reachability:targetReachability,useHold,mode,projector,isMirror:true,coverageOnly});
    for(const caseId of mirrored.coveredCaseIds)coveredUnion.add(caseId);
    const {coveredCaseIds:mirroredIds,...publicMirrored}=mirrored;
    targetResults.push(publicMirrored);

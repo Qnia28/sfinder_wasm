@@ -62,6 +62,45 @@ impl CompletionKey for CompatCompletionKey {
 }
 
 impl PcSolver {
+    /// Exact existence if the bounded DFS finishes; None never means failure.
+    /// Only placement entries are retained. The incomplete dead memo is local.
+    pub fn probe_can_pc_packed(
+        &mut self,
+        board: u64,
+        qbits: u64,
+        qlen: u8,
+        use_hold: bool,
+        budget: u64,
+    ) -> Option<bool> {
+        self.trim_cache_between_requests();
+        self.probe_node_limit = self.nodes.saturating_add(budget);
+        self.probe_exhausted = false;
+        let result = if self.height <= 4 {
+            self.can_pc_packed_with_dead::<FastCompletionKey, true>(
+                board,
+                qbits,
+                qlen,
+                use_hold,
+                &mut FastSet::default(),
+            )
+        } else {
+            self.can_pc_packed_with_dead::<CompatCompletionKey, true>(
+                board,
+                qbits,
+                qlen,
+                use_hold,
+                &mut FastSet::default(),
+            )
+        };
+        self.probe_node_limit = u64::MAX;
+        if result {
+            Some(true)
+        } else if self.probe_exhausted {
+            None
+        } else {
+            Some(false)
+        }
+    }
     pub fn can_pc(&mut self, board: u64, queue: &[Piece], use_hold: bool) -> bool {
         let mut qbits = 0u64;
         for (i, &piece) in queue.iter().enumerate() {
@@ -74,12 +113,12 @@ impl PcSolver {
         self.trim_cache_between_requests();
         if self.height <= 4 {
             let mut dead: FastSet<u64> = FastSet::default();
-            self.can_pc_packed_with_dead::<FastCompletionKey>(
+            self.can_pc_packed_with_dead::<FastCompletionKey, false>(
                 board, qbits, qlen, use_hold, &mut dead,
             )
         } else {
             let mut dead: FastSet<u128> = FastSet::default();
-            self.can_pc_packed_with_dead::<CompatCompletionKey>(
+            self.can_pc_packed_with_dead::<CompatCompletionKey, false>(
                 board, qbits, qlen, use_hold, &mut dead,
             )
         }
@@ -103,7 +142,7 @@ impl PcSolver {
             for i in 0..qbits.len() {
                 self.trim_cache_between_requests();
                 dead.clear();
-                out[i] = self.can_pc_packed_with_dead::<FastCompletionKey>(
+                out[i] = self.can_pc_packed_with_dead::<FastCompletionKey, false>(
                     board, qbits[i], qlens[i], use_hold, &mut dead,
                 ) as u8;
             }
@@ -115,7 +154,7 @@ impl PcSolver {
             for i in 0..qbits.len() {
                 self.trim_cache_between_requests();
                 dead.clear();
-                out[i] = self.can_pc_packed_with_dead::<CompatCompletionKey>(
+                out[i] = self.can_pc_packed_with_dead::<CompatCompletionKey, false>(
                     board, qbits[i], qlens[i], use_hold, &mut dead,
                 ) as u8;
             }
@@ -123,7 +162,7 @@ impl PcSolver {
         true
     }
 
-    fn can_pc_packed_with_dead<K: CompletionKey>(
+    fn can_pc_packed_with_dead<K: CompletionKey, const BOUNDED: bool>(
         &mut self,
         board: u64,
         qbits: u64,
@@ -143,11 +182,11 @@ impl PcSolver {
         if qlen < req || !self.legal_accept(board) {
             return false;
         }
-        self.dfs_packed::<K>(board, qbits, qlen, 7, req, use_hold, dead)
+        self.dfs_packed::<K, BOUNDED>(board, qbits, qlen, 7, req, use_hold, dead)
     }
 
     #[allow(clippy::too_many_arguments)]
-    fn dfs_packed<K: CompletionKey>(
+    fn dfs_packed<K: CompletionKey, const BOUNDED: bool>(
         &mut self,
         b: u64,
         qbits: u64,
@@ -157,6 +196,10 @@ impl PcSolver {
         use_hold: bool,
         dead: &mut FastSet<K::Key>,
     ) -> bool {
+        if BOUNDED && self.nodes >= self.probe_node_limit {
+            self.probe_exhausted = true;
+            return false;
+        }
         self.nodes += 1;
         if b == full_board(self.height) {
             return true;
@@ -182,7 +225,7 @@ impl PcSolver {
                 let set = self.placement_set_for_remaining(b, cur, remaining);
                 for placement in set.placements.iter() {
                     let nb = placement.board;
-                    if self.dfs_packed::<K>(
+                    if self.dfs_packed::<K, BOUNDED>(
                         nb,
                         after_cur_bits,
                         after_cur_len,
@@ -215,7 +258,7 @@ impl PcSolver {
                             let set = self.placement_set_for_remaining(b, nxt, remaining);
                             for placement in set.placements.iter() {
                                 let nb = placement.board;
-                                if self.dfs_packed::<K>(
+                                if self.dfs_packed::<K, BOUNDED>(
                                     nb,
                                     after_two_bits,
                                     after_two_len,
@@ -245,7 +288,7 @@ impl PcSolver {
                         let set = self.placement_set_for_remaining(b, hp, remaining);
                         for placement in set.placements.iter() {
                             let nb = placement.board;
-                            if self.dfs_packed::<K>(
+                            if self.dfs_packed::<K, BOUNDED>(
                                 nb,
                                 after_cur_bits,
                                 after_cur_len,
@@ -266,7 +309,7 @@ impl PcSolver {
                 let set = self.placement_set_for_remaining(b, hp, remaining);
                 for placement in set.placements.iter() {
                     let nb = placement.board;
-                    if self.dfs_packed::<K>(nb, 0, 0, 7, remaining - 1, use_hold, dead) {
+                    if self.dfs_packed::<K, BOUNDED>(nb, 0, 0, 7, remaining - 1, use_hold, dead) {
                         return true;
                     }
                 }
@@ -563,7 +606,7 @@ impl PcSolver {
             return FastMap::default();
         };
         let mut solutions = FastMap::default();
-        collect_flat_dag_paths(
+        let reconstruction = collect_flat_dag_paths(
             self.height,
             &dag,
             root,
@@ -575,6 +618,8 @@ impl PcSolver {
             },
             &mut solutions,
         );
+        self.reconstruction_visits += reconstruction.visits;
+        self.reconstruction_skipped += reconstruction.skipped;
         solutions
     }
 

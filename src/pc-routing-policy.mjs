@@ -42,3 +42,24 @@ export function shouldUsePatternBackend({
     tallPatternMinCases,
   });
 }
+
+// Node budgets, not elapsed-time deadlines, keep the decision reproducible.
+export const EXISTENCE_PROBE = Object.freeze({ samples: 16, nodesPerQueue: 256 });
+
+export function chooseExistenceBackend({ height, caseCount, multisetCount, probes, fallback }) {
+  if (!probes.length) return fallback;
+  const completed = probes.filter((probe) => probe.completed);
+  const meanNodes = probes.reduce((sum, probe) => sum + probe.nodes, 0) / probes.length;
+  // Sparse multiset groups have little geometry sharing. Keep the established
+  // choice when a sample is inconclusive instead of creating many pattern DAGs.
+  const shared = caseCount / Math.max(1, multisetCount);
+  if (height <= 4) {
+    // The 4L corpus contains small geometry DAGs whose scalar samples look
+    // cheap but whose aggregate scalar cost is higher. Do not promote those
+    // using a per-queue node estimate alone.
+    return fallback;
+  }
+  if (caseCount >= 64 && shared >= 16 && (completed.length < probes.length || meanNodes >= 256)) return true;
+  if (completed.length === probes.length && meanNodes <= 64) return false;
+  return fallback;
+}

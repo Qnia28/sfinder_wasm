@@ -35,6 +35,7 @@ export async function calculateFifthFeature({
   solver,
   useHold = true,
   exactHumanQuality = "true",
+  primary = undefined, Primary = undefined,
   useHiGHS = undefined,
   UseHiGHS = undefined,
   fastStateBudget = undefined,
@@ -47,6 +48,7 @@ export async function calculateFifthFeature({
     solver,
     useHold,
     exactHumanQuality,
+    primary: primary ?? Primary,
     useHiGHS: useHiGHS ?? UseHiGHS ?? "auto",
     fastStateBudget,
   });

@@ -1,29 +1,55 @@
-import { PC_ROUTING_PROFILES, shouldUsePatternBackend } from "./pc-routing-policy.mjs";
+import { PC_ROUTING_PROFILES, shouldUsePatternBackend, EXISTENCE_PROBE, chooseExistenceBackend } from "./pc-routing-policy.mjs";
 import { dedupeQueues, mapQueuesCached, remapQueueResults } from "./pc-queue-utils.mjs";
 
 export const PATTERN_BATCH_MIN_CASES = PC_ROUTING_PROFILES.full.tallPatternMinCases;
 export const FOUR_LINE_PATTERN_BATCH_MIN_CASES = PC_ROUTING_PROFILES.full.fourLinePatternMinCases;
 
 export function solveQueuesExistence({ board, queues, solver, useHold = true }) {
-  if (shouldUsePatternBackend({
+  const { uniqueQueues, remap, hasDuplicates } = dedupeQueues(queues);
+  const patternAvailable = typeof solver.canPcPatternMany === "function";
+  let usePattern = shouldUsePatternBackend({
     profile: "existence",
     height: solver.height,
-    caseCount: queues.length,
-    available: typeof solver.canPcPatternMany === "function",
-  })) {
-    return solver.canPcPatternMany(board, queues, useHold);
-  }
-
+    caseCount: uniqueQueues.length,
+    available: patternAvailable,
+  });
   const scalarMany = typeof solver.canPcManyScalar === "function"
     ? solver.canPcManyScalar.bind(solver)
     : typeof solver._canPcManyScalar === "function"
       ? solver._canPcManyScalar.bind(solver)
       : null;
-  if (!scalarMany) return queues.map((queue) => solver.canPc(board, queue, useHold));
-  if (queues.length <= 1) return scalarMany(board, queues, useHold);
-  const { uniqueQueues, remap, hasDuplicates } = dedupeQueues(queues);
-  if (!hasDuplicates) return scalarMany(board, queues, useHold);
-  return remapQueueResults(remap, scalarMany(board, uniqueQueues, useHold));
+  const known = new Map();
+  const probeEligible = patternAvailable && scalarMany && typeof solver.probeCanPc === "function"
+    && solver.height > 4 && uniqueQueues.length >= 64 && !usePattern;
+  if (probeEligible) {
+    const multisetCount = new Set(uniqueQueues.map((queue) => [...queue].sort().join(''))).size;
+    const probes = [];
+    let seed = 41357;
+    // Sample across the entire input, including distinct prefixes in sorted
+    // bag permutations. Successful/failed completed probes are reused below.
+    for (let i = 0; i < EXISTENCE_PROBE.samples; i += 1) {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      const index = Math.floor((i + seed / 0x100000000) * uniqueQueues.length / EXISTENCE_PROBE.samples);
+      const probe = solver.probeCanPc(board, uniqueQueues[index], useHold, EXISTENCE_PROBE.nodesPerQueue);
+      probes.push(probe);
+      if (probe.completed) known.set(index, probe.value);
+      if (!probe.completed) break;
+    }
+    usePattern = chooseExistenceBackend({ height: solver.height, caseCount: uniqueQueues.length,
+      multisetCount, probes, fallback: usePattern });
+  }
+  const pending = [], indices = [];
+  const results = new Array(uniqueQueues.length);
+  for (let i = 0; i < uniqueQueues.length; i += 1) {
+    if (known.has(i)) results[i] = known.get(i);
+    else { pending.push(uniqueQueues[i]); indices.push(i); }
+  }
+  const remaining = !pending.length ? [] : usePattern
+    ? solver.canPcPatternMany(board, pending, useHold)
+    : scalarMany ? scalarMany(board, pending, useHold)
+      : pending.map((queue) => solver.canPc(board, queue, useHold));
+  for (let i = 0; i < indices.length; i += 1) results[indices[i]] = remaining[i];
+  return hasDuplicates ? remapQueueResults(remap, results) : results;
 }
 
 export function enumerateQueuesCached({ board, queues, solver, useHold = true }) {

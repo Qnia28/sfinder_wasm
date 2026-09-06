@@ -1,7 +1,16 @@
+import { numericPrepared } from "./numeric-cover-data.mjs";
 import Highs from "./vendor/highs.mjs";
 import { minimumCover } from "./min-cover.mjs";
 import { assertQualityProvider, requirePositiveQuality } from "./quality-contract.mjs";
 import { retryableLoader } from "./promise-utils.mjs";
+import { generateTripleCuts, appendCuts, relax } from "./min-cover-rounded-cuts.mjs";
+
+export function normalizePrimaryProof(value = "standard") {
+  if (value !== "standard" && value !== "rounded-cuts") {
+    throw new Error(`invalid primaryProof: ${String(value)}`);
+  }
+  return value;
+}
 
 // Auto chooses only the *primary cardinality* backend.  Do not use the old
 // legacy exact-search timings here: those mixed cardinality proof with exact
@@ -57,6 +66,7 @@ function variableLines(names, maxLength = 100) {
 
 export function prepareCoverageMatrix(coverage, qualityFor = null) {
   assertQualityProvider(qualityFor);
+  if (qualityFor !== null && numericPrepared(coverage)) return numericPrepared(coverage);
   const rawCases = [];
   const keySet = new Set();
   for (const [caseId, solutions] of coverage) {
@@ -133,19 +143,39 @@ export function buildCardinalityLp(rawCases, solutionCount) {
 }
 
 export async function solveCardinality(rawCases, solutionCount, options = {}) {
+  const { primaryProof = "standard", ...solverOptions } = options;
+  normalizePrimaryProof(primaryProof);
   if (rawCases.length === 0) return { count: 0, selected: [], result: null };
   const highs = await loadHighs();
-  const lp = buildCardinalityLp(rawCases, solutionCount);
+  let lp = buildCardinalityLp(rawCases, solutionCount);
+  // Explicit opt-in: added cuts preserve exact K but may change the incumbent
+  // used by bounded Fast quality. Some medium inputs are slower with cuts.
+  if (primaryProof === "rounded-cuts" && rawCases.length >= 3) {
+    const root = highs.solve(relax(lp, solutionCount), {
+      output_flag: false, random_seed: 0,
+      ...(solverOptions.time_limit === undefined ? {} : { time_limit: solverOptions.time_limit }),
+    });
+    const x = Array.from({ length: solutionCount }, (_, j) => Number(root.Columns?.[`x${j}`]?.Primal));
+    if (root.Status === "Optimal" && x.every(Number.isFinite)) {
+      const generated = generateTripleCuts(rawCases, solutionCount, x);
+      lp = appendCuts(lp, generated.cuts);
+    }
+  }
   const result = highs.solve(lp, {
     output_flag: false,
     random_seed: 0,
     mip_rel_gap: 0,
-    ...options,
+    ...solverOptions,
   });
   if (result.Status !== "Optimal") throw new Error(`HiGHS cardinality status: ${result.Status}`);
   const selected = [];
   for (let i = 0; i < solutionCount; i += 1) {
     if (Number(result.Columns[`x${i}`]?.Primal ?? 0) > 0.5) selected.push(i);
+  }
+  const chosen = new Set(selected);
+  if (selected.length !== Math.round(result.ObjectiveValue)
+      || !rawCases.every((row) => row.some((id) => chosen.has(id)))) {
+    throw new Error("HiGHS cardinality witness does not cover the original matrix");
   }
   return { count: Math.round(result.ObjectiveValue), selected, result };
 }
@@ -351,4 +381,3 @@ export function solvePreparedRustCardinalityKernel(prepared, kernel, solver = nu
 export async function solveCardinalityKernel(rawCases, solutionCount, options = {}) {
   return solvePreparedCardinalityKernel(kernelizeCardinality(rawCases, solutionCount), options);
 }
-

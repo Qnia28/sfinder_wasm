@@ -1,6 +1,6 @@
 # sfinder-wasm 사용자 가이드
 
-이 문서는 현재 Release 2.7의 기능을 사용자 관점에서 설명합니다.
+이 문서는 현재 Release 3.0의 기능을 사용자 관점에서 설명합니다.
 과거 Java/Python wrapper의 CLI 사용법이 아니라 현재 sfinder-wasm의 동작을
 기준으로 합니다.
 
@@ -171,7 +171,7 @@ Minimals는 성공 case를 모두 커버하는 **해법 수 K가 가장 작은 �
   wantedSave: 'ALL',
   useHold: true,
   exactHumanQuality: 'Fast',
-  UseHiGHS: 'auto',
+  Primary: 'Auto',
 }
 ```
 
@@ -199,13 +199,20 @@ XY == X&&Y
 
 `minimalCount` K는 항상 exact입니다.
 
-`UseHiGHS`:
+**Primary** (대소문자 무관, primary 별칭 지원):
 
-```text
-false   Rust/WASM exact primary solver
-true    HiGHS exact MIP primary solver
-auto    exact kernel을 만든 뒤 hard kernel만 HiGHS로 보냄
-```
+| 값 | Primary solver |
+|---|---|
+| Auto | 잔여 커널 행≥200, 후보≥112, 연결≥2200이면 ORTools, 나머지는 Rust |
+| Rust | Rust/WASM exact solver |
+| HiGHS | 명시적으로 선택하는 Legacy MIP solver |
+| ORTools | 최적화한 OR-Tools 9.15 CP-SAT solver |
+
+빈 잔여 커널은 solver 없이 완료합니다. ORTools에는 JSPI·SharedArrayBuffer와
+브라우저 COOP/COEP 헤더가 필요합니다. Auto에서 ORTools 조건을 만족해도
+이 환경 조건이 부족하면 HiGHS로 자동 전환합니다. 명시적인 ORTools 선택은
+미지원 오류를 반환합니다. 작은 커널의 Rust 경로와 커널 완료 처리는 유지합니다.
+기존 UseHiGHS True/False/Auto는 HiGHS/Rust/Auto로 호환되며 Primary가 우선합니다.
 
 `exactHumanQuality`:
 

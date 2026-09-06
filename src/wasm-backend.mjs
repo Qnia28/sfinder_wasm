@@ -1,3 +1,4 @@
+import { tailLegalPack } from "./pc-tail-legal.mjs";
 import { retryableLoader } from "./promise-utils.mjs";
 import { wasmU32 } from "./pc-wasm-abi.mjs";
 import { enumerationMethods } from "./pc-wasm-enumeration.mjs";
@@ -28,9 +29,9 @@ export class WasmPcSolver {
     this.ptr = exports.solver_new(height);
     this.height = height;
     if (!this.ptr) throw new Error(`unsupported height ${height}`);
-    if (height === 4 && legalBytes) {
+    if (height >= 4 && legalBytes) {
       try {
-        this.loadLegal(legalBytes);
+        this.loadLegal(height > 4 ? tailLegalPack(legalBytes) : legalBytes);
       } catch (error) {
         this.close();
         throw error;
@@ -59,10 +60,14 @@ export class WasmPcSolver {
   stats() {
     return {
       nodes: Number(this.e.solver_nodes(this.ptr)),
+      reconstructionVisits: Number(this.e.solver_reconstruction_stat?.(this.ptr, 0) ?? 0),
+      reconstructionSkipped: Number(this.e.solver_reconstruction_stat?.(this.ptr, 1) ?? 0),
       cacheHits: Number(this.e.solver_cache_hits(this.ptr)),
       cacheMisses: Number(this.e.solver_cache_misses(this.ptr)),
       legalRejects: Number(this.e.solver_legal_rejects(this.ptr)),
       cacheEntries: wasmU32(this.e.solver_cache_entries?.(this.ptr) ?? 0),
+      cacheEstimatedBytes: wasmU32(this.e.solver_cache_estimated_bytes?.(this.ptr) ?? 0),
+      cacheEvictions: Number(this.e.solver_cache_evictions?.(this.ptr) ?? 0n),
     };
   }
 
@@ -71,6 +76,23 @@ export class WasmPcSolver {
       this.e.solver_free(this.ptr);
       this.ptr = 0;
     }
+  }
+
+  setProbabilityEngine(engine = 'auto', { maxLanguageNodes = 200000 } = {}) {
+    const code = { auto: 0, compressed: 1, legacy: 2 }[engine];
+    if (typeof code !== 'number' || !Number.isInteger(maxLanguageNodes) || maxLanguageNodes < 0 || maxLanguageNodes > 200000) throw new RangeError('invalid probability engine or language node budget');
+    if (!this.e.solver_set_probability_engine?.(this.ptr, code, maxLanguageNodes)) throw new Error('WASM does not support probability engine selection');
+  }
+  probabilityStats() {
+    const read = kind => Number(this.e.solver_probability_stat?.(this.ptr, kind) ?? 0);
+    return { geometryPaths: read(0), languageNodes: read(1), budgetFallback: read(2) !== 0 };
+  }
+  setPlacementCacheBudget(bytes) {
+    if (!Number.isInteger(bytes) || bytes < 1024 || bytes > 256 * 1024 * 1024) {
+      throw new Error("placement cache budget must be an integer from 1024 to 268435456 bytes");
+    }
+    if (!this.e.solver_set_cache_budget) throw new Error("WASM does not support placement cache budgets");
+    this.e.solver_set_cache_budget(this.ptr, bytes);
   }
 }
 

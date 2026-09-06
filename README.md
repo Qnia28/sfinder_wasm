@@ -1,6 +1,6 @@
 # sfinder-wasm
 
-**Current release: 2.7 (2026-09-03)**
+**Current release: 3.0 (2026-09-06)**
 
 `sfinder-wasm` is a browser-native Rust/WebAssembly implementation of selected
 Tetris Perfect Clear analysis workflows. It reproduces the intended output
@@ -11,10 +11,13 @@ modern JavaScript Worker APIs.
 The runtime does **not** require `sfinder.jar`, Python, or the historical wrapper
 repository.
 
-- Project license: **GPL-3.0-only**
+- Project license: **Apache-2.0**
 - Runtime npm dependency: `tetris-fumen@1.1.3`
-- Optional hard-minimals backend: highs-js/HiGHS 1.15.1, bundled and lazy-loaded
+- Wide-kernel primary backend: optimized OR-Tools 9.15 CP-SAT, bundled and lazy-loaded
+- Legacy primary backend: HiGHS 1.15.1, explicitly selectable and lazy-loaded
 - Rust workspace: no external crates
+
+See `docs/API_REFERENCE.md` for APIs and compatibility notes.
 
 ## Documentation map
 
@@ -28,14 +31,9 @@ Start here, then use the focused references as needed:
 - `docs/SINGLE_QUEUE_SOLVER.md` — exact concrete-queue solver
 - `docs/BATCH_ENGINE.md` — cover/congruent engine and modes
 - `docs/ARCHITECTURE.md` — current solver architecture and dispatch policy
-- `docs/BUILD_AND_RELEASE.md` — build, test, assets, packaging
+- `docs/BUILD_AND_RELEASE.md` — installation, builds and deployment assets
 - `HIGHS_INTEGRATION_AND_LICENSE.md` — HiGHS runtime/provenance details
 - `THIRD_PARTY_NOTICES.md` — third-party licenses and acknowledgements
-- `CHANGELOG.md` — compact release history
-
-Historical per-release implementation notes from 2.1 through 2.3.2 were folded
-into these current documents and the changelog so stale migration text does not
-compete with the current API.
 
 ## Supported operations
 
@@ -142,7 +140,7 @@ const result = await runWorkerRequest({
     clear: 4,
     wantedSave: 'ALL',
     exactHumanQuality: 'Fast',
-    UseHiGHS: 'auto',
+    Primary: 'Auto',
   },
 });
 ```
@@ -223,17 +221,33 @@ Production `minimals` separates two objectives:
 2. **Secondary:** among exact-K covers, optimize the deterministic human-quality
    ordering based on per-case `playableOrderCount`.
 
-`UseHiGHS` / `useHiGHS` controls only the primary backend:
+**Primary / primary** controls only the primary backend (case-insensitive):
 
-```text
-false   Rust/WASM exact cardinality solver
-true    HiGHS exact MIP
-"auto"  kernelize first, then route the residual exact kernel
-```
+| Value | Primary cardinality backend |
+|---|---|
+| Auto | Kernelize, then choose Rust or ORTools (default) |
+| Rust | Rust/WASM exact solver |
+| HiGHS | HiGHS exact MIP, explicit legacy backend |
+| ORTools | Optimized OR-Tools 9.15 CP-SAT exact solver |
 
-Auto currently chooses HiGHS only for conservative hard-kernel thresholds.
-If kernelization itself proves K, `cardinalityBackend: "kernel"` is reported.
-HiGHS is lazy-loaded.
+Auto chooses ORTools iff the residual kernel has cases ≥ 200, solutions ≥ 112,
+and entries ≥ 2200. Otherwise it chooses Rust. A solved kernel bypasses all
+solvers and reports primaryResolved: "kernel". Tiny adaptive exact shortcuts
+remain available in Auto; explicit modes select the requested residual solver.
+primaryRequested and primaryResolved use lowercase names.
+Quality budgets and hardness classification are independent of this selector.
+
+Deprecated UseHiGHS / useHiGHS True/False/Auto map to HiGHS/Rust/Auto.
+Primary options take precedence, and lowercase primary wins over Primary.
+If the ORTools threshold is met but JSPI, SharedArrayBuffer or browser
+cross-origin isolation is unavailable, Auto falls back to HiGHS before loading
+ORTools. Smaller kernels still use Rust, and solved kernels bypass all solvers.
+
+ORTools requires WebAssembly JSPI and SharedArrayBuffer. Browser deployments
+need COOP/COEP. Node 24.13 is tested with --experimental-wasm-stack-switching.
+Explicit Primary=ORTools returns a clear error in an unsupported environment;
+Primary=Auto handles that environment with the HiGHS fallback. Solver/proof errors
+are still reported. See [ORTools integration](ORTOOLS_INTEGRATION_AND_LICENSE.md).
 
 `exactHumanQuality` controls the secondary objective independently:
 
@@ -310,7 +324,8 @@ PC request
   -> feature-specific aggregation
   -> optional exact minimum cover
        -> Rust/WASM
-       -> lazy HiGHS for hard primary kernels
+       -> lazy ORTools for wide Auto kernels
+       -> lazy HiGHS when explicitly selected or ORTools is unavailable in Auto
 
 Batch request
   -> batch-worker-runtime.mjs
@@ -333,13 +348,10 @@ scalar enumeration.
 
 See `docs/ARCHITECTURE.md` for details.
 
-## Build and test
+## Build
 
 ```bash
 npm run build:wasm
-npm run test:rust
-npm test
-npm run test:batch
 ```
 
 Regenerate the legal-board pack:
@@ -353,7 +365,7 @@ Detailed reproducibility and packaging notes are in `docs/BUILD_AND_RELEASE.md`.
 
 ## License and redistribution
 
-sfinder-wasm is **GPL-3.0-only**. See `LICENSE`.
+sfinder-wasm is **Apache-2.0**. See `LICENSE`.
 
 Copyright (C) 2026 Qnia (@Qnia28).
 
@@ -363,3 +375,6 @@ the complete project. In particular, `highs.wasm` is accompanied by the HiGHS
 main MIT notice and HiGHS' own third-party notice/license set.
 
 See `THIRD_PARTY_NOTICES.md` and `HIGHS_INTEGRATION_AND_LICENSE.md`.
+
+For ORTools assets, runtime requirements, NOTICE and Eigen source redistribution,
+see [ORTools integration](ORTOOLS_INTEGRATION_AND_LICENSE.md).

@@ -4,10 +4,11 @@ mod hashing;
 mod legal;
 pub mod min_cover;
 mod movement;
+mod order_language;
 mod pattern;
 mod piece;
 mod queue_codec;
-mod queue_trie;
+pub mod queue_trie;
 mod reverse;
 mod single_queue;
 
@@ -63,22 +64,72 @@ struct CompatPlacementCacheKey {
     piece: Piece,
 }
 
-const MAX_PLACEMENT_CACHE_ENTRIES: usize = 32_768;
+// Estimate retained payload plus conservative hash/Rc bookkeeping. This is a
+// retention budget at request boundaries, not a peak-memory bound within DFS.
+const PLACEMENT_CACHE_BUDGET_BYTES: usize = 8 * 1024 * 1024;
+
+struct PlacementCacheEntry {
+    set: PlacementSet,
+    epoch: u64,
+    bytes: usize,
+}
+
+fn trim_placement_cache<K: Copy + Eq + Hash>(
+    cache: &mut FastMap<K, PlacementCacheEntry>,
+    bytes: &mut usize,
+    budget: usize,
+) -> usize {
+    if *bytes <= budget {
+        return 0;
+    }
+    let mut entries: Vec<_> = cache
+        .iter()
+        .map(|(&key, entry)| (key, entry.epoch, entry.bytes))
+        .collect();
+    entries.sort_unstable_by(|a, b| b.1.cmp(&a.1));
+    let mut keep = FastSet::default();
+    let target = budget * 3 / 4;
+    let mut retained = 0;
+    for (key, _, cost) in entries {
+        if retained + cost <= target {
+            retained += cost;
+            keep.insert(key);
+        }
+    }
+    let before = cache.len();
+    cache.retain(|key, _| keep.contains(key));
+    *bytes = retained;
+    before - cache.len()
+}
 
 pub struct PcSolver {
+    pub reconstruction_visits: u64,
+    pub reconstruction_skipped: u64,
+    pub probability_engine: u8,
+    pub probability_node_budget: usize,
+    pub probability_paths: u64,
+    pub probability_language_nodes: u32,
+    pub probability_fallback: bool,
     height: u8,
     prune: bool,
     legal: Option<LegalTables>,
     // Keep the exact 40-bit fast-path key used by the 2..=4-line solver.
-    placement_cache: FastMap<u64, PlacementSet>,
+    placement_cache: FastMap<u64, PlacementCacheEntry>,
     // 5..=6-line compatibility boards can occupy bits 40..59, so they need
     // an explicit piece field instead of packing the piece above bit 40.
-    compat_placement_cache: FastMap<CompatPlacementCacheKey, PlacementSet>,
+    compat_placement_cache: FastMap<CompatPlacementCacheKey, PlacementCacheEntry>,
+    placement_cache_bytes: usize,
+    compat_placement_cache_bytes: usize,
+    cache_epoch: u64,
+    cache_budget: usize,
+    pub placement_cache_evictions: u64,
     pub nodes: u64,
     pub memo_hits: u64,
     pub placement_cache_hits: u64,
     pub placement_cache_misses: u64,
     pub legal_rejects: u64,
+    probe_node_limit: u64,
+    probe_exhausted: bool,
 }
 impl PcSolver {
     pub fn new(height: u8) -> Self {
@@ -89,11 +140,25 @@ impl PcSolver {
             legal: None,
             placement_cache: FastMap::default(),
             compat_placement_cache: FastMap::default(),
+            placement_cache_bytes: 0,
+            compat_placement_cache_bytes: 0,
+            cache_epoch: 0,
+            cache_budget: PLACEMENT_CACHE_BUDGET_BYTES,
+            placement_cache_evictions: 0,
             nodes: 0,
             memo_hits: 0,
             placement_cache_hits: 0,
             placement_cache_misses: 0,
             legal_rejects: 0,
+            reconstruction_visits: 0,
+            reconstruction_skipped: 0,
+            probability_engine: 0,
+            probability_node_budget: 200_000,
+            probability_paths: 0,
+            probability_language_nodes: 0,
+            probability_fallback: false,
+            probe_node_limit: u64::MAX,
+            probe_exhausted: false,
         }
     }
     pub fn set_prune(&mut self, v: bool) {
@@ -101,6 +166,8 @@ impl PcSolver {
             self.prune = v;
             self.placement_cache.clear();
             self.compat_placement_cache.clear();
+            self.placement_cache_bytes = 0;
+            self.compat_placement_cache_bytes = 0;
         }
     }
     pub fn load_legal_pack(&mut self, bytes: &[u8]) -> bool {
@@ -109,6 +176,8 @@ impl PcSolver {
                 self.legal = Some(t);
                 self.placement_cache.clear();
                 self.compat_placement_cache.clear();
+                self.placement_cache_bytes = 0;
+                self.compat_placement_cache_bytes = 0;
                 true
             }
             None => false,
@@ -148,11 +217,26 @@ impl PcSolver {
         self.placement_cache.len() + self.compat_placement_cache.len()
     }
 
+    pub fn placement_cache_estimated_bytes(&self) -> usize {
+        self.placement_cache_bytes + self.compat_placement_cache_bytes
+    }
+
+    pub fn set_placement_cache_budget(&mut self, bytes: usize) {
+        self.cache_budget = bytes.clamp(1024, 256 * 1024 * 1024);
+        self.trim_cache_between_requests();
+    }
+
     pub fn reset_stats(&mut self) {
+        self.reconstruction_visits = 0;
+        self.reconstruction_skipped = 0;
+        self.probability_paths = 0;
+        self.probability_language_nodes = 0;
+        self.probability_fallback = false;
         self.nodes = 0;
         self.memo_hits = 0;
         self.placement_cache_hits = 0;
         self.placement_cache_misses = 0;
+        self.placement_cache_evictions = 0;
         self.legal_rejects = 0
     }
     #[inline]
@@ -162,15 +246,17 @@ impl PcSolver {
     fn placement_set(&mut self, board: u64, p: Piece) -> PlacementSet {
         if self.height <= 4 {
             let k = Self::cache_key(board, p);
-            if let Some(v) = self.placement_cache.get(&k) {
+            if let Some(v) = self.placement_cache.get_mut(&k) {
                 self.placement_cache_hits += 1;
-                return v.clone();
+                v.epoch = self.cache_epoch;
+                return v.set.clone();
             }
         } else {
             let k = CompatPlacementCacheKey { board, piece: p };
-            if let Some(v) = self.compat_placement_cache.get(&k) {
+            if let Some(v) = self.compat_placement_cache.get_mut(&k) {
                 self.placement_cache_hits += 1;
-                return v.clone();
+                v.epoch = self.cache_epoch;
+                return v.set.clone();
             }
         }
         self.placement_cache_misses += 1;
@@ -186,12 +272,20 @@ impl PcSolver {
         let set = PlacementSet {
             placements: Rc::from(ps),
         };
+        let bytes = set.placements.len() * std::mem::size_of::<Placement>() + 96;
+        let entry = PlacementCacheEntry {
+            set: set.clone(),
+            epoch: self.cache_epoch,
+            bytes,
+        };
         if self.height <= 4 {
+            self.placement_cache_bytes += bytes;
             self.placement_cache
-                .insert(Self::cache_key(board, p), set.clone());
+                .insert(Self::cache_key(board, p), entry);
         } else {
+            self.compat_placement_cache_bytes += bytes;
             self.compat_placement_cache
-                .insert(CompatPlacementCacheKey { board, piece: p }, set.clone());
+                .insert(CompatPlacementCacheKey { board, piece: p }, entry);
         }
         set
     }
@@ -201,6 +295,20 @@ impl PcSolver {
     fn generic_finish_placement(&self, board: u64, p: Piece) -> Option<Placement> {
         let target = board_mask(self.height) & !board;
         if target.count_ones() != 4 {
+            return None;
+        }
+        let mut min_x = 10i8;
+        let min_y = (target.trailing_zeros() / 10) as i8;
+        let mut cells = target;
+        while cells != 0 {
+            min_x = min_x.min((cells.trailing_zeros() % 10) as i8);
+            cells &= cells - 1;
+        }
+        if !(0..4).any(|o| {
+            min_x <= MAX_X[p as usize][o as usize]
+                && min_y + MAX_Y[p as usize][o as usize] < self.height as i8
+                && place_bits(p, o, min_x, min_y) == target
+        }) {
             return None;
         }
         let (valid, inside) = valid_anchor_masks(board, p, self.height);
@@ -255,17 +363,46 @@ impl PcSolver {
         None
     }
 
+    // Remove only h-4 complete bottom rows. Walls, spawn-relative height,
+    // normalized floor and every remaining cell translate by the same amount.
+    fn tail_board4(&self, board: u64) -> Option<(u64, u8)> {
+        if self.height == 4 {
+            return Some((board, 0));
+        }
+        if self.height < 4 {
+            return None;
+        }
+        let delta = self.height - 4;
+        if cleared_floor(board, self.height) < delta {
+            return None;
+        }
+        Some((board >> (delta as u32 * 10), delta))
+    }
+    fn tail_finish_placement(&self, board: u64, p: Piece) -> Option<Option<Placement>> {
+        let (reduced, delta) = self.tail_board4(board)?;
+        self.legal
+            .as_ref()?
+            .stage9_finish_placement(reduced, p)
+            .map(|placement| {
+                placement.map(|mut pl| {
+                    if delta != 0 {
+                        pl.y += delta as i8;
+                        pl.cells <<= delta as u32 * 10;
+                        pl.raw_board = board | pl.cells;
+                        pl.board = normalize_after_placement(pl.raw_board, self.height);
+                    }
+                    pl
+                })
+            })
+    }
+
     // When exactly one tetromino remains, LGB2 contains the exact finishing
     // lock state.  Enumeration therefore keeps the same final geometry while
     // avoiding a full movement search.  LGB1 transparently falls back to the
     // normal placement cache.
     fn placement_set_for_remaining(&mut self, board: u64, p: Piece, remaining: u8) -> PlacementSet {
         if remaining == 1 {
-            if let Some(result) = self
-                .legal
-                .as_ref()
-                .and_then(|t| t.stage9_finish_placement(board, p))
-            {
+            if let Some(result) = self.tail_finish_placement(board, p) {
                 return match result {
                     Some(pl) => PlacementSet {
                         placements: Rc::from(vec![pl]),
@@ -352,23 +489,30 @@ impl PcSolver {
         if remaining != 2 {
             return true;
         }
-        let Some(pair_mask) = self
-            .legal
-            .as_ref()
-            .and_then(|t| t.stage8_pair_mask(board, first))
-        else {
+        let Some(pair_mask) = self.tail_board4(board).and_then(|(reduced, _)| {
+            self.legal
+                .as_ref()
+                .and_then(|t| t.stage8_pair_mask(reduced, first))
+        }) else {
             return true;
         };
         pair_mask & next_piece_mask != 0
     }
     #[inline]
     fn trim_cache_between_requests(&mut self) {
+        self.cache_epoch = self.cache_epoch.saturating_add(1);
         if self.height <= 4 {
-            if self.placement_cache.len() > MAX_PLACEMENT_CACHE_ENTRIES {
-                self.placement_cache = FastMap::default();
-            }
-        } else if self.compat_placement_cache.len() > MAX_PLACEMENT_CACHE_ENTRIES {
-            self.compat_placement_cache = FastMap::default();
+            self.placement_cache_evictions += trim_placement_cache(
+                &mut self.placement_cache,
+                &mut self.placement_cache_bytes,
+                self.cache_budget,
+            ) as u64;
+        } else {
+            self.placement_cache_evictions += trim_placement_cache(
+                &mut self.compat_placement_cache,
+                &mut self.compat_placement_cache_bytes,
+                self.cache_budget,
+            ) as u64;
         }
     }
 

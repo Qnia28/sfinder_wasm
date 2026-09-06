@@ -52,7 +52,7 @@ pub(crate) struct CompactSolution {
     pub(crate) planes: [u64; 3],
 }
 
-#[derive(Clone, Copy, Debug, Default)]
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Hash)]
 pub(crate) struct DagPathState {
     pub(crate) depth: u8,
     pub(crate) cleared_rows: u8,
@@ -157,13 +157,51 @@ pub(crate) fn flat_dag_productive(dag: &mut FlatDag, node: u32) -> bool {
     productive
 }
 
+pub(crate) struct ReconstructionMemo {
+    pub(crate) visits: u64,
+    pub(crate) skipped: u64,
+    enabled: bool,
+    seen: FastSet<(u32, DagPathState)>,
+}
 pub(crate) fn collect_flat_dag_paths(
     height: u8,
     dag: &FlatDag,
     node: u32,
     path: DagPathState,
     out: &mut FastMap<CompactSolution, FastSet<u64>>,
+) -> ReconstructionMemo {
+    let enabled = crate::order_language::OrderLanguage::path_count(dag, &[node]) >= 100_000;
+    let mut memo = ReconstructionMemo {
+        visits: 0,
+        skipped: 0,
+        enabled,
+        seen: FastSet::default(),
+    };
+    walk_flat_dag_paths(height, dag, node, path, out, &mut memo);
+    // Do not retain request workspaces in the solver.
+    memo.seen = FastSet::default();
+    memo
+}
+
+fn walk_flat_dag_paths(
+    height: u8,
+    dag: &FlatDag,
+    node: u32,
+    path: DagPathState,
+    out: &mut FastMap<CompactSolution, FastSet<u64>>,
+    memo: &mut ReconstructionMemo,
 ) {
+    memo.visits += 1;
+    if memo.enabled {
+        let key = (node, path);
+        if memo.seen.contains(&key) {
+            memo.skipped += 1;
+            return;
+        }
+        if memo.seen.len() < 200_000 {
+            memo.seen.insert(key);
+        }
+    }
     for edge in dag.edges(node) {
         if edge.next != TERMINAL_NODE && dag.productive[edge.next as usize] != 2 {
             continue;
@@ -184,7 +222,7 @@ pub(crate) fn collect_flat_dag_paths(
         if edge.next == TERMINAL_NODE {
             out.entry(next_compact).or_default().insert(next_order);
         } else {
-            collect_flat_dag_paths(
+            walk_flat_dag_paths(
                 height,
                 dag,
                 edge.next,
@@ -195,6 +233,7 @@ pub(crate) fn collect_flat_dag_paths(
                     order_bits: next_order,
                 },
                 out,
+                memo,
             );
         }
     }

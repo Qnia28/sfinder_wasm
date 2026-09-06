@@ -1,6 +1,8 @@
+import { numericPrepared, numericPacked } from "./numeric-cover-data.mjs";
 import { requirePositiveQuality } from "./quality-contract.mjs";
 
 export function packNumericIdRows(rawCases, { filterEmpty = false } = {}) {
+  if (!filterEmpty && numericPacked(rawCases)) return { ...numericPacked(rawCases), cases: rawCases };
   const cases = filterEmpty ? rawCases.filter((row) => row?.length) : rawCases;
   let entryCount = 0;
   for (const row of cases) entryCount += row.length;
@@ -40,6 +42,7 @@ export function packNumericQualityRows(rawCases, solutionCount) {
 }
 
 export function coverageUniverse(coverage) {
+  if (numericPrepared(coverage)) return numericPrepared(coverage);
   const rawCases = [];
   const keySet = new Set();
   for (const [caseId, solutions] of coverage) {
@@ -54,6 +57,7 @@ export function coverageUniverse(coverage) {
 }
 
 export function packCoverageRows(rawCases, keyIndex, qualityFor = null) {
+  if (numericPacked(rawCases)) return { ...numericPacked(rawCases), qualities: qualityFor === null ? null : numericPacked(rawCases).qualities };
   let entryCount = 0;
   for (const row of rawCases) entryCount += row.row.length;
   const offsets = new Uint32Array(rawCases.length + 1);

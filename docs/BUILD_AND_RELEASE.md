@@ -1,4 +1,4 @@
-# Build, test, and release guide
+# Installation, build, and deployment guide
 
 ## Requirements
 
@@ -35,28 +35,6 @@ wasm/batch_wasm.wasm
 
 `wasm/highs.wasm` is the separately maintained highs-js/HiGHS 1.15.1 asset.
 
-## Tests
-
-```bash
-npm run test:rust
-npm test
-npm run test:batch
-```
-
-`npm run test:rust` is verification-only with respect to tracked runtime
-artifacts: it compiles the wasm target but does not copy build output into
-`wasm/`. `npm run build:wasm` is the sole normal producer of the tracked
-`pc_wasm.wasm` and `batch_wasm.wasm` files.
-
-For a release candidate also run the underlying Rust hygiene checks used by the
-project:
-
-```bash
-cargo fmt --all --check
-cargo clippy --workspace --all-targets -- -D warnings
-cargo test --workspace
-```
-
 ## Legal-board asset
 
 Regenerate the 4-line legal-board/oracle asset with:
@@ -84,28 +62,16 @@ third_party/source/HiGHS-1.15.1.zip
 
 See `../HIGHS_INTEGRATION_AND_LICENSE.md`.
 
-## Release packaging rules
+## Deployment
 
-Do not include development state such as:
+Deploy the complete `src/` and `wasm/` directories with the pinned
+`tetris-fumen` dependency. Keep the ORTools browser and Node glue and their
+WASM assets together under `src/vendor/ortools/`.
 
-```text
-.git/
-node_modules/
-rust/target/
-benchmark scratch output
-temporary extracted toolchains
-```
+For browser headers, capability fallback and bundling requirements, see
+`../ORTOOLS_INTEGRATION_AND_LICENSE.md`. The bundled WASM files are ready to use;
+Rust is needed only when rebuilding them or regenerating the legal-board asset.
 
-A release ZIP should contain current documentation, source, tests, scripts,
-licenses/notices, and runtime assets.
-
-Before publishing:
-
-1. run JS and Rust regression suites;
-2. rebuild normal WASM;
-3. compare expected runtime asset hashes if the release is documentation-only;
-4. test ZIP integrity;
-5. extract the ZIP into a clean directory and verify key files exist;
-6. ensure `README.md`, user guides, `CHANGELOG.md`, and the current release note
-   all name the same release;
-7. preserve all files under `third_party/`.
+Preserve `LICENSE`, `NOTICE`, `THIRD_PARTY_NOTICES.md`, the component notices
+under `third_party/`, and the supplied Eigen source when redistributing the
+complete package.

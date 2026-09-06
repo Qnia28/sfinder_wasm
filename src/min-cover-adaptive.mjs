@@ -1,8 +1,11 @@
+import {primaryRequest, selectPrimaryBackend} from "./primary-backend.mjs";
+import {isORToolsSupported, solveORToolsCardinalityKernel} from "./ortools-min-cover.mjs";
 import { minimumCover } from "./min-cover.mjs";
 import { assertQualityProvider } from "./quality-contract.mjs";
 import {
   isHardPrimaryKernel, kernelizeCardinality, prepareCoverageMatrix, primaryKernelStats,
   solvePreparedCardinalityKernel, solvePreparedRustCardinalityKernel,
+  normalizePrimaryProof,
 } from "./highs-cardinality.mjs";
 import { refineMinimumCoverQuality } from "./min-cover-quality-refine.mjs";
 
@@ -63,7 +66,7 @@ export function resolveUseHiGHS(prepared, requested = "auto", primaryKernel = nu
   );
   // A fully solved kernel needs neither Rust search nor HiGHS MIP.
   if (!kernel.cases.length) return false;
-  return isHardPrimaryKernel(kernel);
+  return selectPrimaryBackend(kernel, "auto", {ortoolsAvailable: isORToolsSupported()}) === "highs";
 }
 
 
@@ -82,15 +85,19 @@ export async function minimumCoverAdaptiveAsync(coverage, {
   qualityFor = null,
   solver = null,
   exactQuality = "true",
+  primary: primaryOption = undefined, Primary = undefined,
   useHiGHS = "auto",
   fastStateBudget = FAST_EXACT_STATE_BUDGET,
   tinyExactMaxCandidates = 48,
+  primaryProof = "standard",
 } = {}) {
+  normalizePrimaryProof(primaryProof);
   assertQualityProvider(qualityFor);
   const qualityMode = normalizeExactHumanQuality(exactQuality);
-  const requested = normalizeUseHiGHS(useHiGHS);
+  const requestedPrimary = primaryRequest({primary: primaryOption, Primary, useHiGHS});
+  const requested = requestedPrimary === "highs" ? true : requestedPrimary === "rust" ? false : "auto";
   const tinyLimit = Math.max(0, Math.floor(Number(tinyExactMaxCandidates) || 0));
-  if (tinyLimit > 0 && candidateCountUpTo(coverage, tinyLimit) <= tinyLimit) {
+  if (requestedPrimary === "auto" && tinyLimit > 0 && candidateCountUpTo(coverage, tinyLimit) <= tinyLimit) {
     const legacy = minimumCover(coverage, { qualityFor, solver });
     const hasQuality = qualityFor !== null;
     return {
@@ -99,7 +106,7 @@ export async function minimumCoverAdaptiveAsync(coverage, {
       cardinalityBackend: hasQuality ? "rust-legacy-integrated" : "rust-legacy-cardinality",
       qualityBackend: hasQuality ? "rust-legacy-exact" : "none",
       qualityExact: true,
-      useHiGHSRequested: requested,
+      primaryRequested: requestedPrimary, primaryResolved: "rust", useHiGHSRequested: requested,
       useHiGHSResolved: false,
       minimumCoverKernelCases: null,
       minimumCoverKernelSolutions: null,
@@ -117,8 +124,10 @@ export async function minimumCoverAdaptiveAsync(coverage, {
     qualityFor,
     solver,
     exactQuality: qualityMode,
+    primary: requestedPrimary,
     useHiGHS: requested,
     fastStateBudget,
+    primaryProof,
   });
 }
 
@@ -126,19 +135,23 @@ export async function minimumCoverAsync(coverage, {
   qualityFor = null,
   solver = null,
   exactQuality = "fast",
+  primary: primaryOption = undefined, Primary = undefined,
   useHiGHS = "auto",
   fastStateBudget = FAST_EXACT_STATE_BUDGET,
+  primaryProof = "standard",
 } = {}) {
+  normalizePrimaryProof(primaryProof);
   assertQualityProvider(qualityFor);
   const qualityMode = normalizeExactHumanQuality(exactQuality);
   const prepared = prepareCoverageMatrix(coverage, qualityFor);
-  const requested = normalizeUseHiGHS(useHiGHS);
+  const requestedPrimary = primaryRequest({primary: primaryOption, Primary, useHiGHS});
+  const requested = requestedPrimary === "highs" ? true : requestedPrimary === "rust" ? false : "auto";
   if (!prepared.cases.length) {
     return {
       count: 0, keys: [], qualityVector: [], searchedStates: 0,
       backend: "kernel", cardinalityBackend: "kernel",
       qualityBackend: qualityFor === null ? "none" : qualityMode === "true" ? "rust-quality-bnb" : "fast-exact-probe",
-      qualityExact: true, useHiGHSRequested: requested, useHiGHSResolved: false,
+      qualityExact: true, primaryRequested: requestedPrimary, primaryResolved: "kernel", useHiGHSRequested: requested, useHiGHSResolved: false,
       fastProbeBudget: qualityFor !== null && qualityMode === "fast" ? fastStateBudget : null,
       fastProbeStates: 0, fastFallback: false,
     };
@@ -148,11 +161,15 @@ export async function minimumCoverAsync(coverage, {
   const primaryKernel = solver?.primaryKernelize?.(primaryCases, prepared.keys.length)
     ?? kernelizeCardinality(primaryCases, prepared.keys.length);
   const primaryHard = isHardPrimaryKernel(primaryKernel);
-  const resolved = resolveUseHiGHS(prepared, requested, primaryKernel);
+  const resolved = selectPrimaryBackend(primaryKernel, requestedPrimary, {
+    ortoolsAvailable: isORToolsSupported(),
+  });
   const kernelStats = primaryKernelStats(primaryKernel);
-  const primary = resolved
-    ? await solvePreparedCardinalityKernel(primaryKernel)
-    : solvePreparedRustCardinalityKernel(prepared, primaryKernel, solver);
+  const primary = resolved === "ortools"
+    ? await solveORToolsCardinalityKernel(primaryKernel)
+    : resolved === "highs"
+      ? await solvePreparedCardinalityKernel(primaryKernel, { primaryProof })
+      : solvePreparedRustCardinalityKernel(prepared, primaryKernel, solver);
   const primaryKeys = primary.selected.map((id) => prepared.keys[id]);
 
   if (qualityFor === null) {
@@ -165,6 +182,7 @@ export async function minimumCoverAsync(coverage, {
       cardinalityBackend: primary.backend,
       qualityBackend: "none",
       qualityExact: true,
+      primaryRequested: requestedPrimary, primaryResolved: primary.backend,
       useHiGHSRequested: requested,
       useHiGHSResolved: primary.backend === "highs",
       minimumCoverKernelCases: kernelStats.cases,
@@ -196,6 +214,7 @@ export async function minimumCoverAsync(coverage, {
           cardinalityBackend: primary.backend,
           qualityBackend: "rust-quality-integrated",
           qualityExact: true,
+          primaryRequested: requestedPrimary, primaryResolved: primary.backend,
           useHiGHSRequested: requested,
           useHiGHSResolved: primary.backend === "highs",
           minimumCoverKernelCases: kernelStats.cases,
@@ -222,6 +241,7 @@ export async function minimumCoverAsync(coverage, {
         cardinalityBackend: primary.backend,
         qualityBackend: "rust-quality-threshold-fallback",
         qualityExact: true,
+        primaryRequested: requestedPrimary, primaryResolved: primary.backend,
         useHiGHSRequested: requested,
         useHiGHSResolved: primary.backend === "highs",
         minimumCoverKernelCases: kernelStats.cases,
@@ -249,6 +269,7 @@ export async function minimumCoverAsync(coverage, {
       cardinalityBackend: primary.backend,
       qualityBackend: "rust-quality-bnb",
       qualityExact: true,
+      primaryRequested: requestedPrimary, primaryResolved: primary.backend,
       useHiGHSRequested: requested,
       useHiGHSResolved: primary.backend === "highs",
       minimumCoverKernelCases: kernelStats.cases,
@@ -274,6 +295,7 @@ export async function minimumCoverAsync(coverage, {
       cardinalityBackend: primary.backend,
       qualityBackend: "fast-2x2",
       qualityExact: false,
+      primaryRequested: requestedPrimary, primaryResolved: primary.backend,
       useHiGHSRequested: requested,
       useHiGHSResolved: primary.backend === "highs",
       minimumCoverKernelCases: kernelStats.cases,
@@ -323,6 +345,7 @@ export async function minimumCoverAsync(coverage, {
       cardinalityBackend: primary.backend,
       qualityBackend: "fast-dominance-exact",
       qualityExact: true,
+      primaryRequested: requestedPrimary, primaryResolved: primary.backend,
       useHiGHSRequested: requested,
       useHiGHSResolved: primary.backend === "highs",
       minimumCoverKernelCases: kernelStats.cases,
@@ -350,6 +373,7 @@ export async function minimumCoverAsync(coverage, {
       cardinalityBackend: primary.backend,
       qualityBackend: "fast-integrated-exact",
       qualityExact: true,
+      primaryRequested: requestedPrimary, primaryResolved: primary.backend,
       useHiGHSRequested: requested,
       useHiGHSResolved: primary.backend === "highs",
       minimumCoverKernelCases: kernelStats.cases,
@@ -392,6 +416,7 @@ export async function minimumCoverAsync(coverage, {
       cardinalityBackend: primary.backend,
       qualityBackend: "fast-threshold-exact",
       qualityExact: true,
+      primaryRequested: requestedPrimary, primaryResolved: primary.backend,
       useHiGHSRequested: requested,
       useHiGHSResolved: primary.backend === "highs",
       minimumCoverKernelCases: kernelStats.cases,
@@ -428,6 +453,7 @@ export async function minimumCoverAsync(coverage, {
     cardinalityBackend: primary.backend,
     qualityBackend: "fast-2x2",
     qualityExact: false,
+    primaryRequested: requestedPrimary, primaryResolved: primary.backend,
     useHiGHSRequested: requested,
     useHiGHSResolved: primary.backend === "highs",
     minimumCoverKernelCases: kernelStats.cases,

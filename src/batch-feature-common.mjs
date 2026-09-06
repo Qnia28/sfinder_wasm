@@ -31,5 +31,5 @@ export async function batchReachability(height, physics) {
 
 export async function pcSolver(height) {
   const assets = await loadWasmAssets();
-  return new WasmPcSolver(assets.exports, height, height === 4 ? assets.legal : null);
+  return new WasmPcSolver(assets.exports, height, assets.legal);
 }

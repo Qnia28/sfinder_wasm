@@ -1,6 +1,6 @@
 // Public feature façade. Feature orchestration lives beside the feature it
 // belongs to; worker/runtime callers keep importing this stable module.
-export { calculateChance } from "./chance-feature.mjs";
+export { calculateChance, calculateChanceCount } from "./chance-feature.mjs";
 export { calculateSaves } from "./saves-feature.mjs";
 export {
   calculateLegacyMinimalsFeature,

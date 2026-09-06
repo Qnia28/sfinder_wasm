@@ -39,9 +39,11 @@ export async function calculateMinimalsFeature({
   solver,
   useHold = true,
   exactHumanQuality = "Fast",
+  primary = undefined, Primary = undefined,
   useHiGHS = undefined,
   UseHiGHS = undefined,
   fastStateBudget = undefined,
+  primaryProof = "standard",
 }) {
   decodeAndValidate(sourceFumen, clear);
   const calculation = await calculateSaveMinimals({
@@ -52,8 +54,10 @@ export async function calculateMinimalsFeature({
     useHold,
     height: clear,
     exactHumanQuality,
+    primary: primary ?? Primary,
     useHiGHS: useHiGHS ?? UseHiGHS ?? "auto",
     fastStateBudget,
+    primaryProof,
   });
   return {
     pathPattern: queuesForFinder(pattern),
@@ -66,6 +70,8 @@ export async function calculateMinimalsFeature({
     minimumCoverBackend: calculation.minimumCoverBackend,
     cardinalityBackend: calculation.cardinalityBackend,
     qualityBackend: calculation.qualityBackend,
+    primaryRequested: calculation.primaryRequested,
+    primaryResolved: calculation.primaryResolved,
     useHiGHSRequested: calculation.useHiGHSRequested,
     useHiGHSResolved: calculation.useHiGHSResolved,
     minimumCoverKernelCases: calculation.minimumCoverKernelCases,
@@ -87,4 +93,3 @@ export async function calculateMinimalsFeature({
 // the explicit Legacy name is the synchronous pre-2.1 behavior.
 export const calculateMinimalsFeatureAsync = calculateMinimalsFeature;
 export const calculateMinimalsFeatureSync = calculateLegacyMinimalsFeature;
-

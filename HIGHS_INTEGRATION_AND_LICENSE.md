@@ -9,11 +9,16 @@ Global `minimals` always keeps minimum cardinality exact. After exact primary
 kernelization, the production solver can prove the remaining cardinality with:
 
 - the Rust/WASM exact cardinality solver; or
-- HiGHS 1.15.1 MIP for hard residual kernels.
+- optimized OR-Tools 9.15 CP-SAT for wide residual kernels; or
+- HiGHS 1.15.1 MIP selected explicitly or as Auto's ORTools capability fallback.
 
-`useHiGHS` / `UseHiGHS` accepts `true`, `false`, or `"auto"`. Auto routing is
-based on the exact residual kernel, not raw input size. HiGHS is lazy-loaded and
-is not required for ordinary calls that resolve in Rust/kernelization.
+Primary accepts Auto/Rust/HiGHS/ORTools. Auto chooses Rust or ORTools using
+the exact residual kernel. When a wide Auto kernel needs ORTools but JSPI,
+SharedArrayBuffer or browser cross-origin isolation is unavailable, it uses HiGHS.
+HiGHS also remains an explicit legacy backend.
+Deprecated UseHiGHS True maps to HiGHS; False maps to Rust.
+HiGHS is lazy-loaded. Deploy its assets for Auto's fallback even if most users
+can run ORTools.
 
 `exactHumanQuality` is independent of the primary backend. It controls the
 secondary fixed-K quality proof/refinement and does not make K approximate.

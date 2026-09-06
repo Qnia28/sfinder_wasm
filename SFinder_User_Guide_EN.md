@@ -1,6 +1,6 @@
 # sfinder-wasm User Guide
 
-This guide describes the current Release 2.7 behavior. It documents the
+This guide describes the current Release 3.0 behavior. It documents the
 browser/JavaScript engine rather than the historical Java/Python CLI wrappers.
 
 ## Choosing a feature
@@ -99,8 +99,14 @@ a time. Therefore for that one outcome, `^X` and `!X` are equivalent, as are
 `XY` and `X&&Y`. Exact multiplicity is still preserved (`T`, `TT`, `TTT` are
 different and `/TT/` can match a double-T outcome).
 
-`UseHiGHS` controls only the exact primary-cardinality backend (`false`, `true`,
-or `auto`). `exactHumanQuality` controls the secondary objective:
+Primary selects Auto, Rust, HiGHS, or ORTools. Auto chooses ORTools iff
+residual cases ≥ 200, candidates ≥ 112, and entries ≥ 2200; otherwise Rust.
+ORTools requires JSPI, SharedArrayBuffer, and browser COOP/COEP headers.
+When these capabilities are unavailable, Auto uses HiGHS for kernels that meet
+the ORTools threshold. Explicit ORTools still reports an unsupported-environment
+error. Small kernels continue to use Rust, and solved kernels bypass all solvers.
+Legacy UseHiGHS remains a compatibility alias.
+`exactHumanQuality` controls the secondary objective:
 
 - `Fast`: exact secondary result if the fixed-K proof completes within budget;
   otherwise deterministic exact-K incumbent plus 2↔2 refinement.

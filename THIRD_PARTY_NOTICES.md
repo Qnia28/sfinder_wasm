@@ -5,8 +5,8 @@ references relevant to the current sfinder-wasm release.
 
 ## Project license
 
-sfinder-wasm is distributed under **GPL-3.0-only**. See `LICENSE`.
-Third-party components retain their own licenses. Nothing in the project GPL
+sfinder-wasm is distributed under **Apache-2.0**. See `LICENSE`.
+Third-party components retain their own licenses. Nothing in the project Apache license
 replaces or removes those notices.
 
 ## Distributed or adapted components
@@ -68,6 +68,45 @@ outside the source ZIP under `third_party/HiGHS-third-party/`:
 The complete upstream HiGHS notice is authoritative for the HiGHS source tree.
 The extracted files are provided to make binary/source redistribution easier,
 not to narrow the upstream notice.
+
+## ORTools and runtime dependencies added in 3.0
+
+Project-owned code is Apache-2.0. Bundled components retain the licenses below.
+
+| Component | License | Notice location under third_party/ |
+|---|---|---|
+| OR-Tools 9.15, or-tools-wasm 0.9.1 | Apache-2.0 | ORTools/OR-Tools.LICENSE, or-tools-wasm.LICENSE |
+| Abseil | Apache-2.0 and preserved embedded notices | ORTools/Abseil.LICENSE |
+| protobuf C++, RE2 | BSD-3-Clause | ORTools/protobuf.LICENSE, RE2.LICENSE |
+| utf8_range | MIT | ORTools/utf8_range.LICENSE |
+| zlib, bzip2 | Zlib, bzip2 license | ORTools/zlib.LICENSE, bzip2.LICENSE |
+| Eigen 3.4.0 | MPL-2.0 with permissive portions | ORTools/Eigen/ |
+| protobufjs 8.8.0 | BSD-3-Clause | ORTools/protobufjs.LICENSE |
+| long 5.3.2 | Apache-2.0 | ORTools/long.LICENSE |
+| @bufbuild/protobuf 2.14.0 | Apache-2.0 AND BSD-3-Clause | ORTools/protobuf-es-*.LICENSE |
+| Emscripten 6.0.8 | MIT OR NCSA | ORTools/Emscripten.LICENSE |
+| musl and compiler/C/C++ runtimes | MIT/BSD and Apache-2.0 WITH LLVM-exception | ORTools/musl.COPYRIGHT, *lib*, compiler-rt.LICENSE |
+| Rust std/core/alloc and embedded components | Original Rust and third-party licenses | Rust/ |
+
+The CP-SAT bridge target defines EIGEN_MPL2_ONLY. The 166 Eigen headers recorded
+in build dependencies contain no GPL/LGPL notices. These exact source files are
+supplied under source/Eigen-3.4.0/ under their original licenses. This source set
+conservatively includes build dependencies beyond final LTO-linked CP-SAT code.
+The compiler-definition statement does not apply to every static-library
+translation unit. See ORTools/Eigen/SOURCE.md.
+
+Distinct original license/copyright headers from recorded build dependencies
+are preserved in ORTools/UPSTREAM_HEADER_NOTICES.txt.
+Toolchain notices are retained conservatively even where LTO may remove code.
+Vite/Playwright are development-only tools and are not runtime dependencies.
+
+Sources:
+- https://github.com/google/or-tools
+- https://github.com/Axelwickm/or-tools-wasm
+- https://www.mozilla.org/en-US/MPL/2.0/FAQ/
+
+When redistributing the complete 3.0 package, preserve NOTICE, the ORTools/Rust
+notices, and the supplied Eigen source in addition to the existing notices below.
 
 ## Compatibility references and acknowledgements
 

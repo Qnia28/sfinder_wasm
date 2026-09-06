@@ -128,6 +128,17 @@ impl PcSolver {
                     continue;
                 }
                 let next_counts = Self::multiset_dec(st.remaining_counts, piece);
+                if self.height > 4 && remaining == 2 {
+                    let mut next_mask = 0u8;
+                    for next in Piece::ALL {
+                        if Self::multiset_count(next_counts, next) != 0 {
+                            next_mask |= 1 << next as u8;
+                        }
+                    }
+                    if !self.stage8_pair_allows(st.board, piece, next_mask, remaining) {
+                        continue;
+                    }
+                }
                 let set = self.placement_set_for_remaining(st.board, piece, remaining);
                 // reachable_placements already deduplicates lock operations
                 // for a piece on this board, so a second per-node hash set is
@@ -211,6 +222,9 @@ impl PcSolver {
             return false;
         }
         out.fill(0);
+        self.probability_paths = 0;
+        self.probability_language_nodes = 0;
+        self.probability_fallback = false;
         self.trim_cache_between_requests();
         let total = self.height as u32 * 10;
         let empty = total.saturating_sub(initial.count_ones());
@@ -234,31 +248,49 @@ impl PcSolver {
             return true;
         }
 
-        let mut orders = FastSet::default();
-        for root in root_ids {
-            collect_flat_dag_orders(&dag, root, 0, 0, &mut orders);
-        }
-        if orders.is_empty() {
-            return true;
-        }
-
         let Some(queue_trie) = QueueTrie::new(qbits, qlens) else {
             return false;
         };
-        let mut scratch = QueueTrieScratch::new(queue_trie.node_count());
-        let mut covered = vec![0u64; queue_trie.words];
-        let mut covered_count = 0usize;
-        for order in orders {
-            let bits = queue_trie.coverage_for_order(order, req, use_hold, &mut scratch);
-            for (dst, src) in covered.iter_mut().zip(bits) {
-                let new_bits = src & !*dst;
-                covered_count += new_bits.count_ones() as usize;
-                *dst |= src;
+        self.probability_paths = crate::order_language::OrderLanguage::path_count(&dag, &root_ids);
+        let use_compressed = self.probability_engine == 1
+            || (self.probability_engine == 0 && self.probability_paths >= 100_000);
+        let compressed = if use_compressed {
+            crate::order_language::OrderLanguage::build(
+                &dag,
+                &root_ids,
+                self.probability_node_budget,
+            )
+            .and_then(|(language, root)| {
+                self.probability_language_nodes = language.children.len() as u32;
+                queue_trie.coverage_for_language(&language, root, use_hold)
+            })
+        } else {
+            None
+        };
+        self.probability_fallback = use_compressed && compressed.is_none();
+        let covered = if let Some(covered) = compressed {
+            covered
+        } else {
+            // Exact legacy fallback after either additional representation budget.
+            let mut orders = FastSet::default();
+            for root in root_ids {
+                collect_flat_dag_orders(&dag, root, 0, 0, &mut orders);
             }
-            if covered_count >= out.len() {
-                break;
+            let mut scratch = QueueTrieScratch::new(queue_trie.node_count());
+            let mut covered = vec![0u64; queue_trie.words];
+            let mut covered_count = 0usize;
+            for order in orders {
+                let bits = queue_trie.coverage_for_order(order, req, use_hold, &mut scratch);
+                for (dst, src) in covered.iter_mut().zip(bits) {
+                    covered_count += (src & !*dst).count_ones() as usize;
+                    *dst |= src;
+                }
+                if covered_count >= out.len() {
+                    break;
+                }
             }
-        }
+            covered
+        };
         for (word_index, word) in covered.into_iter().enumerate() {
             let mut bits = word;
             while bits != 0 {
@@ -316,7 +348,7 @@ impl PcSolver {
 
         let mut compact = FastMap::default();
         for root in root_ids {
-            collect_flat_dag_paths(
+            let reconstruction = collect_flat_dag_paths(
                 self.height,
                 &dag,
                 root,
@@ -328,6 +360,8 @@ impl PcSolver {
                 },
                 &mut compact,
             );
+            self.reconstruction_visits += reconstruction.visits;
+            self.reconstruction_skipped += reconstruction.skipped;
         }
         if compact.is_empty() {
             return Some(Vec::new());

@@ -1,6 +1,12 @@
 # Current architecture
 
-This document describes the production architecture as of Release 2.7.
+This document describes the production architecture as of Release 3.0.
+
+The primary minimals selector now chooses Auto/Rust/HiGHS/ORTools. Auto routes
+wide residual kernels to OR-Tools CP-SAT; the ORTools adapter owns a disposable
+Worker per proof. HiGHS is explicitly selectable and is Auto's fallback when
+ORTools runtime capabilities are unavailable. Secondary quality stays in Rust.
+See ../ORTOOLS_INTEGRATION_AND_LICENSE.md for runtime requirements and assets.
 Historical experiments and superseded release-specific paths are intentionally
 omitted.
 
@@ -20,7 +26,7 @@ Application / Worker request
         |      +-- feature aggregation
         |      +-- exact minimum-cover layer when required
         |             +-- Rust/WASM
-        |             +-- lazy HiGHS for hard global minimals
+        |             +-- Rust / lazy ORTools for Auto; explicit HiGHS
         |
         +-- batch-worker-runtime.mjs
                +-- batch feature facade
@@ -162,7 +168,8 @@ smaller seven-bit mask table.
 
 The JavaScript minimum-cover stack is separated by responsibility.
 `highs-cardinality.mjs` owns primary matrix preparation/kernelization and the
-Rust-vs-HiGHS cardinality backend. In `pc-core`, primary-only kernelization is
+Rust/HiGHS cardinality solvers. The primary-backend.mjs selector and
+ortools-min-cover.mjs adapter add ORTools without changing quality classification. In `pc-core`, primary-only kernelization is
 kept in `min_cover_primary.rs`, the large minimum-cover regression corpus is in
 `min_cover_tests.rs`, and the integrated/fixed-K quality search remains together
 in `min_cover.rs` because a more aggressive source split showed a measurable
@@ -179,21 +186,14 @@ The primary objective is always exact minimum cardinality K.
 Before the backend search, primary-only kernelization removes forced/redundant
 structure. The remaining kernel is solved by:
 
-- Rust/WASM exact cardinality search; or
-- HiGHS exact MIP when requested/selected.
+- Rust/WASM exact cardinality search;
+- optimized OR-Tools 9.15 CP-SAT;
+- HiGHS exact MIP when explicitly requested.
 
-Auto currently routes to HiGHS when the residual kernel meets either:
-
-```text
-cases >= 200 && candidates >= 112 && edges >= 2200
-```
-
-or:
-
-```text
-cases >= 650 && candidates >= 105 && edges >= 6000
-```
-
+Auto chooses ORTools iff cases >= 200, candidates >= 112 and entries >= 2200.
+If ORTools capabilities are missing, Auto uses HiGHS for that wide kernel.
+Otherwise, below the threshold it chooses Rust. The earlier 650/105/6000 guard remains only within
+the unchanged quality hardness classifier; it no longer selects a primary solver.
 If kernelization alone proves K, no search backend is invoked.
 
 ## Secondary human quality

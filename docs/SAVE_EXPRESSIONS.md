@@ -17,6 +17,9 @@ TTILSZ
 ```
 
 `TT` is not collapsed to `T`.
+Every unused copy in the queue is counted, plus any undrawn piece in the final
+bag. There is no seven-copies-per-kind save-expression limit. For example, when
+only I is placed from queue ITT, the exact outcome is TT in both commands.
 
 ## Operators
 
@@ -34,6 +37,11 @@ T&&I         logical AND under the command's evaluation model
 ```
 
 Whitespace around operators is accepted by the current parser.
+Whitespace outside regex literals is ignored; whitespace inside `/.../` remains
+part of the regex. Each `!` or `^` prefix applies only to the next atom or grouped
+expression: `!O&&T` equals `(!O)&&T`, not `(!O)&&(!T)`. Repeated identical prefixes
+cancel in pairs. If `!` and `^` are combined before a queue-level atom, the
+historical evaluator applies complement first, then the no-match test.
 
 ## `saves`: queue-level semantics
 
@@ -57,6 +65,10 @@ I&&J    true       I is saveable and J is saveable via possibly different outcom
 ```
 
 This reproduces the intended historical `ezsaves percent` behavior.
+Mixed `&&` and `||` are evaluated **left to right** at queue level, unless grouped.
+For example, `T||I&&O` means `(T||I)&&O` here. This compatibility behavior differs
+from the scalar minimals precedence below; it does not include the former bug
+where a unary modifier leaked into later terms.
 
 ### ALL / omitted expression
 
@@ -145,6 +157,11 @@ XY   and X&&Y   are equivalent for that outcome
 
 This difference from `saves` is intentional and preserves the historical
 solution-filter model.
+Scalar minimals uses unary prefixes first, then **`&&` before `||`**, with grouping
+overriding precedence. Thus `T||I&&O` means `T||(I&&O)` and matches an outcome T.
+This preserves the original scalar condition contract while retaining exact
+multiplicity. The distinct-piece internal truth table uses the scalar precedence
+as well, but its seven-bit presence masks intentionally do not count duplicates.
 
 ### Exact multiplicity
 

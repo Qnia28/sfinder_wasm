@@ -136,6 +136,14 @@ canPc(board, queue, useHold = true) {
     ));
   },
 
+probeCanPc(board, queue, useHold = true, nodeBudget = 1024) {
+    if (!this.e.solver_probe_can_pc) return { completed: false, nodes: 0 };
+    const before = Number(this.e.solver_nodes(this.ptr));
+    const status = this.e.solver_probe_can_pc(this.ptr, board, queueBits(queue), queue.length,
+      useHold ? 1 : 0, Math.max(0, Math.min(0xffffffff, Math.floor(nodeBudget))));
+    return { completed: status < 2, value: status === 1, nodes: Number(this.e.solver_nodes(this.ptr)) - before };
+  },
+
 _canPcManyScalar(board, queues, useHold = true) {
     if (!this.e.solver_can_pc_many || !this.e.wasm_alloc_u64 || !this.e.wasm_dealloc_u64) {
       return queues.map((queue) => this.canPc(board, queue, useHold));
@@ -215,6 +223,28 @@ bestPc(board, queue, useHold = true) {
       useHold ? 1 : 0,
     ));
     return this._readSolutions(count)[0] ?? null;
+  },
+
+enumeratePcPatternCompact(board, queues, useHold = true) {
+    if (!this.e.solver_pattern_offsets_ptr || !this.e.solver_copy_solution_words) return null;
+    if (!queues.length) return null;
+    return this._withPackedQueues(queues, (queuePointer, lengthPointer) => {
+      const count = wasmU32(this.e.solver_enumerate_pc_pattern(this.ptr, board, queuePointer, lengthPointer, queues.length, useHold ? 1 : 0));
+      if (count === U32_MAX) throw new Error('WASM compact pattern enumeration failed');
+      const offsets = new Uint32Array(this.e.memory.buffer, this.e.solver_pattern_offsets_ptr(this.ptr), count + 1).slice();
+      const entries = offsets[count];
+      const caseIds = new Uint32Array(this.e.memory.buffer, this.e.solver_pattern_cases_ptr(this.ptr), entries).slice();
+      const qualities = new Uint32Array(this.e.memory.buffer, this.e.solver_pattern_qualities_ptr(this.ptr), entries).slice();
+      const stride = wasmU32(this.e.solver_solution_word_stride());
+      const words = count * stride, pointer = this.e.wasm_alloc_u64(words);
+      try {
+        if (wasmU32(this.e.solver_copy_solution_words(this.ptr, pointer, words)) !== words) throw new Error('compact solution copy failed');
+        // Native WASM memory is little-endian. Keep geometry as two u32 words
+        // per mask until a selected solution actually needs Fumen materialization.
+        const geometry = new Uint32Array(this.e.memory.buffer, pointer, words * 2).slice();
+        return { count, stride: stride * 2, geometry, offsets, caseIds, qualities };
+      } finally { this.e.wasm_dealloc_u64(pointer, words); }
+    });
   },
 
 enumeratePcPattern(board, queues, useHold = true) {

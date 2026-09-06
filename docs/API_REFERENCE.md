@@ -1,6 +1,6 @@
 # JavaScript API reference
 
-This is the current public/runtime contract for Release 2.7.
+This is the current public/runtime contract for Release 3.0.
 
 ## Recommended entry points
 
@@ -176,12 +176,20 @@ See `SAVE_EXPRESSIONS.md`.
   clear: 4,
   useHold: true,
   exactHumanQuality: 'Fast',
-  UseHiGHS: 'auto',
+  Primary: 'Auto',
   fastStateBudget,        // optional expert tuning: main integrated Fast probe budget
 }
 ```
 
-`UseHiGHS` and `useHiGHS` are both accepted; `useHiGHS` wins when both are set.
+Primary accepts Auto/Rust/HiGHS/ORTools (case-insensitive). Lowercase primary
+wins over Primary; either wins over deprecated UseHiGHS aliases. Auto selects
+ORTools iff residual cases ≥ 200, candidates ≥ 112, and entries ≥ 2200, otherwise
+Rust. Solved kernels bypass the solver. ORTools requires JSPI and SharedArrayBuffer.
+For Auto, a kernel meeting the ORTools threshold falls back to HiGHS if JSPI,
+SharedArrayBuffer or browser cross-origin isolation is unavailable. Explicit
+ORTools retains its support error. Fallback metadata keeps primaryRequested='auto'
+and reports primaryResolved/cardinalityBackend='highs', useHiGHSResolved=true.
+See ORTOOLS_INTEGRATION_AND_LICENSE.md for deployment requirements.
 
 `fastStateBudget` controls the historical integrated fixed-K Fast probe. Fast may
 also run a small exact-only candidate-dominance preview and, after an integrated
@@ -201,8 +209,10 @@ Result includes:
   minimumCoverBackend,
   cardinalityBackend,
   qualityBackend,
-  useHiGHSRequested,
-  useHiGHSResolved,
+  primaryRequested, // auto/rust/highs/ortools
+  primaryResolved,  // rust/highs/ortools/kernel
+  useHiGHSRequested, // deprecated
+  useHiGHSResolved,  // deprecated
   minimumCoverKernelCases,
   minimumCoverKernelSolutions,
   minimumCoverKernelEntries,
@@ -236,7 +246,7 @@ compatibility/reference. Production callers should prefer `minimals`.
   targetLines: 4,
   useHold: true,
   exactHumanQuality: 'true',
-  UseHiGHS: 'auto',
+  Primary: 'Auto',
   candidateLimit: 16, // compatibility only; does not truncate exact single-queue results
 }
 ```

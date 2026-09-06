@@ -10,8 +10,10 @@ export async function calculateCover({
   mode = "normal",
   mirror = "no",
   useHold = true,
+  outputMode = "variants",
 }) {
   validateTargetLines(clear);
+  if (!['variants', 'coverage'].includes(outputMode)) throw new RangeError(`unsupported cover outputMode '${outputMode}'`);
   const finderPattern = queuesForFinder(pattern);
   const queues = expandPatternCases(finderPattern);
   const targets = decodedTargets(sourceFumen, clear);
@@ -30,6 +32,7 @@ export async function calculateCover({
     useHold,
     mirror: boolMirror(mirror),
     mode,
+    coverageOnly: outputMode === "coverage",
   });
   return {
     pathPattern: finderPattern,

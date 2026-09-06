@@ -31,13 +31,13 @@ impl Default for QueueTrieNode {
 // then children in piece-index order I..Z), so every subtree is a contiguous
 // perm[dfs_lo..dfs_hi) interval. perm[i] maps DFS index i to the original
 // caller-supplied case ID.
-pub(crate) struct QueueTrie {
+pub struct QueueTrie {
     nodes: Vec<QueueTrieNode>,
-    pub(crate) perm: Vec<u32>,
-    pub(crate) words: usize,
+    pub perm: Vec<u32>,
+    pub words: usize,
 }
 
-pub(crate) struct QueueTrieScratch {
+pub struct QueueTrieScratch {
     state_seen: Vec<u32>,
     position_seen: Vec<u32>,
     cur: Vec<u32>,
@@ -45,7 +45,7 @@ pub(crate) struct QueueTrieScratch {
     generation: u32,
 }
 impl QueueTrieScratch {
-    pub(crate) fn new(node_count: usize) -> Self {
+    pub fn new(node_count: usize) -> Self {
         Self {
             state_seen: vec![0u32; node_count * 16],
             position_seen: vec![0u32; node_count * 2],
@@ -68,12 +68,12 @@ impl QueueTrieScratch {
 
 impl QueueTrie {
     #[inline]
-    pub(crate) fn node_count(&self) -> usize {
+    pub fn node_count(&self) -> usize {
         self.nodes.len()
     }
 
-    pub(crate) fn new(qbits: &[u64], qlens: &[u8]) -> Option<Self> {
-        if qbits.len() != qlens.len() {
+    pub fn new(qbits: &[u64], qlens: &[u8]) -> Option<Self> {
+        if qbits.len() != qlens.len() || qlens.iter().any(|&len| len > 21) {
             return None;
         }
         let mut nodes = vec![QueueTrieNode::default()];
@@ -198,7 +198,93 @@ impl QueueTrie {
         ((node_count + node) << 3) | hold as u32
     }
 
-    pub(crate) fn coverage_for_order(
+    fn advance(&self, state: u32, wanted: u8, use_hold: bool) -> impl Iterator<Item = u32> {
+        let mut out = [0u32; 9];
+        let mut len = 0;
+        let mut push = |value| {
+            out[len] = value;
+            len += 1;
+        };
+        let node_count = self.nodes.len() as u32;
+        let hold = (state & 7) as u8;
+        let pos = state >> 3;
+        if pos >= node_count {
+            if use_hold && hold == wanted {
+                push(Self::ended_state(pos - node_count, 7, node_count));
+            }
+        } else {
+            let meta = &self.nodes[pos as usize];
+            let direct = meta.children[wanted as usize];
+            if direct != NO_TRIE_CHILD {
+                push(Self::normal_state(direct, hold));
+            }
+            if use_hold {
+                if hold == 7 {
+                    for current in 0..7usize {
+                        let first = meta.children[current];
+                        if first == NO_TRIE_CHILD {
+                            continue;
+                        }
+                        let second = self.nodes[first as usize].children[wanted as usize];
+                        if second != NO_TRIE_CHILD {
+                            push(Self::normal_state(second, current as u8));
+                        }
+                    }
+                } else if hold == wanted {
+                    for current in 0..7usize {
+                        let child = meta.children[current];
+                        if child != NO_TRIE_CHILD {
+                            push(Self::normal_state(child, current as u8));
+                        }
+                    }
+                    if meta.terminal_len != 0 {
+                        push(Self::ended_state(pos, 7, node_count));
+                    }
+                }
+            }
+        }
+        out.into_iter().take(len)
+    }
+
+    pub(crate) fn coverage_for_language(
+        &self,
+        language: &crate::order_language::OrderLanguage,
+        root: u32,
+        use_hold: bool,
+    ) -> Option<Vec<u64>> {
+        let mut covered = vec![0u64; self.words];
+        let mut seen = crate::FastSet::default();
+        let mut stack = vec![(root, Self::normal_state(0, 7))];
+        while let Some((id, state)) = stack.pop() {
+            if id == 0 || !seen.insert((id, state)) {
+                continue;
+            }
+            if seen.len() > 1_000_000 {
+                return None;
+            }
+            if id == 1 {
+                let pos = (state >> 3) as usize;
+                let n = &self.nodes[pos % self.nodes.len()];
+                let hi = if pos < self.nodes.len() {
+                    n.dfs_hi
+                } else {
+                    n.dfs_lo + n.terminal_len
+                };
+                Self::set_bit_range(&mut covered, n.dfs_lo as usize, hi as usize);
+                continue;
+            }
+            for (piece, &child) in language.children[id as usize].iter().enumerate() {
+                if child != 0 {
+                    for next in self.advance(state, piece as u8, use_hold) {
+                        stack.push((child, next));
+                    }
+                }
+            }
+        }
+        Some(covered)
+    }
+
+    pub fn coverage_for_order(
         &self,
         order_bits: u64,
         depth: u8,
@@ -219,72 +305,8 @@ impl QueueTrie {
             let generation = scratch.next_generation();
             scratch.next.clear();
             for &state in &scratch.cur {
-                let hold = (state & 7) as u8;
-                let pos = state >> 3;
-                if pos >= node_count {
-                    if use_hold && hold == wanted {
-                        let node = pos - node_count;
-                        Self::push_state(
-                            &mut scratch.next,
-                            &mut scratch.state_seen,
-                            generation,
-                            Self::ended_state(node, 7, node_count),
-                        );
-                    }
-                    continue;
-                }
-                let node = pos;
-                let meta = &self.nodes[node as usize];
-
-                let direct = meta.children[wanted as usize];
-                if direct != NO_TRIE_CHILD {
-                    Self::push_state(
-                        &mut scratch.next,
-                        &mut scratch.state_seen,
-                        generation,
-                        Self::normal_state(direct, hold),
-                    );
-                }
-                if !use_hold {
-                    continue;
-                }
-
-                if hold == 7 {
-                    for current in 0..7usize {
-                        let first = meta.children[current];
-                        if first == NO_TRIE_CHILD {
-                            continue;
-                        }
-                        let second = self.nodes[first as usize].children[wanted as usize];
-                        if second != NO_TRIE_CHILD {
-                            Self::push_state(
-                                &mut scratch.next,
-                                &mut scratch.state_seen,
-                                generation,
-                                Self::normal_state(second, current as u8),
-                            );
-                        }
-                    }
-                } else if hold == wanted {
-                    for current in 0..7usize {
-                        let child = meta.children[current];
-                        if child != NO_TRIE_CHILD {
-                            Self::push_state(
-                                &mut scratch.next,
-                                &mut scratch.state_seen,
-                                generation,
-                                Self::normal_state(child, current as u8),
-                            );
-                        }
-                    }
-                    if meta.terminal_len != 0 {
-                        Self::push_state(
-                            &mut scratch.next,
-                            &mut scratch.state_seen,
-                            generation,
-                            Self::ended_state(node, 7, node_count),
-                        );
-                    }
+                for next in self.advance(state, wanted, use_hold) {
+                    Self::push_state(&mut scratch.next, &mut scratch.state_seen, generation, next);
                 }
             }
             if scratch.next.is_empty() {

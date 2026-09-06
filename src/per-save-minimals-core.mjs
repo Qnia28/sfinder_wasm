@@ -1,3 +1,4 @@
+import {primaryRequest} from "./primary-backend.mjs";
 import { makeOrderCountQuality, recordOrderCount } from "./human-ranking.mjs";
 import { minimumCover } from "./min-cover.mjs";
 import { minimumCoverAdaptiveAsync } from "./min-cover-adaptive.mjs";
@@ -153,6 +154,8 @@ function finishPieceResult({
       })
       : null,
     minimumCoverBackend: minimal?.backend ?? (success > 0 ? "rust-legacy" : null),
+    primaryRequested: minimal?.primaryRequested ?? "auto",
+    primaryResolved: minimal?.primaryResolved ?? null,
     cardinalityBackend: minimal?.cardinalityBackend ?? null,
     qualityBackend: minimal?.qualityBackend ?? null,
     humanQualityExact: minimal?.qualityExact ?? true,
@@ -283,13 +286,15 @@ export async function calculatePerSaveMinimalsFromBoardAsync({
   displayOrder = PER_SAVE_DISPLAY_ORDER,
   candidateLimit = 16,
   exactHumanQuality = "true",
+  primary = undefined, Primary = undefined,
   useHiGHS = "auto",
   fastStateBudget = undefined,
   tinyExactMaxCandidates = 48,
   includeCoverage = true,
 }) {
   const cases = normalizeCases(queues);
-  const direct = maybeDirect({ board, cases, solver, useHold, candidateLimit, displayOrder });
+  const requestedPrimary = primaryRequest({primary, Primary, useHiGHS});
+  const direct = requestedPrimary === "auto" ? maybeDirect({ board, cases, solver, useHold, candidateLimit, displayOrder }) : null;
   if (direct) return direct;
 
   const tinyLimit = Math.max(0, Math.floor(Number(tinyExactMaxCandidates) || 0));
@@ -309,7 +314,7 @@ export async function calculatePerSaveMinimalsFromBoardAsync({
         let minimal = null;
         let coverageCountForKey = null;
 
-        if (activeRows.length > 0 && tinyLimit > 0 && candidateCount <= tinyLimit) {
+        if (requestedPrimary === "auto" && activeRows.length > 0 && tinyLimit > 0 && candidateCount <= tinyLimit) {
           const exact = solver.minimumCoverIds(activeRows, numeric.solutions.length);
           if (exact && Number.isFinite(exact.count)) {
             minimal = {
@@ -317,6 +322,7 @@ export async function calculatePerSaveMinimalsFromBoardAsync({
               keys: exact.selectedIds.map((id) => numeric.solutions[id].key),
               qualityVector: exact.qualityVector,
               searchedStates: exact.searchedStates ?? 0,
+              primaryRequested: requestedPrimary, primaryResolved: "rust",
               backend: "rust-legacy",
               cardinalityBackend: "rust-legacy-integrated",
               qualityBackend: "rust-legacy-exact",
@@ -336,6 +342,7 @@ export async function calculatePerSaveMinimalsFromBoardAsync({
             qualityFor: converted.qualityFor,
             solver,
             exactQuality: exactHumanQuality,
+            primary: primary ?? Primary,
             useHiGHS,
             fastStateBudget,
             tinyExactMaxCandidates,
@@ -375,6 +382,7 @@ export async function calculatePerSaveMinimalsFromBoardAsync({
         qualityFor: collected.qualityFor,
         solver,
         exactQuality: exactHumanQuality,
+        primary: primary ?? Primary,
         useHiGHS,
         fastStateBudget,
         tinyExactMaxCandidates,

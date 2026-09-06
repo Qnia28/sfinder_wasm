@@ -27,7 +27,7 @@ function resolveBagInfo(analysis){
 
 
 export function prepareQueuePieceCounts(queue){
-  const counts=new Uint8Array(7);
+  const counts=new Uint32Array(7);
   for(const piece of queue){const index=ORDER_INDEX[piece];if(index!==undefined)counts[index]++}
   return counts;
 }
@@ -104,19 +104,11 @@ function evaluateSaveExpressionRaw(save,expr){
 // compileSaveExpression(), whose scalar 7-bit predicate remains available for
 // distinct-piece internal filters such as fifth; minimals uses exact multiplicity below.
 export function savedCodePrepared(caseMeta,solutionCounts){
-  let extraMask=0;
-  for(let oi=0;oi<7;oi++)if(caseMeta.queueCounts[oi]>solutionCounts[oi])extraMask|=1<<oi;
-  return (caseMeta.baseSavedMask&0x7f)|((extraMask&0x7f)<<7);
+  return savedMultiplicityCodePrepared(caseMeta,solutionCounts);
 }
 
 export function saveCodeToString(code){
-  const base=code&0x7f,extra=(code>>7)&0x7f;
-  let out='';
-  for(let oi=0;oi<7;oi++){
-    if(base&(1<<oi))out+=ORDER[oi];
-    if(extra&(1<<oi))out+=ORDER[oi];
-  }
-  return out;
+  return saveMultiplicityCodeToString(code);
 }
 
 export function savedStringPrepared(caseMeta,solutionCounts){
@@ -125,22 +117,32 @@ export function savedStringPrepared(caseMeta,solutionCounts){
 
 // Minimals filters operate on one concrete solution at a time.  Unlike the
 // historical 7-bit set mask, this code keeps the exact multiplicity of every
-// saved tetromino.  Three bits per piece are sufficient for the supported
-// queue windows (0..7 copies per tetromino) while keeping the value in a safe
-// JavaScript integer.
+// saved tetromino. Keep the numeric fast path for 0..7 copies per piece;
+// longer queue windows use a canonical string instead of truncating or failing.
+// These opaque keys are shared by saves and minimals and must not be bit-decoded
+// by callers; use saveMultiplicityCodeToString() / saveCodeToString().
 export function savedMultiplicityCodePrepared(caseMeta,solutionCounts){
   let code=0;
   for(let oi=0;oi<7;oi++){
     const remaining=caseMeta.queueCounts[oi]-solutionCounts[oi];
     if(remaining<0)throw new Error(`solution uses more ${ORDER[oi]} pieces than queue provides`);
     const count=((caseMeta.baseSavedMask&(1<<oi))?1:0)+remaining;
-    if(count>7)throw new Error(`saved ${ORDER[oi]} multiplicity ${count} exceeds compact encoding`);
+    if(count>7){
+      let exact='';
+      for(let i=0;i<7;i++){
+        const unused=caseMeta.queueCounts[i]-solutionCounts[i];
+        if(unused<0)throw new Error(`solution uses more ${ORDER[i]} pieces than queue provides`);
+        exact+=ORDER[i].repeat(unused+((caseMeta.baseSavedMask&(1<<i))?1:0));
+      }
+      return exact;
+    }
     code|=count<<(oi*3);
   }
   return code;
 }
 
 export function saveMultiplicityCodeToString(code){
+  if(typeof code==='string')return code;
   let out='';
   for(let oi=0;oi<7;oi++){
     const count=(code>>(oi*3))&7;
@@ -157,6 +159,7 @@ function tokenizeSaveOutcomeExpression(source){
   const tokens=[];
   for(let index=0;index<source.length;){
     const char=source[index];
+    if(/\s/.test(char)){index++;continue}
     if(/[TILJSZO]/.test(char)){
       let end=index+1;
       while(end<source.length&&/[TILJSZO]/.test(source[end]))end++;
@@ -165,8 +168,12 @@ function tokenizeSaveOutcomeExpression(source){
       continue;
     }
     if(char==='/'){
-      const end=source.indexOf('/',index+1);
-      if(end<0)throw new SyntaxError("Wanted Saves: Missing ending '/' in regex queue");
+      let end=index+1;
+      for(;end<source.length;end++){
+        if(source[end]==='\\'){end++;continue}
+        if(source[end]==='/')break;
+      }
+      if(end>=source.length)throw new SyntaxError("Wanted Saves: Missing ending '/' in regex queue");
       tokens.push({kind:'regex',value:source.slice(index+1,end)});
       index=end+1;
       continue;
@@ -209,6 +216,10 @@ function parseSaveOutcomeSequence(tokens,cursor=0,nested=false){
       throw new SyntaxError('Wanted Saves: Invalid save expression');
     }
     terms.push({expression,complement,absenceTest,connector});
+    // Prefix modifiers bind to this atom/group only, never to a later term.
+    complement=false;
+    absenceTest=false;
+    connector=null;
   }
   if(nested)throw new SyntaxError('Wanted Saves: Missing closing parentheses');
   return[{kind:'sequence',terms},cursor];
@@ -261,16 +272,18 @@ function evaluateSaveOutcomeAst(allSaves,node){
 function evaluateSaveOutcomeAstScalar(save,node){
   if(node.kind==='regex')return new RegExp(node.value).test(save);
   if(node.kind==='match')return containsSubsequence(save,node.value);
-  let current=false;
+  // Scalar predicates retain AND-before-OR precedence. The queue-level
+  // evaluator above deliberately folds mixed connectors left-to-right.
+  let current=false,disjunction=false;
   for(const term of node.terms){
     let matched=evaluateSaveOutcomeAstScalar(save,term.expression);
     if(term.complement)matched=!matched;
     if(term.absenceTest)matched=!matched;
     if(term.connector==='and')current=current&&matched;
-    else if(term.connector==='or')current=current||matched;
+    else if(term.connector==='or'){disjunction=disjunction||current;current=matched}
     else current=matched;
   }
-  return current;
+  return disjunction||current;
 }
 
 export function parseSaveExpressionSpec(value){

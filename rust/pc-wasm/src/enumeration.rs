@@ -3,6 +3,31 @@ use pc_core::{PcSolver, Solution, decode_queue_array};
 
 const SOLUTION_WORD_STRIDE: usize = 9;
 
+// 0=false, 1=true, 2=budget exhausted or invalid input. Unknown is not false.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_probe_can_pc(
+    ptr: *mut WasmSolver,
+    board: u64,
+    qbits: u64,
+    qlen: u32,
+    hold: u32,
+    budget: u32,
+) -> u32 {
+    if ptr.is_null() || qlen > 21 || decode_queue_array(qbits, qlen as u8).is_none() {
+        return 2;
+    }
+    match unsafe { &mut *ptr }.core.probe_can_pc_packed(
+        board,
+        qbits,
+        qlen as u8,
+        hold != 0,
+        budget as u64,
+    ) {
+        Some(result) => result as u32,
+        None => 2,
+    }
+}
+
 fn set_concrete_solutions(
     solver: &mut WasmSolver,
     queue: &[pc_core::Piece],
@@ -335,4 +360,27 @@ pub unsafe extern "C" fn solver_solution_saved_piece(ptr: *mut WasmSolver, index
         .get(index as usize)
         .copied()
         .unwrap_or(7) as u32
+}
+
+// Borrowed bulk CSR views; JS copies these before any further WASM mutation.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_pattern_offsets_ptr(ptr: *mut WasmSolver) -> *const u32 {
+    if ptr.is_null() {
+        return core::ptr::null();
+    }
+    unsafe { &*ptr }.pattern_offsets.as_ptr()
+}
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_pattern_cases_ptr(ptr: *mut WasmSolver) -> *const u32 {
+    if ptr.is_null() {
+        return core::ptr::null();
+    }
+    unsafe { &*ptr }.pattern_case_ids.as_ptr()
+}
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_pattern_qualities_ptr(ptr: *mut WasmSolver) -> *const u32 {
+    if ptr.is_null() {
+        return core::ptr::null();
+    }
+    unsafe { &*ptr }.pattern_order_counts.as_ptr()
 }

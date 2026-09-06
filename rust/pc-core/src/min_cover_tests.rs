@@ -605,6 +605,27 @@ fn histogram_rank_compression_handles_sparse_u32_qualities() {
 }
 
 #[test]
+fn histogram_prefix_max_stack_restores_hidden_values_and_duplicate_rows() {
+    let cases = vec![
+        vec![(0, 2), (1, 9), (2, 4), (3, 9)],
+        vec![(0, 2), (1, 9), (2, 4), (3, 9)],
+        vec![(0, 0), (2, u32::MAX)],
+    ];
+    let mut selected = vec![0];
+    let mut state = QualityHistogramState::build(&cases, 4, &selected);
+    for id in [1, 2, 3] {
+        selected.push(id);
+        state.push(id);
+        assert_eq!(state.quality_vector(), quality_vector(&cases, &selected, 4));
+    }
+    for id in [3, 2, 1] {
+        state.pop(id);
+        selected.pop();
+        assert_eq!(state.quality_vector(), quality_vector(&cases, &selected, 4));
+    }
+}
+
+#[test]
 fn adaptive_histogram_matches_naive_fixed_k_on_random_matrices_and_budgets() {
     let mut state = 0x8d12_3a77u32;
     let mut next = || {

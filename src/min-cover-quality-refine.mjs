@@ -28,12 +28,12 @@ function qualityRankTable(cases) {
   return { values, rankOf: new Map(values.map((quality, rank) => [quality, rank])) };
 }
 
-function selectedQualityHistogram(selected, denseRanks, caseCount, rankCount) {
+function selectedQualityHistogram(selected, denseRanks, caseCount, rankCount, weights) {
   const histogram = new Uint32Array(rankCount);
   for (let ci = 0; ci < caseCount; ci += 1) {
     let bestRank = 0;
     for (const id of selected) bestRank = Math.max(bestRank, denseRanks[id * caseCount + ci]);
-    histogram[bestRank] += 1;
+    histogram[bestRank] += weights[ci];
   }
   return histogram;
 }
@@ -51,7 +51,25 @@ function histogramVector(histogram, qualityValues) {
 // minimum-cardinality family. The pass is deliberately bounded to local moves
 // so hard matrices never re-enter an exponential exact quality enumeration.
 export function refineMinimumCoverQuality(prepared, initialSelected, { maxPasses = 16 } = {}) {
-  const { cases, keys } = prepared;
+  const { keys } = prepared;
+  // Equal candidate/quality rows evolve identically under every 2-for-2 move.
+  // Keep their multiplicity: dropping duplicate rows would change maximin quality.
+  let cases = prepared.cases;
+  let weights = new Uint32Array(cases.length).fill(1);
+  if (cases.length >= 128) {
+    const classes = new Map();
+    const unique = [];
+    const counts = [];
+    for (const row of cases) {
+      const signature = [...row].sort((a, b) => a[0] - b[0])
+        .map(([id, q]) => `${id}:${q >>> 0}`).join(',');
+      const previous = classes.get(signature);
+      if (previous !== undefined) counts[previous] += 1;
+      else { classes.set(signature, unique.length); unique.push(row); counts.push(1); }
+    }
+    cases = unique;
+    weights = Uint32Array.from(counts);
+  }
   const solutionCount = keys.length;
   const caseCount = cases.length;
   const { values: qualityValues, rankOf: qualityRankOf } = qualityRankTable(cases);
@@ -62,19 +80,19 @@ export function refineMinimumCoverQuality(prepared, initialSelected, { maxPasses
     for (const [id, q] of cases[ci]) {
       const index = id * caseCount + ci;
       dense[index] = qualityRankOf.get(q >>> 0);
+      if (!covers[index]) candidateCases[id].push(ci);
       covers[index] = 1;
-      candidateCases[id].push(ci);
     }
   }
 
   if (initialSelected.length < 2 || !caseCount) {
     const selected = [...initialSelected].sort((a, b) => a - b);
-    const histogram = selectedQualityHistogram(selected, dense, caseCount, qualityValues.length);
+    const histogram = selectedQualityHistogram(selected, dense, caseCount, qualityValues.length, weights);
     return { selected, qualityVector: histogramVector(histogram, qualityValues), passes: 0 };
   }
 
   let selected = [...initialSelected].sort((a, b) => a - b);
-  let bestHistogram = selectedQualityHistogram(selected, dense, caseCount, qualityValues.length);
+  let bestHistogram = selectedQualityHistogram(selected, dense, caseCount, qualityValues.length, weights);
   let passes = 0;
 
   for (; passes < maxPasses; passes += 1) {
@@ -141,6 +159,7 @@ export function refineMinimumCoverQuality(prepared, initialSelected, { maxPasses
         }
 
         const baseQuality = new Uint32Array(caseCount);
+        const baseHistogram = new Uint32Array(qualityValues.length);
         for (let ci = 0; ci < caseCount; ci += 1) {
           const offset = ci * 3;
           for (let rank = 0; rank < 3; rank += 1) {
@@ -151,11 +170,14 @@ export function refineMinimumCoverQuality(prepared, initialSelected, { maxPasses
               break;
             }
           }
+          baseHistogram[baseQuality[ci]] += weights[ci];
         }
 
         for (let xi = 0; xi < candidates.length; xi += 1) {
           const x = candidates[xi];
           const xo = x * caseCount;
+          let xQuality;
+          let xHistogram;
           for (let yi = xi + 1; yi < candidates.length; yi += 1) {
             const y = candidates[yi];
             const yo = y * caseCount;
@@ -165,13 +187,27 @@ export function refineMinimumCoverQuality(prepared, initialSelected, { maxPasses
             }
             if (!coversMissing) continue;
 
-            const histogram = new Uint32Array(qualityValues.length);
-            for (let ci = 0; ci < caseCount; ci += 1) {
-              const q = Math.max(baseQuality[ci], dense[xo + ci], dense[yo + ci]);
-              histogram[q] += 1;
+            // Build base+x only for an x participating in a feasible pair.
+            // Adding y can change only rows actually covered by y.
+            if (!xQuality) {
+              xQuality = baseQuality.slice();
+              xHistogram = baseHistogram.slice();
+              for (const ci of candidateCases[x]) {
+                const q = dense[xo + ci], old = xQuality[ci];
+                if (q > old) {
+                  xHistogram[old] -= weights[ci]; xHistogram[q] += weights[ci];
+                  xQuality[ci] = q;
+                }
+              }
             }
-            const candidateSelected = [...base, x, y].sort((l, r) => l - r);
+            const histogram = xHistogram.slice();
+            for (const ci of candidateCases[y]) {
+              const q = dense[yo + ci], old = xQuality[ci];
+              if (q > old) { histogram[old] -= weights[ci]; histogram[q] += weights[ci]; }
+            }
             const cmp = compareHistograms(histogram, passHistogram);
+            if (cmp < 0) continue;
+            const candidateSelected = [...base, x, y].sort((l, r) => l - r);
             if (cmp > 0 || (cmp === 0 && stableIdsLess(candidateSelected, passSelected))) {
               bestMove = [a, b, x, y];
               passHistogram = histogram;
@@ -189,4 +225,3 @@ export function refineMinimumCoverQuality(prepared, initialSelected, { maxPasses
 
   return { selected, qualityVector: histogramVector(bestHistogram, qualityValues), passes };
 }
-
