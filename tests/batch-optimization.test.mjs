@@ -50,3 +50,35 @@ test('cover-percent preserves its public output',async()=>{
  assert.equal(result.covered,1);assert.equal(result.solutions[0].covered,1);
  assert.ok(!('variants' in result.solutions[0]));
 });
+
+test('bulk exports and session caches preserve scalar ABI and lifetime',async()=>{
+ const e=await loadBatchWasm();
+ const old={...e};delete old.batch_engine_variants_ptr;delete old.batch_engine_covered_ptr;
+ delete old.batch_session_begin;delete old.batch_session_end;
+ const growing={...e,batch_engine_variants_ptr:()=>{const ptr=e.batch_engine_variants_ptr();e.memory.grow(1);return ptr}};
+ const fast=new BatchReachability(growing,4,'jstris'),legacy=new BatchReachability(old,4,'jstris');
+ const operations=[{piece:'O',mask:3n|(3n<<10n)},{piece:'O',mask:(3n|(3n<<10n))<<2n}];
+ const cases=[{queue:'OO',caseId:'0'},{queue:'IO',caseId:'1'},{queue:'OO',caseId:'2'}];
+ const args={base:0n,operations,cases,mode:'normal',useHold:true};
+ const oracle=legacy.coverTarget(args);
+ const result=fast.withSession(()=>{
+  assert.deepEqual(fast.coverTarget(args),oracle);
+  // A changed Hold setting and an intervening shared-WASM caller must not
+  // reuse another request's queue projector.
+  fast.coverTarget({...args,useHold:false,cases:[{queue:'II',caseId:'0'}]});
+  return fast.coverTarget(args);
+ });
+ assert.deepEqual(result,oracle);
+ fast.coverTarget({...args,operations:operations.slice(0,1)});
+ assert.deepEqual(result,oracle);
+ assert.throws(()=>fast.withSession(()=>{throw Error('abort')}),/abort/);
+ assert.deepEqual(fast.coverTarget(args),oracle);
+});
+
+for(const mode of modes) test(`active tetris mode ${mode}`,async()=>{
+ const input={sourceFumen:fumen(Array(4).fill('XXXXXXXXXI')),pattern:'I;O',mode,mirror:'yes'};
+ const full=await calculateCover(input),only=await calculateCover({...input,outputMode:'coverage'});
+ assert.deepEqual(only,{...full,targets:full.targets.map(({variants,orders,...t})=>t)});
+ if(['normal','tetris','tetris-end','b2b','4l'].includes(mode))assert.equal(full.covered,1);
+ if(['tsm','tss','tsd','tst'].includes(mode))assert.equal(full.covered,0);
+});

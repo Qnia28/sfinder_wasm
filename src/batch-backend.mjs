@@ -9,6 +9,7 @@ export const loadBatchWasm=retryableLoader(async()=>{const wasm=await bytesFor(n
 function packQueue(queue){if(queue.length>21)throw new Error(`batch queue length ${queue.length} exceeds 21`);let bits=0n;for(let i=0;i<queue.length;i++){const p=PIECE_CODE[queue[i]];if(p===undefined)throw new Error(`bad piece ${queue[i]}`);bits|=BigInt(p)<<BigInt(i*3)}return bits}
 export class BatchReachability{
  constructor(exports,height=4,physics='jstris'){this.e=exports;this.height=height;this.physics=physics==='tetrio'?1:0}
+ withSession(callback){if(!this.e.batch_session_begin)return callback();this.e.batch_session_begin();try{return callback()}finally{this.e.batch_session_end()}}
  placeExact(board,piece,cells){const p=PIECE_CODE[piece];if(p===undefined)throw new Error(`bad piece ${piece}`);const v=this.e.batch_place_exact(board,p,cells,this.height,this.physics);if(v===0n)return null;return v&((1n<<63n)-1n)}
  tSpinKind(board,cells){return wasmU32(this.e.batch_tspin_kind(board,cells,this.height,this.physics))}
  #run({base=0n,operations,queues=[],mode='normal',useHold=true,coverageOnly=false}){
@@ -22,8 +23,15 @@ export class BatchReachability{
    ?this.e.batch_engine_run_coverage(base,this.height,this.physics,modeCode,useHold?1:0)
    :this.e.batch_engine_run(base,this.height,this.physics,modeCode,useHold?1:0));if(count===U32_MAX)throw new Error('batch engine failed');
   const variants=[],wideClears=operations.length>10;
+  const emitsVariants=!(coverageOnly&&this.e.batch_engine_run_coverage);
+  const packedPtr=emitsVariants&&count&&this.e.batch_engine_variants_ptr?wasmU32(this.e.batch_engine_variants_ptr()):0;
+  const packed=packedPtr?new Uint32Array(this.e.memory.buffer,packedPtr,count*6).slice():null;
+  const u64=(lo,hi)=>BigInt(lo)|(BigInt(hi)<<32n);
   for(let vi=0;vi<(coverageOnly&&this.e.batch_engine_run_coverage?0:count);vi++){
-   const ids=this.e.batch_engine_variant_ids(vi),clears=wideClears?this.e.batch_engine_variant_clears64(vi):wasmU32(this.e.batch_engine_variant_clears(vi)),tspins=wasmU32(this.e.batch_engine_variant_tspins(vi)),pcMask=wasmU32(this.e.batch_engine_variant_pc_mask(vi));
+   const offset=vi*6;
+   const ids=packed?u64(packed[offset],packed[offset+1]):this.e.batch_engine_variant_ids(vi);
+   const clears=packed?(wideClears?u64(packed[offset+2],packed[offset+3]):packed[offset+2]):(wideClears?this.e.batch_engine_variant_clears64(vi):wasmU32(this.e.batch_engine_variant_clears(vi)));
+   const tspins=packed?packed[offset+4]:wasmU32(this.e.batch_engine_variant_tspins(vi)),pcMask=packed?packed[offset+5]:wasmU32(this.e.batch_engine_variant_pc_mask(vi));
    let order='';const trace=[];
    for(let i=0;i<operations.length;i++){
     const id=Number((ids>>BigInt(i*4))&15n),op=operations[id],clearLines=wideClears?Number((clears>>BigInt(i*3))&7n):(clears>>>(i*3))&7,tSpinKind=(tspins>>>(i*2))&3;
@@ -31,12 +39,15 @@ export class BatchReachability{
    }
    variants.push({order,trace});
   }
-  const covered=queues.map((_,i)=>this.e.batch_engine_case_covered(i)!==0);
+  const covered=this.e.batch_engine_covered_ptr&&queues.length
+   ?Array.from(new Uint8Array(this.e.memory.buffer,wasmU32(this.e.batch_engine_covered_ptr()),queues.length),x=>x!==0)
+   :queues.map((_,i)=>this.e.batch_engine_case_covered(i)!==0);
   return{variants,covered};
  }
  buildVariants({base=0n,operations,mode='normal'}){return this.#run({base,operations,mode})?.variants??null}
  coverTarget({base=0n,operations,cases,mode='normal',useHold=true,coverageOnly=false}){return this.#run({base,operations,queues:cases,mode,useHold,coverageOnly})}
- congruent({base=0n,fill=0n,queues=[],useHold=true,maxSolutions=20000}){
+ congruent(args){return this.withSession(()=>this.#congruent(args))}
+ #congruent({base=0n,fill=0n,queues=[],useHold=true,maxSolutions=20000}){
   if(this.height>4)return null;
   if(!this.e.batch_congruent_run)return null;
   this.e.batch_engine_reset();

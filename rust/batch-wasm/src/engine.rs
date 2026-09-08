@@ -1,11 +1,9 @@
 use pc_core::queue_trie::{QueueTrie, QueueTrieScratch};
-use pc_core::{
-    CELLS, FULL_ROW, FastSet, Physics, Piece, normalize_after_placement, tspin_kind_exact,
-};
+use pc_core::{CELLS, FULL_ROW, FastSet, Physics, Piece, normalize_after_placement};
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use crate::common::{locked_next_board, physics};
+use crate::common::{cached_tspin_kind as tspin_kind_exact, locked_next_board, physics};
 
 const MAX_OPERATIONS: usize = 15;
 const MAX_QUEUE_LEN: usize = 21;
@@ -45,7 +43,7 @@ struct StructuralKey {
     mode_state: u8,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Default)]
 struct StructuralEdge {
     id: u8,
     next: usize,
@@ -57,7 +55,8 @@ struct StructuralEdge {
 struct StructuralNode {
     terminal: bool,
     mode_state: u8,
-    edges: Vec<StructuralEdge>,
+    edge_start: usize,
+    edge_len: usize,
 }
 
 #[derive(Clone, Copy)]
@@ -394,6 +393,7 @@ struct DagBuilder<'a> {
     mode: u8,
     index: pc_core::FastMap<StructuralKey, usize>,
     nodes: Vec<StructuralNode>,
+    edges: Vec<StructuralEdge>,
 }
 
 impl DagBuilder<'_> {
@@ -406,13 +406,15 @@ impl DagBuilder<'_> {
         self.nodes.push(StructuralNode {
             terminal: key.remaining == 0,
             mode_state: key.mode_state,
-            edges: Vec::new(),
+            edge_start: 0,
+            edge_len: 0,
         });
         if key.remaining == 0 {
             return id;
         }
 
-        let mut edges = Vec::new();
+        let mut edges = [StructuralEdge::default(); MAX_OPERATIONS];
+        let mut edge_len = 0;
         let mut remaining = key.remaining;
         while remaining != 0 {
             let op_id = remaining.trailing_zeros() as usize;
@@ -473,18 +475,21 @@ impl DagBuilder<'_> {
                 cleared_rows: next_cleared,
                 mode_state: next_mode_state,
             });
-            if !self.nodes[next].terminal && self.nodes[next].edges.is_empty() {
+            if !self.nodes[next].terminal && self.nodes[next].edge_len == 0 {
                 continue;
             }
-            edges.push(StructuralEdge {
+            edges[edge_len] = StructuralEdge {
                 id: op_id as u8,
                 next,
                 clear_lines: new_lines,
                 spin,
                 pc_after,
-            });
+            };
+            edge_len += 1;
         }
-        self.nodes[id].edges = edges;
+        self.nodes[id].edge_start = self.edges.len();
+        self.nodes[id].edge_len = edge_len;
+        self.edges.extend_from_slice(&edges[..edge_len]);
         id
     }
 }
@@ -560,6 +565,9 @@ struct BatchWorkspace {
     variants: Vec<BatchVariant>,
     covered: Vec<u8>,
     congruent: Vec<CongruentSolution>,
+    prepared_queues: Vec<(u64, u8)>,
+    prepared: Option<QueuePrefixCache>,
+    bulk: Vec<u32>,
 }
 
 thread_local! {
@@ -738,6 +746,7 @@ struct PathCollector<'a> {
     coverage_only: bool,
     operations: &'a [BatchOperation],
     nodes: &'a [StructuralNode],
+    edges: &'a [StructuralEdge],
     mode: u8,
     terminal: FastSet<TerminalKey>,
     variants: Vec<BatchVariant>,
@@ -782,7 +791,7 @@ impl PathCollector<'_> {
             return;
         }
 
-        for edge in &node.edges {
+        for edge in &self.edges[node.edge_start..node.edge_start + node.edge_len] {
             let op = self.operations[edge.id as usize];
             let shift3 = st.depth as u32 * 3;
             let shift4 = st.depth as u32 * 4;
@@ -1043,34 +1052,43 @@ impl CongruentSearch {
             return;
         }
 
-        let mut best: Option<Vec<BatchOperation>> = None;
+        let mut best_cell = None;
+        let mut best_len = usize::MAX;
         for idx in 0..self.height as usize * 10 {
-            let bit = 1u64 << idx;
-            if rem & bit == 0 {
+            if rem & (1u64 << idx) == 0 {
                 continue;
             }
-            let mut candidates = Vec::new();
-            for &op in &self.by_cell[idx] {
-                if counts[op.piece as usize] < self.max_counts[op.piece as usize]
-                    && op.mask & rem == op.mask
-                {
-                    candidates.push(op);
-                }
-            }
-            if candidates.is_empty() {
+            let count = self.by_cell[idx]
+                .iter()
+                .filter(|op| {
+                    counts[op.piece as usize] < self.max_counts[op.piece as usize]
+                        && op.mask & rem == op.mask
+                })
+                .take(best_len)
+                .count();
+            if count == 0 {
                 return;
             }
-            if best.as_ref().is_none_or(|x| candidates.len() < x.len()) {
-                let one = candidates.len() == 1;
-                best = Some(candidates);
-                if one {
+            if count < best_len {
+                best_cell = Some(idx);
+                best_len = count;
+                if count == 1 {
                     break;
                 }
             }
         }
-        let Some(candidates) = best else {
+        let Some(idx) = best_cell else {
             return;
         };
+        // Allocate only the chosen cell's candidates, retaining legacy order.
+        let candidates: Vec<_> = self.by_cell[idx]
+            .iter()
+            .copied()
+            .filter(|op| {
+                counts[op.piece as usize] < self.max_counts[op.piece as usize]
+                    && op.mask & rem == op.mask
+            })
+            .collect();
         for op in candidates {
             counts[op.piece as usize] += 1;
             operations.push(op);
@@ -1159,8 +1177,18 @@ fn run_engine(
     let maps = mapped_masks(&ws.operations, height);
     let infos = clear_info_table(height);
     let count = ws.operations.len();
+    let cached = ws
+        .prepared
+        .take()
+        .filter(|cache| cache.use_hold == use_hold && ws.prepared_queues == ws.queues);
+    let mut queue_cache =
+        Some(cached.unwrap_or_else(|| QueuePrefixCache::new(&ws.queues, use_hold)));
     let mut builder = DagBuilder {
-        queue_filter: coverage_only.then(|| QueuePrefixCache::new(&ws.queues, use_hold)),
+        queue_filter: if coverage_only {
+            queue_cache.take()
+        } else {
+            None
+        },
         operations: &ws.operations,
         maps: &maps,
         clear_infos: &infos,
@@ -1169,6 +1197,7 @@ fn run_engine(
         mode,
         index: pc_core::FastMap::default(),
         nodes: Vec::new(),
+        edges: Vec::new(),
     };
     let root = builder.build(StructuralKey {
         prefix: 0,
@@ -1183,13 +1212,14 @@ fn run_engine(
         coverage_only,
         operations: &ws.operations,
         nodes: &builder.nodes,
+        edges: &builder.edges,
         mode,
         terminal: FastSet::default(),
         variants: Vec::new(),
         queue_cache: builder
             .queue_filter
             .take()
-            .unwrap_or_else(|| QueuePrefixCache::new(&ws.queues, use_hold)),
+            .unwrap_or_else(|| queue_cache.take().expect("queue projector")),
         covered_bits: vec![0u64; covered_words],
         prefix_prune: ws.queues.len() <= 512,
     };
@@ -1225,6 +1255,10 @@ fn run_engine(
             ws.covered[collector.queue_cache.trie.perm[qi] as usize] = 1;
         }
     }
+    if crate::common::in_session() {
+        ws.prepared_queues.clone_from(&ws.queues);
+        ws.prepared = Some(collector.queue_cache);
+    }
     true
 }
 
@@ -1237,6 +1271,11 @@ pub extern "C" fn batch_engine_reset() {
         ws.variants.clear();
         ws.covered.clear();
         ws.congruent.clear();
+        ws.bulk.clear();
+        if !crate::common::in_session() {
+            ws.prepared = None;
+            ws.prepared_queues.clear();
+        }
     });
 }
 
@@ -1458,4 +1497,46 @@ pub extern "C" fn batch_engine_run_coverage(
         }
         ws.covered.iter().map(|&x| x as u32).sum()
     })
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn batch_session_begin() {
+    crate::common::begin_session();
+}
+#[unsafe(no_mangle)]
+pub extern "C" fn batch_session_end() {
+    crate::common::end_session();
+    if !crate::common::in_session() {
+        WORKSPACE.with(|cell| {
+            let mut ws = cell.borrow_mut();
+            ws.prepared = None;
+            ws.prepared_queues.clear();
+        });
+    }
+}
+// Owned JS copies are made before any subsequent call can grow WASM memory.
+// Each variant occupies six u32 words: IDs lo/hi, clears lo/hi, spins, PC mask.
+#[unsafe(no_mangle)]
+pub extern "C" fn batch_engine_variants_ptr() -> *const u32 {
+    WORKSPACE.with(|cell| {
+        let mut ws = cell.borrow_mut();
+        let mut bulk = std::mem::take(&mut ws.bulk);
+        bulk.clear();
+        for v in &ws.variants {
+            bulk.extend_from_slice(&[
+                v.ids as u32,
+                (v.ids >> 32) as u32,
+                v.clears as u32,
+                (v.clears >> 32) as u32,
+                v.tspins,
+                v.pc_mask as u32,
+            ]);
+        }
+        ws.bulk = bulk;
+        ws.bulk.as_ptr()
+    })
+}
+#[unsafe(no_mangle)]
+pub extern "C" fn batch_engine_covered_ptr() -> *const u8 {
+    WORKSPACE.with(|cell| cell.borrow().covered.as_ptr())
 }

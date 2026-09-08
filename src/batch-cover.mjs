@@ -30,7 +30,11 @@ function evaluateTarget(target,{cases,height,reachability,useHold,mode,projector
  };
 }
 
-export function coverTargets({targets,queues,height=4,reachability,reachabilityForHeight=null,useHold=true,mirror=false,mode='normal',coverageOnly=false}){
+export function coverTargets(args){
+ const run=()=>coverTargetsInSession(args);
+ return args.reachability?.withSession?args.reachability.withSession(run):run();
+}
+function coverTargetsInSession({targets,queues,height=4,reachability,reachabilityForHeight=null,useHold=true,mirror=false,mode='normal',coverageOnly=false}){
  mode=normalizeCoverMode(mode);
  const cases=normalizeCases(queues),targetResults=[],coveredUnion=new Set(),projector={coveredIndices(...args){if(!queueProjector)queueProjector=createQueueOrderProjector(cases);return queueProjector.coveredIndices(...args)}};
  let queueProjector;
