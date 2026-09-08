@@ -11,7 +11,7 @@ const args=process.argv.slice(2);
 const option=(name,fallback)=>{const i=args.indexOf(name);return i<0?fallback:args[i+1]};
 if(args.includes('--sample')){
  const root=resolve(option('--root','.')), results=[];
- for(const fixture of benchmarkCases){
+ for(const fixture of benchmarkCases.filter(f=>!option('--case',null)||f.name===option('--case',null))){
   const fn=(await import(pathToFileURL(resolve(root,'src',fixture.module+'.mjs'))))[fixture.fn];
   const coldStart=performance.now();const first=await fn(fixture.input);const coldMs=performance.now()-coldStart;
   const hash=x=>createHash('sha256').update(canonical(x)).digest('hex');
@@ -34,9 +34,13 @@ if(args.includes('--sample')){
  const samples={baseline:[],candidate:[]};
  for(let pair=0;pair<pairs;pair++)for(const side of pair%2?['candidate','baseline']:['baseline','candidate']){
   const root=side==='baseline'?baseline:candidate;
-  const run=spawnSync(process.execPath,[import.meta.filename,'--sample','--root',root,'--iterations',option('--iterations','5')],{encoding:'utf8',maxBuffer:16*1024*1024,timeout:180000});
-  if(run.status!==0)throw Error(`${side} sample failed: ${run.stderr||run.error}`);
-  samples[side].push(JSON.parse(run.stdout));
+  const results=[],peakRss=[];
+  for(const fixture of benchmarkCases){
+   const run=spawnSync(process.execPath,[import.meta.filename,'--sample','--root',root,'--case',fixture.name,'--iterations',option('--iterations','5')],{encoding:'utf8',maxBuffer:16*1024*1024,timeout:180000});
+   if(run.status!==0)throw Error(`${side} ${fixture.name} sample failed: ${run.stderr||run.error}`);
+   const sample=JSON.parse(run.stdout);results.push(...sample.results);peakRss.push(sample.peakRss);
+  }
+  samples[side].push({results,peakRss});
  }
  const median=a=>[...a].sort((a,b)=>a-b)[Math.floor(a.length/2)];
  const rows=benchmarkCases.map((f,index)=>{
@@ -49,7 +53,7 @@ if(args.includes('--sample')){
  const sha=root=>spawnSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).stdout.trim();
  const result={baseline:sha(baseline),candidate:sha(candidate),node:process.version,platform:platform(),arch:arch(),cpu:cpus()[0]?.model,pairs,iterations:Number(option('--iterations','5')),rows,samples};
  writeFileSync(resolve(output,'results.json'),JSON.stringify(result,null,2));
- const markdown=['Same machine, pinned compiler/Node in CI, rebuilt WASM on both revisions, sequential alternating fresh processes. Warm medians exclude result hashing; cold includes first-call asset initialization. Speedup >1 means faster. All output hashes match.\n',`Baseline: ${result.baseline}; candidate: ${result.candidate}; pairs: ${pairs}.\n`,'| Workload | Baseline warm ms | Candidate warm ms | Speedup | Baseline cold ms | Candidate cold ms |','|---|---:|---:|---:|---:|---:|',...rows.map(r=>`| ${r.name} | ${r.baseMs.toFixed(3)} | ${r.candidateMs.toFixed(3)} | ${r.speedup.toFixed(2)}x | ${r.baseColdMs.toFixed(3)} | ${r.candidateColdMs.toFixed(3)} |`)].join('\n');
+ const markdown=['Same machine, pinned compiler/Node in CI, rebuilt WASM on both revisions, sequential alternating fresh processes per workload. Warm medians exclude result hashing; cold includes first-call asset initialization. Speedup >1 means faster. All output hashes match.\n',`Baseline: ${result.baseline}; candidate: ${result.candidate}; pairs: ${pairs}.\n`,'| Workload | Baseline warm ms | Candidate warm ms | Speedup | Baseline cold ms | Candidate cold ms |','|---|---:|---:|---:|---:|---:|',...rows.map(r=>`| ${r.name} | ${r.baseMs.toFixed(3)} | ${r.candidateMs.toFixed(3)} | ${r.speedup.toFixed(2)}x | ${r.baseColdMs.toFixed(3)} | ${r.candidateColdMs.toFixed(3)} |`)].join('\n');
  writeFileSync(resolve(output,'summary.md'),markdown+'\n');
  if(process.env.GITHUB_STEP_SUMMARY)appendFileSync(process.env.GITHUB_STEP_SUMMARY,markdown+'\n');
  console.log(markdown);

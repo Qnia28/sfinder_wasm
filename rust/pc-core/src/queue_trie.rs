@@ -295,6 +295,47 @@ impl QueueTrie {
         self.project_order(order_bits, depth, use_hold, scratch)
     }
 
+    /// Canonical queue/hold frontier; ended positions preserve final Hold consumption.
+    pub fn initial_frontier(&self) -> Vec<u32> {
+        if self.perm.is_empty() {
+            Vec::new()
+        } else {
+            vec![Self::normal_state(0, 7)]
+        }
+    }
+    pub fn advance_frontier(
+        &self,
+        frontier: &[u32],
+        piece: Piece,
+        use_hold: bool,
+        scratch: &mut QueueTrieScratch,
+    ) -> Vec<u32> {
+        let generation = scratch.next_generation();
+        let mut next = Vec::new();
+        for &state in frontier {
+            for child in self.advance(state, piece as u8, use_hold) {
+                Self::push_state(&mut next, &mut scratch.state_seen, generation, child);
+            }
+        }
+        next.sort_unstable();
+        next
+    }
+    pub fn coverage_for_frontier(&self, frontier: &[u32]) -> Vec<u64> {
+        let count = self.nodes.len();
+        let mut covered = vec![0; self.words];
+        for &state in frontier {
+            let pos = (state >> 3) as usize;
+            let node = &self.nodes[pos % count];
+            let hi = if pos < count {
+                node.dfs_hi
+            } else {
+                node.dfs_lo + node.terminal_len
+            };
+            Self::set_bit_range(&mut covered, node.dfs_lo as usize, hi as usize);
+        }
+        covered
+    }
+
     fn project_order(
         &self,
         order_bits: u64,

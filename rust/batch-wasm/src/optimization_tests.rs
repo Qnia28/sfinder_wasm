@@ -85,3 +85,36 @@ fn congruent_pruning_matches_complete_variant_enumeration() {
         }
     }
 }
+
+#[test]
+fn incremental_frontier_matches_full_projection_and_original_case_ids() {
+    let queues = [(0u64, 1u8), (3, 1), (3, 1), (3 << 3, 2), (5 | (3 << 3), 2)];
+    for hold in [false, true] {
+        let mut cache = QueuePrefixCache::new(&queues, hold);
+        for len in 0..=3 {
+            for order in words(len) {
+                let mut frontier = 0;
+                for i in 0..len {
+                    if frontier == u32::MAX {
+                        break;
+                    }
+                    frontier = cache
+                        .advance(
+                            frontier,
+                            Piece::from_u8(order_piece(order, i as usize)).unwrap(),
+                            200_000,
+                        )
+                        .unwrap();
+                }
+                let bits = if frontier == u32::MAX {
+                    vec![0; cache.trie.words]
+                } else {
+                    cache
+                        .trie
+                        .coverage_for_frontier(&cache.frontiers[frontier as usize])
+                };
+                assert_eq!(bits.as_slice(), cache.viable(order, len).as_ref());
+            }
+        }
+    }
+}

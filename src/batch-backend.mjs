@@ -48,7 +48,7 @@ export class BatchReachability{
  coverTarget({base=0n,operations,cases,mode='normal',useHold=true,coverageOnly=false}){return this.#run({base,operations,queues:cases,mode,useHold,coverageOnly})}
  congruent(args){return this.withSession(()=>this.#congruent(args))}
  #congruent({base=0n,fill=0n,queues=[],useHold=true,maxSolutions=20000}){
-  if(this.height>4)return null;
+  if(this.height>(this.e.batch_congruent_max_height?.()??4))return null;
   if(!this.e.batch_congruent_run)return null;
   this.e.batch_engine_reset();
   for(const queue of queues){if(queue.length>21)return null;if(this.e.batch_engine_add_queue(packQueue(queue),queue.length)!==1)throw new Error('batch engine rejected queue')}

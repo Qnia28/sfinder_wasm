@@ -1,5 +1,5 @@
 export const BATCH_ROUTING = Object.freeze({
-  congruentRustMaxPieces: 10,
+  congruentRustMaxPieces: 15,
 });
 
 export function shouldUseRustCongruent({ pieceCount, reachability }) {

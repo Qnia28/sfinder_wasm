@@ -53,6 +53,7 @@ struct StructuralEdge {
 }
 
 struct StructuralNode {
+    frontier: u32,
     terminal: bool,
     mode_state: u8,
     edge_start: usize,
@@ -384,6 +385,9 @@ fn run_variant_engine(
 }
 
 struct DagBuilder<'a> {
+    compressed: bool,
+    frontier_budget: usize,
+    exhausted: bool,
     queue_filter: Option<QueuePrefixCache>,
     operations: &'a [BatchOperation],
     maps: &'a [[u64; 64]],
@@ -404,6 +408,11 @@ impl DagBuilder<'_> {
         let id = self.nodes.len();
         self.index.insert(key, id);
         self.nodes.push(StructuralNode {
+            frontier: if self.compressed {
+                key.prefix as u32
+            } else {
+                0
+            },
             terminal: key.remaining == 0,
             mode_state: key.mode_state,
             edge_start: 0,
@@ -422,15 +431,24 @@ impl DagBuilder<'_> {
             let op = self.operations[op_id];
             let depth = self.operations.len() - key.remaining.count_ones() as usize;
             let next_prefix = if let Some(filter) = &mut self.queue_filter {
-                let prefix = key.prefix | ((op.piece as u64) << (depth * 3));
-                if filter
-                    .viable(prefix, depth as u8 + 1)
-                    .iter()
-                    .all(|&word| word == 0)
-                {
-                    continue;
+                if self.compressed {
+                    let Some(frontier) =
+                        filter.advance(key.prefix as u32, op.piece, self.frontier_budget)
+                    else {
+                        self.exhausted = true;
+                        return id;
+                    };
+                    if frontier == u32::MAX {
+                        continue;
+                    }
+                    frontier as u64
+                } else {
+                    let prefix = key.prefix | ((op.piece as u64) << (depth * 3));
+                    if !filter.any(prefix, depth as u8 + 1) {
+                        continue;
+                    }
+                    prefix
                 }
-                prefix
             } else {
                 0
             };
@@ -475,6 +493,9 @@ impl DagBuilder<'_> {
                 cleared_rows: next_cleared,
                 mode_state: next_mode_state,
             });
+            if self.exhausted {
+                return id;
+            }
             if !self.nodes[next].terminal && self.nodes[next].edge_len == 0 {
                 continue;
             }
@@ -495,6 +516,10 @@ impl DagBuilder<'_> {
 }
 
 struct QueuePrefixCache {
+    frontiers: Vec<Rc<[u32]>>,
+    frontier_index: pc_core::FastMap<Rc<[u32]>, u32>,
+    frontier_steps: pc_core::FastMap<(u32, u8), u32>,
+    frontier_bytes: usize,
     cache_bytes: usize,
     existence: pc_core::FastMap<u64, bool>,
     trie: QueueTrie,
@@ -508,7 +533,14 @@ impl QueuePrefixCache {
         let lens: Vec<_> = queues.iter().map(|q| q.1).collect();
         let trie = QueueTrie::new(&bits, &lens).expect("validated batch queues");
         let scratch = QueueTrieScratch::new(trie.node_count());
+        let initial: Rc<[u32]> = trie.initial_frontier().into();
+        let mut frontier_index = pc_core::FastMap::default();
+        frontier_index.insert(Rc::clone(&initial), 0);
         Self {
+            frontiers: vec![initial],
+            frontier_index,
+            frontier_steps: pc_core::FastMap::default(),
+            frontier_bytes: 80,
             cache_bytes: 0,
             existence: pc_core::FastMap::default(),
             trie,
@@ -516,6 +548,43 @@ impl QueuePrefixCache {
             use_hold,
             cache: pc_core::FastMap::default(),
         }
+    }
+    fn advance(&mut self, frontier: u32, piece: Piece, budget: usize) -> Option<u32> {
+        if budget == 0 {
+            return None;
+        }
+        let key = (frontier, piece as u8);
+        if let Some(&hit) = self.frontier_steps.get(&key) {
+            return Some(hit);
+        }
+        let next: Rc<[u32]> = self
+            .trie
+            .advance_frontier(
+                &self.frontiers[frontier as usize],
+                piece,
+                self.use_hold,
+                &mut self.scratch,
+            )
+            .into();
+        let id = if next.is_empty() {
+            u32::MAX
+        } else if let Some(&id) = self.frontier_index.get(&next) {
+            id
+        } else {
+            let bytes = next.len() * 4 + 80;
+            if self.frontiers.len() >= budget || self.frontier_bytes + bytes > 16 * 1024 * 1024 {
+                return None;
+            }
+            let id = self.frontiers.len() as u32;
+            self.frontier_index.insert(Rc::clone(&next), id);
+            self.frontiers.push(next);
+            self.frontier_bytes += bytes;
+            id
+        };
+        if self.frontier_steps.len() < 200_000 {
+            self.frontier_steps.insert(key, id);
+        }
+        Some(id)
     }
     fn any(&mut self, order: u64, len: u8) -> bool {
         let key = order | ((len as u64) << 48);
@@ -568,6 +637,8 @@ struct BatchWorkspace {
     prepared_queues: Vec<(u64, u8)>,
     prepared: Option<QueuePrefixCache>,
     bulk: Vec<u32>,
+    frontier_budget: Option<usize>,
+    frontier_fallback: bool,
 }
 
 thread_local! {
@@ -742,6 +813,7 @@ struct PathState {
 }
 
 struct PathCollector<'a> {
+    compressed: bool,
     product_seen: FastSet<(usize, u8, u8)>,
     coverage_only: bool,
     operations: &'a [BatchOperation],
@@ -766,7 +838,14 @@ impl PathCollector<'_> {
                 return;
             }
             if st.queue_live && !self.covered_bits.is_empty() {
-                let bits = self.queue_cache.viable(st.order, st.depth);
+                let bits: Rc<[u64]> = if self.compressed {
+                    self.queue_cache
+                        .trie
+                        .coverage_for_frontier(&self.queue_cache.frontiers[node.frontier as usize])
+                        .into()
+                } else {
+                    self.queue_cache.viable(st.order, st.depth)
+                };
                 for (dst, src) in self.covered_bits.iter_mut().zip(bits.iter()) {
                     *dst |= src;
                 }
@@ -1007,7 +1086,7 @@ struct CongruentSearch {
     queue_cache: QueuePrefixCache,
     multiset_roots: Vec<u32>,
     max_counts: [u8; 7],
-    by_cell: [Vec<BatchOperation>; 40],
+    by_cell: [Vec<BatchOperation>; 60],
     seen: FastSet<[u64; 7]>,
     out: Vec<CongruentSolution>,
     limit: usize,
@@ -1111,11 +1190,11 @@ fn run_congruent(
     use_hold: bool,
     max_solutions: usize,
 ) -> bool {
-    if !(2..=4).contains(&height) || max_solutions == 0 || !fill.count_ones().is_multiple_of(4) {
+    if !(2..=6).contains(&height) || max_solutions == 0 || !fill.count_ones().is_multiple_of(4) {
         return false;
     }
     let max_counts = max_piece_counts(&ws.queues);
-    let mut by_cell: [Vec<BatchOperation>; 40] = std::array::from_fn(|_| Vec::new());
+    let mut by_cell: [Vec<BatchOperation>; 60] = std::array::from_fn(|_| Vec::new());
     for piece in Piece::ALL {
         for op in geometric_placements(piece, height, fill) {
             for (idx, bucket) in by_cell.iter_mut().enumerate().take(height as usize * 10) {
@@ -1162,6 +1241,30 @@ fn run_engine(
     mode: u8,
     use_hold: bool,
 ) -> bool {
+    ws.frontier_fallback = false;
+    run_engine_projection(
+        coverage_only,
+        coverage_only,
+        ws,
+        base,
+        height,
+        physics,
+        mode,
+        use_hold,
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+fn run_engine_projection(
+    coverage_only: bool,
+    compressed: bool,
+    ws: &mut BatchWorkspace,
+    base: u64,
+    height: u8,
+    physics: Physics,
+    mode: u8,
+    use_hold: bool,
+) -> bool {
     if !(2..=6).contains(&height) || ws.operations.len() > MAX_OPERATIONS || mode > 15 {
         return false;
     }
@@ -1184,6 +1287,9 @@ fn run_engine(
     let mut queue_cache =
         Some(cached.unwrap_or_else(|| QueuePrefixCache::new(&ws.queues, use_hold)));
     let mut builder = DagBuilder {
+        compressed,
+        frontier_budget: ws.frontier_budget.unwrap_or(200_000),
+        exhausted: false,
         queue_filter: if coverage_only {
             queue_cache.take()
         } else {
@@ -1206,8 +1312,24 @@ fn run_engine(
         cleared_rows,
         mode_state: 0,
     });
+    if builder.exhausted {
+        drop(builder);
+        // Discard the incomplete graph and retry the exact prefix engine.
+        ws.frontier_fallback = true;
+        return run_engine_projection(
+            coverage_only,
+            false,
+            ws,
+            base,
+            height,
+            physics,
+            mode,
+            use_hold,
+        );
+    }
     let covered_words = ws.queues.len().div_ceil(64);
     let mut collector = PathCollector {
+        compressed,
         product_seen: FastSet::default(),
         coverage_only,
         operations: &ws.operations,
@@ -1221,7 +1343,7 @@ fn run_engine(
             .take()
             .unwrap_or_else(|| queue_cache.take().expect("queue projector")),
         covered_bits: vec![0u64; covered_words],
-        prefix_prune: ws.queues.len() <= 512,
+        prefix_prune: !coverage_only && ws.queues.len() <= 512,
     };
     collector.recurse(
         root,
@@ -1539,4 +1661,18 @@ pub extern "C" fn batch_engine_variants_ptr() -> *const u32 {
 #[unsafe(no_mangle)]
 pub extern "C" fn batch_engine_covered_ptr() -> *const u8 {
     WORKSPACE.with(|cell| cell.borrow().covered.as_ptr())
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn batch_engine_set_frontier_budget(nodes: u32) {
+    WORKSPACE.with(|cell| cell.borrow_mut().frontier_budget = Some((nodes as usize).min(200_000)));
+}
+#[unsafe(no_mangle)]
+pub extern "C" fn batch_engine_frontier_fallback() -> u32 {
+    WORKSPACE.with(|cell| cell.borrow().frontier_fallback as u32)
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn batch_congruent_max_height() -> u32 {
+    6
 }

@@ -11,6 +11,7 @@ export const benchmarkCases = [
   {name:'congruent-box3', module:'batch-congruent-feature', fn:'calculateCongruent', input:{sourceFumen:box,pattern:'*p3'}},
   {name:'congruent-box4', module:'batch-congruent-feature', fn:'calculateCongruent', input:{sourceFumen:fumen(['TTTT......','TTTT......','TTTT......','TTTT......']),pattern:'*p4'}},
   {name:'congruent-repeated', module:'batch-congruent-feature', fn:'calculateCongruent', input:{sourceFumen:fumen(['TTTT......','TTTT......','TTTT......','TTTT......']),pattern:'OOOO;IIII;TTTT;JJJJ;LLLL;SSSS;ZZZZ'}},
+  {name:'congruent-tall6', module:'batch-congruent-feature', fn:'calculateCongruent', input:{sourceFumen:fumen(Array(6).fill('OOOO......')),pattern:'OOOOOOO',clear:6}},
   {name:'congruent-cover', module:'batch-congruent-feature', fn:'calculateCongruentCover', input:{sourceFumen:box,pattern:'*p3',mirror:'yes'}},
   {name:'cover-percent', module:'batch-cover-percent-feature', fn:'calculateCoverPercent', input:{sourceFumen:oSix,coverPattern:'OOOOOO;IIIIII',percentPattern:'*p4'}},
 ];
