@@ -3,12 +3,10 @@ rust/target/
 rust/generated/
 
 # Local verification and release artifacts
-/tests/
 /review/
 /RELEASE*
 /CHANGELOG.md
 /docs/OPTIMIZATION_VALIDATION*
-/scripts/benchmark*
 /scripts/verify*
 /scripts/run-tests.mjs
 /scripts/test-rust.sh
@@ -16,3 +14,5 @@ rust/generated/
 /third_party/ORTools/LICENSE_AUDIT.json
 *.log
 *.tmp
+
+/benchmark-results/

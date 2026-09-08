@@ -1,0 +1,58 @@
+name: Batch correctness and paired performance
+on:
+  push:
+    branches: [perf/cover-congruent-batches]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: batch-performance-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  compare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: candidate
+      - uses: actions/checkout@v4
+        with:
+          ref: 03b637730c5b541f4f2934be613498fbe65327fd
+          path: baseline
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - name: Install pinned Rust
+        run: |
+          rustup toolchain install 1.90.0 --profile minimal --component rustfmt,clippy --target wasm32-unknown-unknown
+          rustup default 1.90.0
+      - name: Install dependencies and rebuild both revisions
+        run: |
+          npm ci --prefix baseline
+          npm ci --prefix candidate
+          bash baseline/scripts/build-wasm.sh
+          bash candidate/scripts/build-wasm.sh
+      - name: Rust format, lint, and tests
+        working-directory: candidate/rust
+        run: |
+          cargo fmt --all -- --check
+          cargo clippy --workspace --all-targets --target wasm32-unknown-unknown --offline -- -D warnings
+          cargo test --workspace --offline
+      - name: Real WASM regression and baseline parity
+        working-directory: candidate
+        env:
+          BASELINE_ROOT: ../baseline
+        run: node --test tests/*.test.mjs
+      - name: Paired benchmark
+        working-directory: candidate
+        run: node scripts/benchmark-batch.mjs --baseline ../baseline --candidate . --pairs 7 --iterations 10
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: batch-performance-${{ github.sha }}
+          path: |
+            candidate/benchmark-results/
+            candidate/wasm/batch_wasm.wasm
+            candidate/wasm/pc_wasm.wasm
+          if-no-files-found: error

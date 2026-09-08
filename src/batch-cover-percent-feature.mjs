@@ -26,6 +26,7 @@ export async function calculateCoverPercent({
     mode,
     mirror,
     useHold,
+    outputMode: "coverage",
   });
   const percentQueues = expandPattern(percentInput);
   const solver = await pcSolver(clear);

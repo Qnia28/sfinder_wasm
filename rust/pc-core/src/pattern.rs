@@ -48,7 +48,7 @@ impl PcSolver {
     // These count roots are therefore a small exact superset of all piece
     // multisets that can participate in a PC. Queue-order validation below
     // removes roots/orders that cannot actually be produced by a concrete case.
-    fn pattern_multiset_roots(
+    pub fn pattern_multiset_roots(
         qbits: &[u64],
         qlens: &[u8],
         req: u8,

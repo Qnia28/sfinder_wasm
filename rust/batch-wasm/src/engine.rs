@@ -10,6 +10,10 @@ use crate::common::{locked_next_board, physics};
 const MAX_OPERATIONS: usize = 15;
 const MAX_QUEUE_LEN: usize = 21;
 
+#[cfg(test)]
+#[path = "optimization_tests.rs"]
+mod optimization_tests;
+
 #[derive(Clone, Copy)]
 struct BatchOperation {
     piece: Piece,
@@ -487,6 +491,7 @@ impl DagBuilder<'_> {
 
 struct QueuePrefixCache {
     cache_bytes: usize,
+    existence: pc_core::FastMap<u64, bool>,
     trie: QueueTrie,
     scratch: QueueTrieScratch,
     use_hold: bool,
@@ -500,11 +505,30 @@ impl QueuePrefixCache {
         let scratch = QueueTrieScratch::new(trie.node_count());
         Self {
             cache_bytes: 0,
+            existence: pc_core::FastMap::default(),
             trie,
             scratch,
             use_hold,
             cache: pc_core::FastMap::default(),
         }
+    }
+    fn any(&mut self, order: u64, len: u8) -> bool {
+        let key = order | ((len as u64) << 48);
+        if let Some(&result) = self.existence.get(&key) {
+            return result;
+        }
+        let mut encoded = 0u64;
+        for i in 0..len {
+            encoded |= (((order >> (i as u32 * 3)) & 7) + 1) << (i as u32 * 3);
+        }
+        let result = self
+            .trie
+            .accepts_order(encoded, len, self.use_hold, &mut self.scratch);
+        // Retention only: exceeding the budget keeps exact uncached evaluation.
+        if self.existence.len() < 200_000 {
+            self.existence.insert(key, result);
+        }
+        result
     }
     fn viable(&mut self, order: u64, len: u8) -> Rc<[u64]> {
         let key = order | ((len as u64) << 48);
@@ -627,12 +651,14 @@ fn piece_at(packed: u64, index: usize) -> u8 {
 }
 
 #[inline]
+#[cfg(test)]
 fn order_piece(order: u64, index: usize) -> u8 {
     ((order >> (index * 3)) & 7) as u8
 }
 
 // Mirrors src/batch-orders.mjs canQueueBuildOrder, using a compact bitset for
 // (queue-index, hold-piece) states. hold=7 means empty.
+#[cfg(test)]
 fn queue_buildable(queue: u64, queue_len: u8, order: u64, order_len: u8, use_hold: bool) -> bool {
     let n = queue_len as usize;
     if n > MAX_QUEUE_LEN {
@@ -851,12 +877,11 @@ fn geometric_placements(piece: Piece, height: u8, fill: u64) -> Vec<BatchOperati
 fn valid_orders_for_tiling(
     base: u64,
     operations: &[BatchOperation],
-    queues: &[(u64, u8)],
+    queue_cache: &mut QueuePrefixCache,
     height: u8,
     physics: Physics,
-    use_hold: bool,
 ) -> Vec<u64> {
-    if operations.len() > MAX_OPERATIONS || queues.is_empty() {
+    if operations.len() > MAX_OPERATIONS || queue_cache.trie.perm.is_empty() {
         return Vec::new();
     }
     let (board, cleared_rows) = normalize_base(base, height);
@@ -879,8 +904,7 @@ fn valid_orders_for_tiling(
         operations: &[BatchOperation],
         maps: &[[u64; 64]],
         infos: &[ClearInfo; 64],
-        queues: &[(u64, u8)],
-        use_hold: bool,
+        queue_cache: &mut QueuePrefixCache,
         height: u8,
         physics: Physics,
         board: u64,
@@ -892,10 +916,7 @@ fn valid_orders_for_tiling(
         valid: &mut FastSet<u64>,
     ) {
         if remaining == 0 {
-            if queues
-                .iter()
-                .any(|&(queue, len)| queue_buildable(queue, len, order, depth, use_hold))
-            {
+            if queue_cache.any(order, depth) {
                 valid.insert(order);
             }
             return;
@@ -915,6 +936,10 @@ fn valid_orders_for_tiling(
             let id = choices.trailing_zeros() as usize;
             choices &= choices - 1;
             let op = operations[id];
+            let next_order = order | ((op.piece as u64) << (depth as u32 * 3));
+            if !queue_cache.any(next_order, depth + 1) {
+                continue;
+            }
             let cells = maps[id][cleared_rows as usize];
             if cells == 0 {
                 continue;
@@ -924,13 +949,11 @@ fn valid_orders_for_tiling(
                 continue;
             };
             let next_cleared = advance_cleared_fast(board, cells, cleared_rows, height, infos);
-            let next_order = order | ((op.piece as u64) << (depth as u32 * 3));
             walk(
                 operations,
                 maps,
                 infos,
-                queues,
-                use_hold,
+                queue_cache,
                 height,
                 physics,
                 next_board,
@@ -948,8 +971,7 @@ fn valid_orders_for_tiling(
         operations,
         &maps,
         &infos,
-        queues,
-        use_hold,
+        queue_cache,
         height,
         physics,
         board,
@@ -969,12 +991,12 @@ fn valid_orders_for_tiling(
     orders
 }
 
-struct CongruentSearch<'a> {
+struct CongruentSearch {
     base: u64,
     height: u8,
     physics: Physics,
-    queues: &'a [(u64, u8)],
-    use_hold: bool,
+    queue_cache: QueuePrefixCache,
+    multiset_roots: Vec<u32>,
     max_counts: [u8; 7],
     by_cell: [Vec<BatchOperation>; 40],
     seen: FastSet<[u64; 7]>,
@@ -983,10 +1005,18 @@ struct CongruentSearch<'a> {
     limit_hit: bool,
 }
 
-impl CongruentSearch<'_> {
+impl CongruentSearch {
     fn recurse(&mut self, rem: u64, operations: &mut Vec<BatchOperation>, counts: &mut [u8; 7]) {
         if self.out.len() >= self.limit {
             self.limit_hit = true;
+            return;
+        }
+        if !self.multiset_roots.iter().any(|&root| {
+            counts
+                .iter()
+                .enumerate()
+                .all(|(piece, &used)| used as u32 <= (root >> (piece * 4)) & 15)
+        }) {
             return;
         }
         if rem == 0 {
@@ -1000,10 +1030,9 @@ impl CongruentSearch<'_> {
             let orders = valid_orders_for_tiling(
                 self.base,
                 operations,
-                self.queues,
+                &mut self.queue_cache,
                 self.height,
                 self.physics,
-                self.use_hold,
             );
             if !orders.is_empty() {
                 self.out.push(CongruentSolution {
@@ -1064,7 +1093,7 @@ fn run_congruent(
     use_hold: bool,
     max_solutions: usize,
 ) -> bool {
-    if !(2..=4).contains(&height) || max_solutions == 0 {
+    if !(2..=4).contains(&height) || max_solutions == 0 || !fill.count_ones().is_multiple_of(4) {
         return false;
     }
     let max_counts = max_piece_counts(&ws.queues);
@@ -1082,8 +1111,15 @@ fn run_congruent(
         base,
         height,
         physics,
-        queues: &ws.queues,
-        use_hold,
+        queue_cache: QueuePrefixCache::new(&ws.queues, use_hold),
+        multiset_roots: pc_core::PcSolver::pattern_multiset_roots(
+            &ws.queues.iter().map(|q| q.0).collect::<Vec<_>>(),
+            &ws.queues.iter().map(|q| q.1).collect::<Vec<_>>(),
+            (fill.count_ones() / 4) as u8,
+            use_hold,
+        )
+        .into_iter()
+        .collect(),
         max_counts,
         by_cell,
         seen: FastSet::default(),

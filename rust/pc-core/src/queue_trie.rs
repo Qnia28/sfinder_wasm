@@ -284,14 +284,24 @@ impl QueueTrie {
         Some(covered)
     }
 
-    pub fn coverage_for_order(
+    /// Existence projection without allocating a bitmap over all queue cases.
+    pub fn accepts_order(
         &self,
         order_bits: u64,
         depth: u8,
         use_hold: bool,
         scratch: &mut QueueTrieScratch,
-    ) -> Vec<u64> {
-        let node_count = self.nodes.len() as u32;
+    ) -> bool {
+        self.project_order(order_bits, depth, use_hold, scratch)
+    }
+
+    fn project_order(
+        &self,
+        order_bits: u64,
+        depth: u8,
+        use_hold: bool,
+        scratch: &mut QueueTrieScratch,
+    ) -> bool {
         scratch.cur.clear();
         scratch.next.clear();
         scratch.cur.push(Self::normal_state(0, 7));
@@ -299,7 +309,7 @@ impl QueueTrie {
         for step in 0..depth {
             let code = ((order_bits >> (step as u32 * 3)) & 7) as u8;
             if code == 0 {
-                return vec![0u64; self.words];
+                return false;
             }
             let wanted = code - 1;
             let generation = scratch.next_generation();
@@ -310,10 +320,24 @@ impl QueueTrie {
                 }
             }
             if scratch.next.is_empty() {
-                return vec![0u64; self.words];
+                return false;
             }
             std::mem::swap(&mut scratch.cur, &mut scratch.next);
         }
+        !self.perm.is_empty()
+    }
+
+    pub fn coverage_for_order(
+        &self,
+        order_bits: u64,
+        depth: u8,
+        use_hold: bool,
+        scratch: &mut QueueTrieScratch,
+    ) -> Vec<u64> {
+        if !self.project_order(order_bits, depth, use_hold, scratch) {
+            return vec![0u64; self.words];
+        }
+        let node_count = self.nodes.len() as u32;
 
         // Accumulate coverage as a bitmap over DFS positions. Each set bit at
         // position i means perm[i] (an original case ID) is covered. Consumers
