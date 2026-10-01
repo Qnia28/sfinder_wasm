@@ -11,8 +11,17 @@ export const CELLS={
 };
 export function bit(x,y){return 1n<<BigInt(y*10+x)}
 export function mirrorMask(mask,height=4){let out=0n;for(let y=0;y<height;y++)for(let x=0;x<10;x++)if(mask&bit(x,y))out|=bit(9-x,y);return out}
-export function allGeometricPlacements(piece,height=4){const set=new Set(),out=[];for(const cells of CELLS[piece]){const w=Math.max(...cells.map(c=>c[0]))+1,h=Math.max(...cells.map(c=>c[1]))+1;for(let y=0;y<=height-h;y++)for(let x=0;x<=10-w;x++){let m=0n;for(const[dx,dy]of cells)m|=bit(x+dx,y+dy);const k=m.toString(16);if(!set.has(k)){set.add(k);out.push(m)}}}return out}
-export function fieldMasks(page,height=4){let base=0n,fill=0n;const colors=Object.fromEntries(PIECES.map(p=>[p,0n]));for(let y=0;y<height;y++)for(let x=0;x<10;x++){const c=page.field.at(x,y);if(c==='X')base|=bit(x,y);else if(colors[c]!==undefined){colors[c]|=bit(x,y);fill|=bit(x,y)}}return{base,fill,colors}}
+function computeGeometricPlacements(piece,height=4){const set=new Set(),out=[];for(const cells of CELLS[piece]){const w=Math.max(...cells.map(c=>c[0]))+1,h=Math.max(...cells.map(c=>c[1]))+1;for(let y=0;y<=height-h;y++)for(let x=0;x<=10-w;x++){let m=0n;for(const[dx,dy]of cells)m|=bit(x+dx,y+dy);const k=m.toString(16);if(!set.has(k)){set.add(k);out.push(m)}}}return out}
+// Keep cached arrays private and honor edits to the exported CELLS table.
+const geometricCache=new Map();
+export function allGeometricPlacements(piece,height=4){
+ if(!Number.isInteger(height)||height<2||height>6||!['I','J','L','O','S','T','Z'].includes(piece))return computeGeometricPlacements(piece,height);
+ const key=piece+':'+height,signature=JSON.stringify(CELLS[piece]);
+ let entry=geometricCache.get(key);
+ if(!entry||entry.signature!==signature){entry={signature,masks:computeGeometricPlacements(piece,height)};geometricCache.set(key,entry)}
+ return entry.masks.slice();
+}
+export function fieldMasks(page,height=4){const field=page.field;let base=0n,fill=0n;const colors=Object.fromEntries(PIECES.map(p=>[p,0n]));for(let y=0;y<height;y++)for(let x=0;x<10;x++){const c=field.at(x,y);if(c==='X')base|=bit(x,y);else if(colors[c]!==undefined){colors[c]|=bit(x,y);fill|=bit(x,y)}}return{base,fill,colors}}
 
 const OP_CELLS={
  I:{spawn:[[0,0],[-1,0],[1,0],[2,0]],right:[[0,0],[0,1],[0,-1],[0,-2]],reverse:[[0,0],[1,0],[-1,0],[-2,0]],left:[[0,0],[0,-1],[0,1],[0,2]]},

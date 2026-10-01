@@ -58,6 +58,7 @@ pub(crate) fn locked_next_board(
     height: u8,
     physics: Physics,
 ) -> Option<u64> {
+    crate::diagnostics::add(4, 1);
     EXACT_CACHE.with(|cell| {
         let mut cache = cell.borrow_mut();
         if cache.depth == 0 {
@@ -65,6 +66,7 @@ pub(crate) fn locked_next_board(
         }
         let key = (board, target, height, physics as u8, piece as u8);
         if let Some(&hit) = cache.locks.get(&key) {
+            crate::diagnostics::add(5, 1);
             return hit;
         }
         let result = locked_next_board_uncached(board, piece, target, height, physics);
@@ -75,6 +77,7 @@ pub(crate) fn locked_next_board(
     })
 }
 pub(crate) fn cached_tspin_kind(board: u64, target: u64, height: u8, physics: Physics) -> u8 {
+    crate::diagnostics::add(6, 1);
     EXACT_CACHE.with(|cell| {
         let mut cache = cell.borrow_mut();
         if cache.depth == 0 {
@@ -82,6 +85,7 @@ pub(crate) fn cached_tspin_kind(board: u64, target: u64, height: u8, physics: Ph
         }
         let key = (board, target, height, physics as u8);
         if let Some(&hit) = cache.spins.get(&key) {
+            crate::diagnostics::add(7, 1);
             return hit;
         }
         let result = pc_core::tspin_kind_exact(board, target, height, physics);

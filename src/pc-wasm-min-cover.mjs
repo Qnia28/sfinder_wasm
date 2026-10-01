@@ -171,19 +171,33 @@ export const minCoverMethods = {
     stateBudget = null,
     integrated = false,
     dominance = false,
+    partitioned = false,
+    proofProgress = false,
   } = {}) {
     assertQualityProvider(qualityFor);
     if (qualityFor === null) throw new Error("minimumCoverAtCount requires a positive human-quality provider");
     const bounded = stateBudget != null;
+    if (typeof proofProgress !== 'boolean' || (proofProgress && (integrated || !bounded || lockedPrefix.length))) {
+      throw new Error('proof progress requires a bounded threshold call without imported locks');
+    }
+    if (proofProgress && (!this.e.solver_min_cover_at_count_progress_bounded ||
+        !this.e.solver_min_cover_proven_prefix_len || !this.e.solver_min_cover_proven_prefix)) {
+      throw new Error('threshold proof progress export is unavailable in this WASM');
+    }
     if (integrated && lockedPrefix.length) throw new Error("integrated fixed-K search does not accept lockedPrefix");
     if (bounded && lockedPrefix.length) throw new Error("bounded fixed-K probe does not accept lockedPrefix");
     if (dominance && !integrated) throw new Error("candidate dominance preview requires integrated fixed-K search");
+    if (typeof partitioned !== 'boolean') throw new Error('partitioned must be a boolean');
+    if (partitioned && (!integrated || dominance)) throw new Error('partitioned search requires integrated without dominance');
+    if (partitioned && !this.e.solver_min_cover_at_count_integrated_partitioned_bounded) {
+      throw new Error('partitioned integrated export is unavailable in this WASM');
+    }
     const exactExport = this.e.solver_min_cover_at_count_locked;
     const boundedExport = integrated
-      ? (dominance
+      ? (partitioned ? this.e.solver_min_cover_at_count_integrated_partitioned_bounded : dominance
         ? this.e.solver_min_cover_at_count_integrated_dominance_bounded
         : this.e.solver_min_cover_at_count_integrated_bounded)
-      : this.e.solver_min_cover_at_count_bounded;
+      : (proofProgress ? this.e.solver_min_cover_at_count_progress_bounded : this.e.solver_min_cover_at_count_bounded);
     if ((integrated || bounded ? !boundedExport : !exactExport) || !this.e.wasm_alloc_u32 || !this.e.wasm_dealloc_u32) return null;
 
     const { rawCases, keys, keyIndex } = coverageUniverse(coverage);
@@ -260,12 +274,16 @@ export const minCoverMethods = {
         }
         const completed = statusU32 !== 0xfffffffe;
         const selectedCount = completed ? statusU32 : Number(exactCount);
+        const provenPrefix = proofProgress ? Array.from({
+          length: wasmU32(this.e.solver_min_cover_proven_prefix_len(this.ptr)),
+        }, (_, index) => wasmU32(this.e.solver_min_cover_proven_prefix(this.ptr, index))) : undefined;
         return {
           count: completed ? statusU32 : Number(exactCount),
           keys: readSelectedKeys(this, selectedCount, keys, "invalid WASM fixed-count minimum-cover result"),
           qualityVector: readQualityVector(this),
           searchedStates: searchedStates(this),
           completed,
+          ...(proofProgress ? { provenPrefix } : {}),
         };
       },
     );

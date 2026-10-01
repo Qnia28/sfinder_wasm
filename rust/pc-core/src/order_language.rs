@@ -5,14 +5,69 @@ use crate::{
     dag::{FlatDag, TERMINAL_NODE},
 };
 
-pub(crate) struct OrderLanguage {
+pub struct OrderLanguage {
     node_budget: usize,
-    pub(crate) children: Vec<[u32; 7]>,
+    pub children: Vec<[u32; 7]>,
     intern: FastMap<[u32; 7], u32>,
     unions: FastMap<(u32, u32), u32>,
 }
 impl OrderLanguage {
-    fn node(&mut self, children: [u32; 7]) -> Option<u32> {
+    pub fn new(node_budget: usize) -> Self {
+        Self {
+            node_budget,
+            children: vec![[0; 7]; 2],
+            intern: FastMap::default(),
+            unions: FastMap::default(),
+        }
+    }
+    pub fn prepend(&mut self, piece: usize, suffix: u32) -> Option<u32> {
+        let mut children = [0; 7];
+        children[piece] = suffix;
+        self.node(children)
+    }
+    pub fn counts(&self) -> Vec<u64> {
+        let mut counts = vec![0u64; self.children.len()];
+        counts[1] = 1;
+        // Interned nodes only reference previously created suffix nodes.
+        for id in 2..self.children.len() {
+            counts[id] = self.children[id].iter().fold(0u64, |sum, &child| {
+                sum.saturating_add(counts[child as usize])
+            });
+        }
+        counts
+    }
+    pub fn words(&self, root: u32) -> Vec<u64> {
+        fn visit(
+            language: &OrderLanguage,
+            id: u32,
+            depth: u32,
+            prefix: u64,
+            output: &mut Vec<u64>,
+        ) {
+            if id == 0 {
+                return;
+            }
+            if id == 1 {
+                output.push(prefix);
+                return;
+            }
+            for piece in 0..7 {
+                visit(
+                    language,
+                    language.children[id as usize][piece],
+                    depth + 1,
+                    prefix | ((piece as u64) << (depth * 3)),
+                    output,
+                );
+            }
+        }
+        let mut words = Vec::new();
+        visit(self, root, 0, 0, &mut words);
+        words.sort_unstable();
+        words
+    }
+
+    pub fn node(&mut self, children: [u32; 7]) -> Option<u32> {
         if children == [0; 7] {
             return Some(0);
         }
@@ -27,7 +82,7 @@ impl OrderLanguage {
         self.intern.insert(children, id);
         Some(id)
     }
-    fn union(&mut self, a: u32, b: u32) -> Option<u32> {
+    pub fn union(&mut self, a: u32, b: u32) -> Option<u32> {
         if a == b || b == 0 {
             return Some(a);
         }
@@ -112,5 +167,23 @@ impl OrderLanguage {
         language.intern = FastMap::default();
         language.unions = FastMap::default();
         Some((language, root))
+    }
+
+    // Keep each root's label while sharing suffix construction across roots.
+    // Saves needs the used-piece multiset; unioning roots loses that information.
+    pub(crate) fn build_separate(
+        dag: &FlatDag,
+        roots: &[u32],
+        node_budget: usize,
+    ) -> Option<(Self, Vec<u32>)> {
+        let mut language = Self::new(node_budget);
+        let mut memo = vec![u32::MAX; dag.nodes.len()];
+        let mut output = Vec::with_capacity(roots.len());
+        for &root in roots {
+            output.push(language.suffix(dag, root, &mut memo)?);
+        }
+        language.intern = FastMap::default();
+        language.unions = FastMap::default();
+        Some((language, output))
     }
 }

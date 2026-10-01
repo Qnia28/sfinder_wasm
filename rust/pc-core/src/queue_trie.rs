@@ -198,7 +198,12 @@ impl QueueTrie {
         ((node_count + node) << 3) | hold as u32
     }
 
-    fn advance(&self, state: u32, wanted: u8, use_hold: bool) -> impl Iterator<Item = u32> {
+    pub(crate) fn advance(
+        &self,
+        state: u32,
+        wanted: u8,
+        use_hold: bool,
+    ) -> impl Iterator<Item = u32> {
         let mut out = [0u32; 9];
         let mut len = 0;
         let mut push = |value| {
@@ -403,5 +408,24 @@ impl QueueTrie {
             Self::set_bit_range(&mut covered, lo, hi);
         }
         covered
+    }
+
+    pub(crate) fn initial_state(&self) -> u32 {
+        Self::normal_state(0, 7)
+    }
+
+    pub(crate) fn add_state_coverage(&self, state: u32, covered: &mut [u64]) {
+        let pos = (state >> 3) as usize;
+        let (node, ended) = if pos < self.nodes.len() {
+            (&self.nodes[pos], false)
+        } else {
+            (&self.nodes[pos - self.nodes.len()], true)
+        };
+        let hi = if ended {
+            node.dfs_lo + node.terminal_len
+        } else {
+            node.dfs_hi
+        };
+        Self::set_bit_range(covered, node.dfs_lo as usize, hi as usize);
     }
 }

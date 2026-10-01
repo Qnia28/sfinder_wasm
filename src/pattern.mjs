@@ -193,7 +193,18 @@ function optionsForElement(element){
   return options;
 }
 
-export function expandPatternCases(pattern,{maxCases=MAX_PATTERN_CASES}={}){
+// Internal consumers only read bag metadata. Public cases keep independent Sets.
+function readonlyBag(info){
+  if(!info)return null;
+  const pieces=new Set(info.pieces);
+  const reject=()=>{throw new TypeError('internal bag metadata is read-only')};
+  for(const name of ['add','delete','clear'])Object.defineProperty(pieces,name,{value:reject});
+  Object.freeze(pieces);
+  return Object.freeze({pieces,drawCount:info.drawCount});
+}
+export function expandPatternCases(pattern,options){return expandCases(pattern,options,false)}
+export function expandPatternCasesInternal(pattern,options){return expandCases(pattern,options,true)}
+function expandCases(pattern,{maxCases=MAX_PATTERN_CASES}={},shared=false){
   if(!Number.isInteger(maxCases)||maxCases<1)throw new RangeError(`invalid pattern expansion limit ${maxCases}`);
   const parsed=parsePattern(pattern),cases=[];
   let totalCases=0;
@@ -214,14 +225,16 @@ export function expandPatternCases(pattern,{maxCases=MAX_PATTERN_CASES}={}){
       for(const prefix of queues)for(const option of opts)next[write++]=prefix+option;
       queues=next;
     }
+    const lastBag=shared?readonlyBag(branch.lastBag):null;
+    const observedBag=shared?readonlyBag(branch.observedBag):null;
     for(let i=0;i<queues.length;i++){
       cases.push({
         caseId:`${branch.index}:${i}`,
         queue:queues[i],
         branchIndex:branch.index,
         branchPattern:branch.source,
-        lastBag:branch.lastBag?{pieces:new Set(branch.lastBag.pieces),drawCount:branch.lastBag.drawCount}:null,
-        observedBag:branch.observedBag?{pieces:new Set(branch.observedBag.pieces),drawCount:branch.observedBag.drawCount}:null,
+        lastBag:shared?lastBag:branch.lastBag?{pieces:new Set(branch.lastBag.pieces),drawCount:branch.lastBag.drawCount}:null,
+        observedBag:shared?observedBag:branch.observedBag?{pieces:new Set(branch.observedBag.pieces),drawCount:branch.observedBag.drawCount}:null,
       });
     }
   }
@@ -229,7 +242,7 @@ export function expandPatternCases(pattern,{maxCases=MAX_PATTERN_CASES}={}){
 }
 
 export function expandPattern(pattern,options){
-  return expandPatternCases(pattern,options).map(x=>x.queue);
+  return expandPatternCasesInternal(pattern,options).map(x=>x.queue);
 }
 
 export function lastBagInfo(pattern){

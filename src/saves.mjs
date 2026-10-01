@@ -233,7 +233,8 @@ function compileSaveOutcomeAst(source){
 function matchOutcomeAtom(allSaves,node){
   const matched=new Set();
   if(node.kind==='regex'){
-    const re=new RegExp(node.value);
+    // Keep invalid-regex errors at first evaluation, not AST compilation.
+    const re=node.regex??=new RegExp(node.value);
     for(const save of allSaves)if(re.test(save))matched.add(save);
     return matched;
   }
@@ -299,6 +300,45 @@ export function compileSaveOutcomeExpression(expr){
   const{expression}=parseSaveExpressionSpec(expr);
   const ast=compileSaveOutcomeAst(expression);
   return allSaves=>evaluateSaveOutcomeAst(allSaves,ast);
+}
+
+// Internal fixed-dictionary evaluator. Bits identify COMPLETE save strings, not
+// piece kinds: e.g. T and TT occupy different bits. Keep the queue-level AST.
+export function compileSaveOutcomeMaskExpression(expr){
+  const{expression}=parseSaveExpressionSpec(expr);
+  const ast=compileSaveOutcomeAst(expression);
+  return outcomes=>{
+    const values=[...outcomes];
+    if(values.length>31||new Set(values).size!==values.length)throw new RangeError('expected at most 31 distinct save outcomes');
+    const compile=node=>{
+      if(node.kind==='match'||node.kind==='regex'){
+        let matches;
+        return universe=>{
+          if(matches===undefined){
+            // Lazy even for an empty universe: preserve invalid-regex timing.
+            const subset=matchOutcomeAtom(new Set(values),node);
+            matches=0;
+            for(let i=0;i<values.length;i++)if(subset.has(values[i]))matches|=1<<i;
+          }
+          return universe&matches;
+        };
+      }
+      const terms=node.terms.map(term=>({...term,run:compile(term.expression)}));
+      return universe=>{
+        let current=0;
+        for(const term of terms){
+          let matched=term.run(universe);
+          if(term.complement)matched=universe&~matched;
+          if(term.absenceTest)matched=matched?0:universe;
+          if(term.connector==='and')current=current&&matched?current|matched:0;
+          else if(term.connector==='or')current|=matched;
+          else current=matched;
+        }
+        return current;
+      };
+    };
+    return compile(ast);
+  };
 }
 
 export function evaluateSaveOutcomeExpression(allSaves,expr){

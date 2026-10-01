@@ -1,3 +1,4 @@
+import { CongruentLimitError, validateCongruentLimit } from './batch-limits.mjs';
 import { shouldUseRustCongruent } from "./batch-routing-policy.mjs";
 import { PIECES, allGeometricPlacements, aggregateMasks, tilingKey } from "./batch-geometry.mjs";
 import { buildVariants, createQueueOrderProjector } from "./batch-orders.mjs";
@@ -18,13 +19,12 @@ export function maxPieceCounts(queues) {
   return max;
 }
 
-export function enumerateTilings({
+function* iterateTilings({
   fill,
   height = 4,
   maxCounts = Object.fromEntries(PIECES.map((piece) => [piece, 10])),
-  maxSolutions = 20000,
 }) {
-  if (fill === 0n) return [[]];
+  if (fill === 0n) { yield []; return; }
 
   const byCell = new Map();
   for (const piece of PIECES) {
@@ -40,17 +40,15 @@ export function enumerateTilings({
     }
   }
 
-  const output = [];
   const keys = new Set();
   const counts = Object.fromEntries(PIECES.map((piece) => [piece, 0]));
 
-  function visit(remaining, operations) {
-    if (output.length >= maxSolutions) return;
+  function* visit(remaining, operations) {
     if (remaining === 0n) {
       const key = tilingKey(operations);
       if (!keys.has(key)) {
         keys.add(key);
-        output.push([...operations]);
+        yield [...operations];
       }
       return;
     }
@@ -76,15 +74,22 @@ export function enumerateTilings({
     for (const operation of bestCandidates) {
       counts[operation.piece] += 1;
       operations.push(operation);
-      visit(remaining ^ operation.mask, operations);
+      yield* visit(remaining ^ operation.mask, operations);
       operations.pop();
       counts[operation.piece] -= 1;
     }
   }
 
-  visit(fill, []);
-  if (output.length >= maxSolutions) {
-    throw new Error(`congruent tiling limit ${maxSolutions} reached`);
+  yield* visit(fill, []);
+}
+
+// Standalone geometry enumeration has its own explicit geometry-only cap.
+export function enumerateTilings({maxSolutions=20000,...input}) {
+  validateCongruentLimit(maxSolutions);
+  const output=[];
+  for(const tiling of iterateTilings(input)) {
+    if(output.length===maxSolutions)throw new CongruentLimitError(maxSolutions,'geometric-tilings');
+    output.push(tiling);
   }
   return output;
 }
@@ -96,10 +101,12 @@ export function findCongruentSolutions({
   height = 4,
   reachability,
   useHold = true,
+  maxSolutions = 20000,
 }) {
+  validateCongruentLimit(maxSolutions);
   const pieceCount = popcountBigInt(fill) / 4;
   const accelerated = shouldUseRustCongruent({ pieceCount, reachability })
-    ? reachability.congruent({ base, fill, queues, useHold })
+    ? reachability.congruent({ base, fill, queues, useHold, maxSolutions })
     : null;
 
   if (accelerated !== null && accelerated !== undefined) {
@@ -116,7 +123,7 @@ export function findCongruentSolutions({
   }
 
   const maxCounts = maxPieceCounts(queues);
-  const tilings = enumerateTilings({ fill, height, maxCounts });
+  const tilings = iterateTilings({ fill, height, maxCounts });
   const output = [];
   const projector = createQueueOrderProjector(queues);
 
@@ -127,6 +134,7 @@ export function findCongruentSolutions({
     if (!valid.length) continue;
     const validSet = new Set(valid);
     const preferred = valid.includes("ZIS") ? "ZIS" : [...valid].sort().at(-1);
+    if(output.length===maxSolutions)throw new CongruentLimitError(maxSolutions);
     output.push({
       operations,
       masks: aggregateMasks(operations),

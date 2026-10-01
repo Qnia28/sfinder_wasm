@@ -1,6 +1,210 @@
 use super::*;
 
 #[test]
+fn bounded_threshold_prefix_matches_independent_oracle() {
+    let mut state = 441u32;
+    let mut next = || { state = state.wrapping_mul(1664525).wrapping_add(1013904223); state };
+    let mut partial_prefixes = 0;
+    for sample in 0..100 {
+        let n = 3 + (next() % 5) as usize;
+        let mut cases = Vec::new();
+        for _ in 0..(3 + next() % 7) {
+            let mut row = Vec::new();
+            for id in 0..n as u32 {
+                if next() % 3 != 0 { row.push((id, if sample % 5 == 0 { 1 } else { 1 + next() % 6 })); }
+            }
+            if row.is_empty() { row.push((next() % n as u32, 1)); }
+            cases.push(row);
+        }
+        if sample % 3 == 0 { cases.push(cases[0].clone()); }
+        if sample % 4 == 0 { let (id,q) = cases[0][0]; cases[0].push((id,q.saturating_sub(1).max(1))); }
+        let (oracle, seed) = brute_partition_oracle(&cases, n);
+        let normalized = normalize_quality_cases(&cases,n).unwrap();
+        let mut levels: Vec<u32> = normalized.iter().flat_map(|r|r.iter().map(|&(_,q)|q)).collect();
+        levels.sort_unstable(); levels.dedup(); if levels.len()>1 { levels.remove(0); }
+        for budget in [Some(0),Some(1),Some(3),Some(10),Some(30),None] {
+            let plain = exact_quality_cover_at_count_bounded(&cases,n,oracle.selected.len(),&seed,budget).unwrap();
+            let (progress,prefix) = exact_quality_cover_at_count_progress_bounded(&cases,n,oracle.selected.len(),&seed,budget).unwrap();
+            assert_eq!(plain,progress);
+            assert!(prefix.len()<=levels.len());
+            let incumbent = match &progress {
+                BoundedQualityResult::Exact(r) => { assert_eq!(r.selected,oracle.selected); assert_eq!(prefix.len(),levels.len()); r },
+                BoundedQualityResult::BudgetExceeded(r) => { if !prefix.is_empty() { partial_prefixes+=1; } r },
+            };
+            for (index,&target) in prefix.iter().enumerate() {
+                let count = |q: &[u32]| q.iter().filter(|&&v| v>=levels[index]).count() as u32;
+                assert_eq!(target,count(&oracle.quality));
+                assert_eq!(target,count(&incumbent.quality));
+            }
+        }
+    }
+    assert!(partial_prefixes>0,"must exercise budget exits after a proved threshold");
+}
+
+fn brute_partition_oracle(cases: &[Vec<(u32, u32)>], n: usize) -> (MinimumCoverResult, Vec<u32>) {
+    let mut best: Option<MinimumCoverResult> = None;
+    let mut seed = Vec::new();
+    for mask in 0usize..(1usize << n) {
+        let selected: Vec<u32> = (0..n)
+            .filter(|&id| mask & (1 << id) != 0)
+            .map(|id| id as u32)
+            .collect();
+        if cases
+            .iter()
+            .any(|row| !row.iter().any(|&(id, _)| mask & (1 << id) != 0))
+        {
+            continue;
+        }
+        let mut quality: Vec<u32> = cases
+            .iter()
+            .map(|row| {
+                row.iter()
+                    .filter(|&&(id, _)| mask & (1 << id) != 0)
+                    .map(|&(_, q)| q)
+                    .max()
+                    .unwrap()
+            })
+            .collect();
+        quality.sort_unstable();
+        if best
+            .as_ref()
+            .is_none_or(|b| selected.len() <= b.selected.len())
+        {
+            seed = selected.clone();
+        }
+        if best.as_ref().is_none_or(|b| {
+            selected.len() < b.selected.len()
+                || (selected.len() == b.selected.len()
+                    && (quality > b.quality || (quality == b.quality && selected < b.selected)))
+        }) {
+            best = Some(MinimumCoverResult {
+                selected,
+                quality,
+                searched_states: 0,
+            });
+        }
+    }
+    (best.unwrap(), seed)
+}
+
+#[test]
+fn partitioned_integrated_matches_independent_enumeration_and_valid_bounded_incumbents() {
+    let mut state = 0x9357_ae21u32;
+    let mut next = || {
+        state ^= state << 13;
+        state ^= state >> 17;
+        state ^= state << 5;
+        state
+    };
+    for sample in 0..160 {
+        let n = 4 + next() as usize % 6;
+        let mut rows = Vec::new();
+        for _ in 0..(3 + next() % 10) {
+            let mut row: Vec<_> = (0..n as u32)
+                .filter_map(|id| {
+                    (next() % 3 == 0).then(|| (id, [1, 1, 7, 23, u32::MAX][next() as usize % 5]))
+                })
+                .collect();
+            if row.is_empty() {
+                row.push((next() % n as u32, 1));
+            }
+            if sample % 3 == 0 {
+                row.push(row[0]);
+            }
+            rows.push(row);
+        }
+        rows.push(rows[0].clone()); // Original row multiplicity affects quality.
+        let (expected, seed) = brute_partition_oracle(&rows, n);
+        let historical =
+            exact_quality_cover_at_count_integrated(&rows, n, seed.len(), &seed).unwrap();
+        assert_eq!(historical.selected, expected.selected);
+        assert_eq!(historical.quality, expected.quality);
+        for histogram_after in [1, u64::MAX] {
+            for budget in [Some(0), Some(1), Some(2), Some(5), Some(32), None] {
+                let result = exact_quality_cover_at_count_integrated_with_options(
+                    &rows,
+                    n,
+                    seed.len(),
+                    &seed,
+                    budget,
+                    histogram_after,
+                    false,
+                    true,
+                )
+                .unwrap();
+                let (exact, value) = match result {
+                    BoundedQualityResult::Exact(r) => (true, r),
+                    BoundedQualityResult::BudgetExceeded(r) => (false, r),
+                };
+                assert_eq!(value.selected.len(), seed.len());
+                assert!(value.selected.windows(2).all(|pair| pair[0] < pair[1]));
+                let mut quality = Vec::new();
+                for row in &rows {
+                    quality.push(
+                        row.iter()
+                            .filter(|&&(id, _)| value.selected.contains(&id))
+                            .map(|&(_, q)| q)
+                            .max()
+                            .expect("bounded incumbent must cover every original row"),
+                    );
+                }
+                quality.sort_unstable();
+                assert_eq!(value.quality, quality);
+                assert!(value.quality >= quality_vector(&rows, &seed, n));
+                if let Some(limit) = budget {
+                    assert!(value.searched_states <= limit);
+                }
+                if exact {
+                    assert_eq!(
+                        value.selected, expected.selected,
+                        "sample {sample}, budget {budget:?}"
+                    );
+                    assert_eq!(value.quality, expected.quality);
+                } else {
+                    assert!(budget.is_some());
+                }
+            }
+        }
+    }
+}
+
+#[test]
+fn partition_excludes_only_earlier_siblings_and_reduces_duplicate_branches() {
+    let triangle = vec![
+        vec![(0, 1), (1, 1)],
+        vec![(1, 1), (2, 1)],
+        vec![(0, 1), (2, 1)],
+    ];
+    let historical = exact_quality_cover_at_count_integrated(&triangle, 3, 2, &[1, 2]).unwrap();
+    let BoundedQualityResult::Exact(partitioned) =
+        exact_quality_cover_at_count_integrated_partitioned_bounded(&triangle, 3, 2, &[1, 2], None)
+            .unwrap()
+    else {
+        panic!("unbounded must finish")
+    };
+    assert_eq!(partitioned.selected, vec![0, 1]);
+    assert_eq!(partitioned.quality, historical.quality);
+    assert!(partitioned.searched_states < historical.searched_states);
+
+    // The best branch selects high ID 3 before low ID 0. A global ascending-ID
+    // constraint would drop this cover. Local sibling exclusions must keep it.
+    let rows = vec![
+        vec![(3, 10), (4, 1)],
+        vec![(0, 10), (1, 1)],
+        vec![(1, 1), (3, 10)],
+        vec![(2, 1), (3, 10)],
+    ];
+    let BoundedQualityResult::Exact(result) =
+        exact_quality_cover_at_count_integrated_partitioned_bounded(&rows, 5, 2, &[1, 3], None)
+            .unwrap()
+    else {
+        panic!("unbounded must finish")
+    };
+    assert_eq!(result.selected, vec![0, 3]);
+    assert_eq!(result.quality, vec![10; 4]);
+}
+
+#[test]
 fn exact_cardinality_and_quality() {
     // A: X/Y, B: Z/W. X+Z has a bad second case; X+W is preferred.
     let cases = vec![vec![(0, 100), (1, 30)], vec![(2, 1), (3, 30)]];

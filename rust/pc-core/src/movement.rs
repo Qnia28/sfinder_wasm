@@ -822,6 +822,88 @@ pub fn reachable_placements_with_physics(
     }
     let mask = board_mask(height);
     let mut out = Vec::with_capacity(48);
+    // CELLS maps symmetric orientations to identical offsets. Once inside
+    // bounds, (canonical orientation, y, x) uniquely determines the placement.
+    // Preserve the first orientation/anchor emitted by the existing traversal.
+    let mut seen = [0u64; 4];
+    for o in 0..4usize {
+        let downable = valid[o] << 16;
+        let mut locks = reach[o] & inside[o] & !downable;
+        while locks != 0 {
+            let bit = locks.trailing_zeros();
+            locks &= locks - 1;
+            let y = (bit / 16) as i8;
+            let x = (bit % 16) as i8;
+            let bits = place_bits(p, o as u8, x, y);
+            if bits & board != 0 || bits & !mask != 0 {
+                continue;
+            }
+            let co = match p {
+                Piece::O => 0,
+                Piece::I | Piece::S | Piece::Z => (o as u8) & 1,
+                _ => o as u8,
+            };
+            let index = co as usize * 60 + y as usize * 10 + x as usize;
+            debug_assert!(x >= 0 && x < 10 && y >= 0 && y < 6);
+            let flag = 1u64 << (index & 63);
+            if seen[index >> 6] & flag != 0 {
+                continue;
+            }
+            seen[index >> 6] |= flag;
+            let raw = board | bits;
+            let next = normalize_after_placement(raw, height);
+            out.push(Placement {
+                piece: p,
+                orientation: o as u8,
+                x,
+                y,
+                board: next,
+                raw_board: raw,
+                cells: bits,
+            });
+        }
+    }
+    out
+}
+
+// Frozen pre-optimization oracle for exact ordering and geometry comparisons.
+#[cfg(test)]
+pub(crate) fn reachable_placements_linear_reference(
+    board: u64,
+    p: Piece,
+    height: u8,
+    physics: Physics,
+) -> Vec<Placement> {
+    let (valid, inside) = valid_anchor_masks(board, p, height);
+    // reach[o] is always a subset of valid[o], and emitted locks are also
+    // restricted by inside[o]. If no orientation has any valid in-board anchor,
+    // the frontier can never produce a locked placement.
+    if (0..4).all(|o| valid[o] & inside[o] == 0) {
+        return Vec::new();
+    }
+    let mut reach = [0u128; 4];
+    let spawn_rows =
+        (0xffffu128 << (height as u32 * 16)) | (0xffffu128 << ((height as u32 + 1) * 16));
+    for o in 0..4 {
+        reach[o] = valid[o] & spawn_rows
+    }
+    let mut frontier = reach;
+    while frontier.iter().any(|&x| x != 0) {
+        let mut next = [0u128; 4];
+        for o in 0..4 {
+            next[o] |= ((frontier[o] << 1) | (frontier[o] >> 1) | (frontier[o] >> 16))
+                & valid[o]
+                & !reach[o];
+        }
+        let rotated = add_rotation_frontier(p, &frontier, &reach, &valid, physics);
+        for o in 0..4 {
+            next[o] |= rotated[o] & !reach[o];
+            reach[o] |= next[o];
+        }
+        frontier = next;
+    }
+    let mask = board_mask(height);
+    let mut out = Vec::with_capacity(48);
     // Lock counts are tiny. A linear scan over the already-emitted compact
     // keys avoids allocating a hash table for every placement query.
     let mut dedup4 = [0u64; 256];

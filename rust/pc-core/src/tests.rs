@@ -1338,3 +1338,138 @@ fn cover_exact_reachability_matches_jstris_i_ccw_tuck() {
         Physics::Jstris,
     ));
 }
+
+#[test]
+fn initial_completed_middle_row_uses_normalized_legal_board_in_all_searches() {
+    // First page of v115@9gRpDezhRpEeQ4hlg0zhBtR4gli0CeBtQ4glJeAgH.
+    // Stage 7 is populated. The original row layout is not in the legal pack,
+    // but the identical board after clearing its middle row is in the pack.
+    let initial = 0xf0f8_3fff_c7u64;
+    let normalized = normalize_after_placement(initial, 4);
+    assert_eq!(normalized, 0xf0f8_3f1f_ff);
+    let bytes = std::fs::read(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../wasm/legal_boards_4.lgb"
+    ))
+    .expect("release legal-board pack");
+    let legal = LegalTables::from_pack(&bytes).expect("valid legal-board pack");
+    assert!(legal.count(7) > 0);
+    assert!(!legal.accepts(initial, 4));
+    assert!(legal.accepts(normalized, 4));
+
+    let mut guarded = PcSolver::new(4);
+    assert!(guarded.load_legal_pack(&bytes));
+    let mut reference = PcSolver::new(4);
+    let queue = [Piece::T, Piece::T, Piece::I, Piece::J];
+    let qbits = queue
+        .iter()
+        .enumerate()
+        .fold(0u64, |bits, (i, &p)| bits | ((p as u64) << (i * 3)));
+    let queues = [qbits, qbits, (Piece::T as u64) * 0x249];
+    let lengths = [4u8, 4, 4];
+
+    assert!(guarded.can_pc_packed(initial, qbits, 4, true));
+    assert_eq!(
+        guarded.can_pc_packed(initial, qbits, 4, true),
+        reference.can_pc_packed(initial, qbits, 4, true)
+    );
+    assert_eq!(
+        guarded.probe_can_pc_packed(initial, qbits, 4, true, 10000),
+        Some(true)
+    );
+    let mut got = [0u8; 3];
+    let mut want = [0u8; 3];
+    assert!(guarded.can_pc_many_packed(initial, &queues, &lengths, true, &mut got));
+    assert!(reference.can_pc_many_packed(initial, &queues, &lengths, true, &mut want));
+    assert_eq!(got, want);
+    assert_eq!(got[0], 1);
+    assert!(guarded.can_pc_pattern_many_packed(initial, &queues, &lengths, true, &mut got));
+    assert!(reference.can_pc_pattern_many_packed(initial, &queues, &lengths, true, &mut want));
+    assert_eq!(got, want);
+    assert_eq!(got[0], 1);
+
+    let single = guarded.enumerate_pc(initial, &queue, true);
+    assert!(!single.is_empty());
+    assert_eq!(single, reference.enumerate_pc(initial, &queue, true));
+    assert_eq!(
+        guarded.best_pc(initial, &queue, true),
+        reference.best_pc(initial, &queue, true)
+    );
+    assert_eq!(
+        guarded.per_save_best(initial, &queue, true, 16),
+        reference.per_save_best(initial, &queue, true, 16)
+    );
+    let path = guarded
+        .enumerate_pc_path_packed(initial, &queues, &lengths, true)
+        .unwrap();
+    assert!(!path.is_empty());
+    assert_eq!(
+        path,
+        reference
+            .enumerate_pc_path_packed(initial, &queues, &lengths, true)
+            .unwrap()
+    );
+    let patterns = guarded
+        .enumerate_pc_pattern_packed(initial, &queues, &lengths, true)
+        .unwrap();
+    let expected = reference
+        .enumerate_pc_pattern_packed(initial, &queues, &lengths, true)
+        .unwrap();
+    assert!(!patterns.is_empty());
+    assert_eq!(patterns.len(), expected.len());
+    for (actual, expected) in patterns.iter().zip(&expected) {
+        assert_eq!(actual.solution, expected.solution);
+        assert_eq!(actual.cases, expected.cases);
+    }
+
+    // The legal check must behave the same with the completed row at any
+    // height. The same normalized geometry produces different original-row
+    // masks, so compare each raw field against an unpruned reference.
+    for raw in [0xf0f8_3f1f_ffu64, initial, 0xf0ff_fe0f_c7, 0xfffc_3e0f_c7] {
+        assert_eq!(normalize_after_placement(raw, 4), normalized);
+        assert_eq!(
+            guarded.can_pc(raw, &queue, true),
+            reference.can_pc(raw, &queue, true)
+        );
+        assert_eq!(
+            guarded.enumerate_pc(raw, &queue, true),
+            reference.enumerate_pc(raw, &queue, true)
+        );
+    }
+    // Two completed rows must also be cleared before the Stage-7 check.
+    let two_complete = 0xffc0_fffc_0fu64;
+    let os = [Piece::O; 4];
+    assert!(guarded.can_pc(two_complete, &os, true));
+    assert_eq!(
+        guarded.enumerate_pc(two_complete, &os, true),
+        reference.enumerate_pc(two_complete, &os, true)
+    );
+}
+#[test]
+fn bitset_dedup_preserves_every_placement_and_its_order() {
+    let mut random = 0x5129a143582u64;
+    for height in 2..=6 {
+        for sample in 0..100 {
+            random ^= random << 13;
+            random ^= random >> 7;
+            random ^= random << 17;
+            let board = match sample {
+                0 => 0,
+                1 => full_board(height),
+                2 => 0xf0f8_3fff_c7 & full_board(height),
+                _ => random & full_board(height),
+            };
+            for piece in Piece::ALL {
+                for physics in [Physics::Jstris, Physics::Tetrio] {
+                    assert_eq!(
+                        reachable_placements_with_physics(board, piece, height, physics),
+                        crate::movement::reachable_placements_linear_reference(
+                            board, piece, height, physics
+                        ),
+                        "height={height} board={board:x} piece={piece:?} physics={physics:?}"
+                    );
+                }
+            }
+        }
+    }
+}

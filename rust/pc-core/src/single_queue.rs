@@ -179,10 +179,13 @@ impl PcSolver {
             return false;
         }
         let req = (empty / 4) as u8;
-        if qlen < req || !self.legal_accept(board) {
+        if qlen < req {
             return false;
         }
-        self.dfs_packed::<K, BOUNDED>(board, qbits, qlen, 7, req, use_hold, dead)
+        let Some(start_board) = self.initial_search_board(board) else {
+            return false;
+        };
+        self.dfs_packed::<K, BOUNDED>(start_board, qbits, qlen, 7, req, use_hold, dead)
     }
 
     #[allow(clippy::too_many_arguments)]
@@ -441,9 +444,10 @@ impl PcSolver {
             return None;
         }
         let req = (empty / 4) as u8;
-        if queue.len() < req as usize || !self.legal_accept(initial) {
+        if queue.len() < req as usize {
             return None;
         }
+        let start_board = self.initial_search_board(initial)?;
         let mut initial_cleared = 0u8;
         for y in 0..self.height {
             if row(initial, y) == FULL_ROW {
@@ -451,7 +455,7 @@ impl PcSolver {
             }
         }
         let start = StructuralState {
-            board: normalize_after_placement(initial, self.height),
+            board: start_board,
             idx: 0,
             hold: 7,
             placed: 0,
@@ -623,6 +627,79 @@ impl PcSolver {
         solutions
     }
 
+    fn exact_compact_order_counts(
+        &mut self,
+        initial: u64,
+        queue: &[Piece],
+        use_hold: bool,
+    ) -> FastMap<CompactSolution, u32> {
+        self.best_language_nodes = 0;
+        self.best_language_fallback = false;
+        let Some((dag, root, _req, cleared)) = self.build_structural_dag(initial, queue, use_hold)
+        else {
+            return FastMap::default();
+        };
+        let compressed = self.best_engine == 1
+            || (self.best_engine == 0
+                && _req >= 6
+                && crate::order_language::OrderLanguage::path_count(&dag, &[root]) >= 100_000);
+        if compressed {
+            if let Some((counts, nodes)) = crate::best_language::collect(
+                self.height,
+                &dag,
+                root,
+                cleared,
+                self.best_language_budget,
+            ) {
+                self.best_language_nodes = nodes as u32;
+                return counts;
+            }
+            self.best_language_fallback = true;
+        }
+        let mut solutions = FastMap::default();
+        let stats = collect_flat_dag_paths(
+            self.height,
+            &dag,
+            root,
+            DagPathState {
+                depth: 0,
+                cleared_rows: cleared,
+                compact: CompactSolution::default(),
+                order_bits: 0,
+            },
+            &mut solutions,
+        );
+        self.reconstruction_visits += stats.visits;
+        self.reconstruction_skipped += stats.skipped;
+        solutions
+            .into_iter()
+            .map(|(color, orders)| (color, orders.len().min(u32::MAX as usize) as u32))
+            .collect()
+    }
+
+    // Geometry-only API: order_count is intentionally not evaluated.
+    pub fn enumerate_pc_geometry(
+        &mut self,
+        initial: u64,
+        queue: &[Piece],
+        use_hold: bool,
+    ) -> Vec<Solution> {
+        let Some((dag, root, _req, cleared)) = self.build_structural_dag(initial, queue, use_hold)
+        else {
+            return Vec::new();
+        };
+        let (geometry, stats) = crate::geometry::collect_geometry(self.height, &dag, root, cleared);
+        self.reconstruction_visits += stats.visits;
+        self.reconstruction_skipped += stats.skipped;
+        geometry
+            .into_iter()
+            .map(|colour| Solution {
+                masks: colour.masks(self.height),
+                order_count: 0,
+            })
+            .collect()
+    }
+
     pub fn enumerate_pc(&mut self, initial: u64, queue: &[Piece], use_hold: bool) -> Vec<Solution> {
         let compact = self.enumerate_compact(initial, queue, use_hold);
         let mut out: Vec<_> = compact
@@ -643,13 +720,13 @@ impl PcSolver {
     // qniapc ranking (highest playable-order count, then lexicographic Fumen
     // mask key) while keeping all filtering and reduction inside Rust.
     pub fn best_pc(&mut self, initial: u64, queue: &[Piece], use_hold: bool) -> Option<Solution> {
-        let compact = self.enumerate_compact(initial, queue, use_hold);
+        let compact = self.exact_compact_order_counts(initial, queue, use_hold);
         let mut best: Option<Solution> = None;
-        for (solution, orders) in compact {
-            debug_assert!(!orders.is_empty());
+        for (solution, order_count) in compact {
+            debug_assert!(order_count > 0);
             let candidate = Solution {
                 masks: solution.masks(self.height),
-                order_count: orders.len().min(u32::MAX as usize) as u32,
+                order_count,
             };
             let replace = match &best {
                 None => true,
@@ -881,7 +958,7 @@ impl PcSolver {
         use_hold: bool,
         _candidate_limit: usize,
     ) -> Vec<(Piece, Solution)> {
-        let compact = self.enumerate_compact(initial, queue, use_hold);
+        let compact = self.exact_compact_order_counts(initial, queue, use_hold);
         if compact.is_empty() {
             return Vec::new();
         }
@@ -891,11 +968,11 @@ impl PcSolver {
         // candidate_limit remains in the ABI for compatibility but no longer
         // bounds or approximates production results.
         let mut best: [Option<(CompactSolution, u32)>; 7] = [None; 7];
-        for (solution, orders) in compact {
-            debug_assert!(!orders.is_empty());
+        for (solution, order_count) in compact {
+            debug_assert!(order_count > 0);
             let candidate = Solution {
                 masks: solution.masks(self.height),
-                order_count: orders.len().min(u32::MAX as usize) as u32,
+                order_count,
             };
             let saved = Self::saved_piece_for_solution(queue, &candidate);
             if saved >= 7 {

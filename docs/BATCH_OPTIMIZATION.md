@@ -86,3 +86,8 @@ baseline/candidate sequentially, check output hashes, and save raw samples,
 medians and WASM assets as artifacts. Count's new output contract is validated
 against expanded small cases and independent huge-pattern counts; it is not
 presented as a same-contract speedup over the baseline's list output.
+
+
+## 2026-09-12 후속 구현
+
+[TODO 구현 계약](TODO_OPTIMIZATION_20260912.md)에 요청 세션, 엔진 라우팅, 정확 fallback, maxSolutions 및 새 outputMode 계약과 검증 범위를 정리했다.

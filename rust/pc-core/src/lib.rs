@@ -1,10 +1,12 @@
+mod best_language;
 mod board;
 mod dag;
+mod geometry;
 mod hashing;
 mod legal;
 pub mod min_cover;
 mod movement;
-mod order_language;
+pub mod order_language;
 mod pattern;
 mod piece;
 mod queue_codec;
@@ -110,6 +112,16 @@ pub struct PcSolver {
     pub probability_paths: u64,
     pub probability_language_nodes: u32,
     pub probability_fallback: bool,
+    pub geometry_state_budget: usize,
+    pub geometry_fallback: bool,
+    pub best_engine: u8,
+    pub best_language_budget: usize,
+    pub best_language_nodes: u32,
+    pub best_language_fallback: bool,
+    pub probability_session_depth: u32,
+    pub probability_dag_hits: u64,
+    pub probability_dag_bytes: usize,
+    pub(crate) probability_dags: FastMap<pattern::ProbabilityKey, pattern::ProbabilityGeometry>,
     height: u8,
     prune: bool,
     legal: Option<LegalTables>,
@@ -157,6 +169,16 @@ impl PcSolver {
             probability_paths: 0,
             probability_language_nodes: 0,
             probability_fallback: false,
+            geometry_state_budget: 200_000,
+            geometry_fallback: false,
+            best_engine: 0,
+            best_language_budget: 200_000,
+            best_language_nodes: 0,
+            best_language_fallback: false,
+            probability_session_depth: 0,
+            probability_dag_hits: 0,
+            probability_dag_bytes: 0,
+            probability_dags: FastMap::default(),
             probe_node_limit: u64::MAX,
             probe_exhausted: false,
         }
@@ -193,6 +215,14 @@ impl PcSolver {
             self.legal_rejects += 1
         }
         ok
+    }
+    // Legal-board tables use post-clear coordinates. Keep the caller's original
+    // Fumen board for reconstructing row coordinates and normalize only the
+    // board used by the legality check and search.
+    #[inline]
+    fn initial_search_board(&mut self, initial: u64) -> Option<u64> {
+        let board = normalize_after_placement(initial, self.height);
+        self.legal_accept(board).then_some(board)
     }
     pub fn legal_count(&self, stage: usize) -> usize {
         self.legal.as_ref().map_or(0, |t| t.count(stage))

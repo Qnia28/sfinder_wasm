@@ -3,6 +3,19 @@ import { requirePositiveQuality } from "./quality-contract.mjs";
 import { DEFAULT_SOLUTION_WORD_STRIDE, U32_MAX, queueBits, solutionKey, wasmU32 } from "./pc-wasm-abi.mjs";
 
 export const enumerationMethods = {
+saveOutcomesPattern(board, queues, useHold = true) {
+    if (!this.e.solver_save_outcomes_pattern || !this.e.solver_save_outcomes_ptr) return null;
+    if (queues.length === 0) return new Uint32Array();
+    return this._withPackedQueues(queues, (queuePointer, lengthPointer) => {
+      const length = wasmU32(this.e.solver_save_outcomes_pattern(
+        this.ptr, board, queuePointer, lengthPointer, queues.length, useHold ? 1 : 0,
+      ));
+      if (length === U32_MAX) throw new Error("WASM saveOutcomesPattern failed");
+      const pointer = this.e.solver_save_outcomes_ptr(this.ptr);
+      return new Uint32Array(this.e.memory.buffer, pointer, length).slice();
+    });
+  },
+
 _withPackedQueues(queues, callback) {
     if (queues.length === 0) return callback(0, 0);
     const queuePointer = this.e.wasm_alloc_u64(queues.length);
@@ -225,6 +238,12 @@ bestPc(board, queue, useHold = true) {
     return this._readSolutions(count)[0] ?? null;
   },
 
+enumeratePcGeometry(board, queue, useHold = true) {
+    if (!this.e.solver_enumerate_pc_geometry) return this.enumeratePc(board, queue, useHold);
+    const count = wasmU32(this.e.solver_enumerate_pc_geometry(this.ptr, board, queueBits(queue), queue.length, useHold ? 1 : 0));
+    return this._readSolutionGeometry(count);
+  },
+
 enumeratePcPatternCompact(board, queues, useHold = true) {
     if (!this.e.solver_pattern_offsets_ptr || !this.e.solver_copy_solution_words) return null;
     if (!queues.length) return null;
@@ -286,6 +305,16 @@ enumeratePcPattern(board, queues, useHold = true) {
   },
 
 enumeratePcPath(board, queues, useHold = true) {
+    if (this.e.solver_enumerate_pc_path && this.e.solver_path_coverage_counts_ptr) {
+      if (!queues.length) return { solutions: [], coverageCounts: new Uint32Array(0) };
+      return this._withPackedQueues(queues, (queuePointer, lengthPointer) => {
+        const count = wasmU32(this.e.solver_enumerate_pc_path(this.ptr, board, queuePointer, lengthPointer, queues.length, useHold ? 1 : 0));
+        if (count === U32_MAX) throw new Error('WASM path geometry enumeration failed');
+        const solutions = this._readSolutionGeometry(count);
+        const coverageCounts = new Uint32Array(this.e.memory.buffer, this.e.solver_path_coverage_counts_ptr(this.ptr), count).slice();
+        return { solutions, coverageCounts };
+      });
+    }
     if (!this.e.solver_enumerate_pc_pattern || !this.e.solver_pattern_coverage_offset) {
       return null;
     }

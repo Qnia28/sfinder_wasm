@@ -1,5 +1,5 @@
 import { solveQueuesExistence } from "./pc-enumeration-engine.mjs";
-import { expandPattern } from "./pattern.mjs";
+import { MAX_PATTERN_CASES, PatternExpansionError, parsePattern, expandPattern } from "./pattern.mjs";
 import { decodeAndValidate } from "./pc-input.mjs";
 
 import { createPatternPrefixSource } from "./pattern-prefix-source.mjs";
@@ -10,21 +10,42 @@ export function calculateChance(input) {
   if (outputMode !== 'queues') throw new RangeError(`unsupported chance outputMode '${outputMode}'`);
   const { sourceFumen, pattern, clear = 4, solver, useHold = true } = input;
   const { board } = decodeAndValidate(sourceFumen, clear);
-  const queues = expandPattern(pattern);
-  const solved = solveQueuesExistence({ board, queues, solver, useHold });
-  let success = 0;
-  const failedQueues = [];
-  for (let index = 0; index < queues.length; index += 1) {
-    if (solved[index]) success += 1;
-    else failedQueues.push(queues[index]);
+  const empty = clear * 10 - board.toString(2).replaceAll('0','').length;
+  const take = Math.max(0, Math.floor(empty / 4)) + (useHold ? 1 : 0);
+  // No suffix can be skipped here; retain the cheaper concrete expansion.
+  if (parsePattern(pattern).depth <= take) {
+    const run = () => {
+      const queues = expandPattern(pattern);
+      const solved = empty % 4 === 0 ? solveQueuesExistence({ board, queues, solver, useHold }) : queues.map(() => false);
+      const failedQueues = queues.filter((_, i) => !solved[i]);
+      const total = queues.length, success = total - failedQueues.length;
+      return { total, success, failed: failedQueues.length, failedQueues, percent: 100 * success / total };
+    };
+    return solver.withProbabilitySession ? solver.withProbabilitySession(run) : run();
   }
-  return {
-    total: queues.length,
-    success,
-    failed: failedQueues.length,
-    failedQueues,
-    percent: 100 * success / queues.length,
+  const source = createPatternPrefixSource(pattern, take);
+  if (source.total > BigInt(MAX_PATTERN_CASES)) throw new PatternExpansionError(MAX_PATTERN_CASES);
+  const run = () => {
+    let success = 0;
+    const failedQueues = [], batch = [];
+    function flush() {
+      if (!batch.length) return;
+      const solved = empty % 4 === 0
+        ? solveQueuesExistence({ board, queues: batch.map(entry => entry.queue), solver, useHold })
+        : batch.map(() => false);
+      for (let i = 0; i < batch.length; i++) {
+        const entry = batch[i];
+        if (solved[i]) success += Number(entry.weight);
+        else for (const completion of entry.completions()) failedQueues.push(completion.queue);
+      }
+      batch.length = 0;
+    }
+    for (const entry of source.prefixes()) { batch.push(entry); if (batch.length >= 65536) flush(); }
+    flush();
+    const total = Number(source.total);
+    return { total, success, failed: failedQueues.length, failedQueues, percent: 100 * success / total };
   };
+  return solver.withProbabilitySession ? solver.withProbabilitySession(run) : run();
 }
 
 // Count-only keeps branch multiplicity, and expands at most the prefix that a
@@ -34,6 +55,15 @@ export function calculateChanceCount({ sourceFumen, pattern, clear = 4, solver, 
     throw new RangeError('maxBatchPrefixes must be an integer in 1..1000000');
   }
   const { board } = decodeAndValidate(sourceFumen, clear);
+  return calculateChanceCountFromBoard({ board, pattern, clear, solver, useHold, maxBatchPrefixes });
+}
+
+export function calculateChanceCountFromBoard({ board, pattern, clear = 4, solver, useHold = true, maxBatchPrefixes = 65536 }) {
+  if (!Number.isInteger(maxBatchPrefixes) || maxBatchPrefixes < 1 || maxBatchPrefixes > 1000000) throw new RangeError('maxBatchPrefixes must be an integer in 1..1000000');
+  const run = () => chanceCountInSession({ board, pattern, clear, solver, useHold, maxBatchPrefixes });
+  return solver.withProbabilitySession ? solver.withProbabilitySession(run) : run();
+}
+function chanceCountInSession({ board, pattern, clear, solver, useHold, maxBatchPrefixes }) {
   let occupied = 0;
   for (let bits = board; bits; bits &= bits - 1n) occupied += 1;
   const empty = clear * 10 - occupied;

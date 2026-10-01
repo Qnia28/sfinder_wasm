@@ -1,6 +1,6 @@
 import { coverTargets } from "./batch-cover.mjs";
 import { batchReachability, boolMirror, decodedTargets } from "./batch-feature-common.mjs";
-import { expandPatternCases, queuesForFinder } from "./pattern.mjs";
+import { expandPatternCasesInternal, queuesForFinder } from "./pattern.mjs";
 import { validateTargetLines } from "./pc-input.mjs";
 import { calculateCoverCount } from "./batch-cover-count-feature.mjs";
 export { calculateCoverCount } from "./batch-cover-count-feature.mjs";
@@ -19,7 +19,7 @@ export async function calculateCover({
   validateTargetLines(clear);
   if (!['variants', 'coverage'].includes(outputMode)) throw new RangeError(`unsupported cover outputMode '${outputMode}'`);
   const finderPattern = queuesForFinder(pattern);
-  const queues = expandPatternCases(finderPattern);
+  const queues = expandPatternCasesInternal(finderPattern);
   const targets = decodedTargets(sourceFumen, clear);
   const heights = [...new Set(targets.map((target) => target._batchHeight ?? clear))];
   const reachabilityByHeight = new Map();

@@ -60,3 +60,11 @@ from its ZIP and verified against all 190 original file hashes. Timings must be
 compared under matching result contracts: count-only and coverage-only deliberately
 omit outputs that the default APIs materialize. Numeric transport is not a new
 minimum-cardinality proof algorithm; hard proof time can still dominate.
+
+## Shared compact coverage
+
+`compact-geometry.mjs` decodes keys and piece usage from packed geometry, then
+materializes masks only for selected solutions. `numeric-cover-data.mjs` owns
+prepared numeric coverage and CSR adapters shared by minimals and per-save
+minimals. These buffers belong to the current request. The adapters preserve
+the caller's case and edge order and the existing candidate-key ordering.

@@ -19,7 +19,8 @@ export function assertORToolsSupported() {
   }
 }
 
-export async function solveORToolsCardinalityKernel(kernel) {
+export async function solveORToolsCardinalityKernel(kernel, { signal = null } = {}) {
+  signal?.throwIfAborted();
   if (!kernel.cases.length) return {count: kernel.forced.length, selected: [...kernel.forced], backend: 'kernel', searchedStates: 0};
   assertORToolsSupported();
   const isNode = typeof process !== 'undefined' && !!process.versions?.node;
@@ -28,8 +29,12 @@ export async function solveORToolsCardinalityKernel(kernel) {
   const worker = isNode
     ? new NodeWorker(new URL('./ortools-primary-worker.mjs', import.meta.url), {execArgv: []})
     : new Worker(new URL('./ortools-primary-worker.mjs', import.meta.url), {type: 'module'});
+  let abort;
   try {
     const result = await new Promise((resolve, reject) => {
+      abort = () => reject(signal.reason ?? new Error('ORTools primary cancelled'));
+      signal?.addEventListener('abort', abort, { once: true });
+      if (signal?.aborted) { abort(); return; }
       const receive = data => data.error ? reject(new Error(data.error)) : resolve(data.result);
       if (isNode) {
         worker.once('message', receive); worker.once('error', reject);
@@ -49,5 +54,8 @@ export async function solveORToolsCardinalityKernel(kernel) {
       throw new Error('ORTools returned an invalid cardinality proof or witness');
     }
     return result;
-  } finally { await worker.terminate(); }
+  } finally {
+    signal?.removeEventListener('abort', abort);
+    await worker.terminate();
+  }
 }

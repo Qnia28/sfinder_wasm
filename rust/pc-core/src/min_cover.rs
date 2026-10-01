@@ -129,6 +129,8 @@ fn greedy_cover(full: &[u64], solution_coverage: &[Vec<u64>]) -> Option<Vec<u32>
 }
 
 struct CardinalitySearch<'a> {
+    // Buffers are retained across siblings and grow with actual search depth.
+    covered_buffers: Vec<Vec<u64>>,
     full: &'a [u64],
     case_candidates: &'a [Vec<u32>],
     solution_coverage: &'a [Vec<u64>],
@@ -139,7 +141,7 @@ struct CardinalitySearch<'a> {
 }
 
 impl CardinalitySearch<'_> {
-    fn run(&mut self, covered: Vec<u64>, selected: &mut Vec<u32>) {
+    fn run(&mut self, covered: &[u64], selected: &mut Vec<u32>) {
         self.searched_states += 1;
         let depth = selected.len();
         if is_full(&covered, self.full) {
@@ -153,12 +155,12 @@ impl CardinalitySearch<'_> {
         if depth >= self.best_count {
             return;
         }
-        if let Some(&previous) = self.best_depth_by_covered.get(&covered)
+        if let Some(&previous) = self.best_depth_by_covered.get(covered)
             && previous <= depth
         {
             return;
         }
-        self.best_depth_by_covered.insert(covered.clone(), depth);
+        self.best_depth_by_covered.insert(covered.to_vec(), depth);
         let bound = lower_bound(&covered, self.full, self.solution_coverage);
         if bound == usize::MAX || depth.saturating_add(bound) >= self.best_count {
             return;
@@ -180,10 +182,13 @@ impl CardinalitySearch<'_> {
             .collect();
         branches.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(&b.0)));
         for (solution, _) in branches {
-            let mut next = covered.clone();
+            let mut next = self.covered_buffers.pop().unwrap_or_default();
+            next.clear();
+            next.extend_from_slice(covered);
             or_into(&mut next, &self.solution_coverage[solution as usize]);
             selected.push(solution);
-            self.run(next, selected);
+            self.run(&next, selected);
+            self.covered_buffers.push(next);
             selected.pop();
         }
     }
@@ -368,7 +373,13 @@ impl QualityHistogramState {
     }
 }
 
-struct BestSetSearch<'a> {
+struct BestSetSearch<'a, const PARTITION: bool> {
+    // Buffers are retained across siblings and grow with actual search depth.
+    covered_buffers: Vec<Vec<u64>>,
+    // Experimental sibling partitioning only. Earlier siblings are excluded
+    // from later branches at the SAME pivot; no global ID ordering is imposed.
+    sibling_excluded: Vec<bool>,
+    exclusion_trail: Vec<u32>,
     full: &'a [u64],
     case_candidates: &'a [Vec<u32>],
     solution_coverage: &'a [Vec<u64>],
@@ -386,7 +397,7 @@ struct BestSetSearch<'a> {
     budget_exceeded: bool,
 }
 
-impl BestSetSearch<'_> {
+impl<const PARTITION: bool> BestSetSearch<'_, PARTITION> {
     fn maybe_activate_histogram(&mut self, selected: &[u32]) {
         if self.quality_histogram.is_some()
             || (self.completed.len() as u64) < self.histogram_switch_after
@@ -440,7 +451,7 @@ impl BestSetSearch<'_> {
         }
     }
 
-    fn run(&mut self, covered: Vec<u64>, selected: &mut Vec<u32>) {
+    fn run(&mut self, covered: &[u64], selected: &mut Vec<u32>) {
         if self.budget_exceeded {
             return;
         }
@@ -471,6 +482,7 @@ impl BestSetSearch<'_> {
         let mut branches: Vec<(u32, u32)> = self.case_candidates[case]
             .iter()
             .copied()
+            .filter(|&solution| !PARTITION || !self.sibling_excluded[solution as usize])
             .map(|solution| {
                 let g = gain(
                     &self.solution_coverage[solution as usize],
@@ -481,21 +493,41 @@ impl BestSetSearch<'_> {
             })
             .collect();
         branches.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(&b.0)));
+        let exclusion_checkpoint = self.exclusion_trail.len();
         for (solution, _) in branches {
             if selected.contains(&solution) {
                 continue;
             }
-            let mut next = covered.clone();
+            let mut next = self.covered_buffers.pop().unwrap_or_default();
+            next.clear();
+            next.extend_from_slice(covered);
             or_into(&mut next, &self.solution_coverage[solution as usize]);
             selected.push(solution);
             if let Some(state) = self.quality_histogram.as_mut() {
                 state.push(solution);
             }
-            self.run(next, selected);
+            self.run(&next, selected);
+            self.covered_buffers.push(next);
             if let Some(state) = self.quality_histogram.as_mut() {
                 state.pop(solution);
             }
             selected.pop();
+            if PARTITION {
+                // Every feasible extension belongs to its earliest selected
+                // sibling. Restore only this frame's additions on return,
+                // including a state-budget exit; ancestor exclusions survive.
+                self.sibling_excluded[solution as usize] = true;
+                self.exclusion_trail.push(solution);
+                if self.budget_exceeded {
+                    break;
+                }
+            }
+        }
+        if PARTITION {
+            for &solution in &self.exclusion_trail[exclusion_checkpoint..] {
+                self.sibling_excluded[solution as usize] = false;
+            }
+            self.exclusion_trail.truncate(exclusion_checkpoint);
         }
     }
 }
@@ -573,6 +605,7 @@ pub fn exact_minimum_cardinality_cover(
     let mut greedy_stable = greedy.clone();
     greedy_stable.sort_unstable();
     let mut search = CardinalitySearch {
+        covered_buffers: Vec::new(),
         full: &full,
         case_candidates: &case_candidates,
         solution_coverage: &solution_coverage,
@@ -581,7 +614,7 @@ pub fn exact_minimum_cardinality_cover(
         best_depth_by_covered: HashMap::new(),
         searched_states: 0,
     };
-    search.run(vec![0u64; words], &mut Vec::new());
+    search.run(&vec![0u64; words], &mut Vec::new());
     Some(MinimumCoverResult {
         selected: search.best_selected,
         quality: Vec::new(),
@@ -678,6 +711,7 @@ fn exact_minimum_cover_with_histogram_switch(
     let mut greedy_stable = greedy.clone();
     greedy_stable.sort_unstable();
     let mut cardinality = CardinalitySearch {
+        covered_buffers: Vec::new(),
         full: &full,
         case_candidates: &case_candidates,
         solution_coverage: &solution_coverage,
@@ -686,9 +720,12 @@ fn exact_minimum_cover_with_histogram_switch(
         best_depth_by_covered: HashMap::new(),
         searched_states: 0,
     };
-    cardinality.run(vec![0u64; words], &mut Vec::new());
+    cardinality.run(&vec![0u64; words], &mut Vec::new());
 
-    let mut best_search = BestSetSearch {
+    let mut best_search = BestSetSearch::<false> {
+        covered_buffers: Vec::new(),
+        sibling_excluded: Vec::new(),
+        exclusion_trail: Vec::new(),
         full: &full,
         case_candidates: &case_candidates,
         solution_coverage: &solution_coverage,
@@ -705,7 +742,7 @@ fn exact_minimum_cover_with_histogram_switch(
         state_budget: None,
         budget_exceeded: false,
     };
-    best_search.run(vec![0u64; words], &mut Vec::new());
+    best_search.run(&vec![0u64; words], &mut Vec::new());
 
     let selected = best_search.best_selected.or_else(|| {
         if greedy.len() == cardinality.best_count {
@@ -744,6 +781,63 @@ pub fn exact_minimum_cover(
 /// search tree therefore matches the canonical secondary search while starting
 /// with K already known.
 fn exact_quality_cover_at_count_integrated_bounded_with_histogram_switch(
+    raw_cases: &[Vec<(u32, u32)>],
+    solution_count: usize,
+    exact_count: usize,
+    seed_selected: &[u32],
+    state_budget: Option<u64>,
+    histogram_switch_after: u64,
+    candidate_dominance: bool,
+) -> Option<BoundedQualityResult> {
+    exact_quality_cover_at_count_integrated_with_options(
+        raw_cases,
+        solution_count,
+        exact_count,
+        seed_selected,
+        state_budget,
+        histogram_switch_after,
+        candidate_dominance,
+        false,
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+fn exact_quality_cover_at_count_integrated_with_options(
+    raw_cases: &[Vec<(u32, u32)>],
+    solution_count: usize,
+    exact_count: usize,
+    seed_selected: &[u32],
+    state_budget: Option<u64>,
+    histogram_switch_after: u64,
+    candidate_dominance: bool,
+    partition_siblings: bool,
+) -> Option<BoundedQualityResult> {
+    // Specialize the DFS so the historical traversal pays no per-state
+    // runtime flag checks for the experimental sibling exclusions.
+    if partition_siblings {
+        integrated_with_options_impl::<true>(
+            raw_cases,
+            solution_count,
+            exact_count,
+            seed_selected,
+            state_budget,
+            histogram_switch_after,
+            candidate_dominance,
+        )
+    } else {
+        integrated_with_options_impl::<false>(
+            raw_cases,
+            solution_count,
+            exact_count,
+            seed_selected,
+            state_budget,
+            histogram_switch_after,
+            candidate_dominance,
+        )
+    }
+}
+
+fn integrated_with_options_impl<const PARTITION: bool>(
     raw_cases: &[Vec<(u32, u32)>],
     solution_count: usize,
     exact_count: usize,
@@ -851,7 +945,14 @@ fn exact_quality_cover_at_count_integrated_bounded_with_histogram_switch(
     let seed_quality = quality_vector(&normalized, &seed, solution_count);
     let mut completed = HashSet::new();
     completed.insert(seed.clone());
-    let mut search = BestSetSearch {
+    let mut search = BestSetSearch::<PARTITION> {
+        covered_buffers: Vec::new(),
+        sibling_excluded: if PARTITION {
+            vec![false; solution_count]
+        } else {
+            Vec::new()
+        },
+        exclusion_trail: Vec::new(),
         full: &full,
         case_candidates: &case_candidates,
         solution_coverage: &solution_coverage,
@@ -868,7 +969,9 @@ fn exact_quality_cover_at_count_integrated_bounded_with_histogram_switch(
         state_budget,
         budget_exceeded: false,
     };
-    search.run(vec![0u64; words], &mut Vec::new());
+    search.run(&vec![0u64; words], &mut Vec::new());
+    debug_assert!(search.exclusion_trail.is_empty());
+    debug_assert!(search.sibling_excluded.iter().all(|&v| !v));
 
     let selected = search.best_selected.unwrap_or(seed);
     let quality = search
@@ -901,6 +1004,28 @@ pub fn exact_quality_cover_at_count_integrated_bounded(
         state_budget,
         QUALITY_HISTOGRAM_SWITCH_COMPLETE_COVERS,
         false,
+    )
+}
+
+/// Experimental fixed-minimum-K search that partitions sibling branches.
+/// A bounded result is only an incumbent; only Exact proves quality and ties.
+/// Production entry points continue to use the historical traversal.
+pub fn exact_quality_cover_at_count_integrated_partitioned_bounded(
+    raw_cases: &[Vec<(u32, u32)>],
+    solution_count: usize,
+    exact_count: usize,
+    seed_selected: &[u32],
+    state_budget: Option<u64>,
+) -> Option<BoundedQualityResult> {
+    exact_quality_cover_at_count_integrated_with_options(
+        raw_cases,
+        solution_count,
+        exact_count,
+        seed_selected,
+        state_budget,
+        QUALITY_HISTOGRAM_SWITCH_COMPLETE_COVERS,
+        false,
+        true,
     )
 }
 
@@ -1548,6 +1673,8 @@ pub enum BoundedQualityResult {
 }
 
 struct SequentialThresholdSearch<'a> {
+    // Buffers are retained across siblings and grow with actual search depth.
+    covered_buffers: Vec<Vec<u64>>,
     full: &'a [u64],
     case_candidates: &'a [Vec<u32>],
     solution_coverage: &'a [Vec<u64>],
@@ -1630,7 +1757,7 @@ impl SequentialThresholdSearch<'_> {
             ))
     }
 
-    fn run(&mut self, covered: Vec<u64>) {
+    fn run(&mut self, covered: &[u64]) {
         if self.budget_exceeded {
             return;
         }
@@ -1772,10 +1899,13 @@ impl SequentialThresholdSearch<'_> {
                 excluded_here.push(id);
                 continue;
             }
-            let mut next = covered.clone();
+            let mut next = self.covered_buffers.pop().unwrap_or_default();
+            next.clear();
+            next.extend_from_slice(covered);
             or_into(&mut next, &self.solution_coverage[id]);
             self.add_solution(id);
-            self.run(next);
+            self.run(&next);
+            self.covered_buffers.push(next);
             self.remove_solution(id);
             if self.budget_exceeded {
                 break;
@@ -1802,7 +1932,11 @@ fn fixed_quality_internal(
     seed_selected: &[u32],
     locked_prefix: &[u32],
     state_budget: Option<u64>,
+    mut proven_prefix: Option<&mut Vec<u32>>,
 ) -> Option<BoundedQualityResult> {
+    if let Some(prefix) = proven_prefix.as_deref_mut() {
+        prefix.clear();
+    }
     if raw_cases.is_empty() {
         let result = MinimumCoverResult {
             selected: Vec::new(),
@@ -1923,6 +2057,7 @@ fn fixed_quality_internal(
             }
         }
         let mut search = SequentialThresholdSearch {
+            covered_buffers: Vec::new(),
             full: &full,
             case_candidates: &case_candidates,
             solution_coverage: &solution_coverage,
@@ -1941,7 +2076,7 @@ fn fixed_quality_internal(
             state_budget: remaining_budget,
             budget_exceeded: false,
         };
-        search.run(vec![0u64; full.len()]);
+        search.run(&vec![0u64; full.len()]);
         searched_states += search.searched_states;
         best = search.best_selected;
         if search.budget_exceeded {
@@ -1952,6 +2087,11 @@ fn fixed_quality_internal(
             }));
         }
         targets.push(search.best_current);
+        // Publish only fully proved thresholds. A budget-exhausted incumbent
+        // is not a certificate for the current threshold or the stable tie.
+        if let Some(prefix) = proven_prefix.as_deref_mut() {
+            prefix.clone_from(&targets);
+        }
     }
 
     if !threshold_data.is_empty() && locked_prefix.len() == threshold_data.len() {
@@ -1990,6 +2130,7 @@ fn fixed_quality_internal(
             }
         }
         let mut search = SequentialThresholdSearch {
+            covered_buffers: Vec::new(),
             full: &full,
             case_candidates: &case_candidates,
             solution_coverage: &solution_coverage,
@@ -2008,7 +2149,7 @@ fn fixed_quality_internal(
             state_budget: remaining_budget,
             budget_exceeded: false,
         };
-        search.run(vec![0u64; full.len()]);
+        search.run(&vec![0u64; full.len()]);
         searched_states += search.searched_states;
         best = search.best_selected;
         if search.budget_exceeded {
@@ -2045,7 +2186,24 @@ pub fn exact_quality_cover_at_count_bounded(
         seed_selected,
         &[],
         state_budget,
+        None,
     )
+}
+
+/// Trusted in-process progress for this exact matrix and K. Prefix values are
+/// weighted counts at increasing distinct quality thresholds (omit the lowest
+/// when there is more than one). This is not a portable proof for other inputs.
+pub fn exact_quality_cover_at_count_progress_bounded(
+    raw_cases: &[Vec<(u32, u32)>],
+    solution_count: usize,
+    exact_count: usize,
+    seed_selected: &[u32],
+    state_budget: Option<u64>,
+) -> Option<(BoundedQualityResult, Vec<u32>)> {
+    let mut prefix = Vec::new();
+    let result = fixed_quality_internal(raw_cases, solution_count, exact_count,
+        seed_selected, &[], state_budget, Some(&mut prefix))?;
+    Some((result, prefix))
 }
 
 pub fn exact_quality_cover_at_count(
@@ -2060,6 +2218,7 @@ pub fn exact_quality_cover_at_count(
         exact_count,
         seed_selected,
         &[],
+        None,
         None,
     )? {
         BoundedQualityResult::Exact(result) => Some(result),
@@ -2080,6 +2239,7 @@ pub fn exact_quality_cover_at_count_with_locked_prefix(
         exact_count,
         seed_selected,
         locked_prefix,
+        None,
         None,
     )? {
         BoundedQualityResult::Exact(result) => Some(result),

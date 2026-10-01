@@ -9,15 +9,15 @@ export function calculateLegacyFifthFeature({
   solver,
   useHold = true,
 }) {
-  decodeAndValidate(sourceFumen, clear);
+  const context = decodeAndValidate(sourceFumen, clear);
   if (clear !== 4) throw new Error("5th is clear=4 only");
   const calculation = fifthMinimalsPerSaves({
     sourceFumen,
     analysisPattern: pattern,
     solver,
     useHold,
-  });
-  const encoded = encodeFifthCombined({ sourceFumen, title, calculation });
+  }, context);
+  const encoded = encodeFifthCombined({ sourceFumen, title, calculation }, context.page);
   return {
     total: calculation.queues.length,
     bestsave: calculation.bestsave,
@@ -40,7 +40,7 @@ export async function calculateFifthFeature({
   UseHiGHS = undefined,
   fastStateBudget = undefined,
 }) {
-  decodeAndValidate(sourceFumen, clear);
+  const context = decodeAndValidate(sourceFumen, clear);
   if (clear !== 4) throw new Error("5th is clear=4 only");
   const calculation = await fifthMinimalsPerSavesAsync({
     sourceFumen,
@@ -51,8 +51,8 @@ export async function calculateFifthFeature({
     primary: primary ?? Primary,
     useHiGHS: useHiGHS ?? UseHiGHS ?? "auto",
     fastStateBudget,
-  });
-  const encoded = encodeFifthCombined({ sourceFumen, title, calculation });
+  }, context);
+  const encoded = encodeFifthCombined({ sourceFumen, title, calculation }, context.page);
   return {
     total: calculation.queues.length,
     bestsave: calculation.bestsave,

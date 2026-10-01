@@ -144,6 +144,8 @@ pub unsafe extern "C" fn solver_probability_stat(ptr: *mut WasmSolver, kind: u32
         0 => core.probability_paths,
         1 => core.probability_language_nodes as u64,
         2 => core.probability_fallback as u64,
+        3 => core.probability_dag_hits,
+        4 => core.probability_dag_bytes as u64,
         _ => 0,
     }
 }
@@ -159,4 +161,67 @@ pub unsafe extern "C" fn solver_reconstruction_stat(ptr: *mut WasmSolver, skippe
     } else {
         core.reconstruction_skipped
     }
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_probability_session(ptr: *mut WasmSolver, begin: u32) -> u32 {
+    if ptr.is_null() {
+        return 0;
+    }
+    let core = &mut unsafe { &mut *ptr }.core;
+    if begin != 0 {
+        if core.probability_session_depth == 0 {
+            core.probability_dag_hits = 0;
+        }
+        core.probability_session_depth += 1;
+    } else {
+        core.probability_session_depth = core.probability_session_depth.saturating_sub(1);
+        if core.probability_session_depth == 0 {
+            core.clear_probability_session();
+        }
+    }
+    1
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_set_best_engine(
+    ptr: *mut WasmSolver,
+    engine: u32,
+    budget: u32,
+) -> u32 {
+    if ptr.is_null() || engine > 2 || budget > 200_000 {
+        return 0;
+    }
+    let core = &mut unsafe { &mut *ptr }.core;
+    core.best_engine = engine as u8;
+    core.best_language_budget = budget as usize;
+    1
+}
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_best_language_stat(ptr: *mut WasmSolver, kind: u32) -> u32 {
+    if ptr.is_null() {
+        return 0;
+    }
+    let core = &unsafe { &*ptr }.core;
+    match kind {
+        0 => core.best_language_nodes,
+        1 => core.best_language_fallback as u32,
+        _ => 0,
+    }
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_set_geometry_budget(ptr: *mut WasmSolver, budget: u32) -> u32 {
+    if ptr.is_null() || budget > 200_000 {
+        return 0;
+    }
+    unsafe { &mut *ptr }.core.geometry_state_budget = budget as usize;
+    1
+}
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_geometry_fallback(ptr: *mut WasmSolver) -> u32 {
+    if ptr.is_null() {
+        return 0;
+    }
+    unsafe { &*ptr }.core.geometry_fallback as u32
 }

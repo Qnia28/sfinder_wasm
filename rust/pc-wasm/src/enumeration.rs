@@ -3,6 +3,49 @@ use pc_core::{PcSolver, Solution, decode_queue_array};
 
 const SOLUTION_WORD_STRIDE: usize = 9;
 
+// Repeated [used-piece counters, case count, case IDs...] records. Borrowed
+// until the next saves call; JS copies the buffer before any WASM mutation.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_save_outcomes_pattern(
+    ptr: *mut WasmSolver,
+    board: u64,
+    qbits_ptr: *const u64,
+    qlen_ptr: *const u8,
+    count: u32,
+    hold: u32,
+) -> u32 {
+    if ptr.is_null() || (count > 0 && (qbits_ptr.is_null() || qlen_ptr.is_null())) {
+        return u32::MAX;
+    }
+    let solver = unsafe { &mut *ptr };
+    solver.save_outcome_words.clear();
+    if count == 0 {
+        return 0;
+    }
+    let qbits = unsafe { core::slice::from_raw_parts(qbits_ptr, count as usize) };
+    let qlens = unsafe { core::slice::from_raw_parts(qlen_ptr, count as usize) };
+    let Some(rows) = solver
+        .core
+        .save_outcomes_pattern_packed(board, qbits, qlens, hold != 0)
+    else {
+        return u32::MAX;
+    };
+    for (counts, cases) in rows {
+        solver.save_outcome_words.push(counts);
+        solver.save_outcome_words.push(cases.len() as u32);
+        solver.save_outcome_words.extend(cases);
+    }
+    solver.save_outcome_words.len() as u32
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_save_outcomes_ptr(ptr: *mut WasmSolver) -> *const u32 {
+    if ptr.is_null() {
+        return core::ptr::null();
+    }
+    unsafe { &*ptr }.save_outcome_words.as_ptr()
+}
+
 // 0=false, 1=true, 2=budget exhausted or invalid input. Unknown is not false.
 #[unsafe(no_mangle)]
 pub unsafe extern "C" fn solver_probe_can_pc(
@@ -134,6 +177,79 @@ pub unsafe extern "C" fn solver_enumerate_pc(
     let solutions = s.core.enumerate_pc(board, &q[..qn], hold != 0);
     set_concrete_solutions(s, &q[..qn], solutions);
     s.solutions.len() as u32
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_enumerate_pc_geometry(
+    ptr: *mut WasmSolver,
+    board: u64,
+    qbits: u64,
+    qlen: u32,
+    hold: u32,
+) -> u32 {
+    if ptr.is_null() || qlen > 21 {
+        return 0;
+    }
+    let Some((q, qn)) = decode_queue_array(qbits, qlen as u8) else {
+        return 0;
+    };
+    let s = unsafe { &mut *ptr };
+    let solutions = s.core.enumerate_pc_geometry(board, &q[..qn], hold != 0);
+    set_concrete_solutions(s, &q[..qn], solutions);
+    s.solutions.len() as u32
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_enumerate_pc_path(
+    ptr: *mut WasmSolver,
+    board: u64,
+    qbits_ptr: *const u64,
+    qlen_ptr: *const u8,
+    count: u32,
+    hold: u32,
+) -> u32 {
+    if ptr.is_null() || (count > 0 && (qbits_ptr.is_null() || qlen_ptr.is_null())) {
+        return u32::MAX;
+    }
+    let s = unsafe { &mut *ptr };
+    s.solutions.clear();
+    s.solution_saves.clear();
+    s.path_coverage_counts.clear();
+    if count == 0 {
+        return 0;
+    }
+    let qbits = unsafe { core::slice::from_raw_parts(qbits_ptr, count as usize) };
+    let qlens = unsafe { core::slice::from_raw_parts(qlen_ptr, count as usize) };
+    if qbits
+        .iter()
+        .zip(qlens)
+        .any(|(&bits, &len)| len > 21 || decode_queue_array(bits, len).is_none())
+    {
+        return u32::MAX;
+    }
+    let Some(rows) = s
+        .core
+        .enumerate_pc_path_packed(board, qbits, qlens, hold != 0)
+    else {
+        return u32::MAX;
+    };
+    for (masks, coverage) in rows {
+        s.solutions.push(Solution {
+            masks,
+            order_count: 0,
+        });
+        s.solution_saves.push(7);
+        s.path_coverage_counts.push(coverage);
+    }
+    s.solutions.len() as u32
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_path_coverage_counts_ptr(ptr: *const WasmSolver) -> *const u32 {
+    if ptr.is_null() {
+        return core::ptr::null();
+    }
+    unsafe { &*ptr }.path_coverage_counts.as_ptr()
 }
 
 #[unsafe(no_mangle)]

@@ -1,6 +1,11 @@
 # sfinder-wasm
 
-**Current release: 3.0 (2026-09-06)**
+**Development working tree: `dev-branch` (based on release 3.0, 2026-09-06)**
+
+This directory was renamed from `release3.0-20260906`; it includes local,
+uncommitted development changes. The directory name does not denote a Git
+branch or a newly published release. See [current development status](docs/DEV_BRANCH_STATUS.md)
+for adopted behavior, experimental policies and verification status.
 
 `sfinder-wasm` is a browser-native Rust/WebAssembly implementation of selected
 Tetris Perfect Clear analysis workflows. It reproduces the intended output

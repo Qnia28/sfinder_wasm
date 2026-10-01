@@ -78,14 +78,20 @@ export class WasmPcSolver {
     }
   }
 
-  setProbabilityEngine(engine = 'auto', { maxLanguageNodes = 200000 } = {}) {
+  withProbabilitySession(callback) {
+    if (!this.e.solver_probability_session) return callback();
+    this.e.solver_probability_session(this.ptr, 1);
+    try { return callback(); } finally { this.e.solver_probability_session(this.ptr, 0); }
+  }
+
+  setProbabilityEngine(engine = 'auto' , { maxLanguageNodes = 200000 } = {}) {
     const code = { auto: 0, compressed: 1, legacy: 2 }[engine];
     if (typeof code !== 'number' || !Number.isInteger(maxLanguageNodes) || maxLanguageNodes < 0 || maxLanguageNodes > 200000) throw new RangeError('invalid probability engine or language node budget');
     if (!this.e.solver_set_probability_engine?.(this.ptr, code, maxLanguageNodes)) throw new Error('WASM does not support probability engine selection');
   }
   probabilityStats() {
     const read = kind => Number(this.e.solver_probability_stat?.(this.ptr, kind) ?? 0);
-    return { geometryPaths: read(0), languageNodes: read(1), budgetFallback: read(2) !== 0 };
+    return { geometryPaths: read(0), languageNodes: read(1), budgetFallback: read(2) !== 0, requestDagHits: read(3), requestDagBytes: read(4) };
   }
   setPlacementCacheBudget(bytes) {
     if (!Number.isInteger(bytes) || bytes < 1024 || bytes > 256 * 1024 * 1024) {

@@ -4,6 +4,7 @@ import { encodePages } from "./fumen.mjs";
 import { expandPatternCases } from "./pattern.mjs";
 import { canUsePatternEnumeration, enumerateCases } from "./pc-enumeration-engine.mjs";
 import { PC_ROUTING_PROFILES } from "./pc-routing-policy.mjs";
+import { mapQueuesCached } from "./pc-queue-utils.mjs";
 
 export const PATH_FOUR_LINE_PATTERN_MIN_CASES = PC_ROUTING_PROFILES.path.fourLinePatternMinCases;
 export const PATH_TALL_PATTERN_MIN_CASES = PC_ROUTING_PROFILES.path.tallPatternMinCases;
@@ -77,6 +78,16 @@ export function calculatePath({
     if (packed && Array.isArray(packed.solutions)) {
       backend = "pattern";
       ordered = collectCompactPatternPath(packed);
+    }
+  }
+
+  if (!ordered) {
+    const scalarGeometry = typeof solver.enumeratePcGeometry === 'function' && !canUsePatternEnumeration({
+      cases, solver, fourLineMinCases: fourLinePatternMinCases, tallMinCases: tallPatternMinCases,
+    });
+    if (scalarGeometry) {
+      backend = 'scalar';
+      ordered = collectScalarPath(mapQueuesCached(queues, queue => solver.enumeratePcGeometry(initialBoard, queue, useHold)));
     }
   }
 

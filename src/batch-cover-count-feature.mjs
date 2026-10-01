@@ -20,6 +20,14 @@ export async function calculateCoverCount({
   mirror = boolMirror(mirror);
   const finderPattern = queuesForFinder(pattern);
   const targets = decodedTargets(sourceFumen, clear);
+  return calculateTargetCoverCount({ targets, pattern, clear, mode, mirror, useHold, maxBatchPrefixes });
+}
+
+export async function calculateTargetCoverCount({ targets, pattern, clear = 4, mode = 'normal', mirror = false, useHold = true, maxBatchPrefixes = 65536 }) {
+  validateTargetLines(clear);
+  if (!Number.isInteger(maxBatchPrefixes) || maxBatchPrefixes < 1 || maxBatchPrefixes > 1000000) throw new RangeError('maxBatchPrefixes must be an integer from 1 to 1000000');
+  mode = normalizeCoverMode(mode); mirror = boolMirror(mirror);
+  const finderPattern = queuesForFinder(pattern);
   const take = targets.reduce((max, t) => Math.max(max, t.operations.length), 0) + (useHold ? 1 : 0);
   const source = createPatternPrefixSource(finderPattern, take);
   const reachabilityByHeight = new Map();

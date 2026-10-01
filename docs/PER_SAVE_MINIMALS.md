@@ -52,6 +52,22 @@ All cases share enumeration work where possible. For each saved piece:
 Small matrices can use the integrated exact solver path. Broad matrices keep
 numeric solution IDs through the Rust/WASM minimum-cover call.
 
+The exact `secondary` setting is shared with ordinary minimals: `auto` (default),
+`rust`, `integrated`, `threshold`, or `cpsat`. Auto keeps integrated100k → threshold
+and adds a CP-SAT helper only after 60 seconds of secondary work; threshold keeps
+running. This is independent of which save piece is being analyzed. See the
+[three-engine policy](SECONDARY_THREE_ENGINE_20260927.md).
+
+Broad per-save requests consume one compact pattern export for all seven save
+groups. `compact-geometry.mjs` shares key and piece-usage decoding with minimals;
+only selected solutions materialize BigInt masks. Each larger save group passes
+its prepared numeric rows and packed CSR through the shared minimum-cover
+adapters, without converting to string Sets and packing the matrix again.
+Tiny integrated solves use their existing numeric rows directly. The direct
+calculation API still materializes its requested coverage Map; the Worker
+feature skips that unused output. Exact quality remains the default, and save
+grouping still uses the queue multiset minus solution usage.
+
 The same shared PC-enumeration policy applies as other PC features: 4-line small
 workloads retain the legal-board/oracle scalar path, while broad matrices can
 reuse the multiset geometry DAG and Queue/Hold trie. 5–6 line compatibility
@@ -90,3 +106,18 @@ order. Equal coverage uses solution key ascending. This is presentation order
 only; it does not change exact cover selection.
 
 See `API_REFERENCE.md` for the public result shape.
+
+
+## Exact secondary workers (2026-09-12)
+
+The asynchronous per-save-minimals API accepts `secondaryWorkers`:
+
+- `"auto"` (default): retain the existing bounded integrated exact search locally; distribute expensive threshold exact searches across two request-owned workers. Hard-primary threshold searches are dispatched directly.
+- `0`: serial reference execution.
+- `1` through `4`: dispatch the complete exact secondary after each save's primary finishes, using that many workers.
+
+Primary routing and settings are unchanged: Rust/HiGHS stay on the existing single execution lane, and ORTools retains two workers. Primary jobs remain sequential; a completed primary can enqueue its secondary while the next save proceeds. Tiny integrated Auto cases and single-queue shortcuts retain their existing execution paths. Fast quality mode does not dispatch secondary jobs. Custom solver objects retain local execution.
+
+Each child owns an independent WASM instance and receives a copy of the original quality CSR, including duplicate row weights. It does not load the legal pack. The cardinality-reduced matrix is never substituted for the quality matrix. Threshold levels remain sequential within each job; the exact objective, selected-key ordering, and result metadata are preserved. Pending jobs are rejected and workers terminated on pool failure or request completion. Public client cancellation terminates the parent Worker; a new request uses a fresh parent.
+
+Parallelism has initialization and matrix-copy costs. It cannot accelerate pattern expansion or candidate enumeration before the primary/secondary boundary. The default avoids spawning workers for exact searches completed by the existing bounded integrated search. A fixed worker count is primarily useful for measured heavy workloads; four workers are not universally faster.

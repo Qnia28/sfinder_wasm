@@ -94,9 +94,10 @@ function unfoldAtHeight(pages, height) {
 function requiredHistoryHeight(pages, targetHeight) {
   let required = targetHeight;
   for (const page of pages) {
+    const field = page.field;
     for (let y = targetHeight; y < 23; y += 1) {
       for (let x = 0; x < 10; x += 1) {
-        if (page.field.at(x, y) !== '_') required = Math.max(required, y + 1);
+        if (field.at(x, y) !== '_') required = Math.max(required, y + 1);
       }
     }
     if (page.operation) {

@@ -47,6 +47,9 @@ pub fn exact_primary_cardinality_kernel(
     let mut forced = Vec::<u32>::new();
     let mut forced_flag = vec![false; solution_count];
 
+    let mut masks = Vec::<u64>::new();
+    let mut coverage = Vec::<u64>::new();
+    let mut coverage_counts = vec![0usize; solution_count];
     loop {
         let mut changed = false;
         let mut next_cases = Vec::with_capacity(active_cases.len());
@@ -93,10 +96,14 @@ pub fn exact_primary_cardinality_kernel(
         // processed from smallest to largest, so the first kept subset proves a
         // later row redundant.
         let solution_words = solution_count.div_ceil(64);
-        let mut masks = vec![vec![0u64; solution_words]; active_cases.len()];
+        masks.clear();
+        masks.resize(active_cases.len().checked_mul(solution_words)?, 0);
         for (case, (_, row)) in active_cases.iter().enumerate() {
             for &id in row {
-                set_bit(&mut masks[case], id as usize);
+                set_bit(
+                    &mut masks[case * solution_words..(case + 1) * solution_words],
+                    id as usize,
+                );
             }
         }
         let mut order: Vec<usize> = (0..active_cases.len()).collect();
@@ -104,10 +111,12 @@ pub fn exact_primary_cardinality_kernel(
         let mut keep = vec![false; active_cases.len()];
         let mut kept = Vec::<usize>::new();
         for case in order {
-            let dominated = kept
-                .iter()
-                .copied()
-                .any(|prior| words_subset_u64(&masks[prior], &masks[case]));
+            let dominated = kept.iter().copied().any(|prior| {
+                words_subset_u64(
+                    &masks[prior * solution_words..(prior + 1) * solution_words],
+                    &masks[case * solution_words..(case + 1) * solution_words],
+                )
+            });
             if dominated {
                 changed = true;
             } else {
@@ -125,16 +134,20 @@ pub fn exact_primary_cardinality_kernel(
 
         // Candidate dominance on the remaining primary cases.
         let case_words = active_cases.len().div_ceil(64);
-        let mut coverage = vec![vec![0u64; case_words]; solution_count];
+        coverage.clear();
+        coverage.resize(solution_count.checked_mul(case_words)?, 0);
+        coverage_counts.fill(0);
         for (case, (_, row)) in active_cases.iter().enumerate() {
             for &id in row {
                 if active_solutions[id as usize] {
-                    set_bit(&mut coverage[id as usize], case);
+                    let id = id as usize;
+                    set_bit(&mut coverage[id * case_words..(id + 1) * case_words], case);
+                    coverage_counts[id] += 1;
                 }
             }
         }
         let active_ids: Vec<usize> = (0..solution_count)
-            .filter(|&id| active_solutions[id] && coverage[id].iter().any(|&word| word != 0))
+            .filter(|&id| active_solutions[id] && coverage_counts[id] != 0)
             .collect();
         let mut remove = vec![false; solution_count];
         for &a in &active_ids {
@@ -142,11 +155,13 @@ pub fn exact_primary_cardinality_kernel(
                 continue;
             }
             for &b in &active_ids {
-                if a == b || remove[b] {
+                if a == b || remove[b] || coverage_counts[a] > coverage_counts[b] {
                     continue;
                 }
-                if words_subset_u64(&coverage[a], &coverage[b])
-                    && (coverage[a] != coverage[b] || a > b)
+                if words_subset_u64(
+                    &coverage[a * case_words..(a + 1) * case_words],
+                    &coverage[b * case_words..(b + 1) * case_words],
+                ) && (coverage_counts[a] != coverage_counts[b] || a > b)
                 {
                     remove[a] = true;
                     break;
@@ -154,7 +169,7 @@ pub fn exact_primary_cardinality_kernel(
             }
         }
         for id in 0..solution_count {
-            if active_solutions[id] && coverage[id].iter().all(|&word| word == 0) {
+            if active_solutions[id] && coverage_counts[id] == 0 {
                 remove[id] = true;
             }
         }

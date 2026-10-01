@@ -135,6 +135,13 @@ wantedSave: 'T&&I'
 
 or an array / comma-separated list of expressions.
 
+`singleSaveMask` defaults to `true`: when every queue has exactly one more piece
+than the required placements, saves uses compact per-queue masks and exact
+last-bag-aware outcome dictionaries. Other inputs retain the general path.
+Set it to `false` to use the general Set implementation explicitly.
+The experimental request-local `outcomeCache` defaults to `false`; it applies
+only when the compact mask path is not selected. Output semantics are identical.
+
 Single-expression result preserves the historical flat shape:
 
 ```js
@@ -178,6 +185,7 @@ See `SAVE_EXPRESSIONS.md`.
   exactHumanQuality: 'Fast',
   Primary: 'Auto',
   fastStateBudget,        // optional expert tuning: main integrated Fast probe budget
+  secondary: 'auto',      // applies when exactHumanQuality is 'true'
 }
 ```
 
@@ -190,6 +198,18 @@ SharedArrayBuffer or browser cross-origin isolation is unavailable. Explicit
 ORTools retains its support error. Fallback metadata keeps primaryRequested='auto'
 and reports primaryResolved/cardinalityBackend='highs', useHiGHSResolved=true.
 See ORTOOLS_INTEGRATION_AND_LICENSE.md for deployment requirements.
+
+For exact quality, `secondary` accepts `auto`, `rust`, `integrated`, `threshold`,
+or `cpsat` (case-insensitive). Auto retains integrated100k → threshold and starts
+a 1-worker CP-SAT helper after 60 seconds of secondary work, keeping threshold
+running. The first complete quality **and stable-ID** proof wins. Unsupported CP
+environments retain the Rust path. `rust` explicitly selects the previous policy;
+`integrated` and `threshold` select their unbounded fixed-K prover. Explicit
+`cpsat` uses a 120-second soft budget including loading/model preparation, with a
+one-second watchdog grace, and throws if exact proof is incomplete. Common trivial
+proofs run before the selected engine.
+Fast and cardinality-only behavior is unchanged. See
+[the three-engine contract](SECONDARY_THREE_ENGINE_20260927.md).
 
 `fastStateBudget` controls the historical integrated fixed-K Fast probe. Fast may
 also run a small exact-only candidate-dominance preview and, after an integrated
@@ -247,6 +267,7 @@ compatibility/reference. Production callers should prefer `minimals`.
   useHold: true,
   exactHumanQuality: 'true',
   Primary: 'Auto',
+  secondary: 'auto', // same exact-secondary policy/options as minimals
   candidateLimit: 16, // compatibility only; does not truncate exact single-queue results
 }
 ```
@@ -407,3 +428,28 @@ silently coercing it. Examples include:
 - exact queue length mismatch;
 - save analysis branches without final-bag metadata;
 - per-save geometry whose remaining cells are not a positive multiple of four.
+
+
+## 2026-09-12 추가 계약
+
+`congruent-cover`는 `outputMode: 'variants'`(기본), `'coverage'`, `'count'`를 지원한다.
+coverage는 상세 Fumen/solutions/orders/variants를 생략하며 실패 큐는 유지한다.
+count는 큐 목록도 생략하고 가중 prefix 및 BigInt로 정확 합계를 반환한다.
+`cover-percent`의 `outputMode: 'count'`는 exact 합계를 추가하며 Fumen은 유지한다.
+`maxSolutions`는 Rust/JS 모두 큐 검증 후의 고유 Congruent 해를 제한한다. 한도를 넘는 다음 해에서 오류가 나며 부분 결과는 반환하지 않는다.
+[필드, 수명, 한도 및 fallback의 전체 계약](TODO_OPTIMIZATION_20260912.md)을 참조한다.
+
+
+## Exact secondary workers (2026-09-12)
+
+The asynchronous per-save-minimals API accepts `secondaryWorkers`:
+
+- `"auto"` (default): retain the existing bounded integrated exact search locally; distribute expensive threshold exact searches across two request-owned workers. Hard-primary threshold searches are dispatched directly.
+- `0`: serial reference execution.
+- `1` through `4`: dispatch the complete exact secondary after each save's primary finishes, using that many workers.
+
+Primary routing and settings are unchanged: Rust/HiGHS stay on the existing single execution lane, and ORTools retains two workers. Primary jobs remain sequential; a completed primary can enqueue its secondary while the next save proceeds. Tiny integrated Auto cases and single-queue shortcuts retain their existing execution paths. Fast quality mode does not dispatch secondary jobs. Custom solver objects retain local execution.
+
+Each child owns an independent WASM instance and receives a copy of the original quality CSR, including duplicate row weights. It does not load the legal pack. The cardinality-reduced matrix is never substituted for the quality matrix. Threshold levels remain sequential within each job; the exact objective, selected-key ordering, and result metadata are preserved. Pending jobs are rejected and workers terminated on pool failure or request completion. Public client cancellation terminates the parent Worker; a new request uses a fresh parent.
+
+Parallelism has initialization and matrix-copy costs. It cannot accelerate pattern expansion or candidate enumeration before the primary/secondary boundary. The default avoids spawning workers for exact searches completed by the existing bounded integrated search. A fixed worker count is primarily useful for measured heavy workloads; four workers are not universally faster.
