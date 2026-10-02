@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "policy": "Exact witnesses are independently re-scored on all original rows, and cross-checked across completed settings/pairs. Seed scores are never treated as optimal. Candidate-only completions are reported separately; no offline optimum is invented.",
+  "smallOracle": "independent exhaustive K/quality/ID oracle in correctness.test.mjs"
+}

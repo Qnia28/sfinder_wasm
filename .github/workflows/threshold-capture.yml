@@ -1,0 +1,81 @@
+name: Threshold cycle1 database matrix capture
+on:
+  push:
+    branches: [experiment/threshold-engine-20261003]
+permissions:
+  contents: read
+concurrency:
+  group: threshold-capture-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      enabled: ${{ steps.plan.outputs.enabled }}
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci
+      - id: plan
+        run: node bench/threshold/capture-plan.mjs
+  build:
+    needs: plan
+    if: needs.plan.outputs.enabled == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: |
+          rustup toolchain install 1.90.0 --profile minimal --target wasm32-unknown-unknown
+          rustup default 1.90.0
+          node bench/threshold/build.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: threshold-capture-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            bench/threshold/build/original.wasm
+            bench/threshold/build/build.json
+          retention-days: 30
+  capture:
+    needs: [plan, build]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: threshold-capture-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/build
+      - name: Original enumeration then exact K proofs (not secondary timing)
+        env:
+          SETUP_ID: ${{ matrix.setup }}
+        run: node bench/threshold/capture.mjs "$SETUP_ID"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: threshold-capture-${{ matrix.setup }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/results/capture/
+          retention-days: 30
+          if-no-files-found: error

@@ -1,0 +1,1263 @@
+{
+  "version": 1,
+  "source": "cycle-1-setups.json",
+  "sourceSha256": "58f02fe2e1f7939e127de4c7ea2886bcf45c91a797ffa0d25dc8a0e4fb262388",
+  "entries": 45,
+  "policy": "Original fumen; remaining first-bag permutations plus next bag *p4; four-line PC with hold; all seven exact save filters.",
+  "setups": [
+    {
+      "id": "cycle1-alt-jaws-a",
+      "displayName": "ALT JAWS",
+      "family": "alt-jaws",
+      "fumen": "v115@DhzhGeQ4hlEeBtR4glFeBtQ4glJeAgH",
+      "pieceSignature": [
+        "I",
+        "L",
+        "S",
+        "Z"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0xf0380f83c0",
+      "mirrorGroup": "0x3c0707c0f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TJO]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-alt-shoes-a",
+      "displayName": "Alt Shoes [IJSZ]",
+      "family": "alt-shoes",
+      "fumen": "v115@FhAtg0GeBtg0EeR4Ath0DeR4zhJeAgH",
+      "pieceSignature": [
+        "I",
+        "J",
+        "S",
+        "Z"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0xc0380f83f0",
+      "mirrorGroup": "0xc0707c3f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TLO]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-big-jaws-a",
+      "displayName": "BIG JAWS [IOSZ]",
+      "family": "big-jaws",
+      "fumen": "v115@ChzhGeQ4GeBtR4RpEeBtQ4RpJeAgH",
+      "pieceSignature": [
+        "I",
+        "O",
+        "S",
+        "Z"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x78040fc3e0",
+      "mirrorGroup": "0x78080fc1f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TLJ]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-cliff-o-a",
+      "displayName": "CLIFF + O [IJOZ]",
+      "family": "cliff-o",
+      "fumen": "v115@9gzhFeh0AtGeg0BtEeRpg0AtFeRpJeAgH",
+      "pieceSignature": [
+        "I",
+        "J",
+        "O",
+        "Z"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x3c07c1f03",
+      "mirrorGroup": "0x3c07c1f03",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TLS]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-elephant-a",
+      "displayName": "ELEPHANT [Right Side]",
+      "family": "elephant",
+      "fumen": "v115@DhzhFeR4hlEeR4RpglGeRpglJeAgH",
+      "pieceSignature": [
+        "I",
+        "L",
+        "O",
+        "S"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0xf03c0f8380",
+      "mirrorGroup": "0x3c0f07c07",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TJZ]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-elephant-j-a",
+      "displayName": "Elephant + J [JLOZ]",
+      "family": "elephant-j",
+      "fumen": "v115@9gilGeglBtFeg0RpBtEeg0RpFeh0JeAgH",
+      "pieceSignature": [
+        "J",
+        "L",
+        "O",
+        "Z"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x1e0783f03",
+      "mirrorGroup": "0x1e0783f03",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TIS]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-hills-a",
+      "displayName": "HILLS",
+      "family": "hills",
+      "fumen": "v115@EhAtRpFeBtRpFeAti0Eezhg0JeAgH",
+      "pieceSignature": [
+        "I",
+        "J",
+        "O",
+        "Z"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0xe03c0f03e0",
+      "mirrorGroup": "0x1c0f03c1f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TLS]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-jaws-a",
+      "displayName": "JAWS",
+      "family": "jaws",
+      "fumen": "v115@9gwhFei0whGeQ4g0whEeBtR4whFeBtQ4JeAgH",
+      "pieceSignature": [
+        "I",
+        "J",
+        "S",
+        "Z"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0xe0701f0781",
+      "mirrorGroup": "0x81e0383e07",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TLO]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-jeremy-a",
+      "displayName": "JEREMY",
+      "family": "jeremy",
+      "fumen": "v115@9gwhHeAtwhGeBtwhRpEeAtglwhRpDeilJeAgH",
+      "pieceSignature": [
+        "I",
+        "L",
+        "O",
+        "Z"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x80701c1f87",
+      "mirrorGroup": "0x80603e0f87",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TJS]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-legs-a",
+      "displayName": "LEGS",
+      "family": "legs",
+      "fumen": "v115@Ehi0GeR4g0FeR4RpDezhRpJeAgH",
+      "pieceSignature": [
+        "I",
+        "J",
+        "O",
+        "S"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0xe0380f03f0",
+      "mirrorGroup": "0x1c0703c3f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TLZ]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-shoes-a",
+      "displayName": "SHOES",
+      "family": "shoes",
+      "fumen": "v115@GhAtHeBtRpDeR4AtglRpCeR4ilJeAgH",
+      "pieceSignature": [
+        "L",
+        "O",
+        "S",
+        "Z"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x80300f0fe3",
+      "mirrorGroup": "0x403c3f1f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TIJ]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-006",
+      "displayName": "HALF GRACE",
+      "family": "half-grace",
+      "fumen": "v115@9gilGeglAtRpFeBtRpFeAtzhOeAgH",
+      "pieceSignature": [
+        "L",
+        "Z",
+        "O",
+        "I"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x1c0f03c1f",
+      "mirrorGroup": "0x1c0f03c1f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TJS]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-007",
+      "displayName": "CLIFF + OI",
+      "family": "cliff-oi",
+      "fumen": "v115@9gilFewhglAtGewhBtEeRpwhAtFeRpwhJeAgH",
+      "pieceSignature": [
+        "L",
+        "I",
+        "Z",
+        "O"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x81e03e0f81",
+      "mirrorGroup": "0x81e03e0f81",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TJS]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-011",
+      "displayName": "HILLS + O",
+      "family": "hills-o",
+      "fumen": "v115@FhR4GeR4glRpEeilRpDezhJeAgH",
+      "pieceSignature": [
+        "S",
+        "L",
+        "O",
+        "I"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0xc0380e0fc3",
+      "mirrorGroup": "0xc07c1f0f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TJZ]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-013",
+      "displayName": "97.82%",
+      "family": "unnamed-013",
+      "fumen": "v115@GhglFeQ4ilDeBtR4RpEeBtQ4RpJeAgH",
+      "pieceSignature": [
+        "L",
+        "S",
+        "Z",
+        "O"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x803c0fc3e0",
+      "mirrorGroup": "0x40f0fc1f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TIJ]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-014",
+      "displayName": "CLIFF + L",
+      "family": "cliff-l",
+      "fumen": "v115@Dhi0whGeQ4g0whilDeR4whglGeQ4whJeAgH",
+      "pieceSignature": [
+        "J",
+        "I",
+        "S",
+        "L"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0xf0380e1f01",
+      "mirrorGroup": "0x3c07e1e03",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TZO]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-015",
+      "displayName": "BOX",
+      "family": "box",
+      "fumen": "v115@9gwhQ4hlFewhR4glFewhg0Q4glFewhi0PeAgH",
+      "pieceSignature": [
+        "I",
+        "S",
+        "L",
+        "J"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x3c0f03c0f",
+      "mirrorGroup": "0x3c0f03c0f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TZO]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-016",
+      "displayName": "HILLS + LI",
+      "family": "hills-li",
+      "fumen": "v115@9gQ4IeR4Heg0Q4Cezhgli0DeilJeAgH",
+      "pieceSignature": [
+        "S",
+        "J",
+        "I",
+        "L"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x403f8f87",
+      "mirrorGroup": "0x403f8f87",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TZO]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-018",
+      "displayName": "HILLS + HEART",
+      "family": "hills-heart",
+      "fumen": "v115@9gQ4IeR4Fehlg0Q4EeRpgli0DeRpglJeAgH",
+      "pieceSignature": [
+        "S",
+        "L",
+        "J",
+        "O"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x703e0f87",
+      "mirrorGroup": "0x703e0f87",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TIZ]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-019",
+      "displayName": "91.03%",
+      "family": "unnamed-019",
+      "fumen": "v115@9gQ4DeAtDeR4BeBtDeg0Q4BeAtglDei0ilNeAgH",
+      "pieceSignature": [
+        "S",
+        "Z",
+        "J",
+        "L"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x84330cc3f",
+      "mirrorGroup": "0x84330cc3f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TIO]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-020",
+      "displayName": "BOX",
+      "family": "box",
+      "fumen": "v115@9gh0hlFeg0RpglFeg0RpglFezhPeAgH",
+      "pieceSignature": [
+        "J",
+        "L",
+        "O",
+        "I"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x3c0f03c0f",
+      "mirrorGroup": "0x3c0f03c0f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TSZ]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-021",
+      "displayName": "PCO + O",
+      "family": "pco-o",
+      "fumen": "v115@9gBtHewwBtGexwR4CeRpAewwR4DeRpKeAgH",
+      "pieceSignature": [
+        "Z",
+        "T",
+        "S",
+        "O"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0xc0763d87",
+      "mirrorGroup": "0xc0763d87",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[ILJ]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-022",
+      "displayName": "PCO + I",
+      "family": "pco-i",
+      "fumen": "v115@9gBtGewhwwBtFewhxwR4EewhwwR4FewhJeAgH",
+      "pieceSignature": [
+        "Z",
+        "I",
+        "T",
+        "S"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x80e0783e07",
+      "mirrorGroup": "0x80e0783e07",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[LJO]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-023",
+      "displayName": "FELICIA",
+      "family": "felicia",
+      "fumen": "v115@GhwhwwHewhxwR4CeRpwhwwR4DeRpwhJeAgH",
+      "pieceSignature": [
+        "I",
+        "T",
+        "S",
+        "O"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x80201e3f87",
+      "mirrorGroup": "0x601f1f87",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[LJZ]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-024",
+      "displayName": "PCO + J",
+      "family": "pco-j",
+      "fumen": "v115@9gBtHewwBtGexwR4Cei0wwR4Feg0JeAgH",
+      "pieceSignature": [
+        "Z",
+        "T",
+        "S",
+        "J"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0xc07e3e07",
+      "mirrorGroup": "0xc07e3e07",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[ILO]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-025",
+      "displayName": "92.02%",
+      "family": "unnamed-025",
+      "fumen": "v115@HhwwGeRpxwR4Ceg0RpwwR4Dei0JeAgH",
+      "pieceSignature": [
+        "T",
+        "O",
+        "S",
+        "J"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x301e3f87",
+      "mirrorGroup": "0x203f1f87",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[ILZ]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-026",
+      "displayName": "91.94%",
+      "family": "unnamed-026",
+      "fumen": "v115@9gBtHewwBtEeRpxwEeg0RpwwFei0JeAgH",
+      "pieceSignature": [
+        "Z",
+        "T",
+        "O",
+        "J"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0xf07e0f81",
+      "mirrorGroup": "0xf07e0f81",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[ILS]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-027",
+      "displayName": "91.19%",
+      "family": "unnamed-027",
+      "fumen": "v115@9gwwHeg0xwGeg0wwR4Eeh0R4DezhJeAgH",
+      "pieceSignature": [
+        "T",
+        "J",
+        "S",
+        "I"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x80603c1fc3",
+      "mirrorGroup": "0x80603c1fc3",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[LZO]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-028",
+      "displayName": "LEGS + T",
+      "family": "legs-t",
+      "fumen": "v115@FhRpwwGeRpxwEei0wwDezhg0JeAgH",
+      "pieceSignature": [
+        "O",
+        "T",
+        "J",
+        "I"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0xc0301e0fe1",
+      "mirrorGroup": "0xe03c1e1f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[LSZ]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-029",
+      "displayName": "89.21%",
+      "family": "unnamed-029",
+      "fumen": "v115@Ghg0wwHeg0xwR4Deh0wwR4CezhJeAgH",
+      "pieceSignature": [
+        "J",
+        "T",
+        "S",
+        "I"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 16,
+      "board": "0x80201c3fc7",
+      "mirrorGroup": "0x601f0f8f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[LZO]p3,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-030",
+      "displayName": "Antidote",
+      "family": "anti-dot",
+      "fumen": "v115@FhRpHeRpEezhglGeilJeAgH",
+      "pieceSignature": [
+        "O",
+        "I",
+        "L"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 12,
+      "board": "0xc0300f8380",
+      "mirrorGroup": "0xc0307c07",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TJSZ]p4,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-031",
+      "displayName": "LEGS",
+      "family": "legs",
+      "fumen": "v115@9gRpHeRpHeilGeglzhOeAgH",
+      "pieceSignature": [
+        "O",
+        "L",
+        "I"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 12,
+      "board": "0xc0301c1f",
+      "mirrorGroup": "0xc0301c1f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TJSZ]p4,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-032",
+      "displayName": "94.05%",
+      "family": "unnamed-032",
+      "fumen": "v115@DhzhHehlGeRpglGeRpglJeAgH",
+      "pieceSignature": [
+        "I",
+        "L",
+        "O"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 12,
+      "board": "0xf0300e0380",
+      "mirrorGroup": "0x3c0301c07",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TJSZ]p4,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-033",
+      "displayName": "HILLS",
+      "family": "hills",
+      "fumen": "v115@FhhlGeRpglGeRpglFezhJeAgH",
+      "pieceSignature": [
+        "L",
+        "O",
+        "I"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 12,
+      "board": "0xc0380e03c0",
+      "mirrorGroup": "0xc0701c0f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TJSZ]p4,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-034",
+      "displayName": "90.32%",
+      "family": "unnamed-034",
+      "fumen": "v115@9gilGeglIeRpHeRpzhNeAgH",
+      "pieceSignature": [
+        "L",
+        "O",
+        "I"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 12,
+      "board": "0x1c0100c3f",
+      "mirrorGroup": "0x1c0100c3f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TJSZ]p4,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-035",
+      "displayName": "ELEPHANT",
+      "family": "elephant",
+      "fumen": "v115@9gilGeglBtGeRpBtFeRpReAgH",
+      "pieceSignature": [
+        "L",
+        "Z",
+        "O"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 12,
+      "board": "0x1c0703c03",
+      "mirrorGroup": "0x1c0703c03",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TIJS]p4,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-036",
+      "displayName": "HILLS + O",
+      "family": "hills-o",
+      "fumen": "v115@GhAtHeBtRpFeAtglRpEeilJeAgH",
+      "pieceSignature": [
+        "Z",
+        "O",
+        "L"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 12,
+      "board": "0x80300c0f83",
+      "mirrorGroup": "0x403c0f07",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TIJS]p4,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-037",
+      "displayName": "DRAGON",
+      "family": "dragon",
+      "fumen": "v115@ChBtIeBtGeR4GeR4zhJeAgH",
+      "pieceSignature": [
+        "Z",
+        "S",
+        "I"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 12,
+      "board": "0x180c0183f0",
+      "mirrorGroup": "0x600c0603f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TLJO]p4,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-038",
+      "displayName": "HILLS",
+      "family": "hills",
+      "fumen": "v115@FhAtwhGeBtwhGeAtglwhFeilwhJeAgH",
+      "pieceSignature": [
+        "Z",
+        "I",
+        "L"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 12,
+      "board": "0xc0380e03c0",
+      "mirrorGroup": "0xc0701c0f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TJSO]p4,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-039",
+      "displayName": "CLIFF",
+      "family": "cliff",
+      "fumen": "v115@9gwhilFewhglAtGewhBtGewhAtReAgH",
+      "pieceSignature": [
+        "I",
+        "L",
+        "Z"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 12,
+      "board": "0x3c0701c03",
+      "mirrorGroup": "0x3c0701c03",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TJSO]p4,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-040",
+      "displayName": "ANTI-JAWS",
+      "family": "anti-jaws",
+      "fumen": "v115@EhR4AtFeR4BtHeAtglGeilJeAgH",
+      "pieceSignature": [
+        "S",
+        "Z",
+        "L"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 12,
+      "board": "0xe03c0c0380",
+      "mirrorGroup": "0x1c0f00c07",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TIJO]p4,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-pcinfo-041",
+      "displayName": "JAWS",
+      "family": "jaws",
+      "fumen": "v115@9gilGeglAtHeBtR4FeAtR4QeAgH",
+      "pieceSignature": [
+        "L",
+        "Z",
+        "S"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 12,
+      "board": "0x1c0303c07",
+      "mirrorGroup": "0x1c0303c07",
+      "height": 4,
+      "useHold": true,
+      "pattern": "[TIJO]p4,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-grace-system-a",
+      "displayName": "GRACE SYSTEM",
+      "family": "grace-system",
+      "fumen": "v115@9gili0DeglAtRpQ4g0DeBtRpR4DeAtzhQ4NeAgH",
+      "pieceSignature": [
+        "I",
+        "J",
+        "L",
+        "O",
+        "S",
+        "Z"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 24,
+      "board": "0xfc3f0fc3f",
+      "mirrorGroup": "0xfc3f0fc3f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "T,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-grace-system-b",
+      "displayName": "GRACE SYSTEM",
+      "family": "grace-system",
+      "fumen": "v115@9gQ4zhAtDeR4RpBtDeg0Q4RpAtglDei0ilNeAgH",
+      "pieceSignature": [
+        "I",
+        "J",
+        "L",
+        "O",
+        "S",
+        "Z"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 24,
+      "board": "0xfc3f0fc3f",
+      "mirrorGroup": "0xfc3f0fc3f",
+      "height": 4,
+      "useHold": true,
+      "pattern": "T,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "cycle1-6p-pco-a",
+      "displayName": "6P PCO",
+      "family": "pco-6p",
+      "fumen": "v115@9gBtEei0wwBtDeRpg0xwR4CeRpglwwR4DeilJeAgH",
+      "pieceSignature": [
+        "J",
+        "L",
+        "O",
+        "S",
+        "T",
+        "Z"
+      ],
+      "reviewStatus": "reviewed",
+      "occupied": 24,
+      "board": "0xe0f87e3f87",
+      "mirrorGroup": "0xc1f87f1f87",
+      "height": 4,
+      "useHold": true,
+      "pattern": "I,*p4",
+      "filters": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ]
+    }
+  ]
+}

@@ -7,3 +7,7 @@ license = "Apache-2.0"
 crate-type = ["cdylib"]
 [dependencies]
 pc-core = { path = "../pc-core" }
+
+[features]
+threshold-experiment = ["pc-core/threshold-experiment"]
+threshold-trace = ["threshold-experiment", "pc-core/threshold-trace"]

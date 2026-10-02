@@ -16,3 +16,5 @@ rust/generated/
 *.tmp
 
 /benchmark-results/
+/bench/threshold/build/
+/bench/threshold/results/

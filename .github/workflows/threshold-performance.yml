@@ -1,0 +1,188 @@
+name: Threshold engine correctness and paired benchmark
+
+on:
+  push:
+    branches: [experiment/threshold-engine-20261003]
+  workflow_dispatch:
+    inputs:
+      profile:
+        type: choice
+        options: [smoke, baseline, screen, ablation, confirm, factorial, diagnostic]
+        default: smoke
+      suite:
+        type: choice
+        options: [smoke, development, validation, all]
+        default: development
+      candidateMask:
+        description: 'Five-bit mask (0..31); freeze candidate in the run commit'
+        type: string
+        default: '31'
+      pairs:
+        description: 'Empty uses the profile default'
+        type: string
+        default: ''
+      timeoutSeconds:
+        description: 'Solver timeout; empty uses the profile default'
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+concurrency:
+  group: threshold-performance-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      profile: ${{ steps.plan.outputs.profile }}
+      suite: ${{ steps.plan.outputs.suite }}
+      mask: ${{ steps.plan.outputs.mask }}
+      pairs: ${{ steps.plan.outputs.pairs }}
+      seconds: ${{ steps.plan.outputs.seconds }}
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - name: Validate run configuration and fixtures
+        id: plan
+        env:
+          INPUT_PROFILE: ${{ inputs.profile }}
+          INPUT_SUITE: ${{ inputs.suite }}
+          INPUT_MASK: ${{ inputs.candidateMask }}
+          INPUT_PAIRS: ${{ inputs.pairs }}
+          INPUT_TIMEOUT: ${{ inputs.timeoutSeconds }}
+        run: |
+          node bench/threshold/fixtures.mjs --verify
+          node bench/threshold/workflow-plan.mjs
+      - name: Pinned Rust
+        run: |
+          rustup toolchain install 1.90.0 --profile minimal --component rustfmt,clippy --target wasm32-unknown-unknown
+          rustup default 1.90.0
+      - name: Rebuild original, production, experiment and trace
+        run: node bench/threshold/build.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: threshold-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            bench/threshold/build/*.wasm
+            bench/threshold/build/build.json
+          retention-days: 30
+          if-no-files-found: error
+
+  correctness:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@v4
+        with:
+          name: threshold-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/build
+      - name: Pinned Rust
+        run: |
+          rustup toolchain install 1.90.0 --profile minimal --component rustfmt,clippy --target wasm32-unknown-unknown
+          rustup default 1.90.0
+      - name: Format changed Rust files
+        run: rustfmt --edition 2024 --config skip_children=true --check rust/pc-core/src/min_cover.rs rust/pc-core/src/min_cover_tests.rs rust/pc-core/src/threshold_experiment_tests.rs rust/pc-wasm/src/min_cover.rs rust/pc-wasm/src/state.rs
+      - name: Lint (two existing baseline lint categories excluded)
+        run: cargo clippy --manifest-path rust/Cargo.toml -p pc-wasm --all-targets --target wasm32-unknown-unknown --features threshold-trace --offline -- -D warnings -A clippy::needless_borrow -A clippy::manual_range_contains
+      - name: Native oracle, state undo and production regression
+        run: |
+          mkdir -p bench/threshold/results/correctness
+          set -o pipefail
+          cargo test --manifest-path rust/Cargo.toml --workspace --offline 2>&1 | tee bench/threshold/results/correctness/native-production.txt
+          cargo test --manifest-path rust/Cargo.toml -p pc-core --features threshold-trace --offline 2>&1 | tee bench/threshold/results/correctness/native-experiment.txt
+      - name: Real WASM oracle, bounded and locked-prefix contracts
+        run: |
+          set -o pipefail
+          node --test --test-concurrency=1 bench/threshold/correctness.test.mjs bench/threshold/harness.test.mjs 2>&1 | tee bench/threshold/results/correctness/wasm.txt
+      - name: Existing secondary / worker / actual CP regression
+        run: |
+          npm ci
+          set -o pipefail
+          node bench/threshold/product-regression.mjs 2>&1 | tee bench/threshold/results/correctness/product.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: threshold-correctness-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/results/correctness/
+          retention-days: 30
+          if-no-files-found: warn
+
+  benchmark:
+    needs: [build, correctness]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@v4
+        with:
+          name: threshold-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/build
+      - name: Sequential paired comparisons on this runner
+        env:
+          PROFILE: ${{ needs.build.outputs.profile }}
+          SUITE: ${{ needs.build.outputs.suite }}
+          MASK: ${{ needs.build.outputs.mask }}
+          PAIRS: ${{ needs.build.outputs.pairs }}
+          SOLVE_TIMEOUT: ${{ needs.build.outputs.seconds }}
+          CASE_ID: ${{ matrix.case }}
+        run: node bench/threshold/benchmark.mjs --profile "$PROFILE" --suite "$SUITE" --mask "$MASK" --pairs "$PAIRS" --timeout-seconds "$SOLVE_TIMEOUT" --case "$CASE_ID" --out "bench/threshold/results/$CASE_ID"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: threshold-bench-${{ matrix.case }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/results/
+          retention-days: 30
+          if-no-files-found: error
+
+  summary:
+    needs: [build, correctness, benchmark]
+    if: ${{ always() && needs.correctness.result == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: threshold-bench-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/results/downloads
+      - run: node bench/threshold/summarize.mjs
+        env:
+          EXPECTED_MATRIX: ${{ needs.build.outputs.matrix }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: threshold-summary-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/results/aggregate/
+          retention-days: 30
+          if-no-files-found: error

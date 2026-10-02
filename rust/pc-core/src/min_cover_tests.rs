@@ -3,7 +3,10 @@ use super::*;
 #[test]
 fn bounded_threshold_prefix_matches_independent_oracle() {
     let mut state = 441u32;
-    let mut next = || { state = state.wrapping_mul(1664525).wrapping_add(1013904223); state };
+    let mut next = || {
+        state = state.wrapping_mul(1664525).wrapping_add(1013904223);
+        state
+    };
     let mut partial_prefixes = 0;
     for sample in 0..100 {
         let n = 3 + (next() % 5) as usize;
@@ -11,37 +14,82 @@ fn bounded_threshold_prefix_matches_independent_oracle() {
         for _ in 0..(3 + next() % 7) {
             let mut row = Vec::new();
             for id in 0..n as u32 {
-                if next() % 3 != 0 { row.push((id, if sample % 5 == 0 { 1 } else { 1 + next() % 6 })); }
+                if next() % 3 != 0 {
+                    row.push((id, if sample % 5 == 0 { 1 } else { 1 + next() % 6 }));
+                }
             }
-            if row.is_empty() { row.push((next() % n as u32, 1)); }
+            if row.is_empty() {
+                row.push((next() % n as u32, 1));
+            }
             cases.push(row);
         }
-        if sample % 3 == 0 { cases.push(cases[0].clone()); }
-        if sample % 4 == 0 { let (id,q) = cases[0][0]; cases[0].push((id,q.saturating_sub(1).max(1))); }
+        if sample % 3 == 0 {
+            cases.push(cases[0].clone());
+        }
+        if sample % 4 == 0 {
+            let (id, q) = cases[0][0];
+            cases[0].push((id, q.saturating_sub(1).max(1)));
+        }
         let (oracle, seed) = brute_partition_oracle(&cases, n);
-        let normalized = normalize_quality_cases(&cases,n).unwrap();
-        let mut levels: Vec<u32> = normalized.iter().flat_map(|r|r.iter().map(|&(_,q)|q)).collect();
-        levels.sort_unstable(); levels.dedup(); if levels.len()>1 { levels.remove(0); }
-        for budget in [Some(0),Some(1),Some(3),Some(10),Some(30),None] {
-            let plain = exact_quality_cover_at_count_bounded(&cases,n,oracle.selected.len(),&seed,budget).unwrap();
-            let (progress,prefix) = exact_quality_cover_at_count_progress_bounded(&cases,n,oracle.selected.len(),&seed,budget).unwrap();
-            assert_eq!(plain,progress);
-            assert!(prefix.len()<=levels.len());
+        let normalized = normalize_quality_cases(&cases, n).unwrap();
+        let mut levels: Vec<u32> = normalized
+            .iter()
+            .flat_map(|r| r.iter().map(|&(_, q)| q))
+            .collect();
+        levels.sort_unstable();
+        levels.dedup();
+        if levels.len() > 1 {
+            levels.remove(0);
+        }
+        for budget in [Some(0), Some(1), Some(3), Some(10), Some(30), None] {
+            let plain = exact_quality_cover_at_count_bounded(
+                &cases,
+                n,
+                oracle.selected.len(),
+                &seed,
+                budget,
+            )
+            .unwrap();
+            let (progress, prefix) = exact_quality_cover_at_count_progress_bounded(
+                &cases,
+                n,
+                oracle.selected.len(),
+                &seed,
+                budget,
+            )
+            .unwrap();
+            assert_eq!(plain, progress);
+            assert!(prefix.len() <= levels.len());
             let incumbent = match &progress {
-                BoundedQualityResult::Exact(r) => { assert_eq!(r.selected,oracle.selected); assert_eq!(prefix.len(),levels.len()); r },
-                BoundedQualityResult::BudgetExceeded(r) => { if !prefix.is_empty() { partial_prefixes+=1; } r },
+                BoundedQualityResult::Exact(r) => {
+                    assert_eq!(r.selected, oracle.selected);
+                    assert_eq!(prefix.len(), levels.len());
+                    r
+                }
+                BoundedQualityResult::BudgetExceeded(r) => {
+                    if !prefix.is_empty() {
+                        partial_prefixes += 1;
+                    }
+                    r
+                }
             };
-            for (index,&target) in prefix.iter().enumerate() {
-                let count = |q: &[u32]| q.iter().filter(|&&v| v>=levels[index]).count() as u32;
-                assert_eq!(target,count(&oracle.quality));
-                assert_eq!(target,count(&incumbent.quality));
+            for (index, &target) in prefix.iter().enumerate() {
+                let count = |q: &[u32]| q.iter().filter(|&&v| v >= levels[index]).count() as u32;
+                assert_eq!(target, count(&oracle.quality));
+                assert_eq!(target, count(&incumbent.quality));
             }
         }
     }
-    assert!(partial_prefixes>0,"must exercise budget exits after a proved threshold");
+    assert!(
+        partial_prefixes > 0,
+        "must exercise budget exits after a proved threshold"
+    );
 }
 
-fn brute_partition_oracle(cases: &[Vec<(u32, u32)>], n: usize) -> (MinimumCoverResult, Vec<u32>) {
+pub(super) fn brute_partition_oracle(
+    cases: &[Vec<(u32, u32)>],
+    n: usize,
+) -> (MinimumCoverResult, Vec<u32>) {
     let mut best: Option<MinimumCoverResult> = None;
     let mut seed = Vec::new();
     for mask in 0usize..(1usize << n) {

@@ -1,0 +1,5 @@
+{
+  "suite": "smoke",
+  "enumerationSeconds": 300,
+  "primarySeconds": 90
+}

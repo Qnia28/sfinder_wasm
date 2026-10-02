@@ -1,0 +1,7 @@
+{
+  "profile": "smoke",
+  "suite": "smoke",
+  "candidateMask": 31,
+  "pairs": null,
+  "timeoutSeconds": null
+}

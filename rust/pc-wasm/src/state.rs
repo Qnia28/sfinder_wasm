@@ -13,6 +13,8 @@ pub struct WasmSolver {
     pub(crate) min_cover_quality: Vec<u32>,
     pub(crate) min_cover_proven_prefix: Vec<u32>,
     pub(crate) min_cover_searched_states: u64,
+    #[cfg(feature = "threshold-experiment")]
+    pub(crate) threshold_diagnostics: [u64; pc_core::min_cover::THRESHOLD_TRACE_COUNTERS],
     pub(crate) primary_kernel_offsets: Vec<u32>,
     pub(crate) primary_kernel_ids: Vec<u32>,
     pub(crate) primary_kernel_solution_ids: Vec<u32>,
@@ -34,6 +36,8 @@ impl WasmSolver {
             min_cover_quality: Vec::new(),
             min_cover_proven_prefix: Vec::new(),
             min_cover_searched_states: 0,
+            #[cfg(feature = "threshold-experiment")]
+            threshold_diagnostics: [0; pc_core::min_cover::THRESHOLD_TRACE_COUNTERS],
             primary_kernel_offsets: Vec::new(),
             primary_kernel_ids: Vec::new(),
             primary_kernel_solution_ids: Vec::new(),

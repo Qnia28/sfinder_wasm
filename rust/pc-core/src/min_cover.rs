@@ -1672,7 +1672,26 @@ pub enum BoundedQualityResult {
     BudgetExceeded(MinimumCoverResult),
 }
 
-struct SequentialThresholdSearch<'a> {
+// The historical entry points instantiate EXPERIMENT=false. The compiler
+// removes experiment branches from the production traversal.
+#[derive(Clone, Copy, Default)]
+struct ThresholdExperimentOptions {
+    mask: u32,
+}
+
+impl ThresholdExperimentOptions {
+    fn enabled(self, bit: u32) -> bool {
+        self.mask & (1 << bit) != 0
+    }
+}
+
+// Trace ABI v1: stages, dfsEntries, rootForcedSteps, propagatedSteps,
+// propagationScans, propagationConflicts, u0Prunes, u1Prunes, pairCalls,
+// priorSatisfied, qualityGroupUpdates, lexChecks. Counters are compiled out
+// without threshold-trace; zero counters must not be interpreted as observations.
+pub const THRESHOLD_TRACE_COUNTERS: usize = 12;
+
+struct SequentialThresholdSearch<'a, const EXPERIMENT: bool> {
     // Buffers are retained across siblings and grow with actual search depth.
     covered_buffers: Vec<Vec<u64>>,
     full: &'a [u64],
@@ -1692,14 +1711,25 @@ struct SequentialThresholdSearch<'a> {
     searched_states: u64,
     state_budget: Option<u64>,
     budget_exceeded: bool,
+    options: ThresholdExperimentOptions,
+    #[cfg(feature = "threshold-trace")]
+    diagnostics: [u64; THRESHOLD_TRACE_COUNTERS],
 }
 
-impl SequentialThresholdSearch<'_> {
+impl<const EXPERIMENT: bool> SequentialThresholdSearch<'_, EXPERIMENT> {
     fn add_solution(&mut self, solution: usize) {
         self.selected_flags[solution] = true;
         self.selected_ids.push(solution as u32);
         for (data, state) in self.threshold_data.iter().zip(&mut self.states) {
             state.add(data, solution);
+            #[cfg(feature = "threshold-trace")]
+            {
+                self.diagnostics[10] += data.candidate_groups[solution].len() as u64;
+            }
+        }
+        #[cfg(test)]
+        if EXPERIMENT {
+            self.assert_state();
         }
     }
 
@@ -1709,6 +1739,10 @@ impl SequentialThresholdSearch<'_> {
         }
         self.selected_ids.pop();
         self.selected_flags[solution] = false;
+        #[cfg(test)]
+        if EXPERIMENT {
+            self.assert_state();
+        }
     }
 
     fn exclude_solution(&mut self, solution: usize) {
@@ -1716,6 +1750,10 @@ impl SequentialThresholdSearch<'_> {
         self.excluded[solution] = true;
         for (data, state) in self.threshold_data.iter().zip(&mut self.states) {
             state.disable_candidate(data, solution);
+        }
+        #[cfg(test)]
+        if EXPERIMENT {
+            self.assert_state();
         }
     }
 
@@ -1725,19 +1763,72 @@ impl SequentialThresholdSearch<'_> {
             state.enable_candidate(data, solution);
         }
         self.excluded[solution] = false;
+        #[cfg(test)]
+        if EXPERIMENT {
+            self.assert_state();
+        }
     }
 
-    fn prior_possible(&self, slots: usize) -> bool {
+    fn quality_upper(&mut self, index: usize, slots: usize, target: u32) -> u32 {
+        let data = &self.threshold_data[index];
+        let state = &self.states[index];
+        if EXPERIMENT && self.options.enabled(0) {
+            let u0 = data.total_weight.saturating_sub(state.dead_bad);
+            if u0 < target {
+                #[cfg(feature = "threshold-trace")]
+                {
+                    self.diagnostics[6] += 1;
+                }
+                return u0;
+            }
+            let reachable = u0.saturating_sub(state.good);
+            let simple =
+                top_available_gain_sum(&state.gains, &self.selected_flags, &self.excluded, slots)
+                    .min(reachable);
+            let u1 = state.good.saturating_add(simple);
+            if u1 < target || slots <= 1 || slots > 4 {
+                #[cfg(feature = "threshold-trace")]
+                if u1 < target {
+                    self.diagnostics[7] += 1;
+                }
+                return u1;
+            }
+            #[cfg(feature = "threshold-trace")]
+            {
+                self.diagnostics[8] += 1;
+            }
+            let pair = exact_pair_gain_bound(data, state, &self.selected_flags, &self.excluded);
+            let single =
+                top_available_gain_sum(&state.gains, &self.selected_flags, &self.excluded, 1);
+            let pairs = (slots / 2) as u32 * pair + (slots % 2) as u32 * single;
+            return state.good.saturating_add(simple.min(pairs.min(reachable)));
+        }
+        #[cfg(feature = "threshold-trace")]
+        if (2..=4).contains(&slots) {
+            self.diagnostics[8] += 1;
+        }
+        state.good.saturating_add(optimistic_quality_gain(
+            data,
+            state,
+            &self.selected_flags,
+            &self.excluded,
+            slots,
+        ))
+    }
+
+    fn prior_possible(&mut self, slots: usize) -> bool {
         for index in 0..self.current_index {
-            let upper = self.states[index]
-                .good
-                .saturating_add(optimistic_quality_gain(
-                    &self.threshold_data[index],
-                    &self.states[index],
-                    &self.selected_flags,
-                    &self.excluded,
-                    slots,
-                ));
+            if EXPERIMENT
+                && self.options.enabled(0)
+                && self.states[index].good >= self.prior_targets[index]
+            {
+                #[cfg(feature = "threshold-trace")]
+                {
+                    self.diagnostics[9] += 1;
+                }
+                continue;
+            }
+            let upper = self.quality_upper(index, slots, self.prior_targets[index]);
             if upper < self.prior_targets[index] {
                 return false;
             }
@@ -1745,29 +1836,205 @@ impl SequentialThresholdSearch<'_> {
         true
     }
 
-    fn current_upper(&self, slots: usize) -> u32 {
-        self.states[self.current_index]
-            .good
-            .saturating_add(optimistic_quality_gain(
-                &self.threshold_data[self.current_index],
-                &self.states[self.current_index],
-                &self.selected_flags,
-                &self.excluded,
-                slots,
-            ))
+    fn current_target(&self) -> u32 {
+        if self.stable_tie {
+            self.best_current
+        } else {
+            self.best_current.saturating_add(1)
+        }
+    }
+
+    fn current_upper(&mut self, slots: usize) -> u32 {
+        self.quality_upper(self.current_index, slots, self.current_target())
+    }
+
+    fn charge(&mut self) -> bool {
+        if self.budget_exceeded
+            || self
+                .state_budget
+                .is_some_and(|limit| self.searched_states >= limit)
+        {
+            self.budget_exceeded = true;
+            return false;
+        }
+        self.searched_states += 1;
+        true
+    }
+
+    fn start(&mut self, forced: &[u32]) {
+        let mut covered = vec![0; self.full.len()];
+        for &id in forced {
+            if !self.charge() {
+                break;
+            }
+            self.add_solution(id as usize);
+            or_into(&mut covered, &self.solution_coverage[id as usize]);
+            #[cfg(feature = "threshold-trace")]
+            {
+                self.diagnostics[2] += 1;
+            }
+        }
+        if !self.budget_exceeded {
+            self.run(&covered);
+        }
+        while let Some(&id) = self.selected_ids.last() {
+            self.remove_solution(id as usize);
+        }
+    }
+
+    fn propagate(&mut self, covered: &mut [u64]) -> bool {
+        loop {
+            let mut forced = None;
+            for index in 0..=self.current_index {
+                let enabled = if index < self.current_index {
+                    self.options.enabled(3)
+                } else {
+                    self.options.enabled(4)
+                };
+                if !enabled {
+                    continue;
+                }
+                let target = if index < self.current_index {
+                    self.prior_targets[index]
+                } else {
+                    self.current_target()
+                };
+                let data = &self.threshold_data[index];
+                let state = &self.states[index];
+                let Some(allowed_bad) = data.total_weight.checked_sub(target) else {
+                    #[cfg(feature = "threshold-trace")]
+                    {
+                        self.diagnostics[5] += 1;
+                    }
+                    return false;
+                };
+                let Some(slack) = allowed_bad.checked_sub(state.dead_bad) else {
+                    #[cfg(feature = "threshold-trace")]
+                    {
+                        self.diagnostics[5] += 1;
+                    }
+                    return false;
+                };
+                for group in 0..data.weights.len() {
+                    #[cfg(feature = "threshold-trace")]
+                    {
+                        self.diagnostics[4] += 1;
+                    }
+                    if state.cover_count[group] == 0
+                        && state.available_count[group] == 1
+                        && data.weights[group] > slack
+                    {
+                        forced = data.group_candidates[group].iter().copied().find(|&id| {
+                            available_candidate(id as usize, &self.selected_flags, &self.excluded)
+                        });
+                        debug_assert!(forced.is_some());
+                        break;
+                    }
+                }
+                if forced.is_some() {
+                    break;
+                }
+            }
+            let Some(id) = forced else {
+                return true;
+            };
+            if self.selected_ids.len() >= self.exact_count {
+                #[cfg(feature = "threshold-trace")]
+                {
+                    self.diagnostics[5] += 1;
+                }
+                return false;
+            }
+            if !self.charge() {
+                return false;
+            }
+            self.add_solution(id as usize);
+            or_into(covered, &self.solution_coverage[id as usize]);
+            #[cfg(feature = "threshold-trace")]
+            {
+                self.diagnostics[3] += 1;
+            }
+        }
+    }
+
+    #[cfg(test)]
+    fn assert_state(&self) {
+        assert_eq!(
+            self.selected_flags.iter().filter(|&&x| x).count(),
+            self.selected_ids.len()
+        );
+        assert!(
+            self.selected_ids
+                .iter()
+                .all(|&id| self.selected_flags[id as usize])
+        );
+        assert!(
+            self.selected_flags
+                .iter()
+                .zip(&self.excluded)
+                .all(|(&s, &e)| !(s && e))
+        );
+        for (data, state) in self.threshold_data.iter().zip(&self.states) {
+            let mut good = 0;
+            let mut dead = 0;
+            let mut gains = vec![0; self.selected_flags.len()];
+            for (group, ids) in data.group_candidates.iter().enumerate() {
+                let cover = ids
+                    .iter()
+                    .filter(|&&id| self.selected_flags[id as usize])
+                    .count();
+                let available = ids
+                    .iter()
+                    .filter(|&&id| {
+                        available_candidate(id as usize, &self.selected_flags, &self.excluded)
+                    })
+                    .count();
+                assert_eq!(state.cover_count[group] as usize, cover);
+                assert_eq!(state.available_count[group] as usize, available);
+                if cover > 0 {
+                    good += data.weights[group];
+                } else {
+                    if available == 0 {
+                        dead += data.weights[group];
+                    }
+                    for &id in ids {
+                        gains[id as usize] += data.weights[group];
+                    }
+                }
+            }
+            assert_eq!(state.good, good);
+            assert_eq!(state.dead_bad, dead);
+            assert_eq!(state.gains, gains);
+        }
     }
 
     fn run(&mut self, covered: &[u64]) {
-        if self.budget_exceeded {
+        if !self.charge() {
             return;
         }
-        if let Some(limit) = self.state_budget
-            && self.searched_states >= limit
+        #[cfg(feature = "threshold-trace")]
         {
-            self.budget_exceeded = true;
-            return;
+            self.diagnostics[1] += 1;
         }
-        self.searched_states += 1;
+        if EXPERIMENT && (self.options.enabled(3) || self.options.enabled(4)) {
+            let checkpoint = self.selected_ids.len();
+            let mut next = self.covered_buffers.pop().unwrap_or_default();
+            next.clear();
+            next.extend_from_slice(covered);
+            if self.propagate(&mut next) {
+                self.run_body(&next);
+            }
+            while self.selected_ids.len() > checkpoint {
+                let id = *self.selected_ids.last().unwrap();
+                self.remove_solution(id as usize);
+            }
+            self.covered_buffers.push(next);
+        } else {
+            self.run_body(covered);
+        }
+    }
+
+    fn run_body(&mut self, covered: &[u64]) {
         #[cfg(not(target_arch = "wasm32"))]
         if self.searched_states.is_multiple_of(1_000_000)
             && std::env::var_os("SFINDER_QUALITY_TRACE").is_some()
@@ -1793,6 +2060,10 @@ impl SequentialThresholdSearch<'_> {
             return;
         }
         if self.stable_tie && upper == self.best_current {
+            #[cfg(feature = "threshold-trace")]
+            {
+                self.diagnostics[11] += 1;
+            }
             let Some(optimistic) = optimistic_lex_completion(
                 &self.selected_ids,
                 &self.selected_flags,
@@ -1932,7 +2203,32 @@ fn fixed_quality_internal(
     seed_selected: &[u32],
     locked_prefix: &[u32],
     state_budget: Option<u64>,
+    proven_prefix: Option<&mut Vec<u32>>,
+) -> Option<BoundedQualityResult> {
+    fixed_quality_impl::<false>(
+        raw_cases,
+        solution_count,
+        exact_count,
+        seed_selected,
+        locked_prefix,
+        state_budget,
+        proven_prefix,
+        ThresholdExperimentOptions::default(),
+        &mut [0; THRESHOLD_TRACE_COUNTERS],
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+fn fixed_quality_impl<const EXPERIMENT: bool>(
+    raw_cases: &[Vec<(u32, u32)>],
+    solution_count: usize,
+    exact_count: usize,
+    seed_selected: &[u32],
+    locked_prefix: &[u32],
+    state_budget: Option<u64>,
     mut proven_prefix: Option<&mut Vec<u32>>,
+    options: ThresholdExperimentOptions,
+    _diagnostics: &mut [u64; THRESHOLD_TRACE_COUNTERS],
 ) -> Option<BoundedQualityResult> {
     if let Some(prefix) = proven_prefix.as_deref_mut() {
         prefix.clear();
@@ -1949,6 +2245,19 @@ fn fixed_quality_internal(
         return None;
     }
     let normalized = normalize_quality_cases(raw_cases, solution_count)?;
+    let mut forced = Vec::new();
+    if EXPERIMENT && options.enabled(2) {
+        for row in &normalized {
+            if row.len() == 1 {
+                forced.push(row[0].0);
+            }
+        }
+        forced.sort_unstable();
+        forced.dedup();
+        if forced.len() > exact_count {
+            return None;
+        }
+    }
     let mut seed = seed_selected.to_vec();
     seed.sort_unstable();
     seed.dedup();
@@ -2003,6 +2312,11 @@ fn fixed_quality_internal(
     let mut best = seed;
     let mut targets = locked_prefix.to_vec();
     let mut searched_states = 0u64;
+    // Imported locks are trusted in-process proofs, validated against this seed.
+    // Retain them even if no new threshold is run (all locks / zero budget).
+    if EXPERIMENT && let Some(prefix) = proven_prefix.as_deref_mut() {
+        prefix.clone_from(&targets);
+    }
 
     for current_index in locked_prefix.len()..threshold_data.len() {
         let remaining_budget = state_budget.map(|limit| limit.saturating_sub(searched_states));
@@ -2024,26 +2338,28 @@ fn fixed_quality_internal(
             kernelize_primary_for_candidates(&normalized, solution_count, &active_candidate)?;
         let incumbent =
             threshold_count_for_selected(&normalized, &best, levels[current_index], solution_count);
-        let current_size: Vec<u32> = threshold_data[current_index]
-            .candidate_groups
-            .iter()
-            .map(|groups| {
-                groups
-                    .iter()
-                    .map(|&g| threshold_data[current_index].weights[g as usize])
-                    .sum()
-            })
-            .collect();
-        let best_flag: Vec<bool> = (0..solution_count)
-            .map(|id| best.binary_search(&(id as u32)).is_ok())
-            .collect();
-        for candidates in &mut case_candidates {
-            candidates.sort_unstable_by(|a, b| {
-                best_flag[*b as usize]
-                    .cmp(&best_flag[*a as usize])
-                    .then(current_size[*b as usize].cmp(&current_size[*a as usize]))
-                    .then(a.cmp(b))
-            });
+        if !(EXPERIMENT && options.enabled(1)) {
+            let current_size: Vec<u32> = threshold_data[current_index]
+                .candidate_groups
+                .iter()
+                .map(|groups| {
+                    groups
+                        .iter()
+                        .map(|&g| threshold_data[current_index].weights[g as usize])
+                        .sum()
+                })
+                .collect();
+            let best_flag: Vec<bool> = (0..solution_count)
+                .map(|id| best.binary_search(&(id as u32)).is_ok())
+                .collect();
+            for candidates in &mut case_candidates {
+                candidates.sort_unstable_by(|a, b| {
+                    best_flag[*b as usize]
+                        .cmp(&best_flag[*a as usize])
+                        .then(current_size[*b as usize].cmp(&current_size[*a as usize]))
+                        .then(a.cmp(b))
+                });
+            }
         }
         let mut states: Vec<QualityThresholdState> = threshold_data[..=current_index]
             .iter()
@@ -2056,7 +2372,10 @@ fn fixed_quality_internal(
                 }
             }
         }
-        let mut search = SequentialThresholdSearch {
+        if forced.iter().any(|&id| !active_candidate[id as usize]) {
+            return None;
+        }
+        let mut search = SequentialThresholdSearch::<EXPERIMENT> {
             covered_buffers: Vec::new(),
             full: &full,
             case_candidates: &case_candidates,
@@ -2075,8 +2394,18 @@ fn fixed_quality_internal(
             searched_states: 0,
             state_budget: remaining_budget,
             budget_exceeded: false,
+            options,
+            #[cfg(feature = "threshold-trace")]
+            diagnostics: [0; THRESHOLD_TRACE_COUNTERS],
         };
-        search.run(&vec![0u64; full.len()]);
+        search.start(&forced);
+        #[cfg(feature = "threshold-trace")]
+        {
+            _diagnostics[0] += 1;
+            for (dst, value) in _diagnostics.iter_mut().zip(search.diagnostics) {
+                *dst += value;
+            }
+        }
         searched_states += search.searched_states;
         best = search.best_selected;
         if search.budget_exceeded {
@@ -2108,15 +2437,17 @@ fn fixed_quality_internal(
             threshold_static_active_candidates(&primary_coverage, &threshold_data, last, true);
         let (full, mut case_candidates, solution_coverage) =
             kernelize_primary_for_candidates(&normalized, solution_count, &active_candidate)?;
-        let best_flag: Vec<bool> = (0..solution_count)
-            .map(|id| best.binary_search(&(id as u32)).is_ok())
-            .collect();
-        for candidates in &mut case_candidates {
-            candidates.sort_unstable_by(|a, b| {
-                best_flag[*b as usize]
-                    .cmp(&best_flag[*a as usize])
-                    .then(a.cmp(b))
-            });
+        if !(EXPERIMENT && options.enabled(1)) {
+            let best_flag: Vec<bool> = (0..solution_count)
+                .map(|id| best.binary_search(&(id as u32)).is_ok())
+                .collect();
+            for candidates in &mut case_candidates {
+                candidates.sort_unstable_by(|a, b| {
+                    best_flag[*b as usize]
+                        .cmp(&best_flag[*a as usize])
+                        .then(a.cmp(b))
+                });
+            }
         }
         let mut states: Vec<QualityThresholdState> = threshold_data
             .iter()
@@ -2129,7 +2460,10 @@ fn fixed_quality_internal(
                 }
             }
         }
-        let mut search = SequentialThresholdSearch {
+        if forced.iter().any(|&id| !active_candidate[id as usize]) {
+            return None;
+        }
+        let mut search = SequentialThresholdSearch::<EXPERIMENT> {
             covered_buffers: Vec::new(),
             full: &full,
             case_candidates: &case_candidates,
@@ -2148,8 +2482,18 @@ fn fixed_quality_internal(
             searched_states: 0,
             state_budget: remaining_budget,
             budget_exceeded: false,
+            options,
+            #[cfg(feature = "threshold-trace")]
+            diagnostics: [0; THRESHOLD_TRACE_COUNTERS],
         };
-        search.run(&vec![0u64; full.len()]);
+        search.start(&forced);
+        #[cfg(feature = "threshold-trace")]
+        {
+            _diagnostics[0] += 1;
+            for (dst, value) in _diagnostics.iter_mut().zip(search.diagnostics) {
+                *dst += value;
+            }
+        }
         searched_states += search.searched_states;
         best = search.best_selected;
         if search.budget_exceeded {
@@ -2190,6 +2534,42 @@ pub fn exact_quality_cover_at_count_bounded(
     )
 }
 
+/// Experimental only. Locks must be trusted proofs for this very matrix/K;
+/// feasibility of the seed is not a certificate of prefix optimality.
+#[cfg(feature = "threshold-experiment")]
+#[allow(clippy::too_many_arguments, clippy::type_complexity)]
+pub fn exact_quality_cover_at_count_experiment(
+    raw_cases: &[Vec<(u32, u32)>],
+    solution_count: usize,
+    exact_count: usize,
+    seed_selected: &[u32],
+    locked_prefix: &[u32],
+    state_budget: Option<u64>,
+    mask: u32,
+) -> Option<(
+    BoundedQualityResult,
+    Vec<u32>,
+    [u64; THRESHOLD_TRACE_COUNTERS],
+)> {
+    if mask > 31 {
+        return None;
+    }
+    let mut prefix = Vec::new();
+    let mut diagnostics = [0; THRESHOLD_TRACE_COUNTERS];
+    let result = fixed_quality_impl::<true>(
+        raw_cases,
+        solution_count,
+        exact_count,
+        seed_selected,
+        locked_prefix,
+        state_budget,
+        Some(&mut prefix),
+        ThresholdExperimentOptions { mask },
+        &mut diagnostics,
+    )?;
+    Some((result, prefix, diagnostics))
+}
+
 /// Trusted in-process progress for this exact matrix and K. Prefix values are
 /// weighted counts at increasing distinct quality thresholds (omit the lowest
 /// when there is more than one). This is not a portable proof for other inputs.
@@ -2201,8 +2581,15 @@ pub fn exact_quality_cover_at_count_progress_bounded(
     state_budget: Option<u64>,
 ) -> Option<(BoundedQualityResult, Vec<u32>)> {
     let mut prefix = Vec::new();
-    let result = fixed_quality_internal(raw_cases, solution_count, exact_count,
-        seed_selected, &[], state_budget, Some(&mut prefix))?;
+    let result = fixed_quality_internal(
+        raw_cases,
+        solution_count,
+        exact_count,
+        seed_selected,
+        &[],
+        state_budget,
+        Some(&mut prefix),
+    )?;
     Some((result, prefix))
 }
 
@@ -2250,3 +2637,7 @@ pub fn exact_quality_cover_at_count_with_locked_prefix(
 #[cfg(test)]
 #[path = "min_cover_tests.rs"]
 mod tests;
+
+#[cfg(all(test, feature = "threshold-experiment"))]
+#[path = "threshold_experiment_tests.rs"]
+mod threshold_experiment_tests;
