@@ -1,0 +1,2 @@
+# Preserve the user-supplied frozen database bytes across Windows/Linux.
+experiments/integrated-capture-20261002/inputs/*.json -text

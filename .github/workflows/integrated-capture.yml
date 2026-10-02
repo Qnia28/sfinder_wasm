@@ -1,0 +1,101 @@
+name: Integrated campaign A primary-only matrix capture
+
+on:
+  push:
+    branches: [experiment/integrated-capture-20261002]
+    paths:
+      - experiments/integrated-capture-20261002/**
+      - .github/workflows/integrated-capture.yml
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: integrated-capture-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  RUSTUP_TOOLCHAIN: 1.90.0
+
+jobs:
+  build:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - run: node --test experiments/integrated-capture-20261002/common.test.mjs
+      - run: rustup toolchain install 1.90.0 --profile minimal --target wasm32-unknown-unknown
+      - run: cargo build --manifest-path rust/Cargo.toml --locked -p pc-wasm --release --target wasm32-unknown-unknown --target-dir .capture/target
+      - run: cp .capture/target/wasm32-unknown-unknown/release/pc_wasm.wasm wasm/pc_wasm.wasm
+      - run: node experiments/integrated-capture-20261002/seal-build.mjs
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: capture-build
+          path: .capture/build/
+          retention-days: 1
+          if-no-files-found: warn
+
+  capture:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      max-parallel: 16
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: capture-build
+          path: .capture/build
+      - run: cp .capture/build/pc_wasm.wasm wasm/pc_wasm.wasm
+      - run: node experiments/integrated-capture-20261002/capture.mjs ${{ matrix.shard }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: capture-shard-${{ format('{0}', matrix.shard) }}
+          path: .capture/shard-*/
+          retention-days: 1
+          if-no-files-found: error
+
+  aggregate:
+    needs: [build, capture]
+    if: always() && needs.build.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          pattern: capture-shard-*
+          path: .capture/downloads
+      - run: node experiments/integrated-capture-20261002/aggregate.mjs .capture/downloads
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: capture-summary
+          path: .capture/summary/
+          retention-days: 1
+          if-no-files-found: error
