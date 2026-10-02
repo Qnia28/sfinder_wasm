@@ -13,3 +13,5 @@
 Node+WASM메모리는root가생성한Linuxcgroupv2에서child전체3GiB/memoryswap0으로제한한다. parent는cgroup밖에서동기busywork도kill/reap한다. correctness에서실제무한loop를API/processwatchdog로끊는테스트를먼저실행한다.
 
 원계획/원표본/36,048schedule는로컬`tools/validation/integrated-bench-plan-20261002`에보존한다. immutableinputs/PLAN/SCHEDULE은여기에복사하되candidatecommit/binary는BUILD.json에서새로봉인한다. 모든artifactretention1일,끝난뒤즉시로컬다운로드/독립검산한다.
+
+Attempt1/run37004387878은checkout기본depth1때문에baselineGitobject가없어gitarchive에서실패했다. 컴파일·synthetic·pilot·본측정호출은0회였다. 전체Actions로그/RUN을로컬보존하고fetch-depth0만CI준비설정으로추가한다. 입력·candidateRust·flags·gate·예산은변경하지않는다.

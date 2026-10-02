@@ -1,5 +1,8 @@
 {
   "phase": "correctness-then-pilot",
+  "attempt": 2,
+  "previousRun": 37004387878,
+  "repair": "Fetch baseline Git objects; initial shallow checkout failed before compilation or solver calls",
   "authorizedByUser": true,
   "date": "2026-10-02",
   "actualMainMeasurementStarted": false,
