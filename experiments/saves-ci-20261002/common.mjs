@@ -8,6 +8,8 @@ export const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 export const DIR = path.join(ROOT, 'experiments/saves-ci-20261002');
 export const STAGE = path.join(ROOT, '.campaign');
 export const config = JSON.parse(fs.readFileSync(path.join(DIR, 'config.json')));
+export const activeDesignFile = config.campaign === 'diagnostic' ? 'diagnostic-design-seal.json' : 'design-seal.json';
+export const activeCellsFile = config.campaign === 'diagnostic' ? 'inputs/diagnostic.json' : 'inputs/cells.json';
 export const hash = value => crypto.createHash('sha256').update(value).digest('hex');
 export const readJson = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 export function writeJson(file, value) {

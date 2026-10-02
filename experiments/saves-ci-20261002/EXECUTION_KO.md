@@ -62,3 +62,17 @@ local dev/main과 remote main은 변경하지 않는다. 제품 승격/배포 �
 - action runtime Node20 deprecation warning은 checkout/setup/upload action 런타임의 Node24 강제 전환 알림. 실제 측정 Node는 setup-node의 고정24.13.0. 실패 원인은 이 경고가 아님.
 - 원격 main `03b6377`, local dev/main `187fbf9` 그대로. 인프라 수정 후 새 commit/run 시작은 사용자 확인 전 보류한다. 실패 run을 삭제하거나 동일 run을 임의 재시도하지 않는다.
 - 사용자 확인 완료: **수정 후 새 실행 진행**. 수정된 runner의 새 commit으로 시작하며 source candidate refs·동결 cells·holdout 상태는 유지한다.
+
+## CI 실행2 — 첫 wave 완료
+
+- 성공run36976418775, commitfceaad1. native73/Node66 pass, timed3344/resource16 전부완료. 출력불일치/timeout/회수실패0.
+- job실행합29분13초, wall10분25초. artifact20개 ZIP합833,183bytes. 완료즉시원시자료/전체로그를download해hash검증.
+- broad/deep paired median1.0041/1.0031로중립. large1.0462로개선경향이있으나양관측잠정손해39셀. 전체B4승격보류. holdout미사용.
+- source파일외부로옮기는제품승격/main수정없이결과를별도보존. 이전실패run은측정0인인프라이력으로유지.
+
+## 승인된 추가진단 준비
+
+- 사용자선택:6개반례만진단. 새가설은REF/P/R/M 비용분리이며기존후보·입력·조건은그대로.
+- `DIAGNOSTIC_PLAN_KO.md`, `inputs/diagnostic.json`, `diagnostic-design-seal.json`을새측정전에고정.
+- 원래6 input tuple및candidate refs이불변임을정적검증. 기존Linux빌드·Gate의SHA256을고정해재사용증거를검증. child supervision3개검사pass, actionlintpass. 새solver call0(준비시점).
+- screen anchor/대형matrix는활성화하지않음. 이번에만단일진단job으로48관측상한. main/holdout보호유지.

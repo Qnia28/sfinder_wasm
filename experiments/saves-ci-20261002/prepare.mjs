@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { ROOT, DIR, STAGE, config, gitFile, hash, readJson, writeJson, filesUnder, assertArtifactBudget } from './common.mjs';
+import { ROOT, DIR, STAGE, config, gitFile, hash, readJson, writeJson, filesUnder, assertArtifactBudget, activeDesignFile } from './common.mjs';
 
 const mode = process.argv[2] ?? 'sources';
 fs.mkdirSync(STAGE, { recursive: true });
@@ -64,7 +64,7 @@ if (mode === 'sources') {
   const seal = { node: process.version, rust: execFileSync('rustc', ['--version'], { encoding: 'utf8' }).trim(),
     cargo: execFileSync('cargo', ['--version'], { encoding: 'utf8' }).trim(), variants: sourceVariants,
     wasm: Object.fromEntries(['R', 'M'].map(name => [name, hash(fs.readFileSync(path.join(artifact, `${name}.wasm`)))])),
-    design: hash(fs.readFileSync(path.join(DIR, 'design-seal.json'))), config: hash(fs.readFileSync(path.join(DIR, 'config.json'))),
+    design: hash(fs.readFileSync(path.join(DIR, activeDesignFile))), config: hash(fs.readFileSync(path.join(DIR, 'config.json'))),
     lock: hash(gitFile(config.baseline, 'rust/Cargo.lock')), nativeLegalFixture: hash(fixture) };
   writeJson(path.join(artifact, 'BUILD_SEAL.json'), seal);
   console.log(JSON.stringify(assertArtifactBudget(artifact)));
@@ -72,7 +72,7 @@ if (mode === 'sources') {
   const artifact = path.resolve(process.argv[3] ?? path.join(STAGE, 'artifacts/build'));
   const seal = readJson(path.join(artifact, 'BUILD_SEAL.json')), variants = readJson(path.join(STAGE, 'variants.json'));
   assert.equal(seal.config, hash(fs.readFileSync(path.join(DIR, 'config.json'))));
-  assert.equal(seal.design, hash(fs.readFileSync(path.join(DIR, 'design-seal.json'))));
+  assert.equal(seal.design, hash(fs.readFileSync(path.join(DIR, activeDesignFile))));
   assert.deepEqual(seal.variants, variants);
   for (const name of ['R', 'M']) {
     const bytes = fs.readFileSync(path.join(artifact, `${name}.wasm`)); assert.equal(hash(bytes), seal.wasm[name]);

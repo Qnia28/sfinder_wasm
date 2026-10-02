@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: saves-ci-${{ github.ref }}
@@ -24,6 +25,7 @@ jobs:
     timeout-minutes: 25
     outputs:
       enabled: ${{ steps.preflight.outputs.enabled }}
+      campaign: ${{ steps.preflight.outputs.campaign }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -37,14 +39,23 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: node experiments/saves-ci-20261002/preflight.mjs
-      - if: steps.preflight.outputs.enabled == 'true'
+      - if: steps.preflight.outputs.enabled == 'true' && steps.preflight.outputs.campaign == 'screen'
         run: rustup toolchain install 1.90.0 --profile minimal --target wasm32-unknown-unknown
       - if: steps.preflight.outputs.enabled == 'true'
         run: node experiments/saves-ci-20261002/prepare.mjs sources
-      - if: steps.preflight.outputs.enabled == 'true'
+      - if: steps.preflight.outputs.enabled == 'true' && steps.preflight.outputs.campaign == 'screen'
         run: node experiments/saves-ci-20261002/prepare.mjs build
-      - if: steps.preflight.outputs.enabled == 'true'
+      - if: steps.preflight.outputs.enabled == 'true' && steps.preflight.outputs.campaign == 'screen'
         run: cargo test --manifest-path .campaign/rust-M/Cargo.toml -p pc-core --lib --offline --locked --target-dir .campaign/native-test
+      - if: steps.preflight.outputs.enabled == 'true' && steps.preflight.outputs.campaign == 'diagnostic'
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: saves-build
+          run-id: 36976418775
+          github-token: ${{ github.token }}
+          path: .campaign/prior-build
+      - if: steps.preflight.outputs.enabled == 'true' && steps.preflight.outputs.campaign == 'diagnostic'
+        run: node experiments/saves-ci-20261002/reuse-seals.mjs build .campaign/prior-build
       - id: budget
         if: always() && steps.preflight.outputs.enabled == 'true'
         run: node experiments/saves-ci-20261002/budget.mjs .campaign/artifacts/build
@@ -76,7 +87,19 @@ jobs:
           path: .campaign/shared-build
       - run: node experiments/saves-ci-20261002/prepare.mjs sources
       - run: node experiments/saves-ci-20261002/prepare.mjs attach .campaign/shared-build
-      - run: node experiments/saves-ci-20261002/gate.mjs
+      - if: needs.build.outputs.campaign == 'screen'
+        run: node experiments/saves-ci-20261002/gate.mjs
+      - if: needs.build.outputs.campaign == 'diagnostic'
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: saves-gate
+          run-id: 36976418775
+          github-token: ${{ github.token }}
+          path: .campaign/prior-gate
+      - if: needs.build.outputs.campaign == 'diagnostic'
+        run: node --test experiments/saves-ci-20261002/supervisor.test.mjs
+      - if: needs.build.outputs.campaign == 'diagnostic'
+        run: node experiments/saves-ci-20261002/reuse-seals.mjs gate .campaign/prior-gate
       - id: budget
         if: always()
         run: node experiments/saves-ci-20261002/budget.mjs .campaign/artifacts/gate
@@ -90,6 +113,7 @@ jobs:
 
   anchor:
     needs: [build, gate]
+    if: needs.build.outputs.campaign == 'screen'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     outputs:
@@ -130,7 +154,7 @@ jobs:
 
   measure:
     needs: [build, gate, anchor]
-    if: needs.anchor.outputs.proceed == 'true'
+    if: needs.build.outputs.campaign == 'screen' && needs.anchor.outputs.proceed == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: ${{ matrix.timeout }}
     strategy:
@@ -186,8 +210,45 @@ jobs:
           retention-days: 1
           if-no-files-found: error
 
+  diagnostic:
+    needs: [build, gate]
+    if: needs.build.outputs.campaign == 'diagnostic'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: saves-build
+          path: .campaign/shared-build
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: saves-gate
+          path: .campaign/shared-gate
+      - run: node experiments/saves-ci-20261002/prepare.mjs sources
+      - run: node experiments/saves-ci-20261002/prepare.mjs attach .campaign/shared-build
+      - run: cp .campaign/shared-gate/GATE_SEAL.json .campaign/GATE_SEAL.json
+      - run: node experiments/saves-ci-20261002/runner.mjs diagnostic 0
+      - id: budget
+        if: always()
+        run: node experiments/saves-ci-20261002/budget.mjs .campaign/artifacts/diagnostic-0
+      - if: always() && steps.budget.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: saves-diagnostic-0
+          path: .campaign/artifacts/diagnostic-0/
+          retention-days: 1
+          if-no-files-found: error
+
   aggregate:
-    needs: [build, gate, anchor, measure]
+    needs: [build, gate, anchor, measure, diagnostic]
     if: always() && needs.build.outputs.enabled == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 4

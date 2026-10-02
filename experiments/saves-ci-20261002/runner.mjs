@@ -4,10 +4,10 @@ import os from 'node:os';
 import { fork, execFileSync } from 'node:child_process';
 import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
-import { DIR, STAGE, ROOT, config, hash, readJson, writeJson, filesUnder, assertArtifactBudget, signature } from './common.mjs';
+import { DIR, STAGE, ROOT, config, hash, readJson, writeJson, filesUnder, assertArtifactBudget, signature, activeDesignFile, activeCellsFile } from './common.mjs';
 
 export function verifyDesign() {
-  const seal = readJson(path.join(DIR, 'design-seal.json'));
+  const seal = readJson(path.join(DIR, activeDesignFile));
   for (const [file, expected] of Object.entries(seal.files)) assert.equal(hash(fs.readFileSync(path.join(DIR, file))), expected, `Design drift: ${file}`);
   return seal;
 }
@@ -20,6 +20,7 @@ export function verifyGate() {
   assert.equal(gate.status, 'PASS'); assert.equal(gate.runner, runnerSignature());
   assert.equal(gate.config, hash(fs.readFileSync(path.join(DIR, 'config.json'))));
   assert.equal(gate.build, hash(fs.readFileSync(path.join(STAGE, 'BUILD_SEAL.json'))));
+  assert.equal(gate.design, hash(fs.readFileSync(path.join(DIR, activeDesignFile))));
   assert.deepEqual(gate.variants, readJson(path.join(STAGE, 'variants-attached.json')));
   return gate;
 }
@@ -93,13 +94,13 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const [stage, shardString = '0'] = process.argv.slice(2), shard = Number(shardString);
   const gate = verifyGate();
   const out = path.join(STAGE, 'artifacts', `${stage}-${shard}`), log = journal(path.join(out, 'observations.jsonl'));
-  const started = performance.now(), budgetMs = stage === 'anchor' ? 9 * 60000 : ['a4', 'a6'].includes(stage) ? 7 * 60000 : 14 * 60000;
+  const started = performance.now(), budgetMs = stage === 'anchor' ? 9 * 60000 : stage === 'diagnostic' ? 5 * 60000 : ['a4', 'a6'].includes(stage) ? 7 * 60000 : 14 * 60000;
   const deadline = started + budgetMs;
-  const env = environment(), manifest = readJson(path.join(DIR, 'inputs/cells.json'));
+  const env = environment(), manifest = readJson(path.join(DIR, activeCellsFile));
   const selected = stage === 'a4' ? ['T1', 'T2', 'T3', 'T4'].map(id => ({ id, conditions: ['A4_REF', 'A4'] }))
     : manifest.cells.filter(cell => cell.stage === stage && cell.shard === shard);
   if (!selected.length) throw new Error(`No units: ${stage}-${shard}`);
-  log.append({ kind: 'ENVIRONMENT', env, runner: gate.runner, build: gate.build, source: gate.variants, design: hash(fs.readFileSync(path.join(DIR, 'design-seal.json'))) });
+  log.append({ kind: 'ENVIRONMENT', env, runner: gate.runner, build: gate.build, source: gate.variants, design: hash(fs.readFileSync(path.join(DIR, activeDesignFile))) });
   const failures = [], differences = [], observations = [];
   let stop = false;
   for (const [index, cell] of selected.entries()) {
