@@ -52,9 +52,10 @@ function sourceHashes(root, directory) {
     sha256(readFileSync(path))]).sort(([a],[b])=>a<b?-1:a>b?1:0));
 }
 const sources = { originalRust: sourceHashes(original,'rust'), candidateRust: sourceHashes(process.cwd(),'rust'),
-  harness: sourceHashes(process.cwd(),'bench/threshold') };
+  candidateJs: sourceHashes(process.cwd(),'src'), harness: sourceHashes(process.cwd(),'bench/threshold') };
 const sourceDigest = Object.fromEntries(Object.entries(sources).map(([name, map])=>[name,sha256(JSON.stringify(map))]));
 writeFileSync(resolve(out, 'build.json'), JSON.stringify({ baseline: BASELINE_SHA,
+  baselineSrcTree: capture('git', ['rev-parse', `${BASELINE_SHA}:src`]),
   candidate: capture('git', ['rev-parse', 'HEAD']), dirty: capture('git', ['status', '--porcelain']),
   node: process.version, cargo: capture(cargo, ['--version']),
   rustc: capture(process.env.RUSTC || 'rustc', ['--version']),

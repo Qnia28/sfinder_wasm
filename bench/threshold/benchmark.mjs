@@ -7,7 +7,7 @@ import { cpus, platform, arch } from 'node:os';
 import { gzipSync } from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 import { settings, defaults, caseIds } from './profiles.mjs';
-import { manifest, loadFixture } from './fixtures.mjs';
+import { manifest, manifestPath, loadFixture } from './fixtures.mjs';
 import { sha256, validateWitness } from './engine.mjs';
 
 const args = process.argv.slice(2);
@@ -30,7 +30,7 @@ const environment = { profile, suite, mask, pairs, timeoutSeconds, candidate: re
   baseline: manifest.baseline, node: process.version, platform: platform(), arch: arch(),
   cpu: cpus()[0]?.model, cpuCount: cpus().length, runId: process.env.GITHUB_RUN_ID ?? null,
   runAttempt: process.env.GITHUB_RUN_ATTEMPT ?? null, runner: process.env.RUNNER_NAME ?? null,
-  manifestHash: sha256(readFileSync(new URL('./manifest.json',import.meta.url))),
+   manifestHash: sha256(readFileSync(manifestPath)), fixtureSet: manifest.dataset ?? 'legacy-stress',
   build: JSON.parse(readFileSync(resolve(build,'build.json'))) };
 writeFileSync(resolve(out,'environment.json'),JSON.stringify(environment,null,2));
 writeFileSync(resolve(out,'manifest.json'),JSON.stringify(manifest,null,2));

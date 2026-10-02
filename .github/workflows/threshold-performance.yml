@@ -43,6 +43,7 @@ jobs:
       pairs: ${{ steps.plan.outputs.pairs }}
       seconds: ${{ steps.plan.outputs.seconds }}
       matrix: ${{ steps.plan.outputs.matrix }}
+      fixtureRoot: ${{ steps.plan.outputs.fixtureRoot }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -115,6 +116,7 @@ jobs:
         run: |
           npm ci
           set -o pipefail
+          node --test bench/threshold/capture.test.mjs 2>&1 | tee bench/threshold/results/correctness/database.txt
           node bench/threshold/product-regression.mjs 2>&1 | tee bench/threshold/results/correctness/product.txt
       - uses: actions/upload-artifact@v4
         if: always()
@@ -151,6 +153,7 @@ jobs:
           PAIRS: ${{ needs.build.outputs.pairs }}
           SOLVE_TIMEOUT: ${{ needs.build.outputs.seconds }}
           CASE_ID: ${{ matrix.case }}
+          THRESHOLD_FIXTURE_ROOT: ${{ needs.build.outputs.fixtureRoot }}
         run: node bench/threshold/benchmark.mjs --profile "$PROFILE" --suite "$SUITE" --mask "$MASK" --pairs "$PAIRS" --timeout-seconds "$SOLVE_TIMEOUT" --case "$CASE_ID" --out "bench/threshold/results/$CASE_ID"
       - uses: actions/upload-artifact@v4
         if: always()

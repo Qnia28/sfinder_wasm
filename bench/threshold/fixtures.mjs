@@ -2,14 +2,17 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
 import { sha256, validateMatrix } from './engine.mjs';
 
-export const root = fileURLToPath(new URL('.', import.meta.url));
-export const manifest = JSON.parse(readFileSync(new URL('./manifest.json', import.meta.url)));
+export const root = process.env.THRESHOLD_FIXTURE_ROOT
+  ? resolve(process.env.THRESHOLD_FIXTURE_ROOT) : fileURLToPath(new URL('.', import.meta.url));
+export const manifestPath = resolve(root, 'manifest.json');
+export const manifest = JSON.parse(readFileSync(manifestPath));
 export function loadFixture(id) {
   const entry = manifest.cases.find(x => x.id === id);
   assert(entry, `unknown fixture: ${id}`);
-  const gzip = readFileSync(new URL(entry.file, import.meta.url));
+  const gzip = readFileSync(resolve(root, entry.file));
   assert.equal(sha256(gzip), entry.compressedSha256);
   const bytes = gunzipSync(gzip);
   assert.equal(sha256(bytes), entry.sha256);

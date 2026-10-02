@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "databaseHash": "58f02fe2e1f7939e127de4c7ea2886bcf45c91a797ffa0d25dc8a0e4fb262388",
+  "historicalAnalysisHash": "871e4432051f0dc0ba893120e3291effd6137cbed74766131a514c85bb97c079",
+  "historicalGroups": [
+    "0x7c0701c1f",
+    "0x3c0707c0f",
+    "0xc0707c3f",
+    "0xc1f87f1f87",
+    "0x3c07c1f03",
+    "0x1e0783f03",
+    "0x703e0f87",
+    "0x84330cc3f",
+    "0xc1b06c3f",
+    "0x78080fc1f",
+    "0x80e0781e0f",
+    "0x1c0f03c1f",
+    "0xc0307c07",
+    "0x3c0703c1f",
+    "0x3c0763d9f",
+    "0x661bff",
+    "0x701c67f1",
+    "0x81fcff",
+    "0x603c1e03f",
+    "0xc01c7f0f",
+    "0xc0f07c1f",
+    "0x1c07c0f0f",
+    "0x40378fc7",
+    "0x3006c3b1f",
+    "0x4111fc3f",
+    null,
+    "0x501e3fc3",
+    "0x600c063ff",
+    "0x781f07e1",
+    "0x41f0fc0f",
+    "0x40178f3f"
+  ],
+  "validation": [
+    {
+      "setupId": "cycle1-elephant-a",
+      "mirrorGroup": "0x3c0f07c07",
+      "occupied": 16
+    },
+    {
+      "setupId": "cycle1-jaws-a",
+      "mirrorGroup": "0x81e0383e07",
+      "occupied": 16
+    },
+    {
+      "setupId": "cycle1-jeremy-a",
+      "mirrorGroup": "0x80603e0f87",
+      "occupied": 16
+    },
+    {
+      "setupId": "cycle1-legs-a",
+      "mirrorGroup": "0x1c0703c3f",
+      "occupied": 16
+    },
+    {
+      "setupId": "cycle1-pcinfo-031",
+      "mirrorGroup": "0xc0301c1f",
+      "occupied": 12
+    },
+    {
+      "setupId": "cycle1-pcinfo-032",
+      "mirrorGroup": "0x3c0301c07",
+      "occupied": 12
+    },
+    {
+      "setupId": "cycle1-pcinfo-033",
+      "mirrorGroup": "0xc0701c0f",
+      "occupied": 12
+    },
+    {
+      "setupId": "cycle1-grace-system-a",
+      "mirrorGroup": "0xfc3f0fc3f",
+      "occupied": 24
+    }
+  ],
+  "developmentCount": 12,
+  "rule": "Validation board groups frozen before Actions candidate timing. Choose one proved nontrivial matrix per group using structural rank K-F, levels, n, rows, then lexical ID. Development excludes validation groups and round-robins occupied 24/12/16. No threshold timing or completion result enters selection. Missing validation groups are reported, never silently replaced."
+}
