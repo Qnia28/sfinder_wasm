@@ -1,0 +1,792 @@
+{
+  "status": "AUDITED_WITH_CENSORING_OR_MISSING_RUNS",
+  "witnessAndProvenanceAuditStatus": "PASS",
+  "scheduleComplete": true,
+  "phase": "development",
+  "expectedRuns": 36048,
+  "observedRuns": 36048,
+  "normalRuns": 35856,
+  "uniqueMatrixInputsVerified": 1502,
+  "distinctQualityWitnessesRecomputed": 2560,
+  "sealedFilesVerified": 96,
+  "candidateGitSourcesVerified": 137,
+  "statuses": {
+    "CAPPED": 8356,
+    "EXACT": 27500,
+    "TIMEOUT_API": 192
+  },
+  "exceptionRuns": [
+    {
+      "runId": "board-064--restricted-split--ordinary--P0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--H0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--PDC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--PC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--P--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--PD--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--PD--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--P--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--PC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--PDC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--H0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--P0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--PC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--P--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--PD--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--P0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--H0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--PDC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--PDC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--H0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--P0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--PD--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--P--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-064--restricted-split--ordinary--PC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--PDC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--P--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--H0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--PD--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--PC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--P0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--P0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--PC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--PD--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--H0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--P--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--PDC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--PD--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--PC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--P0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--PDC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--P--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--H0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--H0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--P--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--PDC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--P0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--PC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-006--restricted-split--ordinary--PD--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--P0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--H0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--PD--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--P--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--PC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--PDC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--PDC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--PC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--P--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--PD--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--H0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--P0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--P--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--PC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--PDC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--P0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--H0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--PD--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--PD--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--H0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--P0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--PDC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--PC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-010--restricted-split--ordinary--P--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--P--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--H0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--PC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--PD--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--PDC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--P0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--P0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--PDC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--PD--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--PC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--H0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--P--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--PD--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--PDC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--P0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--P--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--H0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--PC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--PC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--H0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--P--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--P0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--PDC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-069--restricted-split--ordinary--PD--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--P0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--PDC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--H0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--PC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--P--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--PD--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--PD--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--P--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--PC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--H0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--PDC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--P0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--PC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--P--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--PD--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--P0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--PDC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--H0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--H0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--PDC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--P0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--PD--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--P--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-066--restricted-split--ordinary--PC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--PD--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--P--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--PC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--H0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--P0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--PDC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--PDC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--P0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--H0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--PC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--P--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--PD--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--H0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--P0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--PDC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--PD--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--P--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--PC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--PC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--P--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--PD--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--PDC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--P0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-025--restricted-split--ordinary--H0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--PC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--PD--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--P--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--P0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--PDC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--H0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--H0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--PDC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--P0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--P--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--PD--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--PC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--P0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--PDC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--H0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--PC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--PD--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--P--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--P--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--PD--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--PC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--H0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--PDC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-097--restricted-split--ordinary--P0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--P--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--PC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--P0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--H0--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--PD--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--PDC--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--PDC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--PD--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--H0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--P0--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--PC--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--P--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--H0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--PD--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--PDC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--P--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--PC--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--P0--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--P0--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--PC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--P--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--PDC--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--PD--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "board-090--restricted-split--ordinary--H0--r4",
+      "status": "TIMEOUT_API"
+    }
+  ],
+  "primarySolverCalls": 0,
+  "enumerationCalls": 0,
+  "independentMinimumKOrExactQualitySolverRerun": false,
+  "limitation": "Recorded exact results cross-compared; witness quality/coverage recomputed, not an independent exact-quality proof for candidate-only exact."
+}

@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "witnessAndProvenanceAuditStatus": "PASS",
+  "scheduleComplete": true,
+  "phase": "legacy",
+  "expectedRuns": 288,
+  "observedRuns": 288,
+  "normalRuns": 288,
+  "uniqueMatrixInputsVerified": 12,
+  "distinctQualityWitnessesRecomputed": 28,
+  "sealedFilesVerified": 6,
+  "candidateGitSourcesVerified": 137,
+  "statuses": {
+    "EXACT": 124,
+    "CAPPED": 164
+  },
+  "exceptionRuns": [],
+  "primarySolverCalls": 0,
+  "enumerationCalls": 0,
+  "independentMinimumKOrExactQualitySolverRerun": false,
+  "limitation": "Recorded exact results cross-compared; witness quality/coverage recomputed, not an independent exact-quality proof for candidate-only exact."
+}

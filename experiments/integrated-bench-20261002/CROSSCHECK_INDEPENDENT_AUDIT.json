@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "offlineSealAndWitnessAuditStatus": "PASS",
+  "scheduledChecks": 129,
+  "observedChecks": 129,
+  "statuses": {
+    "EXACT": 129
+  },
+  "verdicts": {
+    "VERIFIED_EXACT": 129
+  },
+  "sealedFilesVerified": 48,
+  "inconclusiveMatrixIds": [],
+  "mismatchMatrixIds": [],
+  "remainingChecks": [],
+  "primaryMinimumKRecomputed": false,
+  "PCReenumerated": false,
+  "actualSolverCalls": 129,
+  "method": "One bounded baseline threshold fixed-K secondary call per matrix, distinct secondary search from integrated; offline original-row witness/quality recomputed"
+}

@@ -1,0 +1,55 @@
+{
+  "status": "COMPLETED_DEVELOPMENT_LEGACY_CROSSCHECK_NO_FINALIST_NO_RESERVED",
+  "mainRun": 37016499665,
+  "crosscheckRun": 37018994637,
+  "pilotRun": 37005113356,
+  "authorizedGlobalWallMinutes": 180,
+  "authorizedMainRunnerHours": 64,
+  "mainLedgerCalls": 36048,
+  "legacyLedgerCalls": 288,
+  "pilotLedgerCalls": 192,
+  "syntheticLedgerCalls": 6912,
+  "thresholdLedgerCalls": 129,
+  "totalCampaignLedgerCalls": 43569,
+  "finalistFrozen": false,
+  "reservedCalls": 0,
+  "noPrimaryRecomputationOnActualInputs": true,
+  "noPCReenumerationOnActualInputs": true,
+  "runtimeBudgetsChanged": false,
+  "retuningAfterMeasurement": false,
+  "productPromotion": false,
+  "jobs": {
+    "main": {
+      "conclusion": "success",
+      "completedAt": "2026-10-02T14:16:07+00:00",
+      "sumJobElapsedRunnerHours": 3.661388888888889,
+      "artifactCount": 37,
+      "artifactUploadBytes": 9434614
+    },
+    "crosscheck": {
+      "conclusion": "success",
+      "completedAt": "2026-10-02T14:19:54+00:00",
+      "sumJobElapsedRunnerHours": 0.10111111111111111,
+      "artifactCount": 16,
+      "artifactUploadBytes": 182153
+    }
+  },
+  "mainStartToCrosscheckEndMinutes": 22.466666666666665,
+  "sumJobElapsedRunnerHours": 3.7624999999999997,
+  "runnerHoursAreElapsedNotGitHubBilledAccounting": true,
+  "developmentAudit": "PASS",
+  "legacyAudit": "PASS",
+  "thresholdAudit": "PASS",
+  "gateReasons": {
+    "globalTimeouts": 192,
+    "globalTimeoutRoute": "THRESHOLD_FIRST_PRIMARY_HARD",
+    "eligibleTimeouts": 0,
+    "a0PrimaryNumericTimingGatePass": true,
+    "a0EasyOverheadGatePass": false,
+    "bridgeP95": 1.0724552706449053,
+    "bridgeP95Limit": 1.05,
+    "candidateP95Limit": 1.1,
+    "easyPositiveOverheadP95LimitMs": 1,
+    "preregisteredGlobalNoTimeoutPromotionGatePass": false
+  }
+}

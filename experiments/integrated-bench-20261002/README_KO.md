@@ -1,5 +1,7 @@
 # Integrated A0/B10/B6 실행 하네스
 
+**최신 상태: 개발 본측정36,048회 / 기존반례288회 / 독립threshold129회 완료.** 상세는 `MAIN_RESULT_KO.md`. 정상 witness/quality 감사와129개추가exact교차검증PASS. 주대상675개exact는H0=282/P0=P=PC=291/PD=418/PDC=419. bridge/tail/easy-overhead/timeout·bounded품질gate때문에선정후보없음,예약0회,제품승격없음. 본측정시작부터threshold종료까지22.47분/job경과합계약3.76runner-hours로추가승인예산내완료했다. 아래중단/실행중표현은단계별이력이다.
+
 사용자 승인: 정확성→pilot→예산내 가능하면 개발 본측정까지 연속 진행, 개발 gate 통과시 후보1개 동결 후 예약 검증. 2026-10-02. 같은 세션 작업, subagent 없음.
 
 제품 baseline c0cb2a0을 별도 clone/`experiment/integrated-bench-20261002`에서만 사용한다. main/default branch/제품 worktree 변경·merge·배포 없음. Muse 전체 복사가 아니라 B6 pivot과 guarded B10 및 필수 experiment ABI만 이식했다. P0/P bridge는 native const-specialization으로 flags off 비용을 최소화하며 결과/states를 검사한다.
@@ -26,7 +28,7 @@ Attempt2/run37004697494는native debug29/release29검사와두WASMbuild가성공
 
 전체경과시간3시간은Actionsrun생성부터계산한다. 새호출은160분deadline32초전까지만시작하며job별110분보존상한도유지한다. artifact/집계여유20분을남긴다. 로컬watcher는175분에아직실행중이면Actions전체를cancel하여180분이전에회수·보존을시도한다. queuedjob도같은absolute기준을적용한다. cleanup/queue문제로자동취소된부분결과를성공으로바꾸지않는다. 기존구반례288호출은개발job완료뒤남은전체시간안에서만수행한다. 예약및threshold검증은개발gate/남은시간을확인하기전기동하지않는다.
 
-변경허용하네스는run.mjs의운영배치/전체deadline부분뿐이다. native候補/engine-worker/sample/supervisor/common은pilot당시hash와동일하게검사한다. 새예산승인·실행배치·운영하네스hash도launch-development.json에서봉인한다.
+변경허용하네스는run.mjs의운영배치/전체deadline부분뿐이다. native후보/engine-worker/sample/supervisor/common은pilot당시hash와동일하게검사한다. 새예산승인·실행배치·운영하네스hash도launch-development.json에서봉인한다.
 
 Attempt3/run37005113356/commit36dbc5a: native debug29/release29PASS, Linuxhardcgroup/watchdog검사PASS, synthetic288fixture/6,912callsPASS(nonoptimalseed218fixture). 개발32개pilot192호출전부기록·회수했다. EXACT52/CAPPED86/TIMEOUT_API54,ERROR/OOM/cleanup실패0. timeout은primaryHard9행렬×6조건이며앞조건timeout이뒤조건을생략시키지않았다. 정상반환결과exact/bridge불일치0. timeoutincumbent는null이다.
 
