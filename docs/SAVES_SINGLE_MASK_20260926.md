@@ -46,4 +46,4 @@ task011: 작은단일식,ALT JAWS 독립fullsplit 단일식/8개식/ALL,ALT SHOE
 
 작은 입력의 준비비용 증가를 수용하고, 수학적으로 정확한1미노잔여조건에서기본활성화했다. 보드명/표현식수/큐수의추정임계값을넣지않았다. 적용후기본값과명시적false의결과회귀20/20통과. 일반outcomeCache는false를유지한다. 두보드의2회측정이므로다른하드웨어/모든입력의속도보장은아니다.
 
-[감사 및 기본적용기록](../../tools/validation/saves-single-mask-audit-20260926/ASTRA_AUDIT_KO.md). frozen manifest는승격전상태이며,승격전파일과후속변경해시를별도보존한다.
+[감사 및 기본적용기록](../../archive/saves-experiments-20261002/records/tools/validation/saves-single-mask-audit-20260926/ASTRA_AUDIT_KO.md). frozen manifest는승격전상태이며,승격전파일과후속변경해시를별도보존한다.

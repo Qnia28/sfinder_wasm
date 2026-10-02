@@ -30,7 +30,9 @@
 
 **19시 작업 후속:** 1미노잔여 mask 집계+정확한outcome사전 bitset evaluator를 구현하고 **`singleSaveMask:true` 기본 적용**. Node20/20·Chrome8대조·Luna20job/2회·133파일/전체응답 독립감사 완료. 넓은8개식 전체−334/−347ms,JS−358/−341ms; 작은입력JS+0.19/+0.94ms 수용. [계약·결과](docs/SAVES_SINGLE_MASK_20260926.md). Rust DAG의직접mask탐색/전송변경은후속별도범위다.
 
-**현재 작업 인덱스:** [수행한작업/다음작업목록](docs/OPTIMIZATION_PROGRESS_20260926.md). 동일완성outcome집합캐시 구현·15/15회귀 및 pilot12/12응답일치·126파일 독립감사 완료. 넓은 단일식+22/+88ms,8개식−146/−69ms로 기본 `outcomeCache:false`와 명시적opt-in을 유지한다. 현재 진행중 위임은 없다. [구현계약](docs/SAVES_OUTCOME_CACHE_20260926.md), [결과감사](../tools/validation/saves-outcome-cache-audit-20260926/ASTRA_AUDIT_KO.md).
+**현재 작업 인덱스:** [수행한작업/다음작업목록](docs/OPTIMIZATION_PROGRESS_20260926.md). 동일완성outcome집합캐시 구현·15/15회귀 및 pilot12/12응답일치·126파일 독립감사 완료. 넓은 단일식+22/+88ms,8개식−146/−69ms로 기본 `outcomeCache:false`와 명시적opt-in을 유지한다. 현재 진행중 위임은 없다. [구현계약](docs/SAVES_OUTCOME_CACHE_20260926.md), [결과감사](../archive/saves-experiments-20261002/records/tools/validation/saves-outcome-cache-audit-20260926/ASTRA_AUDIT_KO.md).
+
+2026-10-02: A5+A4 최소통합및saves실험정리완료범위는 [결정기록](docs/SAVES_INTEGRATION_20261002.md) 참조. B4전체통합미채택,3체제정책변경없음. saves원자료의과거경로는 [archive인덱스](../archive/saves-experiments-20261002/README_KO.md)로이전했다.
 
 **전체필터 pilot 완료:** task009의12/12 exact·85초·오류0,105동결파일/6대응쌍 감사통과. 작은 dispatch +67~69ms, 실제두행렬묶음 약1.5~2.0% 개선에그쳐 기본 `filterWorkers:0` 유지, opt-in2 구현만보존한다. 자동적용/일반화는미완료이며추가조건·반복을늘리지않는다. [결과감사](../tools/validation/filter-whole-worker-audit-20260926/ASTRA_AUDIT_KO.md).
 
@@ -175,7 +177,7 @@ Saves 조사 결과: [구조·실측·후속 계획](docs/SAVES_OPTIMIZATION_PLA
   - 2026-09-26: 요청 내 code→문자열 캐시와 queue-level regex의 최초 평가 시 생성·재사용을 반영했다. Astra 직접 신규 6개/기존 WASM 3개 회귀 통과. 동일 outcome 집합 캐시·sparse/bitset 비교는 남아 있으며 벤치마크 및 성능 판단은 보류한다. [설계](docs/SAVES_EXPRESSION_DESIGN_20260926.md), [구현·검증](docs/SAVES_EXPRESSION_IMPLEMENTATION_20260926.md).
   - 후속: 동일완성집합캐시C는12job감사후단일식회귀로기본false유지.1미노잔여의고정사전bitset은20job감사후기본활성화했다. 일반긴큐의sparse/bitset일반화는남아있다.
 - [ ] S21-7: 단조성이 증명된 표현식만 조기 성공 종료. `ALL`/부재 조건은 미탐색 결과가 남은 상태에서 완료 처리하지 않는다. raw queue 탐색 중복 제거와 branch별 마지막 bag 해석/remap을 분리한다.
-  - 2026-09-27: 독립JS prototype 계약13/13·동결18파일 감사완료. 실제root/case완료집계·producer stop ack·오류규약및Rust/WASM연결은미완료. [감사](../tools/validation/saves-early-stop-contract-audit-20260927/ASTRA_AUDIT_KO.md).
+  - 2026-09-27: 독립JS prototype 계약13/13·동결18파일 감사완료. 실제root/case완료집계·producer stop ack·오류규약및Rust/WASM연결은미완료. [감사](../archive/saves-experiments-20261002/records/tools/validation/saves-early-stop-contract-audit-20260927/ASTRA_AUDIT_KO.md).
   - task013: 다중root→case완료집계·명시적중단ack·request-wide오류장벽을독립구현.12/12테스트·실제WASMtrace6조건/72대조·129파일감사완료. 실제재생중단root0이므로coverage비용/생략가능작업량확인을다음우선순위로둔다. native연결/성능입증은미완료. [계약](docs/SAVES_MULTIROOT_PROTOCOL_20260927.md).
 - [x] S21-8: 기존 saves 전 결과, 성공률·failedQueues 순서/중복·alias/regex 대조 완료. complete-row, Hold on/off, 2~6줄 및 전체 독립 split 포함. ALT SHOES/ALT JAWS 각각 176,400큐의 개별 outcome을 기존 기하 열거와 전수 비교. Rust 77개, JS 380개, Chrome Worker 30회 통과.
 - [ ] S21-9: outcome-only 이후 병목을 재측정하여 상태 공유를 해치지 않는 병렬화의 실익을 판단한다. S21-4/6/7과 함께 우선순위를 비교한다.

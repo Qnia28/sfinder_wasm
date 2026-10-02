@@ -47,4 +47,6 @@ producer capability인`exactStop`과`futureErrorsPrevalidated`는둘다기본fal
 
 동결task013의12계약테스트가모두통과했다.3패턴×Hold양쪽의6개기존WASMtrace를scalar geometryoracle과대조했고,전체집합/실패큐순서/branch중복/긴multiplicity의72회재생검증을완료했다. local10+external119파일을독립감사했다.
 
-실제trace에서중단된root는0개였다. 합성계약에서중단/ack는검증됐지만실제작업절감은확인되지않았다. 다음은즉시native연결이아니라coverage비중과생략가능작업량을확인하는단계다. [상세감사](../../tools/validation/saves-multiroot-contract-audit-20260927/ASTRA_AUDIT_KO.md).
+실제trace에서중단된root는0개였다. 합성계약에서중단/ack는검증됐지만실제작업절감은확인되지않았다. 다음은즉시native연결이아니라coverage비중과생략가능작업량을확인하는단계다. [상세감사](../../archive/saves-experiments-20261002/records/tools/validation/saves-multiroot-contract-audit-20260927/ASTRA_AUDIT_KO.md).
+
+2026-10-02 보존 위치: 위 implementation과원시trace는 `../../archive/saves-experiments-20261002/saves-evidence.zip`의 `workspace/tools/validation/saves-multiroot-contract-20260927/`에서복원한다. 기존경로는실험당시기록이다.

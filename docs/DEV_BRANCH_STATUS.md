@@ -1,5 +1,13 @@
 # dev-branch 현재 상태 — 2026-09-29
 
+## 2026-10-02 saves 최소 통합 후 작업 상태
+
+현재 제품 작업본은 `integration/saves-minimal-20261002` branch다. 아래의 `main` 표기는 2026-09-29 시점의 이력이다.
+A5 alias 파싱 수정과 A4 캐시 상한만 선별 반영하고 기존 Rust/WASM 및 3체제 정책은 유지했다.
+local main `187fbf9`와 remote main `03b6377`은 업데이트하지 않았다.
+[통합 범위·결정 기록](SAVES_INTEGRATION_20261002.md), [원시 증거·아카이브](../../archive/saves-experiments-20261002/README_KO.md).
+다음 작업은 이 작업본에서 3체제 개선을 이어가되 minimum K·원본중복행 가중 품질·stable-ID proof·취소/worker 회수 계약을 유지한다.
+
 ## 작업본과 이름
 
 `D:\AI\sfinder-wasm\release3.0-20260906`을 `D:\AI\sfinder-wasm\dev-branch`로 이동했다.

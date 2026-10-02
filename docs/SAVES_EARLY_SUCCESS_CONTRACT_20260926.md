@@ -2,7 +2,7 @@
 
 task011의 mask 기본 적용 이후 S21-7 검토다. 현재 구현에는 탐색 조기 종료를 추가하지 않았다.
 
-2026-09-27 후속: 독립JS 프로토타입 task012의계약테스트13/13과동결18파일을감사했다. 기존parser 기반분석과stream 완료규약의검증단계이며제품연결은미완료다. [감사·통합전잔여계약](../../tools/validation/saves-early-stop-contract-audit-20260927/ASTRA_AUDIT_KO.md). 특히case당여러multiset root의완료집계,producer stop ack,중단으로생략되는오류의규약이남아있다.
+2026-09-27 후속: 독립JS 프로토타입 task012의계약테스트13/13과동결18파일을감사했다. 기존parser 기반분석과stream 완료규약의검증단계이며제품연결은미완료다. [감사·통합전잔여계약](../../archive/saves-experiments-20261002/records/tools/validation/saves-early-stop-contract-audit-20260927/ASTRA_AUDIT_KO.md). 특히case당여러multiset root의완료집계,producer stop ack,중단으로생략되는오류의규약이남아있다.
 
 task013 후속: [다중root·중단요청/확인·요청전체오류장벽](SAVES_MULTIROOT_PROTOCOL_20260927.md)을독립구현했다.12/12계약테스트와실제WASMtrace6조건/72회재생대조및129파일감사완료. 모델수준완료집계/ack는검증했으나실제trace의stopped roots는0이므로,제품연결전coverage비용과생략가능작업량확인이우선이다.
 

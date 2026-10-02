@@ -29,4 +29,4 @@ task010은 12/12 COMPLETE, 약11.2초, 오류/timeout0으로 종료했다. Astra
 - 넓은 단일식: +22.25/+88.16ms 회귀, JS나머지도 +75.17/+71.54ms.
 - 넓은 8개식: −145.85/−68.64ms 관측, JS나머지 −73.61/−35.68ms. search 구간도 빨라졌으므로 전체 차이를 캐시 효과로 귀속하지 않는다.
 
-**기본false·명시적opt-in 유지.** 단일식 회귀로 전면 적용을 거부하며, 한 보드의 두 표현식 개수만으로 자동 적용 기준을 만들지 않는다. hit rate/평가 전용 시간/캐시 peak 메모리는 미계측이다. 추가 측정은 예약하지 않았다. [상세 독립 감사](../../tools/validation/saves-outcome-cache-audit-20260926/ASTRA_AUDIT_KO.md).
+**기본false·명시적opt-in 유지.** 단일식 회귀로 전면 적용을 거부하며, 한 보드의 두 표현식 개수만으로 자동 적용 기준을 만들지 않는다. hit rate/평가 전용 시간/캐시 peak 메모리는 미계측이다. 추가 측정은 예약하지 않았다. [상세 독립 감사](../../archive/saves-experiments-20261002/records/tools/validation/saves-outcome-cache-audit-20260926/ASTRA_AUDIT_KO.md).
