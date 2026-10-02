@@ -1,0 +1,21 @@
+{
+  "authorization": "실행하라",
+  "phase": "audit-order-correction-then-reserved-continuation",
+  "sourceMeasurementRunId": 37039906398,
+  "sourceMeasurementCommit": "13b274ef91a2debe07121f7b4a0e670ed39e034f",
+  "originalDevelopmentSummaryFileSha256": "f639f168489df2c9c8fdc8d11c9070e600acb125cfd6f56b7f470f06e9e81b3f",
+  "developmentMeasurementReruns": 0,
+  "candidateRetuned": false,
+  "gatesChanged": false,
+  "originalFailurePreserved": true,
+  "scope": "Previously approved reserved104 R/Ax4 only, after the same development512 results pass corrected independent audit",
+  "globalBudgetSourceRunId": 37039906398,
+  "globalWallMinutes": 180,
+  "computeStopMinutes": 160,
+  "cancelMinutes": 175,
+  "originalPlusContinuationJobUpperRunnerHours": 34.833333333333336,
+  "globalRunnerHoursMax": 64,
+  "devApplication": false,
+  "mainMerge": false,
+  "deployment": false
+}

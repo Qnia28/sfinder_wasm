@@ -1,0 +1,150 @@
+name: A0 reserved continuation after auditor ordering correction
+on:
+  push:
+    branches: [validation/a0-integrated-20261003]
+    paths: [experiments/a0-integrated-revalidation-20261003/resume.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: a0-integrated-revalidation-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  resume-freeze:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      allowed: ${{ steps.freeze.outputs.allowed }}
+      compute-deadline: ${{ steps.freeze.outputs.compute-deadline }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37039906398
+          pattern: a0i-development-*
+          path: .a0/downloads
+      - run: |
+          mkdir -p .a0/development-summary
+          cp .a0/downloads/a0i-development-summary/SUMMARY.json .a0/development-summary/SUMMARY.json
+          python experiments/a0-integrated-revalidation-20261003/audit-resume.py .a0/downloads .a0/development-summary development
+      - id: freeze
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node experiments/a0-integrated-revalidation-20261003/resume-freeze.mjs
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0i-development-resume-audit
+          path: .a0/development-summary/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0i-frozen
+          path: .a0/freeze/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: warn
+  reserved:
+    needs: resume-freeze
+    if: needs.resume-freeze.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      A0_COMPUTE_DEADLINE_MS: ${{ needs.resume-freeze.outputs.compute-deadline }}
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37039906398
+          name: a0i-build-tests
+          path: .a0/build-artifact
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: a0i-frozen
+          path: .a0/freeze
+      - run: |
+          mkdir -p .a0/baseline .a0/build
+          cp .a0/build-artifact/build/* .a0/build/
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/baseline
+          node experiments/a0-integrated-revalidation-20261003/install.mjs
+          sudo mkdir /sys/fs/cgroup/a0-revalidation
+          echo +memory | sudo tee /sys/fs/cgroup/a0-revalidation/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-revalidation' >> "$GITHUB_ENV"
+      - run: node experiments/a0-integrated-revalidation-20261003/run.mjs reserved ${{ matrix.shard }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0i-reserved-${{ matrix.shard }}
+          path: .a0/results/reserved-${{ matrix.shard }}/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+  aggregate-reserved:
+    needs: [resume-freeze, reserved]
+    if: always() && needs.resume-freeze.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          pattern: a0i-reserved-*
+          path: .a0/downloads
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: a0i-frozen
+          path: .a0/freeze
+      - id: aggregate
+        continue-on-error: true
+        run: node experiments/a0-integrated-revalidation-20261003/aggregate.mjs .a0/downloads .a0/reserved-summary reserved
+      - if: always()
+        run: python experiments/a0-integrated-revalidation-20261003/audit-resume.py .a0/downloads .a0/reserved-summary reserved
+      - run: node experiments/a0-integrated-revalidation-20261003/dispatch.mjs reserved
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0i-reserved-summary
+          path: .a0/reserved-summary/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0i-reserved-dispatch
+          path: .a0/dispatch-reserved/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+      - if: steps.aggregate.outcome != 'success'
+        run: exit 1
