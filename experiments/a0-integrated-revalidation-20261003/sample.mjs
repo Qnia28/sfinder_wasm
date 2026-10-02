@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {Worker} from 'node:worker_threads';
+import {HERE,read} from './common.mjs';
+const [id,variant,phase]=process.argv.slice(2),entry=read(`${HERE}/INPUTS.json`).entries.find(e=>e.id===id);
+assert(entry);if(process.platform==='linux')assert(fs.readFileSync('/proc/self/cgroup','utf8').includes(process.env.A0_CHILD_CGROUP.split('/').at(-1)));
+const start=performance.now(),cpu=process.cpuUsage();
+const w=new Worker(new URL('./probe-worker.mjs',import.meta.url),{workerData:{entry,variant,phase}});let result;
+process.on('message',m=>w.postMessage(m));
+w.on('message',m=>{if(m.type==='result')result=m.result;else process.send?.(m);});
+w.on('error',e=>{console.error(e.stack);process.exitCode=1;});
+w.on('exit',code=>{if(code||!result){process.exitCode=1;process.disconnect?.();return;}console.log(JSON.stringify({...result,sampleWallMs:performance.now()-start,cpu:process.cpuUsage(cpu),samplePeakRssBytes:process.resourceUsage().maxRSS*1024}));process.disconnect?.();});

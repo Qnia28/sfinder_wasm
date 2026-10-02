@@ -1,0 +1,13 @@
+{
+  "authorization": "실행하라",
+  "date": "2026-10-03",
+  "phase": "build-preflight-development64-freeze-reserved104",
+  "scope": "product integrated100K only plus threshold handoff contract",
+  "approvedGateReplacement": true,
+  "priorRun37034641097Preserved": true,
+  "normalCappedIsValidProbeEvidence": true,
+  "repeat675EffectCampaign": false,
+  "devApplication": false,
+  "mainMerge": false,
+  "deployment": false
+}

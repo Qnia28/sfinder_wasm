@@ -1,0 +1,245 @@
+name: A0 integrated-only product revalidation
+on:
+  push:
+    branches: [validation/a0-integrated-20261003]
+    paths: [experiments/a0-integrated-revalidation-20261003/launch.json]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: a0-integrated-revalidation-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  RUSTUP_TOOLCHAIN: 1.90.0
+jobs:
+  build-test:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      compute-deadline: ${{ steps.budget.outputs.compute-deadline }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - id: budget
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node experiments/a0-integrated-revalidation-20261003/deadline.mjs
+      - run: |
+          mkdir -p .a0/build .a0/baseline .a0/original
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/baseline
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/original
+          rustup toolchain install 1.90.0 --profile minimal --target wasm32-unknown-unknown
+          cargo build --manifest-path rust/Cargo.toml --locked -p pc-wasm --release --target wasm32-unknown-unknown --target-dir .a0/wasm-target
+          cp .a0/wasm-target/wasm32-unknown-unknown/release/pc_wasm.wasm wasm/pc_wasm.wasm
+          cp wasm/pc_wasm.wasm .a0/baseline/wasm/pc_wasm.wasm
+          sudo mkdir /sys/fs/cgroup/a0-revalidation
+          echo +memory | sudo tee /sys/fs/cgroup/a0-revalidation/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-revalidation' >> "$GITHUB_ENV"
+      - run: node experiments/a0-integrated-revalidation-20261003/build.mjs
+      - run: node experiments/a0-integration-20261003/parity.mjs > .a0/build/parity.log 2>&1
+      - run: node --test experiments/a0-integrated-revalidation-20261003/harness.test.mjs > .a0/build/harness-tests.log 2>&1
+      - run: node experiments/a0-integrated-revalidation-20261003/synthetic.mjs > .a0/build/synthetic-tests.log 2>&1
+      - env:
+          BASELINE_ROOT: .a0/baseline
+        run: node --experimental-wasm-stack-switching --test-isolation=none --test --test-concurrency=1 tests/*.test.mjs > .a0/build/product-tests.log 2>&1
+      - run: node experiments/a0-integrated-revalidation-20261003/check-tests.mjs
+      - run: node experiments/a0-integrated-revalidation-20261003/dispatch.mjs development > .a0/build/dispatch-development.log 2>&1
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0i-build-tests
+          path: |
+            .a0/build/
+            .a0/dispatch-development/
+            .a0/synthetic/
+            .a0/preflight-*/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+  development:
+    needs: build-test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      A0_COMPUTE_DEADLINE_MS: ${{ needs.build-test.outputs.compute-deadline }}
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: a0i-build-tests
+          path: .a0/build-artifact
+      - run: |
+          mkdir -p .a0/baseline .a0/build
+          cp .a0/build-artifact/build/* .a0/build/
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/baseline
+          node experiments/a0-integrated-revalidation-20261003/install.mjs
+          sudo mkdir /sys/fs/cgroup/a0-revalidation
+          echo +memory | sudo tee /sys/fs/cgroup/a0-revalidation/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-revalidation' >> "$GITHUB_ENV"
+      - run: node experiments/a0-integrated-revalidation-20261003/run.mjs development ${{ matrix.shard }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0i-development-${{ matrix.shard }}
+          path: .a0/results/development-${{ matrix.shard }}/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+  freeze:
+    needs: [build-test, development]
+    if: always() && needs.build-test.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      allowed: ${{ steps.freeze.outputs.allowed }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          pattern: a0i-development-*
+          path: .a0/downloads
+      - id: aggregate
+        continue-on-error: true
+        run: node experiments/a0-integrated-revalidation-20261003/aggregate.mjs .a0/downloads .a0/development-summary development
+      - if: always()
+        run: python experiments/a0-integrated-revalidation-20261003/audit.py .a0/downloads .a0/development-summary development
+      - id: freeze
+        if: steps.aggregate.outcome == 'success'
+        run: |
+          node experiments/a0-integrated-revalidation-20261003/freeze.mjs
+          echo 'allowed=true' >> "$GITHUB_OUTPUT"
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0i-development-summary
+          path: .a0/development-summary/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0i-frozen
+          path: .a0/freeze/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: warn
+      - if: steps.aggregate.outcome != 'success'
+        run: exit 1
+  reserved:
+    needs: [build-test, freeze]
+    if: needs.freeze.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      A0_COMPUTE_DEADLINE_MS: ${{ needs.build-test.outputs.compute-deadline }}
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: a0i-build-tests
+          path: .a0/build-artifact
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: a0i-frozen
+          path: .a0/freeze
+      - run: |
+          mkdir -p .a0/baseline .a0/build
+          cp .a0/build-artifact/build/* .a0/build/
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/baseline
+          node experiments/a0-integrated-revalidation-20261003/install.mjs
+          sudo mkdir /sys/fs/cgroup/a0-revalidation
+          echo +memory | sudo tee /sys/fs/cgroup/a0-revalidation/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-revalidation' >> "$GITHUB_ENV"
+      - run: node experiments/a0-integrated-revalidation-20261003/run.mjs reserved ${{ matrix.shard }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0i-reserved-${{ matrix.shard }}
+          path: .a0/results/reserved-${{ matrix.shard }}/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+  aggregate-reserved:
+    needs: [freeze, reserved]
+    if: always() && needs.freeze.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          pattern: a0i-reserved-*
+          path: .a0/downloads
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: a0i-frozen
+          path: .a0/freeze
+      - id: aggregate
+        continue-on-error: true
+        run: node experiments/a0-integrated-revalidation-20261003/aggregate.mjs .a0/downloads .a0/reserved-summary reserved
+      - if: always()
+        run: python experiments/a0-integrated-revalidation-20261003/audit.py .a0/downloads .a0/reserved-summary reserved
+      - run: node experiments/a0-integrated-revalidation-20261003/dispatch.mjs reserved
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0i-reserved-summary
+          path: .a0/reserved-summary/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0i-reserved-dispatch
+          path: .a0/dispatch-reserved/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+      - if: steps.aggregate.outcome != 'success'
+        run: exit 1
