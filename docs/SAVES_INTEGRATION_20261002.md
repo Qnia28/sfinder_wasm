@@ -46,6 +46,6 @@ fresh32holdout·성능최종browser/concurrency wave는승격할B4후보가없�
 - `archive/saves-experiments-20261002/saves-evidence.zip`:원시결과/실패/후보/runner전체보존용content-deduplicatedarchive.
 - `archive/saves-experiments-20261002/history/`:제품통합·실험·Muse이력을복원할Gitbundle.
 
-archive hash·全payload·source비교완료후에만중복experimentworktree/Muse사본/saves전용validation디렉터리를정리한다. 다른3체제실험·sharedsnapshot·toolchain·기존backup은보호한다. archive밖에있던Luna임시원본·Astra계획은복사만하며삭제하지않는다.
+archive hash·전체 payload·source 비교 완료 후에만 중복 experiment worktree/Muse 사본/saves 전용 validation 디렉터리를 정리한다. 다른 3체제 실험·shared snapshot·toolchain·기존 backup은 보호한다. archive 밖에 있던 Luna 임시 원본·Astra 계획은 복사만 하며 삭제하지 않는다.
 
 실제제품반영은local `integration/saves-minimal-20261002` branch이며local/remote main merge·push·배포는수행하지않는다.
