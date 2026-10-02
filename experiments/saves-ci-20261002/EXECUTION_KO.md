@@ -50,3 +50,15 @@ local dev/main과 remote main은 변경하지 않는다. 제품 승격/배포 �
 ## 후속
 
 첫 wave 결과를 먼저 판정. B6/B3/B1 및 fresh holdout/concurrent/browser wave는 자동 실행하지 않는다.
+
+## CI 실행1 — infrastructure gate 실패
+
+- run36975926163, commit `8d08dab`. build44초/aggregate16초.
+- 원WASM 재빌드와 M WASM 빌드는 성공. native pc-core73 tests 중72 pass/1 fail.
+- 실패는 `initial_completed_middle_row_uses_normalized_legal_board_in_all_searches`에서 `../../wasm/legal_boards_4.lgb`를 읽지 못한 것. 임시 Rust root에 따른 fixture 배치를 runner가 누락했다.
+- gate/anchor/measurement는 차단. timed0/resource0/holdout0. solver 정확성 또는 성능 실패로 해석하지 않음.
+- `prepare.mjs`에 baseline tracked legal pack을 정확한 fixture 경로로 복사·hash 확인 추가. candidate source/Rust/WASM 입력·cells·선정·판정 기준 변경 없음. test skip/expected 값 수정 없음.
+- 원시 job logs/run metadata/build/aggregate artifact 모두 `.campaign/github-run-36975926163/`로 download. BUILD_SEAL의 R/M SHA256을 실제 bytes와 확인해 archive seal을 별도 저장한다.
+- action runtime Node20 deprecation warning은 checkout/setup/upload action 런타임의 Node24 강제 전환 알림. 실제 측정 Node는 setup-node의 고정24.13.0. 실패 원인은 이 경고가 아님.
+- 원격 main `03b6377`, local dev/main `187fbf9` 그대로. 인프라 수정 후 새 commit/run 시작은 사용자 확인 전 보류한다. 실패 run을 삭제하거나 동일 run을 임의 재시도하지 않는다.
+- 사용자 확인 완료: **수정 후 새 실행 진행**. 수정된 runner의 새 commit으로 시작하며 source candidate refs·동결 cells·holdout 상태는 유지한다.

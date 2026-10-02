@@ -46,6 +46,13 @@ if (mode === 'sources') {
   console.log('Prepared independent immutable source variants; no solver called.');
 } else if (mode === 'build') {
   const artifact = path.join(STAGE, 'artifacts/build'); fs.mkdirSync(artifact, { recursive: true });
+  // Native pc-core regression tests resolve ../../wasm from pc-core's
+  // manifest directory. The extracted Rust roots live one level below STAGE,
+  // so supply the unchanged tracked fixture at STAGE/wasm as well.
+  const fixture = gitFile(config.baseline, 'wasm/legal_boards_4.lgb');
+  fs.mkdirSync(path.join(STAGE, 'wasm'), { recursive: true });
+  fs.writeFileSync(path.join(STAGE, 'wasm/legal_boards_4.lgb'), fixture);
+  assert.equal(hash(fixture), readJson(path.join(STAGE, 'variants.json')).REF.files['wasm/legal_boards_4.lgb']);
   for (const [name, ref] of [['R', config.baseline], ['M', config.b4]]) {
     const rust = path.join(STAGE, `rust-${name}`);
     const files = execFileSync('git', ['ls-tree', '-r', '--name-only', ref, '--', 'rust'], { cwd: ROOT, encoding: 'utf8' }).trim().split('\n');
@@ -58,7 +65,7 @@ if (mode === 'sources') {
     cargo: execFileSync('cargo', ['--version'], { encoding: 'utf8' }).trim(), variants: sourceVariants,
     wasm: Object.fromEntries(['R', 'M'].map(name => [name, hash(fs.readFileSync(path.join(artifact, `${name}.wasm`)))])),
     design: hash(fs.readFileSync(path.join(DIR, 'design-seal.json'))), config: hash(fs.readFileSync(path.join(DIR, 'config.json'))),
-    lock: hash(gitFile(config.baseline, 'rust/Cargo.lock')) };
+    lock: hash(gitFile(config.baseline, 'rust/Cargo.lock')), nativeLegalFixture: hash(fixture) };
   writeJson(path.join(artifact, 'BUILD_SEAL.json'), seal);
   console.log(JSON.stringify(assertArtifactBudget(artifact)));
 } else if (mode === 'attach') {
