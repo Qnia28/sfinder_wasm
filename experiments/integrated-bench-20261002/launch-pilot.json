@@ -1,8 +1,8 @@
 {
   "phase": "correctness-then-pilot",
-  "attempt": 2,
-  "previousRun": 37004387878,
-  "repair": "Fetch baseline Git objects; initial shallow checkout failed before compilation or solver calls",
+  "attempt": 3,
+  "previousRun": 37004697494,
+  "repair": "Restore node executable in Linux cgroup child exec argv; native debug/release 29/29 passed, synthetic/pilot/main not started",
   "authorizedByUser": true,
   "date": "2026-10-02",
   "actualMainMeasurementStarted": false,

@@ -22,7 +22,7 @@ test('input pack hashes and primary seeds preserve original weighted rows',()=>{
  }
 });
 test('independent process and API watchdogs kill synchronous infinite WASM-like work',async()=>{
- const a=await supervised(['api-hang'],{script:'supervisor-fixture.mjs',apiMs:100,processMs:1000});assert.equal(a.status,'TIMEOUT_API');assert(a.processWallMs<3000);
+ const a=await supervised(['api-hang'],{script:'supervisor-fixture.mjs',apiMs:100,processMs:1000});assert.equal(a.status,'TIMEOUT_API',JSON.stringify(a));assert(a.processWallMs<3000);
  const b=await supervised(['hang'],{script:'supervisor-fixture.mjs',apiMs:100,processMs:250});assert.equal(b.status,'TIMEOUT_PROCESS');
  const c=await supervised(['ok'],{script:'supervisor-fixture.mjs',apiMs:100,processMs:1000});assert.equal(c.status,'EXACT');
 });

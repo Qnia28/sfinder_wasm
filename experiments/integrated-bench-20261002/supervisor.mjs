@@ -10,7 +10,7 @@ export async function supervised(args,{apiMs=10000,processMs=30000,cleanupMs=200
  let command=process.execPath,argv=['--max-old-space-size=2048',path.join(HERE,script),...args];
  const oomCount=()=>cg?Number(fs.readFileSync(path.join(cg,'memory.events'),'utf8').match(/^oom_kill (\d+)/m)?.[1]??0):0;
  const previousOOM=oomCount();
- if(cg){command='/bin/bash';argv=['-c',`sudo -n sh -c "echo $$ > '$BENCH_CGROUP/cgroup.procs'" || exit 99; exec "$@"`,'bench',...argv]}
+ if(cg){command='/bin/bash';argv=['-c',`sudo -n sh -c "echo $$ > '$BENCH_CGROUP/cgroup.procs'" || exit 99; exec "$@"`,'bench',process.execPath,...argv]}
  return await new Promise((resolve,reject)=>{
   const proc=spawn(command,argv,{cwd:path.resolve(HERE,'../..'),env:process.env,detached:process.platform!=='win32',stdio:['ignore','pipe','pipe','ipc']});
   let stdout='',stderr='',terminal=null,apiTimer,cleanupTimer,overflow=false;

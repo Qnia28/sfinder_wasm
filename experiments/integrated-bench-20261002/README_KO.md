@@ -15,3 +15,5 @@ Node+WASM메모리는root가생성한Linuxcgroupv2에서child전체3GiB/memorysw
 원계획/원표본/36,048schedule는로컬`tools/validation/integrated-bench-plan-20261002`에보존한다. immutableinputs/PLAN/SCHEDULE은여기에복사하되candidatecommit/binary는BUILD.json에서새로봉인한다. 모든artifactretention1일,끝난뒤즉시로컬다운로드/독립검산한다.
 
 Attempt1/run37004387878은checkout기본depth1때문에baselineGitobject가없어gitarchive에서실패했다. 컴파일·synthetic·pilot·본측정호출은0회였다. 전체Actions로그/RUN을로컬보존하고fetch-depth0만CI준비설정으로추가한다. 입력·candidateRust·flags·gate·예산은변경하지않는다.
+
+Attempt2/run37004697494는native debug29/release29검사와두WASMbuild가성공했다. Linuxcgroupchildlauncher의execargv에nodeexecutable이빠진하네스오류가watchdogtest에서발견되어synthetic/pilot/main호출은0회였다. 두binary/hosttest/전체Actions로그를보존하고launcher만수정한다. candidateRust·입력·예산·gate는동일하다.
