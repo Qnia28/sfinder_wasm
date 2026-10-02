@@ -103,7 +103,7 @@ if (mode === 'preflight') {
     append({ event: 'start', ...identity, globalSequence: job.globalSequence, startedUtc: new Date().toISOString() });
     let probe;
     const result = await collectWorker(new Worker(path.join(root, 'a0-secondary-worker.mjs'), { workerData: {
-      ...identity, devSnapshotRoot: snapshot, matrixFile: path.join(root, 'attempt-02', input.snapshot.path),
+      ...identity, devSnapshotRoot: snapshot, matrixFile: path.join(root, 'attempt-02', input.snapshot.path.replaceAll('\\', '/')),
       compressedSha256: input.snapshot.gzipSha256, jsonSha256: input.snapshot.jsonSha256,
       identitySha256: c.identitySha256, binarySha256: build.binarySha256, stateBudget: 100_000,
     } }), { maxWallMs: Math.max(1, 60_000 - (performance.now() - start)), onProbe: m => {
@@ -132,7 +132,7 @@ if (mode === 'preflight') {
     validateLedger(rows, sp, campaign);
     records.push(...rows); shards.push(campaign);
   }
-  const getMatrix = id => JSON.parse(gunzipSync(fs.readFileSync(path.join(root, 'attempt-02', plan.cases.find(c => c.caseId === id).representative.snapshotPath))));
+  const getMatrix = id => JSON.parse(gunzipSync(fs.readFileSync(path.join(root, 'attempt-02', plan.cases.find(c => c.caseId === id).representative.snapshotPath.replaceAll('\\', '/')))));
   const report = analyzeRecords(plan, { ...build, stateBudget: 100_000 }, records, getMatrix);
   report.runnerStrata = shards.map(s => ({ shard: s.shard, runtime: s.runtime }));
   report.crossRunnerTimingCaution = 'Pairs/all repetitions share a runner; pooled wall sum is descriptive. Inspect per-shard ratios; no automatic promotion.';

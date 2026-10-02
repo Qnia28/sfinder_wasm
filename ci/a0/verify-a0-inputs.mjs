@@ -29,7 +29,7 @@ const errors = [];
 const allSnapshotHashes = new Map();
 const snapshotIdentities = new Map();
 for (const record of eligible) {
-  const bytes = fs.readFileSync(path.join(attempt02, record.snapshot.path));
+  const bytes = fs.readFileSync(path.join(attempt02, record.snapshot.path.replaceAll('\\', '/')));
   const compressedSha256 = sha256(bytes);
   if (compressedSha256 !== record.snapshot.gzipSha256) errors.push(`gzip hash mismatch: ${record.snapshot.path}`);
   allSnapshotHashes.set(record.snapshot.path, compressedSha256);
@@ -61,7 +61,7 @@ for (const testCase of plan.cases) {
     errors.push(`representative snapshot missing from eligible set: ${testCase.caseId}`);
     continue;
   }
-  const bytes = fs.readFileSync(path.join(attempt02, relative));
+  const bytes = fs.readFileSync(path.join(attempt02, relative.replaceAll('\\', '/')));
   const jsonBytes = gunzipSync(bytes);
   if (sha256(jsonBytes) !== record.snapshot.jsonSha256) errors.push(`JSON hash mismatch: ${relative}`);
   const matrix = JSON.parse(jsonBytes);
