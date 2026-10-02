@@ -1,0 +1,11 @@
+import path from 'node:path';
+import { Worker } from 'node:worker_threads';
+import { HERE, read } from './common.mjs';
+const [id, variant, phase] = process.argv.slice(2), entry = read(path.join(HERE, 'INPUTS.json')).entries.find(e => e.id === id);
+if (!entry) throw Error('Unknown input');
+const start = performance.now(), cpu = process.cpuUsage();
+const w = new Worker(new URL('./route-worker.mjs', import.meta.url), { workerData: { entry, variant, phase } });
+let result;
+w.on('message', message => { if (message.type === 'result') result = message.result; else process.send?.(message); });
+w.on('error', error => { console.error(error.stack); process.exitCode = 1; });
+w.on('exit', code => { if (code || !result) { process.exitCode = 1; return; } console.log(JSON.stringify({ ...result, sampleWallMs: performance.now() - start, cpu: process.cpuUsage(cpu), peakRssBytes: process.resourceUsage().maxRSS * 1024 })); });

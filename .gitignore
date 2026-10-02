@@ -16,3 +16,4 @@ rust/generated/
 *.tmp
 
 /benchmark-results/
+/.a0/

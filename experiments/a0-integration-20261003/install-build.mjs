@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import { HERE, ROOT, read, jsonSha, sha } from './common.mjs';
+const build = read(path.join(ROOT, '.a0/build/BUILD.json'));
+assert.equal(build.inputsSha256, jsonSha(read(path.join(HERE, 'INPUTS.json'))));
+assert.equal(build.scheduleSha256, jsonSha(read(path.join(HERE, 'SCHEDULE.json'))));
+for (const file of [...build.sourceFiles, ...build.harnessSources]) assert.equal(sha(fs.readFileSync(path.join(ROOT, file.file))), file.sha256, file.file);
+const bytes = fs.readFileSync(path.join(ROOT, '.a0/build/pc_wasm.wasm')); assert.equal(sha(bytes), build.wasmSha256);
+fs.copyFileSync(path.join(ROOT, '.a0/build/pc_wasm.wasm'), path.join(ROOT, 'wasm/pc_wasm.wasm'));
+fs.copyFileSync(path.join(ROOT, '.a0/build/pc_wasm.wasm'), path.join(ROOT, '.a0/baseline/wasm/pc_wasm.wasm'));
+console.log('Product source/harness/input/binary hashes verified; R and A use identical WASM.');

@@ -1,0 +1,222 @@
+name: A0 minimal product connection verification
+on:
+  push:
+    branches: [integration/a0-minimal-20261003]
+    paths: [experiments/a0-integration-20261003/launch.json]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: a0-product-connection-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  RUSTUP_TOOLCHAIN: 1.90.0
+jobs:
+  build-test:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      compute-deadline: ${{ steps.budget.outputs.compute-deadline }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - id: budget
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node experiments/a0-integration-20261003/deadline.mjs
+      - run: |
+          mkdir -p .a0/build .a0/baseline .a0/original
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/baseline
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/original
+          rustup toolchain install 1.90.0 --profile minimal --target wasm32-unknown-unknown
+      - run: |
+          cargo test --manifest-path rust/Cargo.toml --locked -p pc-core min_cover --target-dir .a0/host-debug > .a0/build/native-debug.log 2>&1
+          cargo test --manifest-path rust/Cargo.toml --locked -p pc-core min_cover --release --target-dir .a0/host-release > .a0/build/native-release.log 2>&1
+          cargo build --manifest-path rust/Cargo.toml --locked -p pc-wasm --release --target wasm32-unknown-unknown --target-dir .a0/wasm-target
+          cp .a0/wasm-target/wasm32-unknown-unknown/release/pc_wasm.wasm wasm/pc_wasm.wasm
+          cp wasm/pc_wasm.wasm .a0/baseline/wasm/pc_wasm.wasm
+      - run: node experiments/a0-integration-20261003/seal-build.mjs
+      - run: node experiments/a0-integration-20261003/parity.mjs
+      - run: |
+          sudo mkdir /sys/fs/cgroup/a0-integration-child
+          echo 3221225472 | sudo tee /sys/fs/cgroup/a0-integration-child/memory.max
+          echo 0 | sudo tee /sys/fs/cgroup/a0-integration-child/memory.swap.max
+          echo 'A0_CGROUP=/sys/fs/cgroup/a0-integration-child' >> "$GITHUB_ENV"
+      - run: node --test experiments/a0-integration-20261003/harness.test.mjs > .a0/build/harness-tests.log 2>&1
+      - run: node --test --test-concurrency=1 tests/*.test.mjs > .a0/build/product-tests.log 2>&1
+      - run: node --experimental-wasm-stack-switching --test-isolation=none --test tests/secondary-three-engine.test.mjs > .a0/build/cp-tests.log 2>&1
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0-build-tests
+          path: .a0/build/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+  smoke:
+    needs: build-test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      A0_COMPUTE_DEADLINE_MS: ${{ needs.build-test.outputs.compute-deadline }}
+    strategy:
+      max-parallel: 8
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: a0-build-tests
+          path: .a0/build
+      - run: |
+          mkdir -p .a0/baseline
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/baseline
+          node experiments/a0-integration-20261003/install-build.mjs
+          sudo mkdir /sys/fs/cgroup/a0-integration-child
+          echo 3221225472 | sudo tee /sys/fs/cgroup/a0-integration-child/memory.max
+          echo 0 | sudo tee /sys/fs/cgroup/a0-integration-child/memory.swap.max
+          echo 'A0_CGROUP=/sys/fs/cgroup/a0-integration-child' >> "$GITHUB_ENV"
+      - run: node experiments/a0-integration-20261003/run.mjs smoke ${{ matrix.shard }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0-smoke-${{ matrix.shard }}
+          path: .a0/results/smoke-${{ matrix.shard }}/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+  freeze:
+    needs: [build-test, smoke]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      allowed: ${{ steps.freeze.outputs.allowed }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          pattern: a0-smoke-*
+          path: .a0/downloads
+      - run: node experiments/a0-integration-20261003/aggregate.mjs .a0/downloads .a0/smoke-summary smoke
+      - id: freeze
+        run: |
+          node experiments/a0-integration-20261003/freeze.mjs
+          echo 'allowed=true' >> "$GITHUB_OUTPUT"
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0-smoke-summary
+          path: .a0/smoke-summary/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0-frozen-candidate
+          path: .a0/freeze/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: warn
+  reserved:
+    needs: [build-test, freeze]
+    if: needs.freeze.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      A0_COMPUTE_DEADLINE_MS: ${{ needs.build-test.outputs.compute-deadline }}
+    strategy:
+      max-parallel: 16
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: a0-build-tests
+          path: .a0/build
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: a0-frozen-candidate
+          path: .a0/freeze
+      - run: |
+          mkdir -p .a0/baseline
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/baseline
+          node experiments/a0-integration-20261003/install-build.mjs
+          sudo mkdir /sys/fs/cgroup/a0-integration-child
+          echo 3221225472 | sudo tee /sys/fs/cgroup/a0-integration-child/memory.max
+          echo 0 | sudo tee /sys/fs/cgroup/a0-integration-child/memory.swap.max
+          echo 'A0_CGROUP=/sys/fs/cgroup/a0-integration-child' >> "$GITHUB_ENV"
+      - run: node experiments/a0-integration-20261003/run.mjs reserved ${{ matrix.shard }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0-reserved-${{ matrix.shard }}
+          path: .a0/results/reserved-${{ matrix.shard }}/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+  aggregate-reserved:
+    needs: [build-test, freeze, reserved]
+    if: always() && needs.freeze.outputs.allowed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          pattern: a0-reserved-*
+          path: .a0/downloads
+      - run: node experiments/a0-integration-20261003/aggregate.mjs .a0/downloads .a0/reserved-summary reserved
+      - run: node experiments/a0-integration-20261003/dispatch-audit.mjs reserved
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0-reserved-summary
+          path: .a0/reserved-summary/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0-dispatch-audit
+          path: .a0/dispatch/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: warn

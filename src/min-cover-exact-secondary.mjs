@@ -66,6 +66,7 @@ function solveInspectedSecondary(coverage, options, trivial) {
     if (!primaryHard) {
       const integrated = integratedProbe ?? search({
         qualityFor, seedKeys: primaryKeys, stateBudget: FAST_EXACT_STATE_BUDGET, integrated: true,
+        partitioned: decomposition === 'off',
       });
       if (integrated?.completed && Number.isFinite(integrated.count) && integrated.count === primary.count) {
         return {

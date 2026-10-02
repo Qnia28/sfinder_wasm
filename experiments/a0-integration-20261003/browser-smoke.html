@@ -1,0 +1,41 @@
+<!doctype html><meta charset="utf-8"><title>A0 product connection browser verification</title>
+<pre id="result">RUNNING</pre>
+<script type="module">
+import { createWasmSolver } from '../../src/wasm-backend.mjs';
+import { createNumericCoverage, numericPacked } from '../../src/numeric-cover-data.mjs';
+import { solveExactSecondary } from '../../src/min-cover-exact-secondary.mjs';
+import { ExactSecondaryPool, compiledCoverModule } from '../../src/exact-secondary-pool.mjs';
+const assert = (ok, label) => { if (!ok) throw Error(label); };
+const out = document.querySelector('#result');
+let solver, pool;
+try {
+  solver = await createWasmSolver(4, { legal: false });
+  const rows = [[[0,1],[1,1]],[[1,1],[2,1]],[[0,1],[2,1]],[[0,1],[1,1]]];
+  const m = createNumericCoverage(['000','001','002'], new Map(rows.map((r,i)=>[i,r])), rows.map((_,caseId)=>({caseId})));
+  const qualityFor = (key,id)=>m.qualityIndex.get(id).get(key);
+  const context = { primary:{count:2,backend:'rust'},primaryKeys:['000','002'],primaryHard:false,requestedPrimary:'rust',requested:false,kernelStats:{cases:3,solutions:3,entries:6} };
+  const original = solver.minimumCoverAtCount; let probeOptions;
+  solver.minimumCoverAtCount = function(c,k,o){probeOptions=o;return original.call(this,c,k,o)};
+  const direct = solveExactSecondary(m.coverage,{...context,solver,qualityFor});
+  assert(probeOptions.partitioned === true && probeOptions.stateBudget === 100000, 'browser A0 scope');
+  assert(direct.keys.join() === '000,001' && direct.qualityVector.length === 4, 'weighted stable witness');
+  const before = Array.from(numericPacked(m.prepared.rawCases).qualities);
+  pool = new ExactSecondaryPool(1);
+  const worker = await pool.submit(m.prepared,context).secondaryPending;
+  assert(JSON.stringify(worker) === JSON.stringify(direct), 'worker/direct mismatch');
+  assert(JSON.stringify(before) === JSON.stringify(Array.from(numericPacked(m.prepared.rawCases).qualities)), 'source detached');
+  const module = await compiledCoverModule();
+  assert(WebAssembly.Module.exports(module).some(e=>e.name==='solver_min_cover_at_count_integrated_partitioned_bounded'), 'pool export');
+  await pool.dispose(); assert(pool.disposed, 'worker not disposed');
+  solver.close();
+  const pendingPool = new ExactSecondaryPool(1), pending = pendingPool.submit(m.prepared,context).secondaryPending;
+  await pendingPool.dispose();
+  let cancelled = false; try { await pending; } catch { cancelled = true; }
+  assert(cancelled && pendingPool.disposed, 'cancellation');
+  const result = {status:'PASS',browser:navigator.userAgent,a0Scope:true,duplicateWeightedRows:true,stableWitness:true,directAndPoolIdentical:true,bufferOwnership:true,poolDispose:true,cancellation:true,actualInputPrimaryCalls:0,actualInputPcCalls:0};
+  window.a0Result=result;out.textContent=JSON.stringify(result,null,2);
+} catch(error) {
+  window.a0Result={status:'FAIL',message:error.stack};out.textContent=JSON.stringify(window.a0Result,null,2);
+  await pool?.dispose();solver?.close();
+}
+</script>
