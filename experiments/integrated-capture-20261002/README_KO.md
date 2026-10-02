@@ -43,3 +43,22 @@ raw와provenmatrix는동일rows/key순서를유지하고전자는primary재개�
 ## 실행 복구 이력
 
 첫run36997921803/commit470ad28은16개VM의계산이끝났으나artifactglob이숨김`.capture`디렉터리를제외하여모든shardpayload업로드에실패했다. 빌드artifact/summary/전체Actions로그는로컬보존했다. VM의행렬파일은회수할수없어완료로인정하지않는다. `include-hidden-files:true`만추가하여새attempt로복구한다. 표본·큐·source·solver·budget·capture하네스는동일하며재생성필요성은보존실패이다. 최초관측을지우거나성공으로대체하지않는다.
+
+두번째run36998333213/commitb5db542는build와16개capturejob이모두성공하여모든payload를다운로드했다. CIaggregate는wildcardupload가보존한`capture-shard-N/shard-NN/`중첩경로를지원하지못해실패했다. 이CI실패를성공으로표기하지않는다. 집계기의flat/nested경로지원및고유ID/소유partition/밀봉파일검사를수정하여**기존다운로드를로컬에서집계**했다. 세번째solver실행은없다. syntheticartifact만사용하는layout/중복ID/외부ID테스트와기존puretest모두통과했다.
+
+## 실제 저장 모집단
+
+1,912슬롯=primaryexact1,725+coverage없음187. timeout/unproven/error0. 개발1,504(고유1,502),예약221(고유219);전체엄격identity1,721. ordinary239,per-save1,486. bag783,restricted-split942. 원coverage행4,408,084/qualityedge50,603,344. 모든selectedrecordalias125개를보존하며중복행은제거하지않았다.
+
+| 제품 route 분류(secondary 미실행) | 개발 | 예약 | 합계 |
+|---|---:|---:|---:|
+| tiny <=48 |808|117|925|
+| integrated100K 대상 |675|104|779|
+| primaryHard/threshold-first |18|0|18|
+| non-tiny trivial |3|0|3|
+
+primarybackend=kernel1,438/Rust272/HiGHS15. seedfeasibility와exactprimaryproof출처를검사하며독립최소Ksolver재실행은하지않는다. route수는제품분류이며성능/성공률측정값이아니다. 다음성능캠페인대상개수나스케줄을이표에서자동확정하지않는다. A0/B10/B6비교는실행하지않았다.
+
+엄격identity는orderedkeys/rows/K/seedKeys를포함한다. 중복3그룹(별칭7개,중복4개)을표시하지만행렬파일/별칭/partition은삭제·통합하지않는다. 개발/예약간동일identity는없다. 그룹선정은inventory에서hash순위/대표를재구성하여검증했다. 지정historicalmanifest2개의예약노출충돌은0개였지만전수과거노출감사가아니므로freshholdout미인증을유지한다.
+
+로컬보존:`D:/AI/sfinder-wasm/tools/validation/integrated-capture-20261002/`. 첫실패로그/두번째18artifact/원입력과선택/소스bundle/독립audit/로컬복구summary를보존한다. shard밀봉payload합계245,403,062bytes(약234MiB),artifact1일retention에의존하지않는다. 최종독립검증상태는로컬`INDEPENDENT_AUDIT.json`을참조한다.
