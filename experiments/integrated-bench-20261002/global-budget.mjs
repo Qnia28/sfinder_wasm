@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
-const response=await fetch(`https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,{headers:{Authorization:`Bearer ${process.env.GH_TOKEN}`,Accept:'application/vnd.github+json'}});
+const sourceRun=process.env.BENCH_ORIGINAL_MAIN_RUN??process.env.GITHUB_RUN_ID;
+const response=await fetch(`https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${sourceRun}`,{headers:{Authorization:`Bearer ${process.env.GH_TOKEN}`,Accept:'application/vnd.github+json'}});
 assert(response.ok,`Run creation lookup: ${response.status}`);
 const run=await response.json(),start=Date.parse(run.created_at);
 assert(Number.isFinite(start));

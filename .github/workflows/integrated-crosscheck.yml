@@ -1,0 +1,73 @@
+name: Integrated independent fixed-K exact crosscheck
+on:
+  push:
+    branches: [experiment/integrated-bench-20261002]
+    paths: [experiments/integrated-bench-20261002/launch-crosscheck.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: integrated-bench-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  gate:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.event.repository.private == false && contains(github.event.head_commit.message, '[bench-check]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      compute-deadline: ${{ steps.budget.outputs.compute-deadline }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: echo "BENCH_ORIGINAL_MAIN_RUN=$(node -p 'JSON.parse(require("fs").readFileSync("experiments/integrated-bench-20261002/launch-crosscheck.json")).mainRun')" >> "$GITHUB_ENV"
+      - id: budget
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node experiments/integrated-bench-20261002/global-budget.mjs
+  checks:
+    needs: gate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      BENCH_COMPUTE_DEADLINE_MS: ${{ needs.gate.outputs.compute-deadline }}
+    strategy:
+      max-parallel: 16
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: bench-build
+          path: .bench/build
+          run-id: 37005113356
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          mkdir -p .bench/baseline
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .bench/baseline
+          node experiments/integrated-bench-20261002/install-build.mjs .bench/build
+          sudo mkdir /sys/fs/cgroup/integrated-bench-child
+          echo 3221225472 | sudo tee /sys/fs/cgroup/integrated-bench-child/memory.max
+          echo 0 | sudo tee /sys/fs/cgroup/integrated-bench-child/memory.swap.max
+          echo 'BENCH_CGROUP=/sys/fs/cgroup/integrated-bench-child' >> "$GITHUB_ENV"
+      - run: node experiments/integrated-bench-20261002/crosscheck.mjs ${{ matrix.shard }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bench-crosscheck-${{ matrix.shard }}
+          path: .bench/crosscheck/${{ matrix.shard }}/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
