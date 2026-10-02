@@ -1,0 +1,1801 @@
+{
+  "schemaVersion": 1,
+  "status": "PREP_COMPLETE",
+  "startedUtc": "2026-10-01T12:24:59.039Z",
+  "workingRoot": "D:\\AI\\sfinder-wasm\\muse\\integrated-improve",
+  "branch": "muse/integrated-partitioned",
+  "head": "f9ae7369b0a2f33428760b714df105b10f758961",
+  "repositoryStatusBeforeCapture": "?? HANDOFF_KO.md\n?? integrated-todo.md\n?? validation/cycle1-a0-prep-20261001/",
+  "node": "v24.13.0",
+  "execArgv": [],
+  "cpuModel": "12th Gen Intel(R) Core(TM) i5-1240P",
+  "logicalCpus": 16,
+  "ortoolsSupported": false,
+  "input": {
+    "path": "D:/AI/tetrispc/setups/cycle-1-setups.json",
+    "sha256": "58f02fe2e1f7939e127de4c7ea2886bcf45c91a797ffa0d25dc8a0e4fb262388",
+    "byteLength": 77188,
+    "setupCount": 45
+  },
+  "wasmSha256": "d0806f89b4ddd0563573d7cce424b4f5307790c285dba1125d0f1217074b6888",
+  "sourceHashes": {
+    "src/per-save-minimals.mjs": "51a8299cf49829a24d6c9b16d7e76bc5aa293bd610ebb60b8243ec0f1327e60b",
+    "src/per-save-minimals-core.mjs": "2c64920aa1ce81c6e889b730e45bd9f0982920055afb59bd17601b24ef096d9d",
+    "src/pattern.mjs": "ca47f441fc0143c5390efb3e10650e16e4238e05094567e27bb70777473122fc",
+    "src/compact-geometry.mjs": "829b131c72488be0f2b6ec543a04099ada523c5029863ec430e84e472fa913f3",
+    "src/saves.mjs": "96f6b34c0bb2e22273802b9fb0fa5cd12cd019d192c747a806d9a7b97037c559",
+    "src/highs-cardinality.mjs": "045a5c0e25e6d5f57be670492d476e8bed1e72e325e1171e6f48ad45f999ac48",
+    "src/primary-backend.mjs": "586ea9e7ff714761d8d5270faec88700f1498b76964d4b611ca2c5030da0cb0c",
+    "src/min-cover-adaptive.mjs": "d065dc082152157fb91047f0877c03ad2ad6478e74edb75e04a39ae1fb073c90",
+    "src/min-cover-three-engine.mjs": "e250f5ae87b4e803a87d1dcbf03142b82fd942412532b4e813ad376adcafd4b1",
+    "src/min-cover-exact-secondary.mjs": "9fc254e73d79d518be087f161780e45daccc4d3099a72ffb8b50d960be0c35a1",
+    "src/min-cover-components.mjs": "bdde6f724fc0f028587832ac7f7f0cdbdc45c4ab1d665a7495186aa8f58343f5",
+    "src/pc-wasm-enumeration.mjs": "47130d4ff9cde94f0c3c0de936edf1d6675d047121e80d5387fce7bf78fcea30",
+    "src/pc-wasm-min-cover.mjs": "92ab2995af1822523c6dbfc8b38a068510240ec90e41120ed24814d11604afea",
+    "rust/pc-core/src/min_cover.rs": "523e5c42b70479d3475d9d00f3f23eaf2b70a32d97c4a7ea063f3098e29ec2f8",
+    "wasm/pc_wasm.wasm": "d0806f89b4ddd0563573d7cce424b4f5307790c285dba1125d0f1217074b6888"
+  },
+  "bundleHashes": {
+    "DESIGN_KO.md": "d33fb9f530cc70f59261b3d81b27ada916675783497101bbf9a0ea66b23612bd",
+    "capture.mjs": "c21a327bc166c7bc39be3053831dfcd3f512a2f9ce8dfac48765dabb2b6ed1e5",
+    "capture-worker.mjs": "dbede6f7a45bb3616557205d88e00a43e4119ce4d2ff0e823ba13507e17c05fe"
+  },
+  "setupTimeoutMs": 60000,
+  "campaignTimeoutMs": 1800000,
+  "secondaryCallsAllowed": false,
+  "queueContracts": {
+    "targetLines": 4,
+    "lengths": {
+      "5": 3,
+      "7": 30,
+      "8": 12
+    },
+    "bagSevenLengthNonBoxExpected": 28,
+    "boxSevenLengthBagExcluded": 2,
+    "splitFixtures": [
+      "cycle1-alt-shoes-a",
+      "cycle1-big-jaws-a",
+      "cycle1-cliff-o-a",
+      "cycle1-elephant-j-a",
+      "cycle1-pcinfo-013",
+      "cycle1-pcinfo-019"
+    ],
+    "splitPattern": "[IJL]p3,*p4",
+    "literalQueues": {
+      "5": [
+        "TTILJ",
+        "IIOST",
+        "ZZTJL",
+        "SSOZI",
+        "JJSZT"
+      ],
+      "7": [
+        "TTILJSZ",
+        "IIOSTLJ",
+        "ZZTJILO",
+        "SSOTLJI",
+        "JJSZLTO"
+      ],
+      "8": [
+        "TTILJSZO",
+        "IIOSTLJZ",
+        "ZZTJILOS",
+        "SSOTLJII",
+        "JJSZLTOO"
+      ]
+    }
+  },
+  "autoPolicy": {
+    "requestedPrimary": "auto",
+    "exactHumanQuality": "true",
+    "secondary": "auto",
+    "decomposition": "off",
+    "tinyExactMaxCandidates": 48,
+    "integratedProbeStateBudget": 100000,
+    "cpLateJoinMs": 60000,
+    "ortoolsAvailable": false,
+    "secondarySolvePerformed": false
+  },
+  "sourceSnapshotHash": "6ad6de5d1b7efcd216f3fd13f159dda62e9b8afafc8fd05fb08adcaa594603a7",
+  "finishedUtc": "2026-10-01T12:25:36.174Z",
+  "wallMs": 37070.929,
+  "outcomes": [
+    {
+      "id": "cycle1-alt-jaws-a",
+      "displayName": "ALT JAWS",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-alt-jaws-a",
+        "solverInitMs": 36.2919,
+        "enumerationMs": 103.53089999999997,
+        "uniqueSolutions": 136,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 280.98709999999994,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-alt-shoes-a",
+      "displayName": "Alt Shoes [IJSZ]",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-alt-shoes-a",
+        "solverInitMs": 33.640499999999975,
+        "enumerationMs": 203.6871,
+        "uniqueSolutions": 649,
+        "queueCases": 10085,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          },
+          {
+            "family": "restricted-split:[IJL]p3,*p4",
+            "cases": 5040
+          }
+        ],
+        "activeMatrices": 20,
+        "integratedEligible": 7,
+        "savedSnapshots": 7
+      },
+      "wallMs": 550.2871,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-big-jaws-a",
+      "displayName": "BIG JAWS [IOSZ]",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-big-jaws-a",
+        "solverInitMs": 37.40039999999999,
+        "enumerationMs": 86.39940000000001,
+        "uniqueSolutions": 173,
+        "queueCases": 10085,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          },
+          {
+            "family": "restricted-split:[IJL]p3,*p4",
+            "cases": 5040
+          }
+        ],
+        "activeMatrices": 16,
+        "integratedEligible": 4,
+        "savedSnapshots": 4
+      },
+      "wallMs": 293.53570000000013,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-cliff-o-a",
+      "displayName": "CLIFF + O [IJOZ]",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-cliff-o-a",
+        "solverInitMs": 35.61610000000019,
+        "enumerationMs": 132.16750000000002,
+        "uniqueSolutions": 432,
+        "queueCases": 10085,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          },
+          {
+            "family": "restricted-split:[IJL]p3,*p4",
+            "cases": 5040
+          }
+        ],
+        "activeMatrices": 19,
+        "integratedEligible": 7,
+        "savedSnapshots": 7
+      },
+      "wallMs": 415.376,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-elephant-a",
+      "displayName": "ELEPHANT [Right Side]",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-elephant-a",
+        "solverInitMs": 36.58960000000002,
+        "enumerationMs": 151.34079999999994,
+        "uniqueSolutions": 131,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 12,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 319.7958000000001,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-elephant-j-a",
+      "displayName": "Elephant + J [JLOZ]",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-elephant-j-a",
+        "solverInitMs": 34.63349999999991,
+        "enumerationMs": 176.37599999999975,
+        "uniqueSolutions": 629,
+        "queueCases": 10085,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          },
+          {
+            "family": "restricted-split:[IJL]p3,*p4",
+            "cases": 5040
+          }
+        ],
+        "activeMatrices": 18,
+        "integratedEligible": 7,
+        "savedSnapshots": 7
+      },
+      "wallMs": 439.80510000000004,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-hills-a",
+      "displayName": "HILLS",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-hills-a",
+        "solverInitMs": 31.562600000000202,
+        "enumerationMs": 176.82330000000002,
+        "uniqueSolutions": 200,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 351.8117000000002,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-jaws-a",
+      "displayName": "JAWS",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-jaws-a",
+        "solverInitMs": 36.538600000000315,
+        "enumerationMs": 173.16859999999997,
+        "uniqueSolutions": 136,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 341.48590000000013,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-jeremy-a",
+      "displayName": "JEREMY",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-jeremy-a",
+        "solverInitMs": 37.58719999999994,
+        "enumerationMs": 96.82859999999982,
+        "uniqueSolutions": 77,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 278.27930000000015,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-legs-a",
+      "displayName": "LEGS",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-legs-a",
+        "solverInitMs": 36.76940000000013,
+        "enumerationMs": 136.00739999999996,
+        "uniqueSolutions": 171,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 335.422,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-shoes-a",
+      "displayName": "SHOES",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-shoes-a",
+        "solverInitMs": 85.13169999999991,
+        "enumerationMs": 222.5962999999997,
+        "uniqueSolutions": 42,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 12,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 608.5917,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-006",
+      "displayName": "HALF GRACE",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-006",
+        "solverInitMs": 35.82380000000012,
+        "enumerationMs": 388.65080000000034,
+        "uniqueSolutions": 218,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 656.9578999999994,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-007",
+      "displayName": "CLIFF + OI",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-007",
+        "solverInitMs": 32.59259999999995,
+        "enumerationMs": 64.6898000000001,
+        "uniqueSolutions": 59,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 12,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 248.46189999999933,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-011",
+      "displayName": "HILLS + O",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-011",
+        "solverInitMs": 39.19969999999921,
+        "enumerationMs": 122.25260000000071,
+        "uniqueSolutions": 77,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 343.02160000000003,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-013",
+      "displayName": "97.82%",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-013",
+        "solverInitMs": 59.645300000000134,
+        "enumerationMs": 210.2600999999995,
+        "uniqueSolutions": 295,
+        "queueCases": 10085,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          },
+          {
+            "family": "restricted-split:[IJL]p3,*p4",
+            "cases": 5040
+          }
+        ],
+        "activeMatrices": 14,
+        "integratedEligible": 7,
+        "savedSnapshots": 7
+      },
+      "wallMs": 677.7859999999991,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-014",
+      "displayName": "CLIFF + L",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-014",
+        "solverInitMs": 78.34029999999984,
+        "enumerationMs": 144.48369999999977,
+        "uniqueSolutions": 82,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 643.1580999999996,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-015",
+      "displayName": "BOX",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-015",
+        "solverInitMs": 105.61609999999928,
+        "enumerationMs": 500.02419999999984,
+        "uniqueSolutions": 94,
+        "queueCases": 5,
+        "families": [
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 7,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 881.6826999999994,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-016",
+      "displayName": "HILLS + LI",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-016",
+        "solverInitMs": 43.83719999999994,
+        "enumerationMs": 121.03089999999975,
+        "uniqueSolutions": 39,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 10,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 429.33000000000084,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-018",
+      "displayName": "HILLS + HEART",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-018",
+        "solverInitMs": 62.58839999999873,
+        "enumerationMs": 113.88479999999981,
+        "uniqueSolutions": 53,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 9,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 455.6188000000002,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-019",
+      "displayName": "91.03%",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-019",
+        "solverInitMs": 40.106000000001586,
+        "enumerationMs": 165.4360000000015,
+        "uniqueSolutions": 463,
+        "queueCases": 10085,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          },
+          {
+            "family": "restricted-split:[IJL]p3,*p4",
+            "cases": 5040
+          }
+        ],
+        "activeMatrices": 20,
+        "integratedEligible": 8,
+        "savedSnapshots": 8
+      },
+      "wallMs": 726.4889000000003,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-020",
+      "displayName": "BOX",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-020",
+        "solverInitMs": 107.85330000000067,
+        "enumerationMs": 543.5779000000002,
+        "uniqueSolutions": 94,
+        "queueCases": 5,
+        "families": [
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 7,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 933.4078000000009,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-021",
+      "displayName": "PCO + O",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-021",
+        "solverInitMs": 63.1893,
+        "enumerationMs": 104.69500000000153,
+        "uniqueSolutions": 30,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 9,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 477.3804,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-022",
+      "displayName": "PCO + I",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-022",
+        "solverInitMs": 37.98899999999958,
+        "enumerationMs": 214.6762000000017,
+        "uniqueSolutions": 258,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 1,
+        "savedSnapshots": 1
+      },
+      "wallMs": 545.0676999999996,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-023",
+      "displayName": "FELICIA",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-023",
+        "solverInitMs": 72.05369999999857,
+        "enumerationMs": 109.99200000000019,
+        "uniqueSolutions": 30,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 12,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 359.5712000000003,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-024",
+      "displayName": "PCO + J",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-024",
+        "solverInitMs": 41.269100000001345,
+        "enumerationMs": 156.72389999999905,
+        "uniqueSolutions": 156,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 14,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 473.35979999999836,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-025",
+      "displayName": "92.02%",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-025",
+        "solverInitMs": 40.55249999999978,
+        "enumerationMs": 58.03820000000087,
+        "uniqueSolutions": 32,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 10,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 235.22090000000026,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-026",
+      "displayName": "91.94%",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-026",
+        "solverInitMs": 36.57510000000002,
+        "enumerationMs": 69.96110000000044,
+        "uniqueSolutions": 64,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 12,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 259.6199000000015,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-027",
+      "displayName": "91.19%",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-027",
+        "solverInitMs": 45.256900000000314,
+        "enumerationMs": 138.03260000000046,
+        "uniqueSolutions": 187,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 14,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 383.0727000000006,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-028",
+      "displayName": "LEGS + T",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-028",
+        "solverInitMs": 38.25640000000021,
+        "enumerationMs": 136.3685000000005,
+        "uniqueSolutions": 187,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 14,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 367.3803000000007,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-029",
+      "displayName": "89.21%",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-029",
+        "solverInitMs": 39.479199999999764,
+        "enumerationMs": 75.80400000000009,
+        "uniqueSolutions": 50,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*!",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 288.8629000000001,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-030",
+      "displayName": "Antidote",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-030",
+        "solverInitMs": 31.94260000000031,
+        "enumerationMs": 953.7471999999998,
+        "uniqueSolutions": 457,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*p7,T",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 3,
+        "savedSnapshots": 3
+      },
+      "wallMs": 1279.2872000000007,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-031",
+      "displayName": "LEGS",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-031",
+        "solverInitMs": 33.3778999999995,
+        "enumerationMs": 3176.906399999998,
+        "uniqueSolutions": 511,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*p7,T",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 14,
+        "integratedEligible": 6,
+        "savedSnapshots": 6
+      },
+      "wallMs": 4288.8788,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-032",
+      "displayName": "94.05%",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-032",
+        "solverInitMs": 47.52679999999964,
+        "enumerationMs": 1372.4403999999995,
+        "uniqueSolutions": 377,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*p7,T",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 14,
+        "integratedEligible": 3,
+        "savedSnapshots": 3
+      },
+      "wallMs": 1746.6191,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-033",
+      "displayName": "HILLS",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-033",
+        "solverInitMs": 46.403699999998935,
+        "enumerationMs": 3215.5331000000006,
+        "uniqueSolutions": 457,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*p7,T",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 14,
+        "integratedEligible": 4,
+        "savedSnapshots": 4
+      },
+      "wallMs": 3653.999899999999,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-034",
+      "displayName": "90.32%",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-034",
+        "solverInitMs": 39.17420000000129,
+        "enumerationMs": 758.5177000000003,
+        "uniqueSolutions": 179,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*p7,T",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 1062.5807999999997,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-035",
+      "displayName": "ELEPHANT",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-035",
+        "solverInitMs": 36.41979999999967,
+        "enumerationMs": 1024.9570999999996,
+        "uniqueSolutions": 360,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*p7,T",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 3,
+        "savedSnapshots": 3
+      },
+      "wallMs": 1455.956100000003,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-036",
+      "displayName": "HILLS + O",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-036",
+        "solverInitMs": 76.17280000000028,
+        "enumerationMs": 1484.2309999999998,
+        "uniqueSolutions": 238,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*p7,T",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 14,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 1896.5852999999988,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-037",
+      "displayName": "DRAGON",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-037",
+        "solverInitMs": 61.79060000000027,
+        "enumerationMs": 468.10410000000047,
+        "uniqueSolutions": 125,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*p7,T",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 722.0189000000028,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-038",
+      "displayName": "HILLS",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-038",
+        "solverInitMs": 34.70640000000276,
+        "enumerationMs": 1614.0355999999992,
+        "uniqueSolutions": 457,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*p7,T",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 14,
+        "integratedEligible": 4,
+        "savedSnapshots": 4
+      },
+      "wallMs": 2027.2243999999992,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-039",
+      "displayName": "CLIFF",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-039",
+        "solverInitMs": 50.52770000000237,
+        "enumerationMs": 903.9297999999981,
+        "uniqueSolutions": 285,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*p7,T",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 13,
+        "integratedEligible": 3,
+        "savedSnapshots": 3
+      },
+      "wallMs": 1178.7971999999972,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-040",
+      "displayName": "ANTI-JAWS",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-040",
+        "solverInitMs": 35.324099999998,
+        "enumerationMs": 1390.1676000000007,
+        "uniqueSolutions": 374,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*p7,T",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 14,
+        "integratedEligible": 3,
+        "savedSnapshots": 3
+      },
+      "wallMs": 1744.1516000000047,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-pcinfo-041",
+      "displayName": "JAWS",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-pcinfo-041",
+        "solverInitMs": 35.8952000000063,
+        "enumerationMs": 922.3392000000022,
+        "uniqueSolutions": 354,
+        "queueCases": 5045,
+        "families": [
+          {
+            "family": "bag-shaped:*p7,T",
+            "cases": 5040
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 14,
+        "integratedEligible": 3,
+        "savedSnapshots": 3
+      },
+      "wallMs": 1266.831299999998,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-grace-system-a",
+      "displayName": "GRACE SYSTEM",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-grace-system-a",
+        "solverInitMs": 79.44720000000234,
+        "enumerationMs": 17.994000000006054,
+        "uniqueSolutions": 157,
+        "queueCases": 2525,
+        "families": [
+          {
+            "family": "bag-shaped:*p5",
+            "cases": 2520
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 12,
+        "integratedEligible": 4,
+        "savedSnapshots": 4
+      },
+      "wallMs": 275.7888000000021,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-grace-system-b",
+      "displayName": "GRACE SYSTEM",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-grace-system-b",
+        "solverInitMs": 52.4377999999997,
+        "enumerationMs": 37.6166000000012,
+        "uniqueSolutions": 157,
+        "queueCases": 2525,
+        "families": [
+          {
+            "family": "bag-shaped:*p5",
+            "cases": 2520
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 12,
+        "integratedEligible": 4,
+        "savedSnapshots": 4
+      },
+      "wallMs": 281.4630000000034,
+      "lastPhase": "setup-done"
+    },
+    {
+      "id": "cycle1-6p-pco-a",
+      "displayName": "6P PCO",
+      "status": "COMPLETE",
+      "result": {
+        "type": "setup-done",
+        "fixture": "cycle1-6p-pco-a",
+        "solverInitMs": 89.89609999999811,
+        "enumerationMs": 27.421300000001793,
+        "uniqueSolutions": 52,
+        "queueCases": 2525,
+        "families": [
+          {
+            "family": "bag-shaped:*p5",
+            "cases": 2520
+          },
+          {
+            "family": "literal-repeat-bank-v1",
+            "cases": 5
+          }
+        ],
+        "activeMatrices": 12,
+        "integratedEligible": 0,
+        "savedSnapshots": 0
+      },
+      "wallMs": 391.71540000000095,
+      "lastPhase": "setup-done"
+    }
+  ],
+  "summary": {
+    "completed": 45,
+    "total": 45,
+    "incomplete": 0,
+    "integratedEligible": 81,
+    "queueCases": 239625,
+    "snapshots": 81
+  },
+  "artifacts": {
+    "captureEventsSha256": "dda2339dc29e40c6a7745e50090f2b31b8cf7f6d3b35472e218e641c2af6fecb",
+    "classificationSha256": "055e9651060dc32c308a579fd4b2b49cf1b9112de73e6d09923138ba3b3b7941",
+    "resultSha256": "3a39c198045f83f8150ae614f302594a453763d6242c12865200e4c2e7d191f8",
+    "currentSha256": "0abb8a054857d720917629c4101ba9b6f0a784ac5b26a8c478b8f40007a6fd2d",
+    "snapshots": [
+      {
+        "path": "matrices\\cycle1-alt-shoes-a--restricted-split_IJL_p3_p4--save-T.json.gz",
+        "gzipSha256": "1a959f691a5d43a3ffe5914f4fdf5f08fd2e20acc52954f27939af55fd8a9493",
+        "jsonSha256": "5dfce3fd88310230d38bee8977680aadac9a9561eb4d7ed3cd8315e468b0be08"
+      },
+      {
+        "path": "matrices\\cycle1-alt-shoes-a--restricted-split_IJL_p3_p4--save-I.json.gz",
+        "gzipSha256": "51dd0b4eda77f3140967c43859c458ee00c6ec514fd2fe8c3acc2d02d12af678",
+        "jsonSha256": "0b301fb7099d906f2790d5ba399096ca8b17434f57a80c405dad98323e83d67b"
+      },
+      {
+        "path": "matrices\\cycle1-alt-shoes-a--restricted-split_IJL_p3_p4--save-L.json.gz",
+        "gzipSha256": "ccf430e088771313be0932c7ab96399a9b93dc2db6af4047e52bdf37d9c22f20",
+        "jsonSha256": "e3043eaf9be952245483a72e5b2451e5aa64e230679c1821ade4d2d85fb5e88e"
+      },
+      {
+        "path": "matrices\\cycle1-alt-shoes-a--restricted-split_IJL_p3_p4--save-J.json.gz",
+        "gzipSha256": "72f32335103d94f6b8de8f493144991cc27b33dc02ebdc165619ace3554e2fa4",
+        "jsonSha256": "e4871ee544672a2771db18c26dee39c88c14a2ea7ab7fbdf168ddc3f076e22b3"
+      },
+      {
+        "path": "matrices\\cycle1-alt-shoes-a--restricted-split_IJL_p3_p4--save-S.json.gz",
+        "gzipSha256": "d131e44e296a02cf1052a3d0b4ef5aed2b998542e2f915aabb645053e8f6fc00",
+        "jsonSha256": "d783358a76dc37575ab4a9ecc4dd14ee1a0e2ff70f2010d49d02f4f07a6b02af"
+      },
+      {
+        "path": "matrices\\cycle1-alt-shoes-a--restricted-split_IJL_p3_p4--save-Z.json.gz",
+        "gzipSha256": "1c5789680f291fcb00574b5d93e1694118267f42a0aba4d1e95a66e2e80f71ea",
+        "jsonSha256": "18a3ca5629174c26d9074c124c81bdb71564e798cd3ad6b860c63c478d7ac680"
+      },
+      {
+        "path": "matrices\\cycle1-alt-shoes-a--restricted-split_IJL_p3_p4--save-O.json.gz",
+        "gzipSha256": "c38299a39ad95d790c0f477f2d55e7faa87df8fb7b8da95bcc8972170983aba1",
+        "jsonSha256": "b26c5cafbff61cabc6bfe2bfeb4a457a02be96d73bc6e9796acff6e18f3888a7"
+      },
+      {
+        "path": "matrices\\cycle1-big-jaws-a--restricted-split_IJL_p3_p4--save-I.json.gz",
+        "gzipSha256": "900fc6ce2e952dff0b387a9fe8b10d34e5a7e156a9e3d32f395d7bf8efb4cf13",
+        "jsonSha256": "b1467831de0a4ce716e627e85ce8eae58109f79c3e3a499499d089623484b337"
+      },
+      {
+        "path": "matrices\\cycle1-big-jaws-a--restricted-split_IJL_p3_p4--save-S.json.gz",
+        "gzipSha256": "ed9e75403f9eb43c886182e197b133b9a7814a946f36e7230364debca330834d",
+        "jsonSha256": "a32855fd19cf113b7d81574a1dcb654c67a9def0ead468d24f543e337a63bdf8"
+      },
+      {
+        "path": "matrices\\cycle1-big-jaws-a--restricted-split_IJL_p3_p4--save-Z.json.gz",
+        "gzipSha256": "761d3e99db24a853dba2bce31339974d201ef19bc9a79c0b7d76a45f5ace68d4",
+        "jsonSha256": "fc72cd243e01c39addf6171af0ead8a4c1eeb23d685c59d8f2c65bc0a67b2bc6"
+      },
+      {
+        "path": "matrices\\cycle1-big-jaws-a--restricted-split_IJL_p3_p4--save-O.json.gz",
+        "gzipSha256": "943355077d3bb085e749c5345cc02f50137a6373a391f70936d44574395d7201",
+        "jsonSha256": "b03acc8c865cc1dcd451ad61b8b9365a50df9c35da89e12cea733a64d745762a"
+      },
+      {
+        "path": "matrices\\cycle1-cliff-o-a--restricted-split_IJL_p3_p4--save-T.json.gz",
+        "gzipSha256": "7bb39c74cd12c29262ef646d0baf93850450e493e013aa475f73ab31a4cd2d4e",
+        "jsonSha256": "5eafbb130d117f6ffd871dd314396f24c335f978d5b9c05a91d0650958deca39"
+      },
+      {
+        "path": "matrices\\cycle1-cliff-o-a--restricted-split_IJL_p3_p4--save-I.json.gz",
+        "gzipSha256": "3acef41f275ef5e1e62482443b93d079594467e55102a25832fc719a66e7cbb4",
+        "jsonSha256": "1c75f28e3efa49beaef4beb3518887b604bbc76ff687f7858374b02e814a1577"
+      },
+      {
+        "path": "matrices\\cycle1-cliff-o-a--restricted-split_IJL_p3_p4--save-L.json.gz",
+        "gzipSha256": "90aa8200655f5040d027551ff2148a0a30c283ab42ca472813f6ea3ae22afd58",
+        "jsonSha256": "f9cd65dbf9dacaef3f867825011fe98df2e74822509d832005c47191c3ba9310"
+      },
+      {
+        "path": "matrices\\cycle1-cliff-o-a--restricted-split_IJL_p3_p4--save-J.json.gz",
+        "gzipSha256": "f590f454a776766e0dbc186aefb6661bf99bfb2380b4eb9a65aeecf16a85b0d5",
+        "jsonSha256": "acb68ec7d6a4adc7a93ccc788cf009cb43bc314a0e4d11a70dac4719494cada6"
+      },
+      {
+        "path": "matrices\\cycle1-cliff-o-a--restricted-split_IJL_p3_p4--save-S.json.gz",
+        "gzipSha256": "7f4e804fc6ce3e96b6ed4c170ec42f18d457bd7a3ecc7d3d93d554795bf03c47",
+        "jsonSha256": "d64a0bbb1491142bfdf44ef38b69f0ae29b7401987bb91118c4f6ad7594187a3"
+      },
+      {
+        "path": "matrices\\cycle1-cliff-o-a--restricted-split_IJL_p3_p4--save-Z.json.gz",
+        "gzipSha256": "d7911ff72819394e860908131ae52816259076f72950aab6c62e641af4d5a8d5",
+        "jsonSha256": "85ed80d859817c6e115029852f8f46e8fc6e6f1fad50d017d651839825e9bcb9"
+      },
+      {
+        "path": "matrices\\cycle1-cliff-o-a--restricted-split_IJL_p3_p4--save-O.json.gz",
+        "gzipSha256": "14ab15a9ca14c66cfc6a78d13105e6e9bdfbc4bbf421449167de42b439785301",
+        "jsonSha256": "93b0e0c9514a7b745db94ac109c535758b86a3037241dd61f3ad5fe75559d94a"
+      },
+      {
+        "path": "matrices\\cycle1-elephant-j-a--restricted-split_IJL_p3_p4--save-T.json.gz",
+        "gzipSha256": "8238f6ea020648209f573903c8965b5203ec9960068995c929e124e5a3c7acbc",
+        "jsonSha256": "dd479f6088226415c539207581e808bdcbdd70e0dc5ca4cb362fa68bce704723"
+      },
+      {
+        "path": "matrices\\cycle1-elephant-j-a--restricted-split_IJL_p3_p4--save-I.json.gz",
+        "gzipSha256": "533d4e8e1665d145dd9b72a98d0214aa35e402ebe65b384b88f07abacf23d7de",
+        "jsonSha256": "6ec0553ec6a271fed29da706583ed92484b04ae5ae36d567767ec7694729782d"
+      },
+      {
+        "path": "matrices\\cycle1-elephant-j-a--restricted-split_IJL_p3_p4--save-L.json.gz",
+        "gzipSha256": "8821a4582c74ac43a9b6a47afbba52fde76ec40a7bc33492ecef6327851d61ff",
+        "jsonSha256": "9ccb64c1977b21fc0d0a7c54e3ceba835b45841fd7d29b5d8fe7630d047db13b"
+      },
+      {
+        "path": "matrices\\cycle1-elephant-j-a--restricted-split_IJL_p3_p4--save-J.json.gz",
+        "gzipSha256": "6cf4a89545b88cc581f72bdca85b9688cf464656c7c7bef3d223e6b52f32f70b",
+        "jsonSha256": "f0e49d8b368b132d06d5326be7f076298747cc7a56dc83be5d950129e7b4685e"
+      },
+      {
+        "path": "matrices\\cycle1-elephant-j-a--restricted-split_IJL_p3_p4--save-S.json.gz",
+        "gzipSha256": "8bb8f2dccdec5b9f12bcaaf09349e939b1be4eb3539bf14fae2e96fe2f47c602",
+        "jsonSha256": "c21b15a2e87ae54de10208ab93d502c227d941affc6f2c1f0af74002189b2e87"
+      },
+      {
+        "path": "matrices\\cycle1-elephant-j-a--restricted-split_IJL_p3_p4--save-Z.json.gz",
+        "gzipSha256": "2efdb38864c5c2d49bf7da142542208c6f145f043b9f6640e2939f16b9792559",
+        "jsonSha256": "0aecc08e5fe4aa215a93781f2d1803d7e9de4e8b11f29c7e03e0813849717302"
+      },
+      {
+        "path": "matrices\\cycle1-elephant-j-a--restricted-split_IJL_p3_p4--save-O.json.gz",
+        "gzipSha256": "fad25c5f1a12637fbcf7c839691069d7d533d320adb573e17e55e2d474e17a2b",
+        "jsonSha256": "a462970e660cc3d0934b3fccb2c6337e79bfca9ff598be76cf7a99d7e6615c9e"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-013--restricted-split_IJL_p3_p4--save-T.json.gz",
+        "gzipSha256": "04d14e6070e9a3d9a1123373ae52f843fda0b6586f5c88ab5dc45633aa73b382",
+        "jsonSha256": "2f74ceb9bd474760f273e971f56c35afe3cf79ec381f4a5643502ea8d5ec88b0"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-013--restricted-split_IJL_p3_p4--save-I.json.gz",
+        "gzipSha256": "705f6846bc11a80cae8b98796481746994426ee3a99ff3f4f49f6034243eb9d8",
+        "jsonSha256": "d7e99a275e45ce922b40844c7605afd14b07ff04eea148b78dbd9e8958444188"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-013--restricted-split_IJL_p3_p4--save-L.json.gz",
+        "gzipSha256": "9434fa7c59f9c44dde035766bacfe52ce20c3189cfebdbc6021088180c063adf",
+        "jsonSha256": "47307b8cbb844310d861e54d4dff72f5b2135f60df2f2905fe82831fbc5a52af"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-013--restricted-split_IJL_p3_p4--save-J.json.gz",
+        "gzipSha256": "8ea6feaf3fea0a1d50ac78ac2aa78154d73fa0f61b14a2f120c2036823fda458",
+        "jsonSha256": "a0d1954e67a4d61fe191ecdcc92ca0d07e92411736ac1f887137069ee265e346"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-013--restricted-split_IJL_p3_p4--save-S.json.gz",
+        "gzipSha256": "c9ed212ece44b04469e65a64936b612c030903036668f09c07409e9ea9f989b6",
+        "jsonSha256": "e2db6180daed4973b52ab6add2d5c4177a5680c13223f5eaee9c38bc56351535"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-013--restricted-split_IJL_p3_p4--save-Z.json.gz",
+        "gzipSha256": "6b1477b46dbd9eec5ec2dfcf8be1d8da37f6c759e6b9187a3927984be6033720",
+        "jsonSha256": "e348c351a987cf0945c3a5c37dbfcb5c86639e10f09f75c267a391be526e7d7d"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-013--restricted-split_IJL_p3_p4--save-O.json.gz",
+        "gzipSha256": "164a8864c6215709390fc0cbe41d24858f17c295ab7a1ccef35cb7b97ea431e1",
+        "jsonSha256": "6043276e4c314fdc589013f5aeb251ee7e598885ab504e159d4da405ae0567c9"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-019--bag-shaped_--save-T.json.gz",
+        "gzipSha256": "e5d2d9b42c82eeacfc8998fda530bb94a30e10e134ef9c37fd239c9f2125f39e",
+        "jsonSha256": "067c9ae9374ef3ec61c02db4f88f0d7859145790a64ea0c88c7c0f42a198f91d"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-019--restricted-split_IJL_p3_p4--save-T.json.gz",
+        "gzipSha256": "775f3a1472bdb6f9e18c57e335118626e20cdc67cc55eb320cf0b6d4a336a43b",
+        "jsonSha256": "e13336b20033ed00f98ec7d1a6503768e9f0b3ea5ce23fbb1370b4bd9c82c524"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-019--restricted-split_IJL_p3_p4--save-I.json.gz",
+        "gzipSha256": "e2aac5725841f1204c9b46c8f0524f4cacfec1d021a5cae5c68f931a64dcbf10",
+        "jsonSha256": "afc6e72a5262f790992878778b889c524f1e0234c0561f7db04f6bdd6e531703"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-019--restricted-split_IJL_p3_p4--save-L.json.gz",
+        "gzipSha256": "2de9c490a64fe06024c3dd2998a7224612b80856b3a98d9bc76fec6a5af17f95",
+        "jsonSha256": "5ce7c69880551961cfc4a6adbbfe083a5af66cc4c8a67db7e251a6a16c13c7bb"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-019--restricted-split_IJL_p3_p4--save-J.json.gz",
+        "gzipSha256": "c247074417161bc6750db9ebf501efdae9ce49675fe041c5a75fcbc4d77398ca",
+        "jsonSha256": "bd40f0a5953699cd269c04366dd48b132e7898b98494f04e05dd49c8ee145ec3"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-019--restricted-split_IJL_p3_p4--save-S.json.gz",
+        "gzipSha256": "6e838d39ac4e06d86954743a537fc89c1006f1a3d7a3b085b6d7e8d7d8eae5a4",
+        "jsonSha256": "902fa8a5987c00c568dc4787f73b4c97204ddadbaf818a570d0788cafaae3949"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-019--restricted-split_IJL_p3_p4--save-Z.json.gz",
+        "gzipSha256": "29cffa27dd45817368037b61399ad1f8da19a31dac44729aa90eb66b3fab4368",
+        "jsonSha256": "3a050f116ef3fb96d757f0762072585deacadc1f2f7eb0694edfbc46a450953b"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-019--restricted-split_IJL_p3_p4--save-O.json.gz",
+        "gzipSha256": "2ba9d1eec551c7208229847c941bd52d3728c7ddb1c98378184b3a0b66d96888",
+        "jsonSha256": "41f413f233753ba137128c1cdcadcba8052408bfbcd73478098793448ca6a373"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-022--bag-shaped_--save-S.json.gz",
+        "gzipSha256": "7c5aa694d456c28542778fc3b3048593a7bcc6e846878beb1bfcd6215528547a",
+        "jsonSha256": "71d126e9eceaffbe6d8013628b66d475633de5eb413de357994e5f4fbe4e832c"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-030--bag-shaped_p7_T--save-T.json.gz",
+        "gzipSha256": "a76430bd2ccf5da5c2f8d3fc85ab06913009e5dd47247d2f0eac5a839ebc510b",
+        "jsonSha256": "35dfa84df31a629c4cacc029e42bc3e0187b44946c65da7e39b87aaab668f1c4"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-030--bag-shaped_p7_T--save-S.json.gz",
+        "gzipSha256": "7c3d06b4e273ac5025715655533d4db01f3fe443cbf061e741fb827ebdb1bc17",
+        "jsonSha256": "8256984328b2531c74c90377aedd1b6ba1a9d333744c4e4663fdb1f2afb3a702"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-030--bag-shaped_p7_T--save-O.json.gz",
+        "gzipSha256": "248dd858cebd0e2eeadca7eea03b5063b49fe8727026741fbcc8b512476a7853",
+        "jsonSha256": "071f5808017d6f9a639d6b9323ea59323530b30095bc4f03d9fa1267c673aa35"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-031--bag-shaped_p7_T--save-T.json.gz",
+        "gzipSha256": "4f7eb38712340512aa9714520f36d48d0feaa40d602ed1549ace69a241dc66fa",
+        "jsonSha256": "67a75c78043a085299ef0d7cd05e63ee236beb1495fec2dc5b4ef4df74f886ff"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-031--bag-shaped_p7_T--save-S.json.gz",
+        "gzipSha256": "3b4ca02fba5914728e78fbec7a0e6a42521078f2e2d4efb9989c95ed79810af6",
+        "jsonSha256": "79da784332eab45185cb7911c98573dcb9414dbc553400d458f4841da9ca1940"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-031--bag-shaped_p7_T--save-Z.json.gz",
+        "gzipSha256": "8d940cd17d015e2d2e22f2090211be4c0b5c2c5f54a3aba4679e00e23516e95d",
+        "jsonSha256": "2e45d0ca1d87a8d8c61ad27f6751692b9b1edcc2959dce19fb11db35c09a0761"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-031--bag-shaped_p7_T--save-O.json.gz",
+        "gzipSha256": "d476e68b875e3a3366466af714209e38eafac011ec11f6d912675efd0cfe2085",
+        "jsonSha256": "acb23aa8eb6a41c77795e4a922e3e16323bbd3487a4bf1056dfa8b913425f705"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-031--literal-repeat-bank-v1--save-Z.json.gz",
+        "gzipSha256": "4265f030133fc45277424481864a9ff1fd0cb7a347ad47155e5b7b7dd0a1e90e",
+        "jsonSha256": "fdfd6604277f23f82d2e02a11204855e74b734c12c6686225cc17d8eb18358d6"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-031--literal-repeat-bank-v1--save-O.json.gz",
+        "gzipSha256": "20d52882b268940643851b6c7303049c2e595beb6adcbd5e3b0bdd35629fca9d",
+        "jsonSha256": "75b9c10a8fe7940ec8866fee4315302ae6c5eba92f364a919a208a330f2f5458"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-032--bag-shaped_p7_T--save-T.json.gz",
+        "gzipSha256": "8d5f13c75273a424c8d0082c2bdff46e043cea67e5ea0c4ca10e023e78bf6f92",
+        "jsonSha256": "89610fda757864a4d7007978ab12666f669450f0c8011826aa8a5f1f6072fdc6"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-032--bag-shaped_p7_T--save-Z.json.gz",
+        "gzipSha256": "d2f5aefe408fe7e50175cbdf0a05a8012e7a4aa18225768d4cb4a0b11bf1df89",
+        "jsonSha256": "c7747e35089e2292af4713dbbd82554adf026380386b135ce8b799bba7f06a76"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-032--literal-repeat-bank-v1--save-O.json.gz",
+        "gzipSha256": "68db46c7a8739c31ffb35e0ad0c3a14ac863f471866f20db7a3b8f9d460c80a1",
+        "jsonSha256": "f6b247f457c4ad10757423db593cf5b7522722a2e000010f2978c3b477683e97"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-033--bag-shaped_p7_T--save-T.json.gz",
+        "gzipSha256": "744ff0109158694aa06c64044418b644aeb8cd47ab5d034ee564d191a4d7193e",
+        "jsonSha256": "3af7d8a74830345ed9fada807377c8a32ed1ed65efd689f52a1dfc2f555304b2"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-033--bag-shaped_p7_T--save-Z.json.gz",
+        "gzipSha256": "e74c8e341368591c5c83aec9143d5b48975008c8b1de56cefb6f6cc895aa6a02",
+        "jsonSha256": "490a5d3bcf9809828cc3e6ee3676f2e2d7b29c2ef26a0d4ffa637f881f4d8853"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-033--bag-shaped_p7_T--save-O.json.gz",
+        "gzipSha256": "71469360a7c35bffd02cb8f4897e7cc8f3f9336ec6335078d1d38463ec67d371",
+        "jsonSha256": "a5917c62f6f31b26f53148b4c53211aed478c3d44141541cfce4a481216c76b6"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-033--literal-repeat-bank-v1--save-O.json.gz",
+        "gzipSha256": "96eb46522df891e3974ab11e96d8a7c984b7c60ff0c32d1298e9982a8bd58b68",
+        "jsonSha256": "05c300820ed4265783ed4e6878c8998b35f147d4304d17f4639db5281df17486"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-035--bag-shaped_p7_T--save-T.json.gz",
+        "gzipSha256": "2730991809efb29f5e6c5967d8518ae24fc4aab70a62eae9e6d5820ffb1b3083",
+        "jsonSha256": "e3444cafea6f1258f15329c9093d8fcca54e4579c9eeedaf384c173021d59718"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-035--bag-shaped_p7_T--save-Z.json.gz",
+        "gzipSha256": "070db23c22805a5f510fa5e1471fd2ae0c3701cb17315f075ba5509545a6a073",
+        "jsonSha256": "e5353c116c1adeab76632868db534d65a267de76ae4e45f7e25f1603074eef22"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-035--literal-repeat-bank-v1--save-Z.json.gz",
+        "gzipSha256": "9517e9794118b5d9af758c8b8e1b639f444a6e9a3e02473ad4399d00590a4a39",
+        "jsonSha256": "f8da391428b47b6e7dcc322543408384bd95451d903ae5163ddc84446f3138be"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-038--bag-shaped_p7_T--save-T.json.gz",
+        "gzipSha256": "57747a5ea3c824aca090c71d8fcdd20f4ee5b39f751b57bffe844f5f335a9865",
+        "jsonSha256": "ab5e25e417be24fb667ad2266fddf8adc5da32e9c5a7d212eb02abb3d084dd33"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-038--bag-shaped_p7_T--save-Z.json.gz",
+        "gzipSha256": "0c030df5b866e6bf0cd009a628709d12a7646b0afa4a952c971a4534113aaf01",
+        "jsonSha256": "7b715b86a261feb353f9ca8674ddb9e83fea9f286bfce7d6d2ebf2ae50c46d8e"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-038--bag-shaped_p7_T--save-O.json.gz",
+        "gzipSha256": "99a14f76977ec65b514d4c4e9dbeb1875ed80ffd784f512219901fe8147feb08",
+        "jsonSha256": "7848ae7bfcc18fa3b757ed4ccbbd5ac2f3e4971a5ed3e83b708e1d6a76ff5ff7"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-038--literal-repeat-bank-v1--save-O.json.gz",
+        "gzipSha256": "35edbd9a9f305f95f44e08fe3db02a1985d16297528deac179faa9f394accdbb",
+        "jsonSha256": "d03ed2e0a1effe31dfff1dd1736e659813bdbe601a3342fb49d2b82d1b7c3276"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-039--bag-shaped_p7_T--save-T.json.gz",
+        "gzipSha256": "90df62dd9e697c6ad3fb02f4bd362c68ef5300045c781fa13c38498f8a5fc960",
+        "jsonSha256": "3e999cfe1e3a69f6569ba69a3dcf1c9aa9052a7c22dc1d655e9f1ca862297da5"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-039--literal-repeat-bank-v1--save-Z.json.gz",
+        "gzipSha256": "d398a7af47675189af40ffed33793fabc6c0ef6f8e5cff7e9b2fcf34a67ffdca",
+        "jsonSha256": "179dd852ddd6ccb46a985183e71eb7807e9dea795881fd27763d7914730944c6"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-039--literal-repeat-bank-v1--save-O.json.gz",
+        "gzipSha256": "b2be2c3daac333b4c0af2a071b338fc9a5264dd8d5d2ba9da8e92c5f7de15cc4",
+        "jsonSha256": "19f967497603c0f5b74c670314ed7ec85d310cedb676c79758e7873e43da01c9"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-040--bag-shaped_p7_T--save-T.json.gz",
+        "gzipSha256": "3cb33bd6d0f535d693632cafe23fa83fb4ffa3e29eed8bf9d2a0581991a52778",
+        "jsonSha256": "2f2cfc560d4ffcd7eba0d442d2d19e800373539fd111c375349893f89acccd96"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-040--bag-shaped_p7_T--save-O.json.gz",
+        "gzipSha256": "2dbaef1a7e782e0288198eaacce32dc9c35cd2a3e99798a9f4b53524ca76eea8",
+        "jsonSha256": "84f175790c8ca45a12268e9a23e8fbcd9a9ab933cbf1604fb6eb7ef29ad3fb60"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-040--literal-repeat-bank-v1--save-O.json.gz",
+        "gzipSha256": "eb5f734f03bb337e1ac3103e7a836649a7dde657f9eb0360c2d1a439dd4aa41e",
+        "jsonSha256": "a5c7b6fcc33697629569716171e187015c7cb62a7b636802877a42be9c4f9202"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-041--bag-shaped_p7_T--save-T.json.gz",
+        "gzipSha256": "d8638f0ba1b551352f5985bc11d8b2069384e5b4c35729e5d2860ed9ac47f895",
+        "jsonSha256": "244cd661fd4ab845779e7db8b545291ffba306d58042ed8aec8e0e921b61f58d"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-041--literal-repeat-bank-v1--save-Z.json.gz",
+        "gzipSha256": "d055d228596a8014344217a22457a2d75aefe2b855ac04fcacc6cad7ca6d4ee2",
+        "jsonSha256": "7e0529d8b1827d14a11489e3e40b29c863769c4a83f80455417826f9a94e1de4"
+      },
+      {
+        "path": "matrices\\cycle1-pcinfo-041--literal-repeat-bank-v1--save-O.json.gz",
+        "gzipSha256": "38a37bff1300329fac577ffb6b2d5e0cdd62d97aca6bafba245def38109da81a",
+        "jsonSha256": "ac3a5452a028992524ab4b280cfd17e8f6d99cf0241b6e339fb95d8f7ea72bc0"
+      },
+      {
+        "path": "matrices\\cycle1-grace-system-a--bag-shaped_p5--save-T.json.gz",
+        "gzipSha256": "028cbe68f6ff815f8285ea0664811a1c3a0c642122717ab66f9df7e85d63a362",
+        "jsonSha256": "4bd426305b8a0effa037202f422bcd599005fc78877e58972dd59dbb11c41b88"
+      },
+      {
+        "path": "matrices\\cycle1-grace-system-a--bag-shaped_p5--save-S.json.gz",
+        "gzipSha256": "cc30ae1b569888883db68623fdd19c9ce4cab6b73cc10884f281a87837511a41",
+        "jsonSha256": "7c3cf142d51e4d59df9c396c55cdd84a3146470863f5809cd8b4dc9ec60ae905"
+      },
+      {
+        "path": "matrices\\cycle1-grace-system-a--bag-shaped_p5--save-Z.json.gz",
+        "gzipSha256": "bdfb01d3b53083136fd04c61f061810c51805e238d224adab7f4f7fdc201c8c8",
+        "jsonSha256": "b1ee05801a085231fc329d918f620f1f482b51846dcd053d5063fde79559cb24"
+      },
+      {
+        "path": "matrices\\cycle1-grace-system-a--bag-shaped_p5--save-O.json.gz",
+        "gzipSha256": "a5174f5d9e1c7be5cc45d177a270ea9bbc37931885517f631f0fea77f2bc774a",
+        "jsonSha256": "0550915252cb0a6b1933613407bf1ace12c7a296d798b3eda46a30eb0b8ca197"
+      },
+      {
+        "path": "matrices\\cycle1-grace-system-b--bag-shaped_p5--save-T.json.gz",
+        "gzipSha256": "8b28dafe3b62230469cdc5c29c67892bc5f8feab7dd66ffcf08def9de7adc53e",
+        "jsonSha256": "fbbe2d3e60c759931b2f6880ce172c0e7183c93c51f9644eaca1eb7a3a4b6503"
+      },
+      {
+        "path": "matrices\\cycle1-grace-system-b--bag-shaped_p5--save-S.json.gz",
+        "gzipSha256": "3d0ae649c41ac9e8c7c9412947b98d9bba0e1da89b5c454efa9e689e8441d17b",
+        "jsonSha256": "ce6a2f84b2a0e07e68707b43a4b0d2d203ed7cfb7b33d56ba7e7ef656faa15f7"
+      },
+      {
+        "path": "matrices\\cycle1-grace-system-b--bag-shaped_p5--save-Z.json.gz",
+        "gzipSha256": "44c9d6713e74e88d8cb33f051e874f8922dfc774e167833ff14048f9a926f6cd",
+        "jsonSha256": "d09abee7a15231d1fe8a72bf2ca165a2d188c2ed6d16766af6f2296ab9bf21f8"
+      },
+      {
+        "path": "matrices\\cycle1-grace-system-b--bag-shaped_p5--save-O.json.gz",
+        "gzipSha256": "a123e78665a883de65e5bc97a8afb22b2cadfebb591660350cce06804e69eb43",
+        "jsonSha256": "90de440be4ca8c1b67e9c0596b100b3dc23accb2c47c588916405a598e48fb1d"
+      }
+    ]
+  }
+}

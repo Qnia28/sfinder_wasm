@@ -1,0 +1,6 @@
+cargo-target/
+built/
+output/
+downloads/
+snapshot/wasm/pc_wasm.wasm
+*.tar.gz

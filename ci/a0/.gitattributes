@@ -1,0 +1,4 @@
+*.mjs text eol=lf
+snapshot/** -text
+attempt-02/** -text
+attempt-04/prep/** -text

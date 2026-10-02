@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "status": "BUILD_PREP_COMPLETE",
+  "preparedUtc": "2026-10-02T06:38:57.571Z",
+  "baseline": "Dev current working-copy snapshot (dirty files included; committed HEAD alone is not the baseline)",
+  "devRoot": "D:\\AI\\sfinder-wasm\\dev-branch",
+  "snapshotRoot": "C:\\Users\\2004a\\AppData\\Local\\Temp\\opencode\\sfinder-wasm-a0-dev-cycle1-20261002-attempt04",
+  "targetDir": "D:\\AI\\sfinder-wasm\\tools\\cache\\rust-sfinder-wasm-a0-dev-cycle1-20261002-attempt04",
+  "devHead": "187fbf954ad0749e697b4e7f1252683b318d696e",
+  "devStatusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "sourceTree": {
+    "sha256": "57c7d52917c105a1fd021dbe5fb5fc0ad92023d13f4efcdf8cb9f5f6f9fe9470",
+    "fileCount": 440,
+    "byteCount": 33976006
+  },
+  "snapshotTree": {
+    "sha256": "57c7d52917c105a1fd021dbe5fb5fc0ad92023d13f4efcdf8cb9f5f6f9fe9470",
+    "fileCount": 440,
+    "byteCount": 33976006
+  },
+  "sourceHashes": {
+    "rust/Cargo.toml": "128190e29355ec4d24ef3fa1e7542f207853d0fb3ada2c2317d3544c26c8c216",
+    "rust/Cargo.lock": "c2f0e9b6337c2fbe5abd1f6a32881e62fc54af1d0eba3ecdf918342537ed2426",
+    "rust/pc-core/src/min_cover.rs": "35d08bccf37b7351bb9d49e609974f6c3fcc5a5a540ce91b0d30ae09e4f64148",
+    "rust/pc-core/src/min_cover_primary.rs": "1fc3ae9b9a14c2fb6a44c85b02ef0ba1080861bd153e3d80f7f4a2a2b5a7c89e",
+    "rust/pc-wasm/src/min_cover.rs": "d789e6f0c48ce559d47bab650e9e9d08b3c1099b48a1df79df9c94848109d0bb",
+    "rust/batch-wasm/src/engine.rs": "bed586c9a413f9a30aa066cb534a9b6c070b5cc4bac8c5ba2eb66abfbf4b2b7f",
+    "src/wasm-backend.mjs": "b45648591d411df098b2ef5c7538c0fb31854996734259647940e6ad13af658f",
+    "src/pc-wasm-min-cover.mjs": "39f34b78330bb089373a3bbb4e9af2079e376fd5f7e577d7c16da5192ee2e89b",
+    "src/pc-wasm-cover-matrix.mjs": "7cbd68d5c9c182ea32bf93e6a99c14d00447516395fa95e22a135f71b2ade52c",
+    "src/numeric-cover-data.mjs": "2fff5cc4bd0aa3a18f5a264331d8226eb7a5a288effbf2e39decc02a5bf25eba",
+    "src/quality-contract.mjs": "bb2d4fe599f6a6106d481e5fd297812e8ff4c5dadb4fc6fbf9bef8c4316fda35",
+    "src/pc-wasm-abi.mjs": "c643c5de98bd299aac7f93341c58f77ff0b59da707b5d11b9047878f0e76a072",
+    "wasm/legal_boards_4.lgb": "4cb7cfca0003409908ab179c0b795d0aafa36d1dfb1aadec7a0e52fc2c3a649f"
+  },
+  "originalDevWasm": {
+    "sha256": "640232e30c586e87d6c5f5ad5ab52856c9ab173df984e4915f383e9fd399eee2",
+    "bytes": 541266
+  },
+  "rebuiltWasm": {
+    "sha256": "aac18952a36ee9112219702ce084a9534ad42a244565cc24e0b8f52a79bcd48c",
+    "bytes": 560696,
+    "exports": 80
+  },
+  "requiredExports": [
+    "solver_new",
+    "solver_free",
+    "solver_min_cover_at_count_integrated_bounded",
+    "solver_min_cover_at_count_integrated_partitioned_bounded",
+    "solver_min_cover_searched_states",
+    "solver_min_cover_quality_len",
+    "solver_min_cover_quality",
+    "solver_min_cover_selected",
+    "wasm_alloc_u32",
+    "wasm_dealloc_u32"
+  ],
+  "cargoVersion": "cargo 1.90.0 (840b83a10 2025-07-30)",
+  "rustcVersion": "rustc 1.90.0 (1159e78c4 2025-09-14)\nbinary: rustc\ncommit-hash: 1159e78c4747b02ef996e55082b704c09b970588\ncommit-date: 2025-09-14\nhost: x86_64-pc-windows-msvc\nrelease: 1.90.0\nLLVM version: 20.1.8",
+  "cargoArgs": [
+    "build",
+    "-p",
+    "pc-wasm",
+    "--release",
+    "--target",
+    "wasm32-unknown-unknown",
+    "--offline"
+  ],
+  "measurementsStarted": false
+}

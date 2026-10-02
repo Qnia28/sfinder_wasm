@@ -1,0 +1,1 @@
+import{runWorkerRequest}from'./worker-runtime.mjs';self.onmessage=async e=>{const r=e.data;try{self.postMessage({id:r.id,ok:true,value:await runWorkerRequest(r)})}catch(error){self.postMessage({id:r.id,ok:false,error:{name:error?.name??'Error',message:error?.message??String(error)}})}};

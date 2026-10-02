@@ -1,0 +1,105 @@
+name: A0 cycle1 isolated test
+on:
+  push:
+    branches: [test/a0-cycle1-actions]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: a0-cycle1-isolated-${{ github.ref }}
+  cancel-in-progress: false
+defaults:
+  run:
+    working-directory: ci/a0
+env:
+  RUSTUP_TOOLCHAIN: 1.90.0
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: rustup toolchain install 1.90.0 --profile minimal --target wasm32-unknown-unknown
+      - run: node ci-run.mjs prepare
+      - name: Package build and correctness evidence (5 MiB cap)
+        if: always()
+        run: node ci-run.mjs pack built 5 a0-build.tar.gz
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a0-build
+          path: ci/a0/a0-build.tar.gz
+          retention-days: 7
+          if-no-files-found: error
+  benchmark:
+    needs: prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 210
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@v4
+        with:
+          name: a0-build
+          path: ci/a0
+      - run: mkdir built && tar -xzf a0-build.tar.gz -C built
+      - name: Run paired A0 off/on; accept timeout incumbent loss
+        run: node ci-run.mjs shard ${{ matrix.shard }}
+      - name: Package full witnesses and ledger (15 MiB cap)
+        if: always()
+        run: node ci-run.mjs pack output/shard-${{ matrix.shard }} 15 a0-shard-${{ matrix.shard }}.tar.gz
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a0-shard-${{ matrix.shard }}
+          path: ci/a0/a0-shard-${{ matrix.shard }}.tar.gz
+          retention-days: 7
+          if-no-files-found: error
+  analyze:
+    needs: [prepare, benchmark]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: a0-*
+          path: ci/a0/downloads/raw
+      - run: |
+          mkdir -p built
+          tar -xzf downloads/raw/a0-build/a0-build.tar.gz -C built
+          for shard in 0 1 2 3; do
+            mkdir -p downloads/shard-$shard
+            tar -xzf downloads/raw/a0-shard-$shard/a0-shard-$shard.tar.gz -C downloads/shard-$shard
+          done
+      - run: node ci-run.mjs analyze
+      - name: Package combined report and ledger (15 MiB cap)
+        if: always()
+        run: node ci-run.mjs pack output/analysis 15 a0-analysis.tar.gz
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a0-analysis
+          path: ci/a0/a0-analysis.tar.gz
+          retention-days: 7
+          if-no-files-found: error
