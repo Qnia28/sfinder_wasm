@@ -427,6 +427,7 @@ unsafe fn solver_min_cover_at_count_integrated_bounded_impl(
     state_budget: u32,
     candidate_dominance: bool,
     partition_siblings: bool,
+    bench_flags: Option<u32>,
 ) -> u32 {
     if ptr.is_null()
         || offsets_ptr.is_null()
@@ -467,7 +468,12 @@ unsafe fn solver_min_cover_at_count_integrated_bounded_impl(
     solver.min_cover_quality.clear();
     solver.min_cover_searched_states = 0;
     let budget = (state_budget != 0).then_some(state_budget as u64);
-    let result = if partition_siblings {
+    solver.bench_audit = pc_core::min_cover::BenchDominanceAudit::default();
+    let result = if let Some(flags) = bench_flags {
+        pc_core::min_cover::bench_integrated_bounded(&cases, solution_count as usize,
+            exact_count as usize, seed, budget, flags & 2 != 0, flags & 4 != 0,
+            &mut solver.bench_audit)
+    } else if partition_siblings {
         exact_quality_cover_at_count_integrated_partitioned_bounded(
             &cases,
             solution_count as usize,
@@ -538,6 +544,7 @@ pub unsafe extern "C" fn solver_min_cover_at_count_integrated_bounded(
             state_budget,
             false,
             false,
+            None,
         )
     }
 }
@@ -571,6 +578,7 @@ pub unsafe extern "C" fn solver_min_cover_at_count_integrated_dominance_bounded(
             state_budget,
             true,
             false,
+            None,
         )
     }
 }
@@ -604,7 +612,32 @@ pub unsafe extern "C" fn solver_min_cover_at_count_integrated_partitioned_bounde
             state_budget,
             false,
             true,
+            None,
         )
+    }
+}
+
+// Experiment ABI: bit0 partition is mandatory, bit1 guarded D, bit2 B6.
+// Unknown flags are rejected. Budget 0 is used only by synthetic correctness.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_bench_integrated_bounded(
+    ptr: *mut WasmSolver, offsets: *const u32, cases: u32, ids: *const u32,
+    qualities: *const u32, entries: u32, n: u32, k: u32, seed: *const u32,
+    seed_count: u32, budget: u32, flags: u32,
+) -> u32 {
+    if flags & 1 == 0 || flags & !7 != 0 { return MIN_COVER_ERROR; }
+    unsafe { solver_min_cover_at_count_integrated_bounded_impl(ptr, offsets, cases,
+        ids, qualities, entries, n, k, seed, seed_count, budget, false, true, Some(flags)) }
+}
+
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_bench_audit(ptr: *const WasmSolver, field: u32) -> u32 {
+    if ptr.is_null() { return u32::MAX; }
+    let audit = &unsafe { &*ptr }.bench_audit;
+    match field {
+        0 => audit.status, 1 => audit.dense_bytes as u32, 2 => audit.allocated_bytes as u32,
+        3 => audit.pair_visits as u32, 4 => audit.word_comparisons as u32,
+        5 => audit.quality_comparisons as u32, 6 => audit.dominated, _ => u32::MAX,
     }
 }
 

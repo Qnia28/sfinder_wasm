@@ -1,5 +1,9 @@
 use std::collections::{HashMap, HashSet};
 
+#[cfg(test)]
+#[path = "min_cover_bench_tests.rs"]
+mod bench_tests;
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct MinimumCoverResult {
     pub selected: Vec<u32>,
@@ -373,7 +377,7 @@ impl QualityHistogramState {
     }
 }
 
-struct BestSetSearch<'a, const PARTITION: bool> {
+struct BestSetSearch<'a, const PARTITION: bool, const QUALITY_CASE: bool = false> {
     // Buffers are retained across siblings and grow with actual search depth.
     covered_buffers: Vec<Vec<u64>>,
     // Experimental sibling partitioning only. Earlier siblings are excluded
@@ -382,6 +386,7 @@ struct BestSetSearch<'a, const PARTITION: bool> {
     exclusion_trail: Vec<u32>,
     full: &'a [u64],
     case_candidates: &'a [Vec<u32>],
+    case_spread: &'a [u32],
     solution_coverage: &'a [Vec<u64>],
     raw_cases: &'a [Vec<(u32, u32)>],
     solution_count: usize,
@@ -397,7 +402,7 @@ struct BestSetSearch<'a, const PARTITION: bool> {
     budget_exceeded: bool,
 }
 
-impl<const PARTITION: bool> BestSetSearch<'_, PARTITION> {
+impl<const PARTITION: bool, const QUALITY_CASE: bool> BestSetSearch<'_, PARTITION, QUALITY_CASE> {
     fn maybe_activate_histogram(&mut self, selected: &[u32]) {
         if self.quality_histogram.is_some()
             || (self.completed.len() as u64) < self.histogram_switch_after
@@ -476,7 +481,12 @@ impl<const PARTITION: bool> BestSetSearch<'_, PARTITION> {
         if bound == usize::MAX || selected.len().saturating_add(bound) > self.best_count {
             return;
         }
-        let Some(case) = choose_case(&covered, self.full, self.case_candidates) else {
+        let pivot = if QUALITY_CASE {
+            choose_case_spread(&covered, self.full, self.case_candidates, self.case_spread)
+        } else {
+            choose_case(&covered, self.full, self.case_candidates)
+        };
+        let Some(case) = pivot else {
             return;
         };
         let mut branches: Vec<(u32, u32)> = self.case_candidates[case]
@@ -728,6 +738,7 @@ fn exact_minimum_cover_with_histogram_switch(
         exclusion_trail: Vec::new(),
         full: &full,
         case_candidates: &case_candidates,
+        case_spread: &[],
         solution_coverage: &solution_coverage,
         raw_cases: &normalized,
         solution_count,
@@ -815,7 +826,7 @@ fn exact_quality_cover_at_count_integrated_with_options(
     // Specialize the DFS so the historical traversal pays no per-state
     // runtime flag checks for the experimental sibling exclusions.
     if partition_siblings {
-        integrated_with_options_impl::<true>(
+        integrated_with_options_impl::<true, false>(
             raw_cases,
             solution_count,
             exact_count,
@@ -823,9 +834,10 @@ fn exact_quality_cover_at_count_integrated_with_options(
             state_budget,
             histogram_switch_after,
             candidate_dominance,
+            None,
         )
     } else {
-        integrated_with_options_impl::<false>(
+        integrated_with_options_impl::<false, false>(
             raw_cases,
             solution_count,
             exact_count,
@@ -833,11 +845,12 @@ fn exact_quality_cover_at_count_integrated_with_options(
             state_budget,
             histogram_switch_after,
             candidate_dominance,
+            None,
         )
     }
 }
 
-fn integrated_with_options_impl<const PARTITION: bool>(
+fn integrated_with_options_impl<const PARTITION: bool, const QUALITY_CASE: bool>(
     raw_cases: &[Vec<(u32, u32)>],
     solution_count: usize,
     exact_count: usize,
@@ -845,6 +858,7 @@ fn integrated_with_options_impl<const PARTITION: bool>(
     state_budget: Option<u64>,
     histogram_switch_after: u64,
     candidate_dominance: bool,
+    audit: Option<&mut BenchDominanceAudit>,
 ) -> Option<BoundedQualityResult> {
     if raw_cases.is_empty() {
         let result = MinimumCoverResult {
@@ -908,8 +922,15 @@ fn integrated_with_options_impl<const PARTITION: bool>(
     // row.  This changes DFS traversal, so callers must only trust the result
     // when the bounded search completes exactly; a timed-out preview is
     // discarded and the historical search is restarted from the original seed.
-    let dominated = candidate_dominance
-        .then(|| quality_candidate_dominance_mask(&normalized, solution_count, &solution_coverage));
+    let dominated = if candidate_dominance {
+        if let Some(audit) = audit {
+            guarded_dominance_mask(&normalized, solution_count, &solution_coverage, audit)
+        } else {
+            Some(quality_candidate_dominance_mask(&normalized, solution_count, &solution_coverage))
+        }
+    } else {
+        None
+    };
     if let Some(dominated) = dominated.as_deref() {
         for row in &mut case_candidates {
             row.retain(|&solution| !dominated[solution as usize]);
@@ -945,7 +966,14 @@ fn integrated_with_options_impl<const PARTITION: bool>(
     let seed_quality = quality_vector(&normalized, &seed, solution_count);
     let mut completed = HashSet::new();
     completed.insert(seed.clone());
-    let mut search = BestSetSearch::<PARTITION> {
+    let case_spread: Vec<u32> = if QUALITY_CASE {
+        active_original.iter().map(|&i| {
+            let min = normalized[i].iter().map(|x| x.1).min().unwrap_or(0);
+            let max = normalized[i].iter().map(|x| x.1).max().unwrap_or(0);
+            max.saturating_sub(min)
+        }).collect()
+    } else { Vec::new() };
+    let mut search = BestSetSearch::<PARTITION, QUALITY_CASE> {
         covered_buffers: Vec::new(),
         sibling_excluded: if PARTITION {
             vec![false; solution_count]
@@ -955,6 +983,7 @@ fn integrated_with_options_impl<const PARTITION: bool>(
         exclusion_trail: Vec::new(),
         full: &full,
         case_candidates: &case_candidates,
+        case_spread: &case_spread,
         solution_coverage: &solution_coverage,
         raw_cases: &normalized,
         solution_count,
@@ -987,6 +1016,106 @@ fn integrated_with_options_impl<const PARTITION: bool>(
     } else {
         BoundedQualityResult::Exact(result)
     })
+}
+
+// Experiment-only bounded A0/B10/B6 entry point. No other Muse optimizations.
+#[derive(Clone, Debug)]
+pub struct BenchDominanceAudit {
+    // 0 OFF, 1 COMPLETE, 2 MEMORY_BYPASS, 3 WORK_BYPASS.
+    pub status: u32,
+    pub dense_bytes: u64,
+    pub allocated_bytes: u64,
+    pub pair_visits: u64,
+    pub word_comparisons: u64,
+    pub quality_comparisons: u64,
+    pub dominated: u32,
+    pub memory_cap: u64,
+    pub work_cap: u64,
+}
+
+impl Default for BenchDominanceAudit {
+    fn default() -> Self {
+        Self { status: 0, dense_bytes: 0, allocated_bytes: 0, pair_visits: 0,
+            word_comparisons: 0, quality_comparisons: 0, dominated: 0,
+            memory_cap: 64 * 1024 * 1024, work_cap: 50_000_000 }
+    }
+}
+
+impl BenchDominanceAudit {
+    fn spend(&mut self, kind: u8) -> bool {
+        let total = self.pair_visits + self.word_comparisons + self.quality_comparisons;
+        if total >= self.work_cap { self.status = 3; return false; }
+        match kind { 0 => self.pair_visits += 1, 1 => self.word_comparisons += 1,
+            _ => self.quality_comparisons += 1 }
+        true
+    }
+}
+
+fn guarded_dominance_mask(
+    rows: &[Vec<(u32, u32)>], n: usize, coverage: &[Vec<u64>], audit: &mut BenchDominanceAudit,
+) -> Option<Vec<bool>> {
+    let Some(cells) = n.checked_mul(rows.len()) else { audit.status = 2; return None; };
+    let Some(bytes) = cells.checked_mul(4) else { audit.status = 2; return None; };
+    audit.dense_bytes = bytes as u64;
+    if audit.dense_bytes > audit.memory_cap { audit.status = 2; return None; }
+    let mut quality = vec![0u32; cells];
+    audit.allocated_bytes = audit.dense_bytes;
+    for (case, row) in rows.iter().enumerate() {
+        for &(id, q) in row { quality[id as usize * rows.len() + case] = q; }
+    }
+    let mut dominated = vec![false; n];
+    for y in 0..n {
+        for x in 0..y {
+            if !audit.spend(0) { return None; }
+            if dominated[x] { continue; }
+            let mut covers = true;
+            for (&cx, &cy) in coverage[x].iter().zip(&coverage[y]) {
+                if !audit.spend(1) { return None; }
+                if cx & cy != cy { covers = false; break; }
+            }
+            if !covers { continue; }
+            let mut better = true;
+            for i in 0..rows.len() {
+                if !audit.spend(2) { return None; }
+                if quality[x * rows.len() + i] < quality[y * rows.len() + i] {
+                    better = false; break;
+                }
+            }
+            if better { dominated[y] = true; break; }
+        }
+    }
+    audit.status = 1;
+    audit.dominated = dominated.iter().filter(|&&d| d).count() as u32;
+    Some(dominated)
+}
+
+// B6 preserves fail-first width, breaking ties by descending original-row
+// quality spread and then original case index. Counts are not exclusion-aware.
+fn choose_case_spread(covered: &[u64], full: &[u64], cases: &[Vec<u32>], spread: &[u32]) -> Option<usize> {
+    let mut best = None;
+    let mut width = usize::MAX;
+    let mut best_spread = 0;
+    for (i, row) in cases.iter().enumerate() {
+        if bit_is_set(full, i) && !bit_is_set(covered, i)
+            && (row.len() < width || (row.len() == width && spread[i] > best_spread)) {
+            best = Some(i); width = row.len(); best_spread = spread[i];
+        }
+    }
+    best
+}
+
+#[allow(clippy::too_many_arguments)]
+pub fn bench_integrated_bounded(
+    rows: &[Vec<(u32, u32)>], n: usize, k: usize, seed: &[u32], budget: Option<u64>,
+    dominance: bool, quality_case: bool, audit: &mut BenchDominanceAudit,
+) -> Option<BoundedQualityResult> {
+    if quality_case {
+        integrated_with_options_impl::<true, true>(rows, n, k, seed, budget,
+            QUALITY_HISTOGRAM_SWITCH_COMPLETE_COVERS, dominance, Some(audit))
+    } else {
+        integrated_with_options_impl::<true, false>(rows, n, k, seed, budget,
+            QUALITY_HISTOGRAM_SWITCH_COMPLETE_COVERS, dominance, Some(audit))
+    }
 }
 
 pub fn exact_quality_cover_at_count_integrated_bounded(

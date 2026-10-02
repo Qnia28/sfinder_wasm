@@ -1,0 +1,163 @@
+name: Integrated A0 B10 B6 isolated benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      phase:
+        type: choice
+        options: [pilot]
+        default: pilot
+        required: true
+  # Branch-only bootstrap: default main cannot be modified to register dispatch.
+  # Only an explicit launch marker push can run; code/docs pushes alone cannot.
+  push:
+    branches: [experiment/integrated-bench-20261002]
+    paths: [experiments/integrated-bench-20261002/launch-*.json]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: integrated-bench-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  RUSTUP_TOOLCHAIN: 1.90.0
+
+jobs:
+  build:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.event.repository.private == false && (contains(github.event.head_commit.message, '[bench-pilot]') || (github.event_name == 'workflow_dispatch' && inputs.phase == 'pilot'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - run: |
+          mkdir -p .bench/baseline .bench/build
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .bench/baseline
+      - run: rustup toolchain install 1.90.0 --profile minimal --target wasm32-unknown-unknown
+      - run: |
+          cargo test --manifest-path rust/Cargo.toml --locked -p pc-core min_cover --target-dir .bench/host-debug > .bench/build/host-debug.log 2>&1
+          cargo test --manifest-path rust/Cargo.toml --locked -p pc-core min_cover --release --target-dir .bench/host-release > .bench/build/host-release.log 2>&1
+      - run: |
+          cargo build --manifest-path .bench/baseline/rust/Cargo.toml --locked -p pc-wasm --release --target wasm32-unknown-unknown --target-dir .bench/baseline-target
+          cp .bench/baseline-target/wasm32-unknown-unknown/release/pc_wasm.wasm .bench/baseline/wasm/pc_wasm.wasm
+          cargo build --manifest-path rust/Cargo.toml --locked -p pc-wasm --release --target wasm32-unknown-unknown --target-dir .bench/candidate-target
+          cp .bench/candidate-target/wasm32-unknown-unknown/release/pc_wasm.wasm wasm/pc_wasm.wasm
+      - run: node experiments/integrated-bench-20261002/seal-build.mjs
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bench-build
+          path: .bench/build/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+
+  correctness:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: bench-build
+          path: .bench/build
+      - run: |
+          mkdir -p .bench/baseline .bench/correctness
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .bench/baseline
+          cp .bench/build/baseline.wasm .bench/baseline/wasm/pc_wasm.wasm
+          cp .bench/build/candidate.wasm wasm/pc_wasm.wasm
+          sudo mkdir /sys/fs/cgroup/integrated-bench-child
+          echo 3221225472 | sudo tee /sys/fs/cgroup/integrated-bench-child/memory.max
+          echo 0 | sudo tee /sys/fs/cgroup/integrated-bench-child/memory.swap.max
+          echo 'BENCH_CGROUP=/sys/fs/cgroup/integrated-bench-child' >> "$GITHUB_ENV"
+      - run: node --test experiments/integrated-bench-20261002/harness.test.mjs
+      - run: node experiments/integrated-bench-20261002/correctness.mjs .bench/correctness
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bench-correctness
+          path: .bench/correctness/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: warn
+
+  pilot:
+    needs: [build, correctness]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      max-parallel: 8
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: bench-build
+          path: .bench/build
+      - run: |
+          mkdir -p .bench/baseline
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .bench/baseline
+          cp .bench/build/baseline.wasm .bench/baseline/wasm/pc_wasm.wasm
+          cp .bench/build/candidate.wasm wasm/pc_wasm.wasm
+          sudo mkdir /sys/fs/cgroup/integrated-bench-child
+          echo 3221225472 | sudo tee /sys/fs/cgroup/integrated-bench-child/memory.max
+          echo 0 | sudo tee /sys/fs/cgroup/integrated-bench-child/memory.swap.max
+          echo 'BENCH_CGROUP=/sys/fs/cgroup/integrated-bench-child' >> "$GITHUB_ENV"
+      - run: node experiments/integrated-bench-20261002/run.mjs pilot ${{ matrix.shard }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bench-pilot-${{ matrix.shard }}
+          path: .bench/results/pilot-${{ matrix.shard }}/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+
+  aggregate-pilot:
+    needs: [build, correctness, pilot]
+    if: always() && needs.build.result == 'success' && needs.correctness.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          pattern: bench-pilot-*
+          path: .bench/downloads
+      - run: node experiments/integrated-bench-20261002/aggregate.mjs .bench/downloads .bench/pilot-summary pilot
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bench-pilot-summary
+          path: .bench/pilot-summary/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: warn
