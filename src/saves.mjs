@@ -289,7 +289,14 @@ function evaluateSaveOutcomeAstScalar(save,node){
 
 export function parseSaveExpressionSpec(value){
   const raw=String(value??'').trim();
-  const hash=raw.indexOf('#');
+  let hash=-1,inRegex=false,escaped=false;
+  for(let index=0;index<raw.length;index++){
+    const char=raw[index];
+    if(escaped){escaped=false;continue}
+    if(char==='\\'){escaped=true;continue}
+    if(char==='/'){inRegex=!inRegex;continue}
+    if(char==='#'&&!inRegex){hash=index;break}
+  }
   const expression=(hash<0?raw:raw.slice(0,hash)).trim();
   const alias=hash<0?null:raw.slice(hash+1).trim();
   if(!expression)throw new SyntaxError('Wanted Saves: Empty save expression');
