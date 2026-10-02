@@ -1,0 +1,167 @@
+{
+  "status": "EVIDENCE_AUDITED_PRODUCT_CONNECTION_HOLD",
+  "nativeSourcesAndHarnessGitBlobsVerified": 151,
+  "rebuildHashMatchesPriorVerifiedImplementation": true,
+  "smallProductRebuildParityCalls": 27,
+  "phases": {
+    "smoke": {
+      "status": "AUDITED_COMPLETE",
+      "expectedRuns": 128,
+      "observedRuns": 128,
+      "statuses": {
+        "INCONCLUSIVE": 16,
+        "EXACT": 56,
+        "TIMEOUT_API": 56
+      },
+      "probeExactMatrices": {
+        "R": 5,
+        "A": 5
+      },
+      "pairedFinalExactMatrices": 7,
+      "pairedConfirmedRouteRatio": 0.9967420652759896,
+      "pairedConfirmedP95Ratio": 1.0762741523417174,
+      "censoringPreserved": true,
+      "qualityRegressions": 0,
+      "stateRegressions": 0,
+      "qualityAndStateAuditCoverage": "Only persisted completed-call traces; no claim about killed-call incumbents",
+      "uniqueMatrixCount": 16,
+      "productApplied": false,
+      "perMatrix": [
+        {
+          "matrixId": "board-012--restricted-split--L",
+          "statuses": {
+            "INCONCLUSIVE": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-067--restricted-split--L",
+          "statuses": {
+            "EXACT": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-024--restricted-split--I",
+          "statuses": {
+            "EXACT": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-069--restricted-split--J",
+          "statuses": {
+            "TIMEOUT_API": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-026--restricted-split--T",
+          "statuses": {
+            "EXACT": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-069--restricted-split--S",
+          "statuses": {
+            "TIMEOUT_API": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-028--restricted-split--ordinary",
+          "statuses": {
+            "TIMEOUT_API": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-069--restricted-split--Z",
+          "statuses": {
+            "TIMEOUT_API": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-028--restricted-split--T",
+          "statuses": {
+            "EXACT": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-070--bag--ordinary",
+          "statuses": {
+            "EXACT": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-040--restricted-split--I",
+          "statuses": {
+            "EXACT": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-085--restricted-split--S",
+          "statuses": {
+            "EXACT": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-064--restricted-split--T",
+          "statuses": {
+            "TIMEOUT_API": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-088--restricted-split--ordinary",
+          "statuses": {
+            "TIMEOUT_API": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-066--restricted-split--S",
+          "statuses": {
+            "TIMEOUT_API": 8
+          },
+          "statusMatchesAllRepetitions": true
+        },
+        {
+          "matrixId": "board-090--restricted-split--I",
+          "statuses": {
+            "INCONCLUSIVE": 8
+          },
+          "statusMatchesAllRepetitions": true
+        }
+      ]
+    },
+    "reserved": {
+      "status": "NOT_RUN",
+      "expectedRuns": 832,
+      "observedRuns": 0
+    }
+  },
+  "actualInputPrimaryCalls": 0,
+  "actualInputPcCalls": 0,
+  "devApplied": false,
+  "bytePreservedInputSegmentsVerified": 235,
+  "sourceAliasesAndMetadataPreserved": true,
+  "smokeSelectionIndependentlyVerified": true,
+  "reservedMatricesDecodedByAudit": 0,
+  "sealedFilesVerified": 24,
+  "originalWeightedQualityRecomputations": 208,
+  "observedRouteTuples": 128,
+  "persistedCompletedSolverCallTraces": 104,
+  "phaseStartEvents": 216,
+  "phaseDoneEvents": 160,
+  "timeoutProcessesReaped": 56,
+  "maxTimeoutKillToCloseMs": 19.886784999995143,
+  "partialTraceLimitation": "Threshold-killed processes retained phase events/status but not already-completed integrated witness traces; no retrospective reconstruction or rerun substitution",
+  "finalProductApproval": "HOLD_SMOKE_GATE_FAILED_RESERVED_NOT_RUN"
+}

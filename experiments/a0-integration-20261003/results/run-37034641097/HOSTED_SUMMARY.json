@@ -1,0 +1,3425 @@
+{
+  "phase": "smoke",
+  "status": "FAILED_OR_INCOMPLETE",
+  "expectedRuns": 128,
+  "observedRuns": 128,
+  "statuses": {
+    "INCONCLUSIVE": 16,
+    "EXACT": 56,
+    "TIMEOUT_API": 56
+  },
+  "failures": [
+    {
+      "phase": "smoke",
+      "shard": 1,
+      "matrixId": "board-069--restricted-split--J",
+      "variant": "A",
+      "repetition": 1,
+      "position": 1,
+      "runId": "smoke--board-069--restricted-split--J--A--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 298.1414769999999
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1863.3880589999999
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1891.297751
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31891.377123
+        }
+      ],
+      "processWallMs": 31900.669044999995,
+      "inputSha256": "be1dd29b4756abfdd21ca479ef2f2bcf44fa1dab673a96822dcaaf4b1eadba00",
+      "identitySha256": "e942997d7f24cdfe5fc5f18727f2eec3fdbfa149d34124263b147be2ed22a0ea",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 1,
+      "matrixId": "board-069--restricted-split--J",
+      "variant": "R",
+      "repetition": 1,
+      "position": 2,
+      "runId": "smoke--board-069--restricted-split--J--R--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 293.88186300000234
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1850.3181639999966
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1877.3486059999996
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31876.960788999997
+        }
+      ],
+      "processWallMs": 31885.459130000003,
+      "inputSha256": "be1dd29b4756abfdd21ca479ef2f2bcf44fa1dab673a96822dcaaf4b1eadba00",
+      "identitySha256": "e942997d7f24cdfe5fc5f18727f2eec3fdbfa149d34124263b147be2ed22a0ea",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 1,
+      "matrixId": "board-069--restricted-split--J",
+      "variant": "R",
+      "repetition": 2,
+      "position": 1,
+      "runId": "smoke--board-069--restricted-split--J--R--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 285.17441300000064
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1850.0418550000031
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1903.8659069999994
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31904.59536800001
+        }
+      ],
+      "processWallMs": 31912.637310000006,
+      "inputSha256": "be1dd29b4756abfdd21ca479ef2f2bcf44fa1dab673a96822dcaaf4b1eadba00",
+      "identitySha256": "e942997d7f24cdfe5fc5f18727f2eec3fdbfa149d34124263b147be2ed22a0ea",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 1,
+      "matrixId": "board-069--restricted-split--J",
+      "variant": "A",
+      "repetition": 2,
+      "position": 2,
+      "runId": "smoke--board-069--restricted-split--J--A--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 283.7978519999888
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1847.8940679999941
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1874.6488640000025
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31874.355513999995
+        }
+      ],
+      "processWallMs": 31883.747015,
+      "inputSha256": "be1dd29b4756abfdd21ca479ef2f2bcf44fa1dab673a96822dcaaf4b1eadba00",
+      "identitySha256": "e942997d7f24cdfe5fc5f18727f2eec3fdbfa149d34124263b147be2ed22a0ea",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 1,
+      "matrixId": "board-069--restricted-split--J",
+      "variant": "R",
+      "repetition": 3,
+      "position": 1,
+      "runId": "smoke--board-069--restricted-split--J--R--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 295.44743500000914
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1846.9202870000008
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1875.843344000008
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31876.37116000001
+        }
+      ],
+      "processWallMs": 31885.817568,
+      "inputSha256": "be1dd29b4756abfdd21ca479ef2f2bcf44fa1dab673a96822dcaaf4b1eadba00",
+      "identitySha256": "e942997d7f24cdfe5fc5f18727f2eec3fdbfa149d34124263b147be2ed22a0ea",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 1,
+      "matrixId": "board-069--restricted-split--J",
+      "variant": "A",
+      "repetition": 3,
+      "position": 2,
+      "runId": "smoke--board-069--restricted-split--J--A--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 290.7653639999917
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1851.0023629999778
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1878.6577649999817
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31879.325505999994
+        }
+      ],
+      "processWallMs": 31888.635916,
+      "inputSha256": "be1dd29b4756abfdd21ca479ef2f2bcf44fa1dab673a96822dcaaf4b1eadba00",
+      "identitySha256": "e942997d7f24cdfe5fc5f18727f2eec3fdbfa149d34124263b147be2ed22a0ea",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 1,
+      "matrixId": "board-069--restricted-split--J",
+      "variant": "A",
+      "repetition": 4,
+      "position": 1,
+      "runId": "smoke--board-069--restricted-split--J--A--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 296.78447000001324
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1855.4542260000017
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1882.4727960000164
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31883.060855000018
+        }
+      ],
+      "processWallMs": 31892.742437000008,
+      "inputSha256": "be1dd29b4756abfdd21ca479ef2f2bcf44fa1dab673a96822dcaaf4b1eadba00",
+      "identitySha256": "e942997d7f24cdfe5fc5f18727f2eec3fdbfa149d34124263b147be2ed22a0ea",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 1,
+      "matrixId": "board-069--restricted-split--J",
+      "variant": "R",
+      "repetition": 4,
+      "position": 2,
+      "runId": "smoke--board-069--restricted-split--J--R--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 300.74001199999475
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1855.9577389999758
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1881.633507999999
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31881.40457699998
+        }
+      ],
+      "processWallMs": 31891.06968299998,
+      "inputSha256": "be1dd29b4756abfdd21ca479ef2f2bcf44fa1dab673a96822dcaaf4b1eadba00",
+      "identitySha256": "e942997d7f24cdfe5fc5f18727f2eec3fdbfa149d34124263b147be2ed22a0ea",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 2,
+      "matrixId": "board-069--restricted-split--S",
+      "variant": "A",
+      "repetition": 1,
+      "position": 1,
+      "runId": "smoke--board-069--restricted-split--S--A--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 305.39394500000003
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1722.787452
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1749.853489
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31750.175289
+        }
+      ],
+      "processWallMs": 31759.321573,
+      "inputSha256": "02554ec02837ae76f592bd544126297ed3daa3e51dda6c8849899cb3024af4b4",
+      "identitySha256": "f1c8c31c7a5f8650a846c77d465856cae908909e0075066cb43abc8ddd5cd0fc",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 2,
+      "matrixId": "board-069--restricted-split--S",
+      "variant": "R",
+      "repetition": 1,
+      "position": 2,
+      "runId": "smoke--board-069--restricted-split--S--R--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 315.29099300000235
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1686.7307849999997
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1713.2955690000017
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31713.930204999997
+        }
+      ],
+      "processWallMs": 31722.661535,
+      "inputSha256": "02554ec02837ae76f592bd544126297ed3daa3e51dda6c8849899cb3024af4b4",
+      "identitySha256": "f1c8c31c7a5f8650a846c77d465856cae908909e0075066cb43abc8ddd5cd0fc",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 2,
+      "matrixId": "board-069--restricted-split--S",
+      "variant": "R",
+      "repetition": 2,
+      "position": 1,
+      "runId": "smoke--board-069--restricted-split--S--R--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 293.12425800000346
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1655.079141000002
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1708.5661949999994
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31707.991411000003
+        }
+      ],
+      "processWallMs": 31717.212472000007,
+      "inputSha256": "02554ec02837ae76f592bd544126297ed3daa3e51dda6c8849899cb3024af4b4",
+      "identitySha256": "f1c8c31c7a5f8650a846c77d465856cae908909e0075066cb43abc8ddd5cd0fc",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 2,
+      "matrixId": "board-069--restricted-split--S",
+      "variant": "A",
+      "repetition": 2,
+      "position": 2,
+      "runId": "smoke--board-069--restricted-split--S--A--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 310.00737800000934
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1711.6676650000009
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1738.8348930000066
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31738.96764300001
+        }
+      ],
+      "processWallMs": 31747.696734000012,
+      "inputSha256": "02554ec02837ae76f592bd544126297ed3daa3e51dda6c8849899cb3024af4b4",
+      "identitySha256": "f1c8c31c7a5f8650a846c77d465856cae908909e0075066cb43abc8ddd5cd0fc",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 2,
+      "matrixId": "board-069--restricted-split--S",
+      "variant": "R",
+      "repetition": 3,
+      "position": 1,
+      "runId": "smoke--board-069--restricted-split--S--R--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 302.55555099999765
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1660.997304000004
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1687.9580429999914
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31687.428509999998
+        }
+      ],
+      "processWallMs": 31696.91066600001,
+      "inputSha256": "02554ec02837ae76f592bd544126297ed3daa3e51dda6c8849899cb3024af4b4",
+      "identitySha256": "f1c8c31c7a5f8650a846c77d465856cae908909e0075066cb43abc8ddd5cd0fc",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 2,
+      "matrixId": "board-069--restricted-split--S",
+      "variant": "A",
+      "repetition": 3,
+      "position": 2,
+      "runId": "smoke--board-069--restricted-split--S--A--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 319.02579899999546
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 2104.6974420000042
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 2130.283116000006
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 32130.231736999995
+        }
+      ],
+      "processWallMs": 32139.73420800001,
+      "inputSha256": "02554ec02837ae76f592bd544126297ed3daa3e51dda6c8849899cb3024af4b4",
+      "identitySha256": "f1c8c31c7a5f8650a846c77d465856cae908909e0075066cb43abc8ddd5cd0fc",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 2,
+      "matrixId": "board-069--restricted-split--S",
+      "variant": "A",
+      "repetition": 4,
+      "position": 1,
+      "runId": "smoke--board-069--restricted-split--S--A--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 304.84206399999675
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1703.548868999991
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1728.4829369999934
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31727.991589000012
+        }
+      ],
+      "processWallMs": 31736.928343999985,
+      "inputSha256": "02554ec02837ae76f592bd544126297ed3daa3e51dda6c8849899cb3024af4b4",
+      "identitySha256": "f1c8c31c7a5f8650a846c77d465856cae908909e0075066cb43abc8ddd5cd0fc",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 2,
+      "matrixId": "board-069--restricted-split--S",
+      "variant": "R",
+      "repetition": 4,
+      "position": 2,
+      "runId": "smoke--board-069--restricted-split--S--R--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 293.6861510000017
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1660.0716659999744
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1685.4590150000004
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31685.594656
+        }
+      ],
+      "processWallMs": 31695.41167599999,
+      "inputSha256": "02554ec02837ae76f592bd544126297ed3daa3e51dda6c8849899cb3024af4b4",
+      "identitySha256": "f1c8c31c7a5f8650a846c77d465856cae908909e0075066cb43abc8ddd5cd0fc",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-028--restricted-split--ordinary",
+      "variant": "R",
+      "repetition": 1,
+      "position": 1,
+      "runId": "smoke--board-028--restricted-split--ordinary--R--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 351.349373
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 7499.329219
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 7525.064724
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 37525.896889999996
+        }
+      ],
+      "processWallMs": 37541.093968,
+      "inputSha256": "e9704410e568878b62161f019dee995eeed90fcd9e307b627063f65aee14c781",
+      "identitySha256": "2eff42869073791e4b3d9729b381a1d769df8d89321523a7399d649876251e37",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-028--restricted-split--ordinary",
+      "variant": "A",
+      "repetition": 1,
+      "position": 2,
+      "runId": "smoke--board-028--restricted-split--ordinary--A--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 325.1428169999999
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 7365.307511999999
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 7389.901676999994
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 37389.724822
+        }
+      ],
+      "processWallMs": 37403.828623999994,
+      "inputSha256": "e9704410e568878b62161f019dee995eeed90fcd9e307b627063f65aee14c781",
+      "identitySha256": "2eff42869073791e4b3d9729b381a1d769df8d89321523a7399d649876251e37",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-028--restricted-split--ordinary",
+      "variant": "A",
+      "repetition": 2,
+      "position": 1,
+      "runId": "smoke--board-028--restricted-split--ordinary--A--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 322.0834130000003
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 7353.167619
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 7378.6943870000105
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 37378.903313
+        }
+      ],
+      "processWallMs": 37392.68111600001,
+      "inputSha256": "e9704410e568878b62161f019dee995eeed90fcd9e307b627063f65aee14c781",
+      "identitySha256": "2eff42869073791e4b3d9729b381a1d769df8d89321523a7399d649876251e37",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-028--restricted-split--ordinary",
+      "variant": "R",
+      "repetition": 2,
+      "position": 2,
+      "runId": "smoke--board-028--restricted-split--ordinary--R--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 322.24396599999454
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 7377.624920999995
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 7404.093840000001
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 37405.021598999985
+        }
+      ],
+      "processWallMs": 37419.65936099998,
+      "inputSha256": "e9704410e568878b62161f019dee995eeed90fcd9e307b627063f65aee14c781",
+      "identitySha256": "2eff42869073791e4b3d9729b381a1d769df8d89321523a7399d649876251e37",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-028--restricted-split--ordinary",
+      "variant": "A",
+      "repetition": 3,
+      "position": 1,
+      "runId": "smoke--board-028--restricted-split--ordinary--A--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 324.8401310000045
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 7357.289056999987
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 7383.385516000009
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 37383.08814499999
+        }
+      ],
+      "processWallMs": 37397.748487000004,
+      "inputSha256": "e9704410e568878b62161f019dee995eeed90fcd9e307b627063f65aee14c781",
+      "identitySha256": "2eff42869073791e4b3d9729b381a1d769df8d89321523a7399d649876251e37",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-028--restricted-split--ordinary",
+      "variant": "R",
+      "repetition": 3,
+      "position": 2,
+      "runId": "smoke--board-028--restricted-split--ordinary--R--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 335.14180599999963
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 7399.683342000004
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 7424.323466000002
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 37423.945154999994
+        }
+      ],
+      "processWallMs": 37437.92530999999,
+      "inputSha256": "e9704410e568878b62161f019dee995eeed90fcd9e307b627063f65aee14c781",
+      "identitySha256": "2eff42869073791e4b3d9729b381a1d769df8d89321523a7399d649876251e37",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-028--restricted-split--ordinary",
+      "variant": "R",
+      "repetition": 4,
+      "position": 1,
+      "runId": "smoke--board-028--restricted-split--ordinary--R--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 307.87412900000345
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 7388.814717000001
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 7438.875510000013
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 37438.57647599999
+        }
+      ],
+      "processWallMs": 37452.067294999986,
+      "inputSha256": "e9704410e568878b62161f019dee995eeed90fcd9e307b627063f65aee14c781",
+      "identitySha256": "2eff42869073791e4b3d9729b381a1d769df8d89321523a7399d649876251e37",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-028--restricted-split--ordinary",
+      "variant": "A",
+      "repetition": 4,
+      "position": 2,
+      "runId": "smoke--board-028--restricted-split--ordinary--A--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 315.0677260000375
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 7353.6284009999945
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 7379.695402999991
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 37379.730163
+        }
+      ],
+      "processWallMs": 37394.112953,
+      "inputSha256": "e9704410e568878b62161f019dee995eeed90fcd9e307b627063f65aee14c781",
+      "identitySha256": "2eff42869073791e4b3d9729b381a1d769df8d89321523a7399d649876251e37",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-069--restricted-split--Z",
+      "variant": "A",
+      "repetition": 1,
+      "position": 1,
+      "runId": "smoke--board-069--restricted-split--Z--A--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 316.93530200002715
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1805.1103700000094
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1832.842348999984
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31832.339312999975
+        }
+      ],
+      "processWallMs": 31847.922129000013,
+      "inputSha256": "a81cb848d1982573f78e4f3d603eec12ecb1120d042f7731aa4b271cbb3b3727",
+      "identitySha256": "3e8180254a8d1753e2afee0661750aef37aacad179d7ca75a6152bc0b7b655ab",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-069--restricted-split--Z",
+      "variant": "R",
+      "repetition": 1,
+      "position": 2,
+      "runId": "smoke--board-069--restricted-split--Z--R--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 310.0729810000048
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1802.9149600000237
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1829.1393410000019
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31829.38678400003
+        }
+      ],
+      "processWallMs": 31844.055286000017,
+      "inputSha256": "a81cb848d1982573f78e4f3d603eec12ecb1120d042f7731aa4b271cbb3b3727",
+      "identitySha256": "3e8180254a8d1753e2afee0661750aef37aacad179d7ca75a6152bc0b7b655ab",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-069--restricted-split--Z",
+      "variant": "R",
+      "repetition": 2,
+      "position": 1,
+      "runId": "smoke--board-069--restricted-split--Z--R--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 313.7729099999997
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1801.4252459999989
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1826.8117400000338
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31826.46946500003
+        }
+      ],
+      "processWallMs": 31841.091050999996,
+      "inputSha256": "a81cb848d1982573f78e4f3d603eec12ecb1120d042f7731aa4b271cbb3b3727",
+      "identitySha256": "3e8180254a8d1753e2afee0661750aef37aacad179d7ca75a6152bc0b7b655ab",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-069--restricted-split--Z",
+      "variant": "A",
+      "repetition": 2,
+      "position": 2,
+      "runId": "smoke--board-069--restricted-split--Z--A--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 322.01796399999876
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1808.5879839999834
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1833.949900000007
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31834.665648000024
+        }
+      ],
+      "processWallMs": 31849.519979000033,
+      "inputSha256": "a81cb848d1982573f78e4f3d603eec12ecb1120d042f7731aa4b271cbb3b3727",
+      "identitySha256": "3e8180254a8d1753e2afee0661750aef37aacad179d7ca75a6152bc0b7b655ab",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-069--restricted-split--Z",
+      "variant": "R",
+      "repetition": 3,
+      "position": 1,
+      "runId": "smoke--board-069--restricted-split--Z--R--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 331.39507600001525
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1819.4209540000302
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1845.0506370000076
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31845.81893800001
+        }
+      ],
+      "processWallMs": 31860.308137000015,
+      "inputSha256": "a81cb848d1982573f78e4f3d603eec12ecb1120d042f7731aa4b271cbb3b3727",
+      "identitySha256": "3e8180254a8d1753e2afee0661750aef37aacad179d7ca75a6152bc0b7b655ab",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-069--restricted-split--Z",
+      "variant": "A",
+      "repetition": 3,
+      "position": 2,
+      "runId": "smoke--board-069--restricted-split--Z--A--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 323.2926280000247
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1813.8868900000234
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1842.2928459999966
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31842.238627000013
+        }
+      ],
+      "processWallMs": 31856.577405999997,
+      "inputSha256": "a81cb848d1982573f78e4f3d603eec12ecb1120d042f7731aa4b271cbb3b3727",
+      "identitySha256": "3e8180254a8d1753e2afee0661750aef37aacad179d7ca75a6152bc0b7b655ab",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-069--restricted-split--Z",
+      "variant": "A",
+      "repetition": 4,
+      "position": 1,
+      "runId": "smoke--board-069--restricted-split--Z--A--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 322.8371739999857
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1809.8945869999588
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1835.2973819999606
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31836.08075699996
+        }
+      ],
+      "processWallMs": 31848.49687999999,
+      "inputSha256": "a81cb848d1982573f78e4f3d603eec12ecb1120d042f7731aa4b271cbb3b3727",
+      "identitySha256": "3e8180254a8d1753e2afee0661750aef37aacad179d7ca75a6152bc0b7b655ab",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 3,
+      "matrixId": "board-069--restricted-split--Z",
+      "variant": "R",
+      "repetition": 4,
+      "position": 2,
+      "runId": "smoke--board-069--restricted-split--Z--R--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 316.8589739999734
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1803.1336149999988
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1828.567875000008
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31828.34216900001
+        }
+      ],
+      "processWallMs": 31840.74996700004,
+      "inputSha256": "a81cb848d1982573f78e4f3d603eec12ecb1120d042f7731aa4b271cbb3b3727",
+      "identitySha256": "3e8180254a8d1753e2afee0661750aef37aacad179d7ca75a6152bc0b7b655ab",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-064--restricted-split--T",
+      "variant": "R",
+      "repetition": 1,
+      "position": 1,
+      "runId": "smoke--board-064--restricted-split--T--R--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 244.493098
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1035.948547
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1054.815455
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31055.276251
+        }
+      ],
+      "processWallMs": 31068.12517,
+      "inputSha256": "5f625d940a3f2bbc0d314908367f68001116a60b66c4136cee122501baa33bcc",
+      "identitySha256": "2ef835114bd229f074d24d3399dced48db40791d60bced425baf33f8b0a7576b",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-064--restricted-split--T",
+      "variant": "A",
+      "repetition": 1,
+      "position": 2,
+      "runId": "smoke--board-064--restricted-split--T--A--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 252.99409000000014
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 961.2889939999986
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 981.2253799999999
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 30980.791921
+        }
+      ],
+      "processWallMs": 30992.364813999997,
+      "inputSha256": "5f625d940a3f2bbc0d314908367f68001116a60b66c4136cee122501baa33bcc",
+      "identitySha256": "2ef835114bd229f074d24d3399dced48db40791d60bced425baf33f8b0a7576b",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-064--restricted-split--T",
+      "variant": "A",
+      "repetition": 2,
+      "position": 1,
+      "runId": "smoke--board-064--restricted-split--T--A--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 258.449649999995
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 963.1893749999945
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 978.5841919999948
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 30979.457607999997
+        }
+      ],
+      "processWallMs": 30993.46066299999,
+      "inputSha256": "5f625d940a3f2bbc0d314908367f68001116a60b66c4136cee122501baa33bcc",
+      "identitySha256": "2ef835114bd229f074d24d3399dced48db40791d60bced425baf33f8b0a7576b",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-064--restricted-split--T",
+      "variant": "R",
+      "repetition": 2,
+      "position": 2,
+      "runId": "smoke--board-064--restricted-split--T--R--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 237.23452900000848
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1030.5878710000106
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1045.909022000007
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31045.707867000005
+        }
+      ],
+      "processWallMs": 31056.688294000007,
+      "inputSha256": "5f625d940a3f2bbc0d314908367f68001116a60b66c4136cee122501baa33bcc",
+      "identitySha256": "2ef835114bd229f074d24d3399dced48db40791d60bced425baf33f8b0a7576b",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-064--restricted-split--T",
+      "variant": "A",
+      "repetition": 3,
+      "position": 1,
+      "runId": "smoke--board-064--restricted-split--T--A--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 232.0261940000055
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 931.6048950000113
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 947.3232940000016
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 30947.150599999994
+        }
+      ],
+      "processWallMs": 30958.299475000007,
+      "inputSha256": "5f625d940a3f2bbc0d314908367f68001116a60b66c4136cee122501baa33bcc",
+      "identitySha256": "2ef835114bd229f074d24d3399dced48db40791d60bced425baf33f8b0a7576b",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-064--restricted-split--T",
+      "variant": "R",
+      "repetition": 3,
+      "position": 2,
+      "runId": "smoke--board-064--restricted-split--T--R--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 234.09106999999494
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1026.6140700000105
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1042.2367939999967
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31042.889213999995
+        }
+      ],
+      "processWallMs": 31053.297647,
+      "inputSha256": "5f625d940a3f2bbc0d314908367f68001116a60b66c4136cee122501baa33bcc",
+      "identitySha256": "2ef835114bd229f074d24d3399dced48db40791d60bced425baf33f8b0a7576b",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-064--restricted-split--T",
+      "variant": "R",
+      "repetition": 4,
+      "position": 1,
+      "runId": "smoke--board-064--restricted-split--T--R--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 238.72655200000736
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1034.9677500000107
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1051.916597000003
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31052.559853000013
+        }
+      ],
+      "processWallMs": 31063.71585400001,
+      "inputSha256": "5f625d940a3f2bbc0d314908367f68001116a60b66c4136cee122501baa33bcc",
+      "identitySha256": "2ef835114bd229f074d24d3399dced48db40791d60bced425baf33f8b0a7576b",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-064--restricted-split--T",
+      "variant": "A",
+      "repetition": 4,
+      "position": 2,
+      "runId": "smoke--board-064--restricted-split--T--A--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 237.36117400001967
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 948.1575590000139
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 967.1069570000109
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 30966.64586400002
+        }
+      ],
+      "processWallMs": 30977.74098500001,
+      "inputSha256": "5f625d940a3f2bbc0d314908367f68001116a60b66c4136cee122501baa33bcc",
+      "identitySha256": "2ef835114bd229f074d24d3399dced48db40791d60bced425baf33f8b0a7576b",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-088--restricted-split--ordinary",
+      "variant": "R",
+      "repetition": 1,
+      "position": 1,
+      "runId": "smoke--board-088--restricted-split--ordinary--R--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 233.60148499999195
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 2748.6378660000046
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 2767.260427000001
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 32768.026403999975
+        }
+      ],
+      "processWallMs": 32778.508359,
+      "inputSha256": "89a0ee9c25af4b1691fbbbcc2cee05deee1b80e1c2fa910af6c7f91697d1748d",
+      "identitySha256": "a8c7798dba20b9d0419fcd5c40c54a7bae29aaaead1519df72dcb6bed2b7e880",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-088--restricted-split--ordinary",
+      "variant": "A",
+      "repetition": 1,
+      "position": 2,
+      "runId": "smoke--board-088--restricted-split--ordinary--A--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 226.7778919999837
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 2741.9647279999917
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 2756.815273999993
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 32756.878757999977
+        }
+      ],
+      "processWallMs": 32767.337872999953,
+      "inputSha256": "89a0ee9c25af4b1691fbbbcc2cee05deee1b80e1c2fa910af6c7f91697d1748d",
+      "identitySha256": "a8c7798dba20b9d0419fcd5c40c54a7bae29aaaead1519df72dcb6bed2b7e880",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-088--restricted-split--ordinary",
+      "variant": "A",
+      "repetition": 2,
+      "position": 1,
+      "runId": "smoke--board-088--restricted-split--ordinary--A--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 235.62559700000565
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 2750.0623309999937
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 2764.9080759999924
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 32764.558322000026
+        }
+      ],
+      "processWallMs": 32775.502122999984,
+      "inputSha256": "89a0ee9c25af4b1691fbbbcc2cee05deee1b80e1c2fa910af6c7f91697d1748d",
+      "identitySha256": "a8c7798dba20b9d0419fcd5c40c54a7bae29aaaead1519df72dcb6bed2b7e880",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-088--restricted-split--ordinary",
+      "variant": "R",
+      "repetition": 2,
+      "position": 2,
+      "runId": "smoke--board-088--restricted-split--ordinary--R--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 235.30809499998577
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 2773.027812999964
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 2787.9019589999807
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 32787.53954899998
+        }
+      ],
+      "processWallMs": 32797.506255999964,
+      "inputSha256": "89a0ee9c25af4b1691fbbbcc2cee05deee1b80e1c2fa910af6c7f91697d1748d",
+      "identitySha256": "a8c7798dba20b9d0419fcd5c40c54a7bae29aaaead1519df72dcb6bed2b7e880",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-088--restricted-split--ordinary",
+      "variant": "A",
+      "repetition": 3,
+      "position": 1,
+      "runId": "smoke--board-088--restricted-split--ordinary--A--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 234.6225470000063
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 2768.983853999991
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 2784.192013999971
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 32783.53696400003
+        }
+      ],
+      "processWallMs": 32793.64879900002,
+      "inputSha256": "89a0ee9c25af4b1691fbbbcc2cee05deee1b80e1c2fa910af6c7f91697d1748d",
+      "identitySha256": "a8c7798dba20b9d0419fcd5c40c54a7bae29aaaead1519df72dcb6bed2b7e880",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-088--restricted-split--ordinary",
+      "variant": "R",
+      "repetition": 3,
+      "position": 2,
+      "runId": "smoke--board-088--restricted-split--ordinary--R--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 238.77589699998498
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 2765.2451839999994
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 2779.9269259999855
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 32779.52085500001
+        }
+      ],
+      "processWallMs": 32789.65431200003,
+      "inputSha256": "89a0ee9c25af4b1691fbbbcc2cee05deee1b80e1c2fa910af6c7f91697d1748d",
+      "identitySha256": "a8c7798dba20b9d0419fcd5c40c54a7bae29aaaead1519df72dcb6bed2b7e880",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-088--restricted-split--ordinary",
+      "variant": "R",
+      "repetition": 4,
+      "position": 1,
+      "runId": "smoke--board-088--restricted-split--ordinary--R--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 232.99903800000902
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 2749.7124540000223
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 2764.656583999982
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 32765.26065900002
+        }
+      ],
+      "processWallMs": 32774.83936599997,
+      "inputSha256": "89a0ee9c25af4b1691fbbbcc2cee05deee1b80e1c2fa910af6c7f91697d1748d",
+      "identitySha256": "a8c7798dba20b9d0419fcd5c40c54a7bae29aaaead1519df72dcb6bed2b7e880",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 6,
+      "matrixId": "board-088--restricted-split--ordinary",
+      "variant": "A",
+      "repetition": 4,
+      "position": 2,
+      "runId": "smoke--board-088--restricted-split--ordinary--A--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 245.99357699998654
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 2775.967101999966
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 2790.296310000005
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 32790.038532999984
+        }
+      ],
+      "processWallMs": 32799.377316,
+      "inputSha256": "89a0ee9c25af4b1691fbbbcc2cee05deee1b80e1c2fa910af6c7f91697d1748d",
+      "identitySha256": "a8c7798dba20b9d0419fcd5c40c54a7bae29aaaead1519df72dcb6bed2b7e880",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 7,
+      "matrixId": "board-066--restricted-split--S",
+      "variant": "A",
+      "repetition": 1,
+      "position": 1,
+      "runId": "smoke--board-066--restricted-split--S--A--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 306.549103
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1297.3352149999998
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1321.7209779999998
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31323.020312
+        }
+      ],
+      "processWallMs": 31337.989181,
+      "inputSha256": "c382e0af5c7b49d31ec44caacb9e5d9072bfb19d34b1735fe61af969cb26132f",
+      "identitySha256": "a07a5ca821a1e0b6068d533b767779f9926363c6c87fc4d86f679349080871b1",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 7,
+      "matrixId": "board-066--restricted-split--S",
+      "variant": "R",
+      "repetition": 1,
+      "position": 2,
+      "runId": "smoke--board-066--restricted-split--S--R--r1",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 291.9005450000004
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1263.9429060000002
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1288.4746620000005
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31288.443554999998
+        }
+      ],
+      "processWallMs": 31302.104911000002,
+      "inputSha256": "c382e0af5c7b49d31ec44caacb9e5d9072bfb19d34b1735fe61af969cb26132f",
+      "identitySha256": "a07a5ca821a1e0b6068d533b767779f9926363c6c87fc4d86f679349080871b1",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 7,
+      "matrixId": "board-066--restricted-split--S",
+      "variant": "R",
+      "repetition": 2,
+      "position": 1,
+      "runId": "smoke--board-066--restricted-split--S--R--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 295.09711199999583
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1279.1609249999965
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1303.1009489999997
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31303.701271000005
+        }
+      ],
+      "processWallMs": 31317.246210999998,
+      "inputSha256": "c382e0af5c7b49d31ec44caacb9e5d9072bfb19d34b1735fe61af969cb26132f",
+      "identitySha256": "a07a5ca821a1e0b6068d533b767779f9926363c6c87fc4d86f679349080871b1",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 7,
+      "matrixId": "board-066--restricted-split--S",
+      "variant": "A",
+      "repetition": 2,
+      "position": 2,
+      "runId": "smoke--board-066--restricted-split--S--A--r2",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 299.6650110000046
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1268.5898489999963
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1296.5558170000004
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31296.749595
+        }
+      ],
+      "processWallMs": 31316.636379999996,
+      "inputSha256": "c382e0af5c7b49d31ec44caacb9e5d9072bfb19d34b1735fe61af969cb26132f",
+      "identitySha256": "a07a5ca821a1e0b6068d533b767779f9926363c6c87fc4d86f679349080871b1",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 7,
+      "matrixId": "board-066--restricted-split--S",
+      "variant": "R",
+      "repetition": 3,
+      "position": 1,
+      "runId": "smoke--board-066--restricted-split--S--R--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 302.8167899999971
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1271.3612399999984
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1295.7554450000025
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31295.120054000014
+        }
+      ],
+      "processWallMs": 31309.11914400001,
+      "inputSha256": "c382e0af5c7b49d31ec44caacb9e5d9072bfb19d34b1735fe61af969cb26132f",
+      "identitySha256": "a07a5ca821a1e0b6068d533b767779f9926363c6c87fc4d86f679349080871b1",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 7,
+      "matrixId": "board-066--restricted-split--S",
+      "variant": "A",
+      "repetition": 3,
+      "position": 2,
+      "runId": "smoke--board-066--restricted-split--S--A--r3",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 301.4433710000012
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1298.9825589999964
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1324.6003349999955
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31324.51605800001
+        }
+      ],
+      "processWallMs": 31338.022215000005,
+      "inputSha256": "c382e0af5c7b49d31ec44caacb9e5d9072bfb19d34b1735fe61af969cb26132f",
+      "identitySha256": "a07a5ca821a1e0b6068d533b767779f9926363c6c87fc4d86f679349080871b1",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 7,
+      "matrixId": "board-066--restricted-split--S",
+      "variant": "A",
+      "repetition": 4,
+      "position": 1,
+      "runId": "smoke--board-066--restricted-split--S--A--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 294.50894900001003
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1269.5108989999862
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1293.899161999987
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31294.631997999997
+        }
+      ],
+      "processWallMs": 31313.024757000007,
+      "inputSha256": "c382e0af5c7b49d31ec44caacb9e5d9072bfb19d34b1735fe61af969cb26132f",
+      "identitySha256": "a07a5ca821a1e0b6068d533b767779f9926363c6c87fc4d86f679349080871b1",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    },
+    {
+      "phase": "smoke",
+      "shard": 7,
+      "matrixId": "board-066--restricted-split--S",
+      "variant": "R",
+      "repetition": 4,
+      "position": 2,
+      "runId": "smoke--board-066--restricted-split--S--R--r4",
+      "status": "TIMEOUT_API",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "",
+      "events": [
+        {
+          "type": "phase-start",
+          "engine": "integrated",
+          "elapsedMs": 300.6170179999899
+        },
+        {
+          "type": "phase-done",
+          "engine": "integrated",
+          "elapsedMs": 1273.7605259999982
+        },
+        {
+          "type": "phase-start",
+          "engine": "threshold",
+          "elapsedMs": 1298.0233849999786
+        },
+        {
+          "reason": "TIMEOUT_API",
+          "engine": "threshold",
+          "elapsedMs": 31297.867275999975
+        }
+      ],
+      "processWallMs": 31312.20596599998,
+      "inputSha256": "c382e0af5c7b49d31ec44caacb9e5d9072bfb19d34b1735fe61af969cb26132f",
+      "identitySha256": "a07a5ca821a1e0b6068d533b767779f9926363c6c87fc4d86f679349080871b1",
+      "buildSha256": "32100820f1a51df420579c6e31e997906d80e4cf44f3ac228c6dcf9b92557cac"
+    }
+  ],
+  "censored": [
+    {
+      "runId": "smoke--board-012--restricted-split--L--A--r1",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-012--restricted-split--L--R--r1",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-012--restricted-split--L--R--r2",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-012--restricted-split--L--A--r2",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-012--restricted-split--L--R--r3",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-012--restricted-split--L--A--r3",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-012--restricted-split--L--A--r4",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-012--restricted-split--L--R--r4",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--J--A--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--J--R--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--J--R--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--J--A--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--J--R--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--J--A--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--J--A--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--J--R--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--S--A--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--S--R--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--S--R--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--S--A--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--S--R--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--S--A--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--S--A--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--S--R--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-028--restricted-split--ordinary--R--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-028--restricted-split--ordinary--A--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-028--restricted-split--ordinary--A--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-028--restricted-split--ordinary--R--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-028--restricted-split--ordinary--A--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-028--restricted-split--ordinary--R--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-028--restricted-split--ordinary--R--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-028--restricted-split--ordinary--A--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--Z--A--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--Z--R--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--Z--R--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--Z--A--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--Z--R--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--Z--A--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--Z--A--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-069--restricted-split--Z--R--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-064--restricted-split--T--R--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-064--restricted-split--T--A--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-064--restricted-split--T--A--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-064--restricted-split--T--R--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-064--restricted-split--T--A--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-064--restricted-split--T--R--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-064--restricted-split--T--R--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-064--restricted-split--T--A--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-088--restricted-split--ordinary--R--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-088--restricted-split--ordinary--A--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-088--restricted-split--ordinary--A--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-088--restricted-split--ordinary--R--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-088--restricted-split--ordinary--A--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-088--restricted-split--ordinary--R--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-088--restricted-split--ordinary--R--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-088--restricted-split--ordinary--A--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-066--restricted-split--S--A--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-066--restricted-split--S--R--r1",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-066--restricted-split--S--R--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-066--restricted-split--S--A--r2",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-066--restricted-split--S--R--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-066--restricted-split--S--A--r3",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-066--restricted-split--S--A--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-066--restricted-split--S--R--r4",
+      "status": "TIMEOUT_API"
+    },
+    {
+      "runId": "smoke--board-090--restricted-split--I--R--r1",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-090--restricted-split--I--A--r1",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-090--restricted-split--I--A--r2",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-090--restricted-split--I--R--r2",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-090--restricted-split--I--A--r3",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-090--restricted-split--I--R--r3",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-090--restricted-split--I--R--r4",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    },
+    {
+      "runId": "smoke--board-090--restricted-split--I--A--r4",
+      "status": "INCONCLUSIVE",
+      "reason": "THRESHOLD_VALIDATION_STATE_CAP"
+    }
+  ],
+  "determinismErrors": [],
+  "exactErrors": [],
+  "boundedQualityErrors": [],
+  "scopeErrors": [],
+  "stateErrors": [],
+  "probeExactMatrices": {
+    "R": 5,
+    "A": 5
+  },
+  "pairedFinalRouteMatrices": 7,
+  "finalRouteAllConfirmed": false,
+  "apiMedianSumRatio": 0.9967420652759896,
+  "p95SlowdownRatio": 1.0762741523417174,
+  "metrics": [
+    {
+      "matrixId": "board-067--restricted-split--L",
+      "mirrorGroup": "e03c1e1f",
+      "baselineMedianMs": 26.814835000000016,
+      "candidateMedianMs": 23.708841,
+      "baselineProbeMs": 25.540043000000004,
+      "candidateProbeMs": 22.222246
+    },
+    {
+      "matrixId": "board-024--restricted-split--I",
+      "mirrorGroup": "203f1f87",
+      "baselineMedianMs": 13.151096499999987,
+      "candidateMedianMs": 12.987540499999994,
+      "baselineProbeMs": 11.979509999999998,
+      "candidateProbeMs": 11.942424000000003
+    },
+    {
+      "matrixId": "board-026--restricted-split--T",
+      "mirrorGroup": "3c07c0f07",
+      "baselineMedianMs": 8.512561000000005,
+      "candidateMedianMs": 7.2022824999999955,
+      "baselineProbeMs": 7.0759240000000005,
+      "candidateProbeMs": 5.647676499999996
+    },
+    {
+      "matrixId": "board-028--restricted-split--T",
+      "mirrorGroup": "3c0f03c0f",
+      "baselineMedianMs": 10147.5862725,
+      "candidateMedianMs": 10118.270467999999,
+      "baselineProbeMs": 118.6730105,
+      "candidateProbeMs": 120.11302749999999
+    },
+    {
+      "matrixId": "board-070--bag--ordinary",
+      "mirrorGroup": "c07c1f0f",
+      "baselineMedianMs": 32.920798500000004,
+      "candidateMedianMs": 35.431804499999984,
+      "baselineProbeMs": 31.119830000000007,
+      "candidateProbeMs": 33.52673250000001
+    },
+    {
+      "matrixId": "board-040--restricted-split--I",
+      "mirrorGroup": "78080fc1f",
+      "baselineMedianMs": 11.166199500000012,
+      "candidateMedianMs": 10.922199499999998,
+      "baselineProbeMs": 9.911877999999994,
+      "candidateProbeMs": 9.74601899999999
+    },
+    {
+      "matrixId": "board-085--restricted-split--S",
+      "mirrorGroup": "c41d07c0f",
+      "baselineMedianMs": 152.404064,
+      "candidateMedianMs": 150.17442250000005,
+      "baselineProbeMs": 103.1882465,
+      "candidateProbeMs": 100.81381399999998
+    }
+  ],
+  "build": {
+    "schema": "a0-product-connection-build-v1",
+    "baselineCommit": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+    "candidateCommit": "e5f2f3d1a9885085e11cde7457aad2b338ca8130",
+    "wasmSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+    "originalProductWasmSha256": "640232e30c586e87d6c5f5ad5ab52856c9ab173df984e4915f383e9fd399eee2",
+    "sourceFiles": [
+      {
+        "file": "package-lock.json",
+        "sha256": "bbef78dbf6feba29f694643b4af79f400df6de48aeee09811089469247d082f8",
+        "baselineSha256": "bbef78dbf6feba29f694643b4af79f400df6de48aeee09811089469247d082f8"
+      },
+      {
+        "file": "package.json",
+        "sha256": "6b2aee79757fda7c867c0b3080a360a79a2ee4a7e3b1151def1c4841c4b85bf9",
+        "baselineSha256": "6b2aee79757fda7c867c0b3080a360a79a2ee4a7e3b1151def1c4841c4b85bf9"
+      },
+      {
+        "file": "rust/.gitignore",
+        "sha256": "deb6775709c118644ad316948957ebe178eb4569aabae2880651eac9d308ba0f",
+        "baselineSha256": "deb6775709c118644ad316948957ebe178eb4569aabae2880651eac9d308ba0f"
+      },
+      {
+        "file": "rust/Cargo.lock",
+        "sha256": "c2f0e9b6337c2fbe5abd1f6a32881e62fc54af1d0eba3ecdf918342537ed2426",
+        "baselineSha256": "c2f0e9b6337c2fbe5abd1f6a32881e62fc54af1d0eba3ecdf918342537ed2426"
+      },
+      {
+        "file": "rust/Cargo.toml",
+        "sha256": "128190e29355ec4d24ef3fa1e7542f207853d0fb3ada2c2317d3544c26c8c216",
+        "baselineSha256": "128190e29355ec4d24ef3fa1e7542f207853d0fb3ada2c2317d3544c26c8c216"
+      },
+      {
+        "file": "rust/batch-wasm/Cargo.toml",
+        "sha256": "60067295c93511ddfda9a19a5b9e2815eee6519de81cb189217c8a451cce4723",
+        "baselineSha256": "60067295c93511ddfda9a19a5b9e2815eee6519de81cb189217c8a451cce4723"
+      },
+      {
+        "file": "rust/batch-wasm/src/common.rs",
+        "sha256": "bc1014a85bb1d3c4c8386701745cb7c3e5d236a697480dd2868448fd97c6b8a4",
+        "baselineSha256": "bc1014a85bb1d3c4c8386701745cb7c3e5d236a697480dd2868448fd97c6b8a4"
+      },
+      {
+        "file": "rust/batch-wasm/src/diagnostics.rs",
+        "sha256": "c0a3bc72fc837226b10297e67967a86669fc2e7bf7f3b5490cae81873f9e3b2a",
+        "baselineSha256": "c0a3bc72fc837226b10297e67967a86669fc2e7bf7f3b5490cae81873f9e3b2a"
+      },
+      {
+        "file": "rust/batch-wasm/src/engine.rs",
+        "sha256": "bed586c9a413f9a30aa066cb534a9b6c070b5cc4bac8c5ba2eb66abfbf4b2b7f",
+        "baselineSha256": "bed586c9a413f9a30aa066cb534a9b6c070b5cc4bac8c5ba2eb66abfbf4b2b7f"
+      },
+      {
+        "file": "rust/batch-wasm/src/lib.rs",
+        "sha256": "7235138b77c53888b9affa34da6aa8c50ab1b4389ef2504a7c2a528ab1ccc684",
+        "baselineSha256": "7235138b77c53888b9affa34da6aa8c50ab1b4389ef2504a7c2a528ab1ccc684"
+      },
+      {
+        "file": "rust/batch-wasm/src/optimization_tests.rs",
+        "sha256": "c7a1155b522045c30acf6e25e734919bb08e4263213c95cc675cc4d1f65b0f87",
+        "baselineSha256": "c7a1155b522045c30acf6e25e734919bb08e4263213c95cc675cc4d1f65b0f87"
+      },
+      {
+        "file": "rust/batch-wasm/src/placement.rs",
+        "sha256": "010b46873df35f8303493dad119174862799b505cb7ff7a535f641113c9bc9ec",
+        "baselineSha256": "010b46873df35f8303493dad119174862799b505cb7ff7a535f641113c9bc9ec"
+      },
+      {
+        "file": "rust/legal-gen/Cargo.toml",
+        "sha256": "417125fd81679941978035acd68d5e7707e61621a4f8cbc7e13b5660c262b6bc",
+        "baselineSha256": "417125fd81679941978035acd68d5e7707e61621a4f8cbc7e13b5660c262b6bc"
+      },
+      {
+        "file": "rust/legal-gen/src/main.rs",
+        "sha256": "16d7426a2e6e424eed97e58ce92449041a935f68304c8e14bd4ef0011784b7f5",
+        "baselineSha256": "16d7426a2e6e424eed97e58ce92449041a935f68304c8e14bd4ef0011784b7f5"
+      },
+      {
+        "file": "rust/pc-core/Cargo.toml",
+        "sha256": "ffbc60f240346f90cebcd729288fb08fd924f7b37ff1c75eb82e24c75c2cb29d",
+        "baselineSha256": "ffbc60f240346f90cebcd729288fb08fd924f7b37ff1c75eb82e24c75c2cb29d"
+      },
+      {
+        "file": "rust/pc-core/src/best_language.rs",
+        "sha256": "550f7af1107c8e9392bce9acdb5d57fdf9f48bc4fb7c7d8ac77f732869f20ddd",
+        "baselineSha256": "550f7af1107c8e9392bce9acdb5d57fdf9f48bc4fb7c7d8ac77f732869f20ddd"
+      },
+      {
+        "file": "rust/pc-core/src/board.rs",
+        "sha256": "781d83c3e52becda2e71e6b1a57fbdb6ce83a4ca3a233bf7cfff7307157e4167",
+        "baselineSha256": "781d83c3e52becda2e71e6b1a57fbdb6ce83a4ca3a233bf7cfff7307157e4167"
+      },
+      {
+        "file": "rust/pc-core/src/dag.rs",
+        "sha256": "f48f418f9673b00871def2822018aa77076bf62198c29459630f2fbfac5d618d",
+        "baselineSha256": "f48f418f9673b00871def2822018aa77076bf62198c29459630f2fbfac5d618d"
+      },
+      {
+        "file": "rust/pc-core/src/geometry.rs",
+        "sha256": "190f77ec81dbfc2f31eabeb9cdb9cf1df361ace7edac1879fab051d13a50ae47",
+        "baselineSha256": "190f77ec81dbfc2f31eabeb9cdb9cf1df361ace7edac1879fab051d13a50ae47"
+      },
+      {
+        "file": "rust/pc-core/src/hashing.rs",
+        "sha256": "b5249c9453c7ee0b53d0a8cd07b22b3d8fddef27d942a786c4b51e6f11cb56ca",
+        "baselineSha256": "b5249c9453c7ee0b53d0a8cd07b22b3d8fddef27d942a786c4b51e6f11cb56ca"
+      },
+      {
+        "file": "rust/pc-core/src/legal.rs",
+        "sha256": "2bfc6bec2ff56b47617f3f4e0ed2f49dccd093fb695426aa3e7c3f2c6a5a2bd0",
+        "baselineSha256": "2bfc6bec2ff56b47617f3f4e0ed2f49dccd093fb695426aa3e7c3f2c6a5a2bd0"
+      },
+      {
+        "file": "rust/pc-core/src/lib.rs",
+        "sha256": "02075f497f2e1e351820ef68ea43ad9aa75c298de23e488ce054ee1131a81bb3",
+        "baselineSha256": "02075f497f2e1e351820ef68ea43ad9aa75c298de23e488ce054ee1131a81bb3"
+      },
+      {
+        "file": "rust/pc-core/src/min_cover.rs",
+        "sha256": "35d08bccf37b7351bb9d49e609974f6c3fcc5a5a540ce91b0d30ae09e4f64148",
+        "baselineSha256": "35d08bccf37b7351bb9d49e609974f6c3fcc5a5a540ce91b0d30ae09e4f64148"
+      },
+      {
+        "file": "rust/pc-core/src/min_cover_primary.rs",
+        "sha256": "1fc3ae9b9a14c2fb6a44c85b02ef0ba1080861bd153e3d80f7f4a2a2b5a7c89e",
+        "baselineSha256": "1fc3ae9b9a14c2fb6a44c85b02ef0ba1080861bd153e3d80f7f4a2a2b5a7c89e"
+      },
+      {
+        "file": "rust/pc-core/src/min_cover_tests.rs",
+        "sha256": "71d51874b2aecd4eb75c1e9c76e50ca16aba3176100d8a5aabeb854c286a3899",
+        "baselineSha256": "71d51874b2aecd4eb75c1e9c76e50ca16aba3176100d8a5aabeb854c286a3899"
+      },
+      {
+        "file": "rust/pc-core/src/movement.rs",
+        "sha256": "90f2d51b7bbb970e29e071dab463b2d04c4612c6be7a76c71a621171b0447a01",
+        "baselineSha256": "90f2d51b7bbb970e29e071dab463b2d04c4612c6be7a76c71a621171b0447a01"
+      },
+      {
+        "file": "rust/pc-core/src/order_language.rs",
+        "sha256": "d5b8b0d9800869f6e83aabbe1d620f2e37607e548c79954f5822b37de06975a3",
+        "baselineSha256": "d5b8b0d9800869f6e83aabbe1d620f2e37607e548c79954f5822b37de06975a3"
+      },
+      {
+        "file": "rust/pc-core/src/pattern.rs",
+        "sha256": "aeed2d4dda2c5cdc306f3f7b2d5367b2c20945ef197d7a153eff708c7a63309e",
+        "baselineSha256": "aeed2d4dda2c5cdc306f3f7b2d5367b2c20945ef197d7a153eff708c7a63309e"
+      },
+      {
+        "file": "rust/pc-core/src/piece.rs",
+        "sha256": "325f6cc46f3dd909c9c6c0caae430007f2ec602b5864d4f2000bdd0e1ed5307f",
+        "baselineSha256": "325f6cc46f3dd909c9c6c0caae430007f2ec602b5864d4f2000bdd0e1ed5307f"
+      },
+      {
+        "file": "rust/pc-core/src/queue_codec.rs",
+        "sha256": "0243e389e228a6ccc96971394479959c85103cbc068789c5a61b0ed06852ac31",
+        "baselineSha256": "0243e389e228a6ccc96971394479959c85103cbc068789c5a61b0ed06852ac31"
+      },
+      {
+        "file": "rust/pc-core/src/queue_trie.rs",
+        "sha256": "f3598cdc5870939dfbf2aef8456d7477b6d01428b480f386446e716543367ccc",
+        "baselineSha256": "f3598cdc5870939dfbf2aef8456d7477b6d01428b480f386446e716543367ccc"
+      },
+      {
+        "file": "rust/pc-core/src/reverse.rs",
+        "sha256": "19aa11ba7e1b9840be55facdb508c9bdf4a47ac4a950b6d498151f3c72fad58a",
+        "baselineSha256": "19aa11ba7e1b9840be55facdb508c9bdf4a47ac4a950b6d498151f3c72fad58a"
+      },
+      {
+        "file": "rust/pc-core/src/single_queue.rs",
+        "sha256": "474f38f3defd7a76d1dec22b8a58ab6579ae306b42743413d177bf5092312cb9",
+        "baselineSha256": "474f38f3defd7a76d1dec22b8a58ab6579ae306b42743413d177bf5092312cb9"
+      },
+      {
+        "file": "rust/pc-core/src/tests.rs",
+        "sha256": "3192c976d0e786d1d7845decaf2ae79a91984beaa74e6e2d69278addc3b9e47e",
+        "baselineSha256": "3192c976d0e786d1d7845decaf2ae79a91984beaa74e6e2d69278addc3b9e47e"
+      },
+      {
+        "file": "rust/pc-core/tests/legal_oracle.rs",
+        "sha256": "f1f6cca7e6155b91b9953eceb73fab7270afe0b185da16fd83131191d34d9d84",
+        "baselineSha256": "f1f6cca7e6155b91b9953eceb73fab7270afe0b185da16fd83131191d34d9d84"
+      },
+      {
+        "file": "rust/pc-wasm/Cargo.toml",
+        "sha256": "a5e78ba2b27534da9581855d62fc7cf6ccac45aa4bc053d8fc5af01ee11e4e36",
+        "baselineSha256": "a5e78ba2b27534da9581855d62fc7cf6ccac45aa4bc053d8fc5af01ee11e4e36"
+      },
+      {
+        "file": "rust/pc-wasm/src/enumeration.rs",
+        "sha256": "b60674e804120eaac55acef77d2f2cf900499283afd0ed917f81bb372774ebd4",
+        "baselineSha256": "b60674e804120eaac55acef77d2f2cf900499283afd0ed917f81bb372774ebd4"
+      },
+      {
+        "file": "rust/pc-wasm/src/lib.rs",
+        "sha256": "fe297976e18fb756fdafd758b84591b9ceca004e6760150919b39b19a3d0ae63",
+        "baselineSha256": "fe297976e18fb756fdafd758b84591b9ceca004e6760150919b39b19a3d0ae63"
+      },
+      {
+        "file": "rust/pc-wasm/src/min_cover.rs",
+        "sha256": "d789e6f0c48ce559d47bab650e9e9d08b3c1099b48a1df79df9c94848109d0bb",
+        "baselineSha256": "d789e6f0c48ce559d47bab650e9e9d08b3c1099b48a1df79df9c94848109d0bb"
+      },
+      {
+        "file": "rust/pc-wasm/src/runtime.rs",
+        "sha256": "8f24c89332238ef5bd981b914507bf7e7bbd8d7f411ee5f4c004c412c764aec3",
+        "baselineSha256": "8f24c89332238ef5bd981b914507bf7e7bbd8d7f411ee5f4c004c412c764aec3"
+      },
+      {
+        "file": "rust/pc-wasm/src/state.rs",
+        "sha256": "cb7701264629acc17ff1d6d1507617e8d9dbc5c793d4719d8a85eb87d0754cea",
+        "baselineSha256": "cb7701264629acc17ff1d6d1507617e8d9dbc5c793d4719d8a85eb87d0754cea"
+      },
+      {
+        "file": "rust/pc-wasm/src/stats.rs",
+        "sha256": "22eb80742a832a6daf7470cb08dfcb3f9b425eef4cedc1e78ace51ed7e0e3d99",
+        "baselineSha256": "22eb80742a832a6daf7470cb08dfcb3f9b425eef4cedc1e78ace51ed7e0e3d99"
+      },
+      {
+        "file": "src/batch-backend.mjs",
+        "sha256": "5eedaffd96edcd3994d17eddcb2ae01dddc98430a7a84401ea45bbd4467fb7ab",
+        "baselineSha256": "5eedaffd96edcd3994d17eddcb2ae01dddc98430a7a84401ea45bbd4467fb7ab"
+      },
+      {
+        "file": "src/batch-congruent-feature.mjs",
+        "sha256": "8b367ef161b91841f9a726b3b905d9334c0e0fec31c6dcb36ffdce9d26f8b19a",
+        "baselineSha256": "8b367ef161b91841f9a726b3b905d9334c0e0fec31c6dcb36ffdce9d26f8b19a"
+      },
+      {
+        "file": "src/batch-cover-count-feature.mjs",
+        "sha256": "073542c39f72c1c1fd042ea13dd76a116362d4b8aeb7849fc14314b67f44fbed",
+        "baselineSha256": "073542c39f72c1c1fd042ea13dd76a116362d4b8aeb7849fc14314b67f44fbed"
+      },
+      {
+        "file": "src/batch-cover-feature.mjs",
+        "sha256": "e9598815b0e2358e997f6b607f7c8aba490ea1811d4809c798753a5d8f5fbb82",
+        "baselineSha256": "e9598815b0e2358e997f6b607f7c8aba490ea1811d4809c798753a5d8f5fbb82"
+      },
+      {
+        "file": "src/batch-cover-percent-feature.mjs",
+        "sha256": "1c5166f9ca5da63de023f0c9e529ae750dfb7b647301bbb07d61b85a9fdfc498",
+        "baselineSha256": "1c5166f9ca5da63de023f0c9e529ae750dfb7b647301bbb07d61b85a9fdfc498"
+      },
+      {
+        "file": "src/batch-cover.mjs",
+        "sha256": "7eaa6f8d8c104ab92f356b555aef6294bff2b77b30e356df0638b722c3e59fe4",
+        "baselineSha256": "7eaa6f8d8c104ab92f356b555aef6294bff2b77b30e356df0638b722c3e59fe4"
+      },
+      {
+        "file": "src/batch-feature-common.mjs",
+        "sha256": "9a964e08601a395b9d5b6f3db7421371a287a36487bc8018d2fa80dc9a9bcffe",
+        "baselineSha256": "9a964e08601a395b9d5b6f3db7421371a287a36487bc8018d2fa80dc9a9bcffe"
+      },
+      {
+        "file": "src/batch-features.mjs",
+        "sha256": "b5d8d043ce564e837583a05c4e16b15571bc2a37f3489f5a17ff069cb5eb3e27",
+        "baselineSha256": "b5d8d043ce564e837583a05c4e16b15571bc2a37f3489f5a17ff069cb5eb3e27"
+      },
+      {
+        "file": "src/batch-geometry.mjs",
+        "sha256": "c80f36a4ed82142d8288c986b36b56702354834c4baf0d7986ac198e8b440628",
+        "baselineSha256": "c80f36a4ed82142d8288c986b36b56702354834c4baf0d7986ac198e8b440628"
+      },
+      {
+        "file": "src/batch-limits.mjs",
+        "sha256": "7f421c6aa924ea4f78631ecaa4068e50efb33f8133bdd2e96a5ef690c7c24923",
+        "baselineSha256": "7f421c6aa924ea4f78631ecaa4068e50efb33f8133bdd2e96a5ef690c7c24923"
+      },
+      {
+        "file": "src/batch-orders.mjs",
+        "sha256": "1a2e74684b50b2609b3059bf5675ea316a37024796bbb21fbff6955f34f20f83",
+        "baselineSha256": "1a2e74684b50b2609b3059bf5675ea316a37024796bbb21fbff6955f34f20f83"
+      },
+      {
+        "file": "src/batch-routing-policy.mjs",
+        "sha256": "1ad709755b60928e56c8492edc104e9232b7d4ebffd583838cff4f61bb34f3aa",
+        "baselineSha256": "1ad709755b60928e56c8492edc104e9232b7d4ebffd583838cff4f61bb34f3aa"
+      },
+      {
+        "file": "src/batch-setup.mjs",
+        "sha256": "57cee4c9c8214b8737cbd864e35657f87187329c6eb205c30ff7ea6821aeebc5",
+        "baselineSha256": "57cee4c9c8214b8737cbd864e35657f87187329c6eb205c30ff7ea6821aeebc5"
+      },
+      {
+        "file": "src/batch-targets.mjs",
+        "sha256": "b01c54586209ecbfa5bb9ea02aab1f4325efdf60272d7fe48b17658ec41e9927",
+        "baselineSha256": "b01c54586209ecbfa5bb9ea02aab1f4325efdf60272d7fe48b17658ec41e9927"
+      },
+      {
+        "file": "src/batch-worker-client.mjs",
+        "sha256": "749bf60a1c4ff4a4f10723b33de754143bd8fe39dfc106709d68ab30ae38ac86",
+        "baselineSha256": "749bf60a1c4ff4a4f10723b33de754143bd8fe39dfc106709d68ab30ae38ac86"
+      },
+      {
+        "file": "src/batch-worker-runtime.mjs",
+        "sha256": "474240fad6d81ec735c6ab17e364b33fbf7bbd02e1a021518a083f3fc51e1bc3",
+        "baselineSha256": "474240fad6d81ec735c6ab17e364b33fbf7bbd02e1a021518a083f3fc51e1bc3"
+      },
+      {
+        "file": "src/batch.worker.mjs",
+        "sha256": "96e27df282df33929dd1820310abc8af6d7849731beb8e372d81564c8703482e",
+        "baselineSha256": "96e27df282df33929dd1820310abc8af6d7849731beb8e372d81564c8703482e"
+      },
+      {
+        "file": "src/board.mjs",
+        "sha256": "7419f5a7d47c59088e049d61e9e5f4c6339bfd2ed945b49084c4c65dbe619507",
+        "baselineSha256": "7419f5a7d47c59088e049d61e9e5f4c6339bfd2ed945b49084c4c65dbe619507"
+      },
+      {
+        "file": "src/chance-feature.mjs",
+        "sha256": "bcc1bb7e71363d8c4969e338d996f7796721aba1746bbf540d9d07f7052fd5af",
+        "baselineSha256": "bcc1bb7e71363d8c4969e338d996f7796721aba1746bbf540d9d07f7052fd5af"
+      },
+      {
+        "file": "src/compact-geometry.mjs",
+        "sha256": "f1e070eb78ca49ed715da6370162a8760c2ce4706f7cc3504b86d2bf8486b42c",
+        "baselineSha256": "f1e070eb78ca49ed715da6370162a8760c2ce4706f7cc3504b86d2bf8486b42c"
+      },
+      {
+        "file": "src/cpsat-secondary-model.mjs",
+        "sha256": "5972578a5c2e20ab5886a94b3a7a113ddc7cd8b1442bb7a698f4e0cdafca2a49",
+        "baselineSha256": "5972578a5c2e20ab5886a94b3a7a113ddc7cd8b1442bb7a698f4e0cdafca2a49"
+      },
+      {
+        "file": "src/exact-secondary-pool.mjs",
+        "sha256": "1e608e2c387963639103149874b4e52a41a41145451007c1a12842bf80c3caf7",
+        "baselineSha256": "1e608e2c387963639103149874b4e52a41a41145451007c1a12842bf80c3caf7"
+      },
+      {
+        "file": "src/exact-secondary.worker.mjs",
+        "sha256": "8c2c894461a68c9859622a5c9a6148f2e1e339f1823df7e478c2cc4de5bc1942",
+        "baselineSha256": "8c2c894461a68c9859622a5c9a6148f2e1e339f1823df7e478c2cc4de5bc1942"
+      },
+      {
+        "file": "src/features.mjs",
+        "sha256": "dbe7459069657f781b323e8736293854409ab49dacbf4d3d5c1a54ba1cc7f22c",
+        "baselineSha256": "dbe7459069657f781b323e8736293854409ab49dacbf4d3d5c1a54ba1cc7f22c"
+      },
+      {
+        "file": "src/fifth-feature.mjs",
+        "sha256": "faaa7d84615f6843421432aad274ac1729091c4f3a4ca4c217259b73c91093cf",
+        "baselineSha256": "faaa7d84615f6843421432aad274ac1729091c4f3a4ca4c217259b73c91093cf"
+      },
+      {
+        "file": "src/fifth.mjs",
+        "sha256": "0096136d0900c0c26a2471d338fc89ed7831805c0ab7b9471dc9cee56e45c126",
+        "baselineSha256": "0096136d0900c0c26a2471d338fc89ed7831805c0ab7b9471dc9cee56e45c126"
+      },
+      {
+        "file": "src/filter-cover-pool.mjs",
+        "sha256": "8368cc81a94767de9abec9b0f9efa9b09799fa3b7ced5d23c0084828bd20f722",
+        "baselineSha256": "8368cc81a94767de9abec9b0f9efa9b09799fa3b7ced5d23c0084828bd20f722"
+      },
+      {
+        "file": "src/filter-cover-task.mjs",
+        "sha256": "3538c05cacfc1d536992f8be12424f1b7b3184a70f37f0dbc3e7e14cc5468ab8",
+        "baselineSha256": "3538c05cacfc1d536992f8be12424f1b7b3184a70f37f0dbc3e7e14cc5468ab8"
+      },
+      {
+        "file": "src/filter-cover.worker.mjs",
+        "sha256": "91b2f5b58cccac3b3866d492d1195a27d01e0d42fbcd547c2aff14b473cd3092",
+        "baselineSha256": "91b2f5b58cccac3b3866d492d1195a27d01e0d42fbcd547c2aff14b473cd3092"
+      },
+      {
+        "file": "src/fourth.mjs",
+        "sha256": "77fa742bf6be9b21e76d4bb690665adbaefed8110e4504be761f04d262f23d9b",
+        "baselineSha256": "77fa742bf6be9b21e76d4bb690665adbaefed8110e4504be761f04d262f23d9b"
+      },
+      {
+        "file": "src/fumen.mjs",
+        "sha256": "9217985c6b4705b44519943e2993fcdc276328f3993fc161661a474eeecb594f",
+        "baselineSha256": "9217985c6b4705b44519943e2993fcdc276328f3993fc161661a474eeecb594f"
+      },
+      {
+        "file": "src/highs-cardinality.mjs",
+        "sha256": "0b7394d753aa30febf39d4c8c409d0005e59f1c85e5e2770a101a1efa5fe379f",
+        "baselineSha256": "0b7394d753aa30febf39d4c8c409d0005e59f1c85e5e2770a101a1efa5fe379f"
+      },
+      {
+        "file": "src/highs-min-cover.mjs",
+        "sha256": "dbf26bc4453356e5a694cad72f86b43177b61555ca79c3a09a003a5bf62a308d",
+        "baselineSha256": "dbf26bc4453356e5a694cad72f86b43177b61555ca79c3a09a003a5bf62a308d"
+      },
+      {
+        "file": "src/human-ranking.mjs",
+        "sha256": "75aef33643797f5a92e87af7a563e254aa596b6c161ebfef40cd15ea953dde1a",
+        "baselineSha256": "75aef33643797f5a92e87af7a563e254aa596b6c161ebfef40cd15ea953dde1a"
+      },
+      {
+        "file": "src/min-cover-adaptive.mjs",
+        "sha256": "fda92e1fe0abc0b97b7fbdb4185ca0f5e0b4f7457630960b85ce06ad1f3ca118",
+        "baselineSha256": "fda92e1fe0abc0b97b7fbdb4185ca0f5e0b4f7457630960b85ce06ad1f3ca118"
+      },
+      {
+        "file": "src/min-cover-components.mjs",
+        "sha256": "bdde6f724fc0f028587832ac7f7f0cdbdc45c4ab1d665a7495186aa8f58343f5",
+        "baselineSha256": "bdde6f724fc0f028587832ac7f7f0cdbdc45c4ab1d665a7495186aa8f58343f5"
+      },
+      {
+        "file": "src/min-cover-exact-secondary.mjs",
+        "sha256": "0781e8736d7b9d3b190884bed47e54e98365d72841df3792a92b7b95f13d4f5a",
+        "baselineSha256": "ff3eaf3fd91b818a7eda9139fc32cfc7a6e99e63ee1986a03f91707052c719a3"
+      },
+      {
+        "file": "src/min-cover-quality-refine.mjs",
+        "sha256": "34ef8d5f80f1cbf48c35e67edb638c954c14326cf73a5d6f5fc64ba29328be4d",
+        "baselineSha256": "34ef8d5f80f1cbf48c35e67edb638c954c14326cf73a5d6f5fc64ba29328be4d"
+      },
+      {
+        "file": "src/min-cover-rounded-cuts.mjs",
+        "sha256": "a475dd7fd97333f1e0a28f2c13168e796bb3a95cf033e0d2aa06af492be5ca26",
+        "baselineSha256": "a475dd7fd97333f1e0a28f2c13168e796bb3a95cf033e0d2aa06af492be5ca26"
+      },
+      {
+        "file": "src/min-cover-routing.mjs",
+        "sha256": "3a302676fdf7ff91637ebb8eb6e8a0428fe9a7380c267841a390a8290f70a89d",
+        "baselineSha256": "3a302676fdf7ff91637ebb8eb6e8a0428fe9a7380c267841a390a8290f70a89d"
+      },
+      {
+        "file": "src/min-cover-secondary-portfolio.mjs",
+        "sha256": "ef29f5e218051bb9019e4a0ecb2f2d77b1ac9114bb035727675e8b06ab064ff7",
+        "baselineSha256": "ef29f5e218051bb9019e4a0ecb2f2d77b1ac9114bb035727675e8b06ab064ff7"
+      },
+      {
+        "file": "src/min-cover-three-engine.mjs",
+        "sha256": "e250f5ae87b4e803a87d1dcbf03142b82fd942412532b4e813ad376adcafd4b1",
+        "baselineSha256": "e250f5ae87b4e803a87d1dcbf03142b82fd942412532b4e813ad376adcafd4b1"
+      },
+      {
+        "file": "src/min-cover.mjs",
+        "sha256": "e8105860ae8496cef529acddb9f818f9c0a7182c7a8f98fafd2a8bc65474dbdf",
+        "baselineSha256": "e8105860ae8496cef529acddb9f818f9c0a7182c7a8f98fafd2a8bc65474dbdf"
+      },
+      {
+        "file": "src/minimal-order.mjs",
+        "sha256": "5d76a5081b99c4e54b917f16c68e0c6898f7a3203a6b65cbec950cc7398c351a",
+        "baselineSha256": "5d76a5081b99c4e54b917f16c68e0c6898f7a3203a6b65cbec950cc7398c351a"
+      },
+      {
+        "file": "src/minimals-compact.mjs",
+        "sha256": "9406dd9aa536badfa37a0d976264f571761f375dc0e916ca9ef80fdeb75d453b",
+        "baselineSha256": "9406dd9aa536badfa37a0d976264f571761f375dc0e916ca9ef80fdeb75d453b"
+      },
+      {
+        "file": "src/minimals-feature.mjs",
+        "sha256": "b9f802940d45d6595ed3e880a073dea887bd9479c80fecfd68db7906fde28937",
+        "baselineSha256": "b9f802940d45d6595ed3e880a073dea887bd9479c80fecfd68db7906fde28937"
+      },
+      {
+        "file": "src/minimals-wrapper.mjs",
+        "sha256": "40f5c14d273b97ded666ed95b31d9d67d32add897fecc0ea164b35da6ab25c50",
+        "baselineSha256": "40f5c14d273b97ded666ed95b31d9d67d32add897fecc0ea164b35da6ab25c50"
+      },
+      {
+        "file": "src/numeric-cover-data.mjs",
+        "sha256": "8f219c4b1fa72c992134e66d4bab34ae1df3a8068fbd6115b89fc434b81c5e90",
+        "baselineSha256": "8f219c4b1fa72c992134e66d4bab34ae1df3a8068fbd6115b89fc434b81c5e90"
+      },
+      {
+        "file": "src/ortools-min-cover.mjs",
+        "sha256": "87f0312fe5b112b1e961b789990b6d0ec96b7872da82b19459041a41dbe198c6",
+        "baselineSha256": "87f0312fe5b112b1e961b789990b6d0ec96b7872da82b19459041a41dbe198c6"
+      },
+      {
+        "file": "src/ortools-primary-worker.mjs",
+        "sha256": "b97b68f340c1b6e6984905f197de6aa5f29ba89184302795e0b2291dda776fd7",
+        "baselineSha256": "b97b68f340c1b6e6984905f197de6aa5f29ba89184302795e0b2291dda776fd7"
+      },
+      {
+        "file": "src/path-core.mjs",
+        "sha256": "043efe65aa411c4cbc8e97b005e7487edb6e6fffb0424544fff39dc76fa3ef52",
+        "baselineSha256": "043efe65aa411c4cbc8e97b005e7487edb6e6fffb0424544fff39dc76fa3ef52"
+      },
+      {
+        "file": "src/path-engine.mjs",
+        "sha256": "26c9119540a3168f1d6b091b2cc0deefea292921858e619e031c86613439ed0f",
+        "baselineSha256": "26c9119540a3168f1d6b091b2cc0deefea292921858e619e031c86613439ed0f"
+      },
+      {
+        "file": "src/path-feature.mjs",
+        "sha256": "6a19ca88c69080bdf51a89083d74f70431d9957f361b0b72cc0b5fc50bd4696b",
+        "baselineSha256": "6a19ca88c69080bdf51a89083d74f70431d9957f361b0b72cc0b5fc50bd4696b"
+      },
+      {
+        "file": "src/pattern-prefix-source.mjs",
+        "sha256": "56f0c99415dd42ae63158334bd5b16c3b38608cc0f49cc0fd72e122d48905efc",
+        "baselineSha256": "56f0c99415dd42ae63158334bd5b16c3b38608cc0f49cc0fd72e122d48905efc"
+      },
+      {
+        "file": "src/pattern.mjs",
+        "sha256": "ee5de43286f5d3c7a5968fcdad47b0ec89219497752d4e4a4d05019303eeb9d9",
+        "baselineSha256": "ee5de43286f5d3c7a5968fcdad47b0ec89219497752d4e4a4d05019303eeb9d9"
+      },
+      {
+        "file": "src/pc-enumeration-engine.mjs",
+        "sha256": "f06c2c6f3277950a53a9f24f558fa0957822c64957eab2f9543cf365f1dcc007",
+        "baselineSha256": "f06c2c6f3277950a53a9f24f558fa0957822c64957eab2f9543cf365f1dcc007"
+      },
+      {
+        "file": "src/pc-input.mjs",
+        "sha256": "4b9b49a3d17e4c53579763e4326e04e3cdd536c62bb010f730af93e6cdb16b56",
+        "baselineSha256": "4b9b49a3d17e4c53579763e4326e04e3cdd536c62bb010f730af93e6cdb16b56"
+      },
+      {
+        "file": "src/pc-queue-utils.mjs",
+        "sha256": "187b5171b664a8aaab2299e1d94da0505a8561909a3da1948f2f8dc7e9bea508",
+        "baselineSha256": "187b5171b664a8aaab2299e1d94da0505a8561909a3da1948f2f8dc7e9bea508"
+      },
+      {
+        "file": "src/pc-routing-policy.mjs",
+        "sha256": "236b634ae0f9bab35a0bf201beab00be02353c8e3de66f3eef28aafc46a34ee4",
+        "baselineSha256": "236b634ae0f9bab35a0bf201beab00be02353c8e3de66f3eef28aafc46a34ee4"
+      },
+      {
+        "file": "src/pc-solve.mjs",
+        "sha256": "17cc787867d824ddfdb4ee6d0905486f34d56ecba67db3c91cf2eb264f60ced8",
+        "baselineSha256": "17cc787867d824ddfdb4ee6d0905486f34d56ecba67db3c91cf2eb264f60ced8"
+      },
+      {
+        "file": "src/pc-tail-legal.mjs",
+        "sha256": "04e71fc3df4ba5babb49064f049d1dc8024586993e9badc79f098db520ef8bbc",
+        "baselineSha256": "04e71fc3df4ba5babb49064f049d1dc8024586993e9badc79f098db520ef8bbc"
+      },
+      {
+        "file": "src/pc-wasm-abi.mjs",
+        "sha256": "c643c5de98bd299aac7f93341c58f77ff0b59da707b5d11b9047878f0e76a072",
+        "baselineSha256": "c643c5de98bd299aac7f93341c58f77ff0b59da707b5d11b9047878f0e76a072"
+      },
+      {
+        "file": "src/pc-wasm-compat.mjs",
+        "sha256": "194eb9df0bb48c4422eeb7ea3703df8ee62bea43a53cc55165bb308fceaabaf8",
+        "baselineSha256": "194eb9df0bb48c4422eeb7ea3703df8ee62bea43a53cc55165bb308fceaabaf8"
+      },
+      {
+        "file": "src/pc-wasm-cover-matrix.mjs",
+        "sha256": "1541471253cf3ea55e7059af63c8b4463691b1120ab8047b949e83169fb7776b",
+        "baselineSha256": "1541471253cf3ea55e7059af63c8b4463691b1120ab8047b949e83169fb7776b"
+      },
+      {
+        "file": "src/pc-wasm-enumeration.mjs",
+        "sha256": "4248f1d8ac9eca996cf1b09799d07482c16b87e3069e20b3aa76073d0e00846e",
+        "baselineSha256": "4248f1d8ac9eca996cf1b09799d07482c16b87e3069e20b3aa76073d0e00846e"
+      },
+      {
+        "file": "src/pc-wasm-min-cover.mjs",
+        "sha256": "39f34b78330bb089373a3bbb4e9af2079e376fd5f7e577d7c16da5192ee2e89b",
+        "baselineSha256": "39f34b78330bb089373a3bbb4e9af2079e376fd5f7e577d7c16da5192ee2e89b"
+      },
+      {
+        "file": "src/pc.worker.mjs",
+        "sha256": "c507c704b497e91d9019c092403a88598fb235452b3b584a1d3ce363c8acc2c6",
+        "baselineSha256": "c507c704b497e91d9019c092403a88598fb235452b3b584a1d3ce363c8acc2c6"
+      },
+      {
+        "file": "src/per-save-minimals-core.mjs",
+        "sha256": "a8562d2dde6b94b49bdfed362b76d7c63a3e2036fafbef72d0d5e63f2cd3bcf7",
+        "baselineSha256": "a8562d2dde6b94b49bdfed362b76d7c63a3e2036fafbef72d0d5e63f2cd3bcf7"
+      },
+      {
+        "file": "src/per-save-minimals-feature.mjs",
+        "sha256": "ae89d5c7a694365e16c71e332d1b833780c0837b758dbbf80931ec13d2f4365e",
+        "baselineSha256": "ae89d5c7a694365e16c71e332d1b833780c0837b758dbbf80931ec13d2f4365e"
+      },
+      {
+        "file": "src/per-save-minimals.mjs",
+        "sha256": "78d45fd3729f453c30c6c0c6614c761f90c926b83e70528575670e309ddc0bbd",
+        "baselineSha256": "78d45fd3729f453c30c6c0c6614c761f90c926b83e70528575670e309ddc0bbd"
+      },
+      {
+        "file": "src/piece-order.mjs",
+        "sha256": "421911ffda44c0d7fc7f6729973dce77c5fbdd22789e3a69da55ee7744a12180",
+        "baselineSha256": "421911ffda44c0d7fc7f6729973dce77c5fbdd22789e3a69da55ee7744a12180"
+      },
+      {
+        "file": "src/primary-backend.mjs",
+        "sha256": "666f2157237c02dd284d13a8306230dd785e5875811e434f41ddbf4f6c9924bd",
+        "baselineSha256": "666f2157237c02dd284d13a8306230dd785e5875811e434f41ddbf4f6c9924bd"
+      },
+      {
+        "file": "src/promise-utils.mjs",
+        "sha256": "5957269c9621143603064e9bbf4cd9cdf962948b5a59e336beee47446cd86ffb",
+        "baselineSha256": "5957269c9621143603064e9bbf4cd9cdf962948b5a59e336beee47446cd86ffb"
+      },
+      {
+        "file": "src/quality-contract.mjs",
+        "sha256": "bb2d4fe599f6a6106d481e5fd297812e8ff4c5dadb4fc6fbf9bef8c4316fda35",
+        "baselineSha256": "bb2d4fe599f6a6106d481e5fd297812e8ff4c5dadb4fc6fbf9bef8c4316fda35"
+      },
+      {
+        "file": "src/save-outcome-cache.mjs",
+        "sha256": "d4c4df13fe7c1bac480599f63982aaf8417670a94d3896f67d30cb8dfe1d838a",
+        "baselineSha256": "d4c4df13fe7c1bac480599f63982aaf8417670a94d3896f67d30cb8dfe1d838a"
+      },
+      {
+        "file": "src/save-piece.mjs",
+        "sha256": "74713f60017c31bb04ed1c78710fb5754f7ce8c20d0048214377d5a811d50651",
+        "baselineSha256": "74713f60017c31bb04ed1c78710fb5754f7ce8c20d0048214377d5a811d50651"
+      },
+      {
+        "file": "src/saves-feature.mjs",
+        "sha256": "aa5bf4020318286a2b9cb0f84c0cb65ec09a7fc59f5ae49cca02d59dd2a99821",
+        "baselineSha256": "aa5bf4020318286a2b9cb0f84c0cb65ec09a7fc59f5ae49cca02d59dd2a99821"
+      },
+      {
+        "file": "src/saves.mjs",
+        "sha256": "5f39bba21bdcb67d6f150275c9ab0c4050a599897c5ce1a06204b08f556dcf2f",
+        "baselineSha256": "5f39bba21bdcb67d6f150275c9ab0c4050a599897c5ce1a06204b08f556dcf2f"
+      },
+      {
+        "file": "src/secondary-engine-runner.mjs",
+        "sha256": "973b9a39769b608791639cf5a0784af245f3cd85ab6e392f3b296dc26c0f9104",
+        "baselineSha256": "973b9a39769b608791639cf5a0784af245f3cd85ab6e392f3b296dc26c0f9104"
+      },
+      {
+        "file": "src/secondary-engine.worker.mjs",
+        "sha256": "6771b84455280082cb01c0c33805e0570a20931b22c294b5eca843fdd2e6e30c",
+        "baselineSha256": "6771b84455280082cb01c0c33805e0570a20931b22c294b5eca843fdd2e6e30c"
+      },
+      {
+        "file": "src/tiling.mjs",
+        "sha256": "10cac5c0c53807a01ac0c8a26a113d03db5d3e2a1c03a1457845a46cf6da458a",
+        "baselineSha256": "10cac5c0c53807a01ac0c8a26a113d03db5d3e2a1c03a1457845a46cf6da458a"
+      },
+      {
+        "file": "src/vendor/highs.mjs",
+        "sha256": "c2eb1c846d3642eb066f48e3473c3c6443bfe0bbb4bb782691cd5864449c230b",
+        "baselineSha256": "c2eb1c846d3642eb066f48e3473c3c6443bfe0bbb4bb782691cd5864449c230b"
+      },
+      {
+        "file": "src/vendor/ortools/browser/cp-sat.js",
+        "sha256": "49113758e249251cf1087443fbb63b7dadfdeff7f19b14e7d7319554e4758427",
+        "baselineSha256": "49113758e249251cf1087443fbb63b7dadfdeff7f19b14e7d7319554e4758427"
+      },
+      {
+        "file": "src/vendor/ortools/browser/runtime_loader.js",
+        "sha256": "47b3d77fb5f8121ffe0758ea210f0a7f811df15465f6617e93cce01fb643f688",
+        "baselineSha256": "47b3d77fb5f8121ffe0758ea210f0a7f811df15465f6617e93cce01fb643f688"
+      },
+      {
+        "file": "src/vendor/ortools/browser/runtime_loader_core.js",
+        "sha256": "b34148e1548062068d7dead335d12bfc18ea03e95019590cead19d67dce60813",
+        "baselineSha256": "b34148e1548062068d7dead335d12bfc18ea03e95019590cead19d67dce60813"
+      },
+      {
+        "file": "src/vendor/ortools/node-wasm/cp_sat_runtime_node.js",
+        "sha256": "53c1c552604384115049d9ab3e9b41ab230bd3d44aa2937ff099e7347589e6fe",
+        "baselineSha256": "53c1c552604384115049d9ab3e9b41ab230bd3d44aa2937ff099e7347589e6fe"
+      },
+      {
+        "file": "src/vendor/ortools/node-wasm/cp_sat_runtime_node.wasm",
+        "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030",
+        "baselineSha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+      },
+      {
+        "file": "src/vendor/ortools/node/cp-sat.js",
+        "sha256": "8ed1333dd1c902c87a2c561d77df467f28dc66118c29a5107289e7c9bd83a5a0",
+        "baselineSha256": "8ed1333dd1c902c87a2c561d77df467f28dc66118c29a5107289e7c9bd83a5a0"
+      },
+      {
+        "file": "src/vendor/ortools/node/runtime_loader.js",
+        "sha256": "f1c0c4011528eacc3581741f212aa3e1cb934c16519910a2192bcaed905f77e3",
+        "baselineSha256": "f1c0c4011528eacc3581741f212aa3e1cb934c16519910a2192bcaed905f77e3"
+      },
+      {
+        "file": "src/vendor/ortools/wasm/cp_sat_runtime.js",
+        "sha256": "708dd156b9f2da75e93b37177c66ae8e2c83d72cbf0efb18a22210aa633c20e1",
+        "baselineSha256": "708dd156b9f2da75e93b37177c66ae8e2c83d72cbf0efb18a22210aa633c20e1"
+      },
+      {
+        "file": "src/vendor/ortools/wasm/cp_sat_runtime.wasm",
+        "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030",
+        "baselineSha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+      },
+      {
+        "file": "src/wasm-backend.mjs",
+        "sha256": "b45648591d411df098b2ef5c7538c0fb31854996734259647940e6ad13af658f",
+        "baselineSha256": "b45648591d411df098b2ef5c7538c0fb31854996734259647940e6ad13af658f"
+      },
+      {
+        "file": "src/worker-client.mjs",
+        "sha256": "5dc2143728dcc7ff92d77eb4cbc9207b95e22669461422eaa2500761bfe1cb55",
+        "baselineSha256": "5dc2143728dcc7ff92d77eb4cbc9207b95e22669461422eaa2500761bfe1cb55"
+      },
+      {
+        "file": "src/worker-runtime.mjs",
+        "sha256": "278e97cb15012dc72378d0b4e1a7b671ff336e9bf4f1d7a7a1bd9866b043e273",
+        "baselineSha256": "278e97cb15012dc72378d0b4e1a7b671ff336e9bf4f1d7a7a1bd9866b043e273"
+      }
+    ],
+    "changedProductSources": [
+      "src/min-cover-exact-secondary.mjs"
+    ],
+    "harnessSources": [
+      {
+        "file": "experiments/a0-integration-20261003/aggregate.mjs",
+        "sha256": "d9149da1abf34e9a51dc0353427c6ac523f0cd4aa164670958f495f1edd62cf2"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/common.mjs",
+        "sha256": "4ed942a683a86ebcce1bd021d67122090af114c8202a02594826e8c0100d0c28"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/deadline.mjs",
+        "sha256": "ec9a78e97aad35833d4017694bdce8aa11aba9eab435a00249687dddf9fb2d95"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/dispatch-audit.mjs",
+        "sha256": "5a15f24bfbe59d48971d25ecff4203d34473afa6c8b85544ef214d59fc3aa531"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/freeze.mjs",
+        "sha256": "e7b8405c241899fc4689bbabc80ff5ad3ed3b7b34617d5554dbd5ab9d4f96212"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/harness.test.mjs",
+        "sha256": "70943f5be84a63cf09cac4f91cb250f188f99b5df999ddd802644d686ec39507"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/install-build.mjs",
+        "sha256": "fe60de0a3f2199f3fb8cb949c5bb30bb44bd23b8c5effb4bca03307200cf4cbf"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/parity.mjs",
+        "sha256": "91037092ed5724a06661d870c47ab50b24a69ab2fa07cbb64c68616b650f7c40"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/prepare.mjs",
+        "sha256": "bd855d4af694667832958c266f5d0bf0d050275f808b26f01e8c07b6a591a7ad"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/route-worker.mjs",
+        "sha256": "649a681872a3255b8bd16eac0ebe28c1c7097fb8b4f6dda65d9d7e9352650c49"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/run.mjs",
+        "sha256": "6d9a96d9c1d31dca6131dd1c96fbee186c5259c27733d0addfb26de01e21ecfa"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/sample.mjs",
+        "sha256": "e402ab021f7a558df59227bfe91685875faa76ee0355fef2c546f2941c5dde1a"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/seal-build.mjs",
+        "sha256": "bc6aa5d69921360b2435288360cb05cd2d3377d25214ec98c713e00a149a2c13"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/supervisor.mjs",
+        "sha256": "124944c803e46a5155f94155576fd7025a74d84ea734ecd71448e4c0d9745268"
+      },
+      {
+        "file": "experiments/a0-integration-20261003/watchdog-fixture.mjs",
+        "sha256": "0eb94fe397ba54eee5e57d93001f0b2129f40406a17d45feaa0c0d103507315b"
+      }
+    ],
+    "wasmExports": [
+      "memory",
+      "solver_save_outcomes_pattern",
+      "solver_save_outcomes_ptr",
+      "solver_probe_can_pc",
+      "solver_can_pc",
+      "solver_can_pc_many",
+      "solver_can_pc_pattern_many",
+      "solver_enumerate_pc",
+      "solver_enumerate_pc_geometry",
+      "solver_enumerate_pc_path",
+      "solver_path_coverage_counts_ptr",
+      "solver_best_pc",
+      "solver_enumerate_pc_pattern",
+      "solver_pattern_coverage_offset",
+      "solver_pattern_coverage_case",
+      "solver_pattern_coverage_order_count",
+      "solver_per_save_best",
+      "solver_solution_word_stride",
+      "solver_copy_solution_words",
+      "solver_solution_mask",
+      "solver_solution_order_count",
+      "solver_solution_saved_piece",
+      "solver_pattern_offsets_ptr",
+      "solver_pattern_cases_ptr",
+      "solver_pattern_qualities_ptr",
+      "solver_primary_kernelize",
+      "solver_primary_kernel_case_count",
+      "solver_primary_kernel_entry_count",
+      "solver_primary_kernel_solution_count",
+      "solver_primary_kernel_forced_count",
+      "solver_primary_kernel_offsets_ptr",
+      "solver_primary_kernel_ids_ptr",
+      "solver_primary_kernel_solution_ids_ptr",
+      "solver_primary_kernel_forced_ptr",
+      "solver_min_cover_cardinality",
+      "solver_min_cover",
+      "solver_min_cover_at_count_locked",
+      "solver_min_cover_at_count_bounded",
+      "solver_min_cover_at_count_progress_bounded",
+      "solver_min_cover_proven_prefix_len",
+      "solver_min_cover_proven_prefix",
+      "solver_min_cover_at_count_integrated_bounded",
+      "solver_min_cover_at_count_integrated_dominance_bounded",
+      "solver_min_cover_at_count_integrated_partitioned_bounded",
+      "solver_min_cover_selected",
+      "solver_min_cover_quality_len",
+      "solver_min_cover_quality",
+      "solver_min_cover_searched_states",
+      "solver_new",
+      "solver_free",
+      "wasm_alloc",
+      "wasm_dealloc",
+      "wasm_alloc_u32",
+      "wasm_dealloc_u32",
+      "wasm_alloc_u64",
+      "wasm_dealloc_u64",
+      "solver_load_legal_pack",
+      "solver_set_cache_budget",
+      "solver_cache_estimated_bytes",
+      "solver_cache_evictions",
+      "solver_nodes",
+      "solver_cache_hits",
+      "solver_cache_misses",
+      "solver_legal_rejects",
+      "solver_legal_count",
+      "solver_legal_pack_version",
+      "solver_legal_memory_bytes",
+      "solver_stage8_oracle_entries",
+      "solver_stage9_oracle_entries",
+      "solver_cache_entries",
+      "solver_set_probability_engine",
+      "solver_probability_stat",
+      "solver_reconstruction_stat",
+      "solver_probability_session",
+      "solver_set_best_engine",
+      "solver_best_language_stat",
+      "solver_set_geometry_budget",
+      "solver_geometry_fallback",
+      "__data_end",
+      "__heap_base"
+    ],
+    "node": "v24.13.0",
+    "rust": "rustc 1.90.0 (1159e78c4 2025-09-14)",
+    "inputsSha256": "296590e9ffc8c17ff79a53fa9f3397ef6205053c8b1d22136fb92b579838976c",
+    "scheduleSha256": "251a48a2fe3a45fcda15a0278eba51cff8499f29b4b08d309fe5fb48ee4ee94f",
+    "nativeAlgorithmRevalidationReusedRun": 37016499665,
+    "nativeAlgorithmsChanged": false,
+    "actualInputPrimaryCalls": 0,
+    "actualInputPcCalls": 0,
+    "productApplied": false
+  },
+  "nativeEffectCampaignRepeated": false,
+  "actualInputPrimaryCalls": 0,
+  "actualInputPcCalls": 0,
+  "devApplied": false,
+  "mayFreezeForReserved": false,
+  "productRoutePromotionEvidenceComplete": false
+}

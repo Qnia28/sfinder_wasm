@@ -1,0 +1,21 @@
+{
+  "phase": "smoke",
+  "status": "DESCRIPTIVE_ONLY_NO_GATE_CHANGE",
+  "mirrorGroups": 7,
+  "pairedFinalExactMatrices": 7,
+  "bootstrapSamples": 10000,
+  "fixedSeed": 20261003,
+  "completeFinalRouteComparison": false,
+  "sumRouteRatio": 0.9967420652759896,
+  "sumRouteRatio95CI": [
+    0.9438953827139333,
+    1.0089544306534253
+  ],
+  "groupEqualGeomeanRatio95CI": [
+    0.909173905066347,
+    1.0135337508300113
+  ],
+  "censoredRowsExcludedAreNotDeclaredSuccessful": true,
+  "nativeEffectEvidenceReused": true,
+  "devApplied": false
+}

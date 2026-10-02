@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "tabID": "tab_7110ab49-83ae-4fd9-b675-7e4c352a0089",
+  "url": "http://127.0.0.1:8853/experiments/a0-integration-20261003/browser-smoke.html",
+  "candidateCommit": "e5f2f3d1a9885085e11cde7457aad2b338ca8130",
+  "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) OpenCode/2.0.22 Chrome/152.0.7977.130 Electron/44.4.5 Safari/537.36",
+  "wasmSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+  "a0Scope": true,
+  "bufferOwnership": true,
+  "cancellation": true,
+  "directAndPoolIdentical": true,
+  "duplicateWeightedRows": true,
+  "poolDispose": true,
+  "stableWitness": true,
+  "actualInputPcCalls": 0,
+  "actualInputPrimaryCalls": 0,
+  "limitation": "Synthetic browser direct/pool/load/disposal checks, not a real-input browser performance benchmark"
+}
