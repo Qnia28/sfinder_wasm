@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const response=await fetch(`https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,{headers:{Authorization:`Bearer ${process.env.GH_TOKEN}`,Accept:'application/vnd.github+json'}});
+assert(response.ok,`Run creation lookup: ${response.status}`);
+const run=await response.json(),start=Date.parse(run.created_at);
+assert(Number.isFinite(start));
+const computeDeadline=start+160*60000;
+assert(Date.now()+60000<computeDeadline,'Three-hour campaign budget already exhausted');
+fs.appendFileSync(process.env.GITHUB_OUTPUT,`compute-deadline=${computeDeadline}\nrun-created=${start}\n`);
+console.log(JSON.stringify({runCreated:run.created_at,computeDeadline:new Date(computeDeadline).toISOString(),hardWallMinutes:180,preserveBeforeMinutes:175}));

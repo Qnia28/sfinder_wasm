@@ -104,6 +104,7 @@ jobs:
     timeout-minutes: 10
     outputs:
       pilot-run: ${{ steps.launch.outputs.pilot-run }}
+      compute-deadline: ${{ steps.budget.outputs.compute-deadline }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -114,6 +115,10 @@ jobs:
           node-version: 24.13.0
       - id: launch
         run: echo "pilot-run=$(node -p 'JSON.parse(require("fs").readFileSync("experiments/integrated-bench-20261002/launch-development.json")).pilotRun')" >> "$GITHUB_OUTPUT"
+      - id: budget
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node experiments/integrated-bench-20261002/global-budget.mjs
       - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
         with:
           pattern: bench-*
@@ -124,13 +129,15 @@ jobs:
 
   development:
     needs: preflight-main
+    env:
+      BENCH_COMPUTE_DEADLINE_MS: ${{ needs.preflight-main.outputs.compute-deadline }}
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     strategy:
       max-parallel: 16
       fail-fast: false
       matrix:
-        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -202,6 +209,8 @@ jobs:
 
   legacy:
     needs: [preflight-main, development]
+    env:
+      BENCH_COMPUTE_DEADLINE_MS: ${{ needs.preflight-main.outputs.compute-deadline }}
     if: always() && needs.preflight-main.result == 'success' && needs.development.result == 'success'
     runs-on: ubuntu-24.04
     timeout-minutes: 30

@@ -11,8 +11,25 @@ assert.equal(approval.phase,'development');
 assert.equal(approval.pilotSummarySha256,sha(fs.readFileSync(path.join(root,'bench-pilot-summary/SUMMARY.json'))));
 assert.equal(approval.correctnessSha256,sha(fs.readFileSync(path.join(root,'bench-correctness/CORRECTNESS.json'))));
 assert.equal(approval.buildSha256,jsonSha(build));
-assert.equal(pilot.status,'PASS');assert.equal(pilot.mayProceedToMain,true);
-assert.equal(pilot.runCount,192);assert.equal(pilot.operationalPrediction.maxShardMinutes<=80,true);
+assert.equal(pilot.status,'PASS');assert.equal(pilot.mayProceedToMain,false);
+assert.equal(pilot.runCount,192);
+const execution=read(path.join(HERE,'EXECUTION_SCHEDULE.json'));
+assert.equal(approval.approvedResharding,true);
+assert.equal(approval.developmentRunnerHoursCeiling,64);
+assert.equal(approval.overallWallLimitMinutes,180);
+assert.equal(approval.computeStopMinutesFromRunCreation,160);
+assert.equal(approval.executionScheduleSha256,jsonSha(execution));
+assert.equal(execution.maxPredictedChunkMinutes<=80,true);
+assert.equal(execution.chunks.length,32);assert.equal(execution.maxParallel,16);
+assert.equal(execution.jobTimeoutMinutes*execution.chunks.length/60,64);
+const original=read(path.join(HERE,'SCHEDULE.json'));
+assert.equal(execution.originalScheduleSha256,jsonSha(original));
+assert.equal(execution.runs.length,original.runs.length);
+for(let i=0;i<original.runs.length;i++){
+ const {shard,originalShard,...r}=execution.runs[i],{shard:oldShard,...old}=original.runs[i];
+ assert.deepEqual(r,old);assert.equal(originalShard,oldShard);
+ assert(execution.chunks.find(c=>c.chunk===shard).matrixIds.includes(r.matrixId));
+}
 assert.equal(correctness.status,'PASS');assert.equal(correctness.fixtures,288);assert.equal(correctness.calls,6912);
 assert.equal(jsonSha(pilot.build),jsonSha(build));
 assert.equal(approval.independentPilotAuditStatus,approval.independentPilotAudit.status);

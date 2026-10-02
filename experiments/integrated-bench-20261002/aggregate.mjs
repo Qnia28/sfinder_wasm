@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import {HERE,read,write,sha,jsonSha,seal} from './common.mjs';
 const [downloads,output,phase]=process.argv.slice(2).map((p,i)=>i<2?path.resolve(p):p);
 const dirs=fs.readdirSync(downloads).filter(n=>n.startsWith(`bench-${phase}-`)).map(n=>path.join(downloads,n));
-const expectedShards=phase==='pilot'?8:phase==='development'?16:2;
+const expectedShards=phase==='pilot'?8:phase==='development'?read(path.join(HERE,'EXECUTION_SCHEDULE.json')).chunks.length:2;
 const all=[],shards=[];
 for(const dir of dirs){
  const files=read(path.join(dir,'FILES.json')).files;

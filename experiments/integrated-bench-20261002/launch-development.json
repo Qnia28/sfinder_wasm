@@ -1,0 +1,265 @@
+{
+  "phase": "development",
+  "pilotRun": 37005113356,
+  "userAuthorization": "최대 3시간까지 허용함. 그대로 64로 진행하라",
+  "developmentRunnerHoursCeiling": 64,
+  "overallWallLimitMinutes": 180,
+  "computeStopMinutesFromRunCreation": 160,
+  "pilotOriginalMainEntryGate": false,
+  "approvedResharding": true,
+  "executionScheduleSha256": "81d0094eca4848cc3e9563d13eb0e8508af3ccc8897ecca2da3b9d6801bf17a8",
+  "pilotSummarySha256": "f2ef3d329d61e03101ee5aab67dffd2925e482256a38a564fb44c58b99b3f62f",
+  "correctnessSha256": "fb95d29e525d4e3e74c3a4fb7d4dca44b3ed26012eef03043790761fa3364767",
+  "buildSha256": "fd6d65e01c300f9ea3d0dd21012d870c0b03e4fed2afd8a77ce3619957749543",
+  "independentPilotAuditStatus": "AUDITED_WITH_CENSORING_OR_MISSING_RUNS",
+  "independentPilotAudit": {
+    "status": "AUDITED_WITH_CENSORING_OR_MISSING_RUNS",
+    "witnessAndProvenanceAuditStatus": "PASS",
+    "scheduleComplete": true,
+    "phase": "pilot",
+    "expectedRuns": 192,
+    "observedRuns": 192,
+    "normalRuns": 138,
+    "uniqueMatrixInputsVerified": 32,
+    "distinctQualityWitnessesRecomputed": 48,
+    "sealedFilesVerified": 24,
+    "candidateGitSourcesVerified": 137,
+    "statuses": {
+      "EXACT": 52,
+      "CAPPED": 86,
+      "TIMEOUT_API": 54
+    },
+    "exceptionRuns": [
+      {
+        "runId": "pilot-board-010--restricted-split--ordinary--H0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-010--restricted-split--ordinary--P0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-010--restricted-split--ordinary--P",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-010--restricted-split--ordinary--PD",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-010--restricted-split--ordinary--PC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-010--restricted-split--ordinary--PDC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-064--restricted-split--ordinary--H0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-064--restricted-split--ordinary--P0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-064--restricted-split--ordinary--P",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-064--restricted-split--ordinary--PD",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-064--restricted-split--ordinary--PC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-064--restricted-split--ordinary--PDC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-097--restricted-split--ordinary--H0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-097--restricted-split--ordinary--P0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-097--restricted-split--ordinary--P",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-097--restricted-split--ordinary--PD",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-097--restricted-split--ordinary--PC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-097--restricted-split--ordinary--PDC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-090--restricted-split--ordinary--H0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-090--restricted-split--ordinary--P0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-090--restricted-split--ordinary--P",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-090--restricted-split--ordinary--PD",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-090--restricted-split--ordinary--PC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-090--restricted-split--ordinary--PDC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-006--restricted-split--ordinary--H0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-006--restricted-split--ordinary--P0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-006--restricted-split--ordinary--P",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-006--restricted-split--ordinary--PD",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-006--restricted-split--ordinary--PC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-006--restricted-split--ordinary--PDC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-025--restricted-split--ordinary--H0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-025--restricted-split--ordinary--P0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-025--restricted-split--ordinary--P",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-025--restricted-split--ordinary--PD",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-025--restricted-split--ordinary--PC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-025--restricted-split--ordinary--PDC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-069--restricted-split--ordinary--H0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-069--restricted-split--ordinary--P0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-069--restricted-split--ordinary--P",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-069--restricted-split--ordinary--PD",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-069--restricted-split--ordinary--PC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-069--restricted-split--ordinary--PDC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-045--restricted-split--ordinary--H0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-045--restricted-split--ordinary--P0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-045--restricted-split--ordinary--P",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-045--restricted-split--ordinary--PD",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-045--restricted-split--ordinary--PC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-045--restricted-split--ordinary--PDC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-066--restricted-split--ordinary--H0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-066--restricted-split--ordinary--P0",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-066--restricted-split--ordinary--P",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-066--restricted-split--ordinary--PD",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-066--restricted-split--ordinary--PC",
+        "status": "TIMEOUT_API"
+      },
+      {
+        "runId": "pilot-board-066--restricted-split--ordinary--PDC",
+        "status": "TIMEOUT_API"
+      }
+    ],
+    "primarySolverCalls": 0,
+    "enumerationCalls": 0,
+    "independentMinimumKOrExactQualitySolverRerun": false,
+    "limitation": "Recorded exact results cross-compared; witness quality/coverage recomputed, not an independent exact-quality proof for candidate-only exact."
+  },
+  "harnessExceptions": [
+    {
+      "file": "experiments/integrated-bench-20261002/run.mjs",
+      "pilotSha256": "92655aab5addd41fd3031175446f60aa022e2e513deaf817dcbaf253b8b8e525",
+      "currentSha256": "3f34b8a94120c3c829df4394a734a0dc39a7f91dae3f1606ceb0eef47a49804a",
+      "reason": "Scheduling/deadline supervision only; engine-worker, sample, supervisor and comparator Rust unchanged"
+    }
+  ],
+  "inputFlagsSeedsUnchanged": true,
+  "noMainChanges": true
+}

@@ -20,6 +20,14 @@ Attempt2/run37004697494는native debug29/release29검사와두WASMbuild가성공
 
 ## 현재 실행 결과 / 본측정 전 중단
 
+### 추가 승인 반영 (본측정 재개)
+
+사용자 추가 승인: “최대 3시간까지 허용함. 그대로 64로 진행하라”. 개발64runner-hours,32chunks/최대16VM으로기존36,048run의배치만바꾼다. 기존SCHEDULE/PLAN은그대로보존하고EXECUTION_SCHEDULE에originalShard와새chunk를별도봉인한다. pilot의기존gatefalse도소급수정하지않으며승인된새배치의예측72.77분으로진입판정한다. 원입력/flags/seed/quality/조건/4반복/100K/매호출상한은동일하고검증된두binary를재사용한다.
+
+전체경과시간3시간은Actionsrun생성부터계산한다. 새호출은160분deadline32초전까지만시작하며job별110분보존상한도유지한다. artifact/집계여유20분을남긴다. 로컬watcher는175분에아직실행중이면Actions전체를cancel하여180분이전에회수·보존을시도한다. queuedjob도같은absolute기준을적용한다. cleanup/queue문제로자동취소된부분결과를성공으로바꾸지않는다. 기존구반례288호출은개발job완료뒤남은전체시간안에서만수행한다. 예약및threshold검증은개발gate/남은시간을확인하기전기동하지않는다.
+
+변경허용하네스는run.mjs의운영배치/전체deadline부분뿐이다. native候補/engine-worker/sample/supervisor/common은pilot당시hash와동일하게검사한다. 새예산승인·실행배치·운영하네스hash도launch-development.json에서봉인한다.
+
 Attempt3/run37005113356/commit36dbc5a: native debug29/release29PASS, Linuxhardcgroup/watchdog검사PASS, synthetic288fixture/6,912callsPASS(nonoptimalseed218fixture). 개발32개pilot192호출전부기록·회수했다. EXACT52/CAPPED86/TIMEOUT_API54,ERROR/OOM/cleanup실패0. timeout은primaryHard9행렬×6조건이며앞조건timeout이뒤조건을생략시키지않았다. 정상반환결과exact/bridge불일치0. timeoutincumbent는null이다.
 
 pilot집계의PASS는하네스/결과장부정합성상태이며본측정진입gate성공을뜻하지않는다. 보수적route최대시간예측은shard최대163.28분/전체38.79runner-hours로,사전등록한80분진입기준및개발32runner-hours상한을넘었다. `mayProceedToMain:false`. 예산을임의로늘리거나100K/호출시간/대상/gate를변경하지않고**본측정기동전에중단**했다. 본측정·구반례측정·예약측정은0회다.
