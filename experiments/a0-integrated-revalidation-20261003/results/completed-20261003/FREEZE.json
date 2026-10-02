@@ -1,0 +1,40 @@
+{
+  "status": "FROZEN_INTEGRATED_SCOPE_NOT_DEV_APPROVAL",
+  "buildSha256": "dd3d126e36bd2331d452d16bc0a72ae0d48d95e6772159f24ad38a28a317e804",
+  "candidateCommit": "13b274ef91a2debe07121f7b4a0e670ed39e034f",
+  "wasmSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+  "developmentSummarySha256": "15bd6dad19c37a3a70a6a31e3d1091eef3aa4a8b5c198f6dbe1d598957e89f37",
+  "developmentSummaryFileSha256": "f639f168489df2c9c8fdc8d11c9070e600acb125cfd6f56b7f470f06e9e81b3f",
+  "independentAuditSha256": "bf5c7364d2b46d3d54e49ae763162ea601e3730801f73e6e98be57b5af723e73",
+  "auditorCorrection": {
+    "status": "AUDITOR_ORDER_CORRECTION_NO_MEASUREMENT_RERUN",
+    "originalAuditorSha256": "b61e133dbb128d5c2700e84fc4561e65430f78b283208d554ccae5eca9bbf217",
+    "correctedExecutedAuditorSha256": "185f90950e2c7c3d17162346661353b3ad2c33def728571a2110687f67a7b1a2",
+    "wrapperSha256": "078702d426e5c84c5d3747b13400ad19879f3692b803ae370f848b9febc0c312",
+    "changes": [
+      {
+        "before": "folders=[d for d in download.glob(f'a0i-{phase}-*') if (d/'SHARD.json').exists()]",
+        "after": "folders=sorted(d for d in download.glob(f'a0i-{phase}-*') if (d/'SHARD.json').exists())"
+      },
+      {
+        "before": "for id,v in grouped.items():",
+        "after": "for id in dict.fromkeys(r['matrixId'] for r in rows):\n    v=grouped[id]"
+      }
+    ],
+    "reason": "Match fixed-seed cluster index order to the already-sealed JS aggregator: lexical shard folders then first matrix occurrence; keep sorted witness verification for cache efficiency",
+    "gateThresholdsChanged": false,
+    "summaryRecomputedOrReplaced": false,
+    "nativeSolverCalls": 0,
+    "originalFailedRunPreserved": 37039906398,
+    "devApplied": false
+  },
+  "sourceMeasurementRunId": 37039906398,
+  "resumeRunId": 37041073063,
+  "developmentProbeReruns": 0,
+  "retuningPermitted": false,
+  "devApplyAuthorized": false,
+  "priorFailedRunsPreserved": [
+    37034641097,
+    37039906398
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "status": "EVIDENCE_INDEPENDENTLY_AUDITED_NOT_PRODUCT_APPROVAL",
+  "phase": "reserved",
+  "scheduledRuns": 832,
+  "observedRuns": 832,
+  "statuses": {
+    "PROBE_EXACT": 580,
+    "PROBE_CAPPED": 252
+  },
+  "sourceGitBlobsVerified": 166,
+  "artifactFilesVerified": 880,
+  "rawJournalRecordsVerified": 2496,
+  "originalWeightedQualityRecomputations": 1664,
+  "probeExactMatrices": {
+    "R": 72,
+    "A": 73
+  },
+  "pairedProbeMatrices": 104,
+  "apiSumRatio": 0.9812142483594286,
+  "p95ApiRatio": 1.197846065695026,
+  "cluster95CI": [
+    0.9225743314329271,
+    1.0055811608247103
+  ],
+  "peakMemoryP95Ratio": 1.0250155763239874,
+  "peakMemoryP95IncreaseBytes": 1710080.0,
+  "stateRegressions": [],
+  "qualityRegressions": [],
+  "unverifiedCandidateOnlyExactRows": [
+    "board-111--restricted-split--ordinary",
+    "board-111--restricted-split--ordinary",
+    "board-111--restricted-split--ordinary",
+    "board-111--restricted-split--ordinary"
+  ],
+  "boundedCappedIsCompleteProbeEvidence": true,
+  "fullThresholdCompletionOrPerformanceProven": false,
+  "actualInputPrimaryCalls": 0,
+  "actualInputPcCalls": 0,
+  "actualInputThresholdCalls": 0,
+  "devApplied": false,
+  "summaryGateStatus": "GATE_FAILED_OR_INCOMPLETE"
+}

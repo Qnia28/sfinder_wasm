@@ -1,0 +1,11 @@
+{
+  "status": "PASS_SYNTHETIC_PACKAGING_FAULT_INJECTION",
+  "rawFixtureSha256": "9930125f7145c9575df6c6719e84b58f264856924e0b60104cce5f955ab6b625",
+  "injectedUploadFailureRetainedSourceBytes": true,
+  "injectedArchiveCorruptionDetected": true,
+  "rawCappedWitnessStillReadable": true,
+  "nativeSolverCalls": 0,
+  "realHttpOrUploadCalls": 0,
+  "limitation": "Mock uploader and checksum guard; not an actual GitHub outage test",
+  "devApplied": false
+}

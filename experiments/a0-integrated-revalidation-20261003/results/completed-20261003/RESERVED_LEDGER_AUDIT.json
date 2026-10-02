@@ -1,0 +1,24 @@
+{
+  "status": "START_RAW_AUDIT_RESOURCE_LEDGER_VERIFIED",
+  "phase": "reserved",
+  "observedRuns": 832,
+  "uniqueRunIds": 832,
+  "shards": 16,
+  "statuses": {
+    "PROBE_EXACT": 580,
+    "PROBE_CAPPED": 252
+  },
+  "rawResultPersistedBeforeAuditRecords": 832,
+  "contractOnlyThresholdChecks": 504,
+  "cappedStateCounts": {
+    "100000": 252
+  },
+  "maxCgroupPeakBytes": 129400832,
+  "maxProcessRssBytes": 175042560,
+  "maxWasmMemoryBytes": 37879808,
+  "maxIntegratedApiMs": 1715.295465,
+  "actualInputNativeThresholdCalls": 0,
+  "actualInputPrimaryCalls": 0,
+  "actualInputPcCalls": 0,
+  "devApplied": false
+}

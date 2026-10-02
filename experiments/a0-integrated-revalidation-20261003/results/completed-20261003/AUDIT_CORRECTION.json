@@ -1,0 +1,22 @@
+{
+  "status": "AUDITOR_ORDER_CORRECTION_NO_MEASUREMENT_RERUN",
+  "originalAuditorSha256": "b61e133dbb128d5c2700e84fc4561e65430f78b283208d554ccae5eca9bbf217",
+  "correctedExecutedAuditorSha256": "185f90950e2c7c3d17162346661353b3ad2c33def728571a2110687f67a7b1a2",
+  "wrapperSha256": "078702d426e5c84c5d3747b13400ad19879f3692b803ae370f848b9febc0c312",
+  "changes": [
+    {
+      "before": "folders=[d for d in download.glob(f'a0i-{phase}-*') if (d/'SHARD.json').exists()]",
+      "after": "folders=sorted(d for d in download.glob(f'a0i-{phase}-*') if (d/'SHARD.json').exists())"
+    },
+    {
+      "before": "for id,v in grouped.items():",
+      "after": "for id in dict.fromkeys(r['matrixId'] for r in rows):\n    v=grouped[id]"
+    }
+  ],
+  "reason": "Match fixed-seed cluster index order to the already-sealed JS aggregator: lexical shard folders then first matrix occurrence; keep sorted witness verification for cache efficiency",
+  "gateThresholdsChanged": false,
+  "summaryRecomputedOrReplaced": false,
+  "nativeSolverCalls": 0,
+  "originalFailedRunPreserved": 37039906398,
+  "devApplied": false
+}

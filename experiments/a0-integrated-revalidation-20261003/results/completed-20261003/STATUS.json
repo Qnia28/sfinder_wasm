@@ -1,0 +1,217 @@
+{
+  "status": "STOPPED_BEFORE_DEV_CONNECTION_GATE_FAILED_OR_INCOMPLETE",
+  "sourceMeasurementRunId": 37039906398,
+  "sourceMeasurementRunConclusion": "failure",
+  "continuationRunId": 37041073063,
+  "continuationRunConclusion": "failure",
+  "candidateCommit": "13b274ef91a2debe07121f7b4a0e670ed39e034f",
+  "auditorContinuationCommit": "8b2dcc1419518023ba95d5d660dc7f190a479d58",
+  "campaignWallMinutes": 12.566666666666666,
+  "observedJobRunnerHours": 0.37166666666666665,
+  "artifactCompressedBytes": 5071304,
+  "phases": {
+    "development": {
+      "status": "PASS_INTEGRATED_SCOPE",
+      "expectedRuns": 512,
+      "observedRuns": 512,
+      "statuses": {
+        "PROBE_CAPPED": 360,
+        "PROBE_EXACT": 152
+      },
+      "correctnessGatePass": true,
+      "performanceGatePass": true,
+      "resourceGatePass": true,
+      "apiMedianSumRatio": 0.9904007621503649,
+      "p95ApiRatio": 1.078824509509836,
+      "cluster95CI": [
+        0.976777681944839,
+        0.9977535680925542
+      ],
+      "peakMemoryP95Ratio": 1.0366452117634508,
+      "peakMemoryP95IncreaseBytes": 4278272,
+      "probeExactMatrices": {
+        "R": 19,
+        "A": 19
+      },
+      "errors": {
+        "missing": [],
+        "status": [],
+        "scope": [],
+        "determinism": [],
+        "witness": [],
+        "states": [],
+        "quality": [],
+        "exact": [],
+        "proof": [],
+        "contract": [],
+        "resources": []
+      }
+    },
+    "reserved": {
+      "status": "GATE_FAILED_OR_INCOMPLETE",
+      "expectedRuns": 832,
+      "observedRuns": 832,
+      "statuses": {
+        "PROBE_EXACT": 580,
+        "PROBE_CAPPED": 252
+      },
+      "correctnessGatePass": false,
+      "performanceGatePass": false,
+      "resourceGatePass": true,
+      "apiMedianSumRatio": 0.9812142483594284,
+      "p95ApiRatio": 1.197846065695026,
+      "cluster95CI": [
+        0.9225743314329276,
+        1.0055811608247103
+      ],
+      "peakMemoryP95Ratio": 1.0250155763239874,
+      "peakMemoryP95IncreaseBytes": 1710080,
+      "probeExactMatrices": {
+        "R": 72,
+        "A": 73
+      },
+      "errors": {
+        "missing": [],
+        "status": [],
+        "scope": [],
+        "determinism": [],
+        "witness": [],
+        "states": [],
+        "quality": [],
+        "exact": [],
+        "proof": [
+          "board-111--restricted-split--ordinary:1",
+          "board-111--restricted-split--ordinary:2",
+          "board-111--restricted-split--ordinary:3",
+          "board-111--restricted-split--ordinary:4"
+        ],
+        "contract": [],
+        "resources": []
+      }
+    }
+  },
+  "priorFailedRunPreserved": 37034641097,
+  "productCandidateRetuned": false,
+  "repeat675EffectCampaign": false,
+  "actualInputPrimaryCalls": 0,
+  "actualInputPcCalls": 0,
+  "actualInputNativeThresholdCalls": 0,
+  "fullThresholdRoutePerformanceProven": false,
+  "devHead": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+  "localMain": "187fbf954ad0749e697b4e7f1252683b318d696e",
+  "remoteMain": "03b637730c5b541f4f2934be613498fbe65327fd",
+  "defaultBranch": "main",
+  "protectedDevClean": true,
+  "devApplied": false,
+  "mainMerged": false,
+  "deployed": false,
+  "retrySubstitution": false,
+  "developmentMeasurementReruns": 0,
+  "auditorCorrectionChangesOnlyIterationOrder": true,
+  "globalBudgetSourceRunId": 37039906398,
+  "bothIntegratedPopulationGatesPass": false,
+  "wasmSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+  "productCandidateCommit": "e5f2f3d1a9885085e11cde7457aad2b338ca8130",
+  "hostedProductTests": {
+    "status": "PASS",
+    "uniqueProductTests": 193,
+    "passed": 193,
+    "skipped": 0,
+    "failed": 0,
+    "hosted": true,
+    "node": "v24.13.0",
+    "JSPI": true,
+    "baselineRoot": ".a0/baseline",
+    "actualCampaignInputsUsed": false
+  },
+  "hostedSmallSyntheticThreshold": {
+    "status": "PASS",
+    "fixtures": 32,
+    "variantRuns": 64,
+    "nativeIntegratedCalls": 64,
+    "nativeThresholdCalls": 64,
+    "forcedCappedMarker": true,
+    "oracle": "exhaustive fixed-K combinations on small synthetic only"
+  },
+  "independentOfflineAudits": {
+    "development": {
+      "status": "EVIDENCE_INDEPENDENTLY_AUDITED_NOT_PRODUCT_APPROVAL",
+      "phase": "development",
+      "scheduledRuns": 512,
+      "observedRuns": 512,
+      "statuses": {
+        "PROBE_CAPPED": 360,
+        "PROBE_EXACT": 152
+      },
+      "sourceGitBlobsVerified": 166,
+      "artifactFilesVerified": 536,
+      "rawJournalRecordsVerified": 1536,
+      "originalWeightedQualityRecomputations": 1024,
+      "probeExactMatrices": {
+        "R": 19,
+        "A": 19
+      },
+      "pairedProbeMatrices": 64,
+      "apiSumRatio": 0.9904007621503651,
+      "p95ApiRatio": 1.078824509509836,
+      "cluster95CI": [
+        0.9767776819448395,
+        0.9977535680925549
+      ],
+      "peakMemoryP95Ratio": 1.0366452117634508,
+      "peakMemoryP95IncreaseBytes": 4278272.0,
+      "stateRegressions": [],
+      "qualityRegressions": [],
+      "unverifiedCandidateOnlyExactRows": [],
+      "boundedCappedIsCompleteProbeEvidence": true,
+      "fullThresholdCompletionOrPerformanceProven": false,
+      "actualInputPrimaryCalls": 0,
+      "actualInputPcCalls": 0,
+      "actualInputThresholdCalls": 0,
+      "devApplied": false,
+      "summaryGateStatus": "PASS_INTEGRATED_SCOPE"
+    },
+    "reserved": {
+      "status": "EVIDENCE_INDEPENDENTLY_AUDITED_NOT_PRODUCT_APPROVAL",
+      "phase": "reserved",
+      "scheduledRuns": 832,
+      "observedRuns": 832,
+      "statuses": {
+        "PROBE_EXACT": 580,
+        "PROBE_CAPPED": 252
+      },
+      "sourceGitBlobsVerified": 166,
+      "artifactFilesVerified": 880,
+      "rawJournalRecordsVerified": 2496,
+      "originalWeightedQualityRecomputations": 1664,
+      "probeExactMatrices": {
+        "R": 72,
+        "A": 73
+      },
+      "pairedProbeMatrices": 104,
+      "apiSumRatio": 0.9812142483594286,
+      "p95ApiRatio": 1.197846065695026,
+      "cluster95CI": [
+        0.9225743314329271,
+        1.0055811608247103
+      ],
+      "peakMemoryP95Ratio": 1.0250155763239874,
+      "peakMemoryP95IncreaseBytes": 1710080.0,
+      "stateRegressions": [],
+      "qualityRegressions": [],
+      "unverifiedCandidateOnlyExactRows": [
+        "board-111--restricted-split--ordinary",
+        "board-111--restricted-split--ordinary",
+        "board-111--restricted-split--ordinary",
+        "board-111--restricted-split--ordinary"
+      ],
+      "boundedCappedIsCompleteProbeEvidence": true,
+      "fullThresholdCompletionOrPerformanceProven": false,
+      "actualInputPrimaryCalls": 0,
+      "actualInputPcCalls": 0,
+      "actualInputThresholdCalls": 0,
+      "devApplied": false,
+      "summaryGateStatus": "GATE_FAILED_OR_INCOMPLETE"
+    }
+  }
+}

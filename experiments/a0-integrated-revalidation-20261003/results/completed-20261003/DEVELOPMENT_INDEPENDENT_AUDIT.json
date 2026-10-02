@@ -1,0 +1,37 @@
+{
+  "status": "EVIDENCE_INDEPENDENTLY_AUDITED_NOT_PRODUCT_APPROVAL",
+  "phase": "development",
+  "scheduledRuns": 512,
+  "observedRuns": 512,
+  "statuses": {
+    "PROBE_CAPPED": 360,
+    "PROBE_EXACT": 152
+  },
+  "sourceGitBlobsVerified": 166,
+  "artifactFilesVerified": 536,
+  "rawJournalRecordsVerified": 1536,
+  "originalWeightedQualityRecomputations": 1024,
+  "probeExactMatrices": {
+    "R": 19,
+    "A": 19
+  },
+  "pairedProbeMatrices": 64,
+  "apiSumRatio": 0.9904007621503651,
+  "p95ApiRatio": 1.078824509509836,
+  "cluster95CI": [
+    0.9767776819448395,
+    0.9977535680925549
+  ],
+  "peakMemoryP95Ratio": 1.0366452117634508,
+  "peakMemoryP95IncreaseBytes": 4278272.0,
+  "stateRegressions": [],
+  "qualityRegressions": [],
+  "unverifiedCandidateOnlyExactRows": [],
+  "boundedCappedIsCompleteProbeEvidence": true,
+  "fullThresholdCompletionOrPerformanceProven": false,
+  "actualInputPrimaryCalls": 0,
+  "actualInputPcCalls": 0,
+  "actualInputThresholdCalls": 0,
+  "devApplied": false,
+  "summaryGateStatus": "PASS_INTEGRATED_SCOPE"
+}
