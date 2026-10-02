@@ -12,6 +12,7 @@
 | DB 전체 capture | aa74d5b | [37035704246](https://github.com/Qnia28/sfinder_wasm/actions/runs/37035704246) | 45 setups / 315 필터 모두 PROVED |
 | DB 개발12 baseline | 98bfff9 | [37037039327](https://github.com/Qnia28/sfinder_wasm/actions/runs/37037039327) | 모든 job 성공; 6입력 양측3회 exact, 6입력 양측3회 timeout |
 | DB 개발12 five-single screen | 988fa59 | [37038377376](https://github.com/Qnia28/sfinder_wasm/actions/runs/37038377376) | 모든 job 성공; 180 exact / 180 timeout; 완료 witness 일치 |
+| DB 개발12 mask18 ablation | 96ee4b1 | [37042810532](https://github.com/Qnia28/sfinder_wasm/actions/runs/37042810532) | 모든 job 성공; 108 exact / 108 timeout; 완료 witness 일치 |
 
 원본 DB SHA256:
 `58f02fe2e1f7939e127de4c7ea2886bcf45c91a797ffa0d25dc8a0e4fb262388`.
@@ -33,9 +34,9 @@ capture run/attempt/build 일치를 검산했다. 전부 증명 완료하여 inp
 
 ## 진행
 
-DB 개발12의 baseline/screen이 완료되었다. 조합 검증 후보mask18을 동결하고
-개발12의 ablation(3pairs, 30초/call)을 다음 실행으로 지정한다.
-그 다음 최종 후보 판단 → confirm 두 번이다.
+DB 개발12의 baseline/screen/ablation이 완료되었다. 최종 확인 후보mask16을
+동결하고 개발12+검증8의 confirm(5pairs, 60초/call)을 다음 실행으로 지정한다.
+그 다음 동일후보 confirm 제2회 → 최종보고다.
 정확성/증명 불일치는 즉시 중단한다. all-on은 자동 승격하지 않는다.
 
 초기 legacy smoke는 1pair뿐이며 성능 판단용이 아니다. original↔off의
@@ -64,6 +65,14 @@ DB 개발12 × 32 masks × budget 0/1/20의 실제 WASM bounded witness/prefix �
 각 단독요소 모두 완료6입력/미완료6입력이며 새로운 exact 완료 증가는 없었다.
 currentPropagation은 pcinfo-022/J에서1.6041배, priorPropagation은 ALT JAWS/Z에서
 0.8071배다. 후보판정/한계와 S2 비교는 [CANDIDATE_KO.md](CANDIDATE_KO.md)에 고정했다.
+
+### S2 ablation 결과
+
+216호출:108 EXACT,108 TIMEOUT. 세비교 모두완료6입력/미완료6입력.
+off→18=1.0885, 16→18=1.0149, 2→18=1.0862 (완료입력 paired ratio 기술통계).
+pcinfo-022/J에서 off→18=1.6544, 2→18=1.6479로 current전파의 기여를 확인.
+presort제거의 조합내기여는작아 최종확인 후보를mask16으로단순화했다.
+정답오류, exact→timeout, 회귀/메모리경보는없었다. 최종채택은미정이다.
 
 ## 보호 확인
 

@@ -1,4 +1,4 @@
-# 동결 조합 검증 후보: mask 18
+# 동결 후보: S2 mask18 → S3 mask16
 
 이 문서는 S1 screen 후, S2/S3의 후보 timing을 보기 전에 작성했다.
 성능 채택/제품 옵션 기본값 변경을 뜻하지 않는다.
@@ -39,3 +39,32 @@ ALT JAWS/Z에서는 작은 악화(비율0.9584), 짧은 6p-pco/O에서는 몇 ms
 - S3는 선택된 후보를 original과 개발12+검증8에서5pairs/60초로 비교하고,
   동일 mask/구현으로 두 번째 확인run을 수행한다.
 - 개선폭/완료율이 충분하지 않으면 "채택 근거 부족"도 정상 결론이다.
+
+## S2 후 최종 확인 후보: mask16
+
+S2: [37042810532](https://github.com/Qnia28/sfinder_wasm/actions/runs/37042810532),
+commit `96ee4b1`, 12개 개발입력 × 비교3개 × 3pairs × 30초/call.
+216호출:108 exact,108 timeout; 정확성/누락 오류 없음. 108 exact witness를
+다운로드하여 원본 rows로 재검산했고 동일 입력의 모든 완료 설정은 일치했다.
+
+| 비교 | 완료6입력의 paired ratio 기하평균 | pcinfo-022/J |
+|---|---:|---:|
+| off→18 | 1.0885 | 1.6544 |
+| 16→18 (presort제거 기여) | 1.0149 | 1.0132 |
+| 2→18 (current전파 기여) | 1.0862 | 1.6479 |
+
+새 exact 완료 증가는 없었다. 세 비교 모두10%/5ms회귀, exact→timeout,
+20%메모리증가 경보가 없었다. timeout6개는30초에서도 모든설정이 미완료다.
+
+removePresort는 조합 내 약1.5%로 작고 입력별 방향도 섞여 있어 채택 근거가
+부족하다. 핵심개선은 currentPropagation으로 확인된다. 따라서 **S3 후보는16**,
+즉 currentPropagation만ON으로 단순화한다. stagedBounds/removePresort/rootForced/
+priorPropagation은OFF다. 이것은 통합 결정이 아니라 original과 비교할 최종 확인
+후보의 고정이다.
+
+- S3 제1회와 제2회는 동일mask16/동일Rust구현/동일20개입력으로 실행한다.
+- 각 입력 original↔16을5pairs/60초 제한으로 측정한다.
+- 개발12와 검증8 결과를 분리한다. 검증군 결과를 보고 mask를 튜닝하지 않는다.
+- 심각한 회귀, exact→timeout, 정답/증명불일치는 보고하고 통합을 보류한다.
+- S2 기술통계8.85%는전체입력10%목표달성의 증명이 아니다. 목표입력의
+  개선은분명하나 검증군/timeout완료율/비회귀는 S3에서 판단해야 한다.

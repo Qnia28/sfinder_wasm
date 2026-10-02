@@ -1,8 +1,8 @@
 {
-  "profile": "ablation",
-  "suite": "development",
+  "profile": "confirm",
+  "suite": "all",
   "fixtureSet": "cycle1",
-  "candidateMask": 18,
+  "candidateMask": 16,
   "pairs": null,
   "timeoutSeconds": null
 }
