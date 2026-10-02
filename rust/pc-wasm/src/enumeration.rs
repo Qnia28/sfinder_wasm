@@ -3,6 +3,35 @@ use pc_core::{PcSolver, Solution, decode_queue_array};
 
 const SOLUTION_WORD_STRIDE: usize = 9;
 
+// 1 = owned output written; 0 = unsupported single-residual window;
+// u32::MAX = invalid ABI pointers. JS falls back only for status 0.
+#[unsafe(no_mangle)]
+pub unsafe extern "C" fn solver_save_outcomes_mask(
+    ptr: *mut WasmSolver,
+    board: u64,
+    qbits_ptr: *const u64,
+    qlen_ptr: *const u8,
+    count: u32,
+    hold: u32,
+    out_ptr: *mut u8,
+) -> u32 {
+    if ptr.is_null()
+        || (count > 0 && (qbits_ptr.is_null() || qlen_ptr.is_null() || out_ptr.is_null()))
+    {
+        return u32::MAX;
+    }
+    if count == 0 {
+        return 1;
+    }
+    let qbits = unsafe { core::slice::from_raw_parts(qbits_ptr, count as usize) };
+    let qlens = unsafe { core::slice::from_raw_parts(qlen_ptr, count as usize) };
+    let out = unsafe { core::slice::from_raw_parts_mut(out_ptr, count as usize) };
+    unsafe { &mut *ptr }
+        .core
+        .save_outcomes_mask_packed(board, qbits, qlens, hold != 0, out)
+        .is_some() as u32
+}
+
 // Repeated [used-piece counters, case count, case IDs...] records. Borrowed
 // until the next saves call; JS copies the buffer before any WASM mutation.
 #[unsafe(no_mangle)]

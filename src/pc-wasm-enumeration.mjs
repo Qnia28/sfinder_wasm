@@ -3,6 +3,23 @@ import { requirePositiveQuality } from "./quality-contract.mjs";
 import { DEFAULT_SOLUTION_WORD_STRIDE, U32_MAX, queueBits, solutionKey, wasmU32 } from "./pc-wasm-abi.mjs";
 
 export const enumerationMethods = {
+saveOutcomesMask(board, queues, useHold = true) {
+    if (!this.e.solver_save_outcomes_mask) return null;
+    if (queues.length === 0) return new Uint8Array();
+    return this._withPackedQueues(queues, (queuePointer, lengthPointer) => {
+      const outputPointer = this.e.wasm_alloc(queues.length);
+      try {
+        const status = wasmU32(this.e.solver_save_outcomes_mask(
+          this.ptr, board, queuePointer, lengthPointer, queues.length, useHold ? 1 : 0, outputPointer,
+        ));
+        if (status === 0) return null;
+        if (status !== 1) throw new Error('WASM saveOutcomesMask failed');
+        // The caller owns these bytes even after allocator reuse or memory.grow.
+        return new Uint8Array(this.e.memory.buffer, outputPointer, queues.length).slice();
+      } finally { this.e.wasm_dealloc(outputPointer, queues.length); }
+    });
+  },
+
 saveOutcomesPattern(board, queues, useHold = true) {
     if (!this.e.solver_save_outcomes_pattern || !this.e.solver_save_outcomes_ptr) return null;
     if (queues.length === 0) return new Uint32Array();

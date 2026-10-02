@@ -365,6 +365,114 @@ impl PcSolver {
         qlens: &[u8],
         use_hold: bool,
     ) -> Option<Vec<(u32, Vec<u32>)>> {
+        let mut output = Vec::new();
+        self.visit_save_outcome_coverage(
+            initial,
+            qbits,
+            qlens,
+            use_hold,
+            |counts, trie, coverage| {
+                let mut cases = Vec::new();
+                for (word_index, &covered) in coverage.iter().enumerate() {
+                    let mut word = covered;
+                    while word != 0 {
+                        let bit = word.trailing_zeros() as usize;
+                        word &= word - 1;
+                        if let Some(&case) = trie.perm.get(word_index * 64 + bit) {
+                            cases.push(case);
+                        }
+                    }
+                }
+                if !cases.is_empty() {
+                    output.push((counts, cases));
+                }
+                true
+            },
+        )?;
+        Some(output)
+    }
+
+    /// One residual-piece bitset per input case, in T,I,L,J,S,Z,O order.
+    /// Not last-bag saves: JS combines the residual with each case's bag metadata.
+    pub fn save_outcomes_mask_packed(
+        &mut self,
+        initial: u64,
+        qbits: &[u64],
+        qlens: &[u8],
+        use_hold: bool,
+        out: &mut [u8],
+    ) -> Option<()> {
+        let empty = (self.height as u32 * 10).checked_sub(initial.count_ones())?;
+        if empty == 0
+            || !empty.is_multiple_of(4)
+            || qbits.len() != qlens.len()
+            || out.len() != qbits.len()
+        {
+            return None;
+        }
+        let req = (empty / 4) as u8;
+        // Short unsolvable cases keep zero. Exact-req or longer-than-req+1
+        // windows require the existing multiplicity representation instead.
+        if qlens
+            .iter()
+            .any(|&len| len == req || len > req + 1 || len > 21)
+        {
+            return None;
+        }
+        let mut queue_counts = Vec::with_capacity(qbits.len());
+        for (&bits, &len) in qbits.iter().zip(qlens) {
+            let (queue, count) = decode_queue_array(bits, len)?;
+            let mut counts = [0u8; 7];
+            for &piece in &queue[..count] {
+                counts[piece as usize] += 1;
+            }
+            queue_counts.push(counts);
+        }
+        out.fill(0);
+        // Rust codes are I,J,L,O,S,T,Z; output bits are display order.
+        const DISPLAY_BITS: [u8; 7] = [1 << 1, 1 << 3, 1 << 2, 1 << 6, 1 << 4, 1, 1 << 5];
+        self.visit_save_outcome_coverage(initial, qbits, qlens, use_hold, |used, trie, coverage| {
+            for (word_index, &covered) in coverage.iter().enumerate() {
+                let mut word = covered;
+                while word != 0 {
+                    let bit = word.trailing_zeros() as usize;
+                    word &= word - 1;
+                    let Some(&case) = trie.perm.get(word_index * 64 + bit) else {
+                        continue;
+                    };
+                    let counts = &queue_counts[case as usize];
+                    let mut residual = 0u8;
+                    let mut total = 0u8;
+                    for piece in 0..7 {
+                        let used_count = ((used >> (piece * 4)) & 15) as u8;
+                        let Some(remaining) = counts[piece].checked_sub(used_count) else {
+                            return false;
+                        };
+                        total += remaining;
+                        if remaining != 0 {
+                            residual |= DISPLAY_BITS[piece];
+                        }
+                    }
+                    if total != 1 {
+                        return false;
+                    }
+                    out[case as usize] |= residual;
+                }
+            }
+            true
+        })
+    }
+
+    // Both representations consume precisely the same DAG/language coverage;
+    // only the final materialization differs. No additional geometry search.
+    fn visit_save_outcome_coverage(
+        &mut self,
+        initial: u64,
+        qbits: &[u64],
+        qlens: &[u8],
+        use_hold: bool,
+        mut visit: impl FnMut(u32, &QueueTrie, &[u64]) -> bool,
+    ) -> Option<()> {
         if qbits.len() != qlens.len()
             || qbits
                 .iter()
@@ -377,15 +485,15 @@ impl PcSolver {
         let empty = (self.height as u32 * 10).saturating_sub(initial.count_ones());
         // Match geometric enumeration's convention for a zero-placement PC.
         if empty == 0 || !empty.is_multiple_of(4) {
-            return Some(Vec::new());
+            return Some(());
         }
         let Some(start_board) = self.initial_search_board(initial) else {
-            return Some(Vec::new());
+            return Some(());
         };
         let req = (empty / 4) as u8;
         let roots = Self::pattern_multiset_roots(qbits, qlens, req, use_hold);
         if roots.is_empty() {
-            return Some(Vec::new());
+            return Some(());
         }
         let (dag, root_ids, root_counts) = self.build_multiset_dag(start_board, &roots);
         let trie = QueueTrie::new(qbits, qlens)?;
@@ -395,7 +503,6 @@ impl PcSolver {
             self.probability_node_budget,
         );
         let mut scratch = None;
-        let mut output = Vec::new();
         for (index, (&root, &counts)) in root_ids.iter().zip(&root_counts).enumerate() {
             let coverage = compressed.as_ref().and_then(|(language, ids)| {
                 trie.coverage_for_language(language, ids[index], use_hold)
@@ -415,21 +522,11 @@ impl PcSolver {
                 }
                 covered
             });
-            let mut cases = Vec::new();
-            for (word_index, mut word) in coverage.into_iter().enumerate() {
-                while word != 0 {
-                    let bit = word.trailing_zeros() as usize;
-                    word &= word - 1;
-                    if let Some(&case) = trie.perm.get(word_index * 64 + bit) {
-                        cases.push(case);
-                    }
-                }
-            }
-            if !cases.is_empty() {
-                output.push((counts, cases));
+            if !visit(counts, &trie, &coverage) {
+                return None;
             }
         }
-        Some(output)
+        Some(())
     }
 
     pub fn enumerate_pc_path_packed(

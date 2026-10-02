@@ -1,9 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { calculateSaves } from '../src/saves-feature.mjs';
+// Telemetry is an independent source variant, not bundled into B4.
+const moduleUrl = process.env.SAVES_TELEMETRY_MODULE;
+const telemetryTest = moduleUrl ? test : test.skip;
+const { calculateSaves } = moduleUrl ? await import(moduleUrl) : {};
 
 const input = { sourceFumen: 'v115@9gRpDezhRpEeQ4hlg0zhBtR4gli0CeBtQ4glJeAgH', pattern: 'T,*p3', wantedSave: 'ALL' };
-test('A6: off path does not read measurement clocks or solver counters', () => {
+telemetryTest('A6: off path does not read measurement clocks or solver counters', () => {
   let clocks = 0, scans = 0;
   const previous = globalThis.performance;
   globalThis.performance = { now() { clocks++; return 0; } };
@@ -15,7 +18,7 @@ test('A6: off path does not read measurement clocks or solver counters', () => {
     assert.equal(clocks, 0); assert.equal(scans, 0); assert.equal('stats' in result, false);
   } finally { globalThis.performance = previous; }
 });
-test('A6: on path retains exact results, finite accounting and independent snapshots', () => {
+telemetryTest('A6: on path retains exact results, finite accounting and independent snapshots', () => {
   const solver = { saveOutcomesPattern() { return new Uint32Array(); } };
   for (const wantedSave of ['ALL', 'I,J', 'TIJ||IOS']) {
     const plain = calculateSaves({ ...input, wantedSave, solver });
