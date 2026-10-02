@@ -72,3 +72,15 @@ test('B4: missing or declining direct export falls back once; successful output 
   }
   assert.throws(() => calculateSaves({ ...input, solver: { saveOutcomesPattern() { return Uint32Array.of(4, 1, 0); } } }), /more I|exactly one/);
 });
+
+test('B4: eager validation and lazy regex priority also hold with a direct solver', () => {
+  for (const [wantedSave, throws, expectedCalls] of [['I&J', true, 0], ['/[/', true, 1], ['/[/', false, 1]]) {
+    let calls = 0;
+    const sentinel = new Error('direct search sentinel');
+    const solver = { saveOutcomesMask(_board, queues) { calls++; if (throws) throw sentinel; return new Uint8Array(queues.length); },
+      saveOutcomesPattern() { assert.fail('must not call packed'); } };
+    assert.throws(() => calculateSaves({ sourceFumen, pattern: 'T,*p3', wantedSave, solver }),
+      error => wantedSave === '/[/' && throws ? error === sentinel : error instanceof SyntaxError);
+    assert.equal(calls, expectedCalls);
+  }
+});

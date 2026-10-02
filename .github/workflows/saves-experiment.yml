@@ -1,0 +1,216 @@
+name: Saves isolated free-runner experiment
+
+on:
+  push:
+    branches: [experiment/saves-ci-20261002]
+    paths:
+      - experiments/saves-ci-20261002/**
+      - .github/workflows/saves-experiment.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: saves-ci-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  RUSTUP_TOOLCHAIN: 1.90.0
+
+jobs:
+  build:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    outputs:
+      enabled: ${{ steps.preflight.outputs.enabled }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - id: preflight
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node experiments/saves-ci-20261002/preflight.mjs
+      - if: steps.preflight.outputs.enabled == 'true'
+        run: rustup toolchain install 1.90.0 --profile minimal --target wasm32-unknown-unknown
+      - if: steps.preflight.outputs.enabled == 'true'
+        run: node experiments/saves-ci-20261002/prepare.mjs sources
+      - if: steps.preflight.outputs.enabled == 'true'
+        run: node experiments/saves-ci-20261002/prepare.mjs build
+      - if: steps.preflight.outputs.enabled == 'true'
+        run: cargo test --manifest-path .campaign/rust-M/Cargo.toml -p pc-core --lib --offline --locked --target-dir .campaign/native-test
+      - id: budget
+        if: always() && steps.preflight.outputs.enabled == 'true'
+        run: node experiments/saves-ci-20261002/budget.mjs .campaign/artifacts/build
+      - if: always() && steps.budget.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: saves-build
+          path: .campaign/artifacts/build/
+          retention-days: 1
+          if-no-files-found: error
+
+  gate:
+    needs: build
+    if: needs.build.outputs.enabled == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          name: saves-build
+          path: .campaign/shared-build
+      - run: node experiments/saves-ci-20261002/prepare.mjs sources
+      - run: node experiments/saves-ci-20261002/prepare.mjs attach .campaign/shared-build
+      - run: node experiments/saves-ci-20261002/gate.mjs
+      - id: budget
+        if: always()
+        run: node experiments/saves-ci-20261002/budget.mjs .campaign/artifacts/gate
+      - if: always() && steps.budget.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: saves-gate
+          path: .campaign/artifacts/gate/
+          retention-days: 1
+          if-no-files-found: error
+
+  anchor:
+    needs: [build, gate]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      proceed: ${{ steps.screen.outputs.proceed }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: saves-build
+          path: .campaign/shared-build
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: saves-gate
+          path: .campaign/shared-gate
+      - run: node experiments/saves-ci-20261002/prepare.mjs sources
+      - run: node experiments/saves-ci-20261002/prepare.mjs attach .campaign/shared-build
+      - run: cp .campaign/shared-gate/GATE_SEAL.json .campaign/GATE_SEAL.json
+      - run: node experiments/saves-ci-20261002/runner.mjs anchor 0
+      - id: screen
+        run: node experiments/saves-ci-20261002/anchor-gate.mjs
+      - id: budget
+        if: always()
+        run: node experiments/saves-ci-20261002/budget.mjs .campaign/artifacts/anchor-0
+      - if: always() && steps.budget.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: saves-anchor-0
+          path: .campaign/artifacts/anchor-0/
+          retention-days: 1
+          if-no-files-found: error
+
+  measure:
+    needs: [build, gate, anchor]
+    if: needs.anchor.outputs.proceed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ matrix.timeout }}
+    strategy:
+      max-parallel: 4
+      fail-fast: false
+      matrix:
+        include:
+          - { stage: a4, shard: 0, timeout: 8 }
+          - { stage: a6, shard: 0, timeout: 8 }
+          - { stage: broad, shard: 0, timeout: 15 }
+          - { stage: broad, shard: 1, timeout: 15 }
+          - { stage: broad, shard: 2, timeout: 15 }
+          - { stage: broad, shard: 3, timeout: 15 }
+          - { stage: broad, shard: 4, timeout: 15 }
+          - { stage: broad, shard: 5, timeout: 15 }
+          - { stage: broad, shard: 6, timeout: 15 }
+          - { stage: broad, shard: 7, timeout: 15 }
+          - { stage: deep, shard: 0, timeout: 15 }
+          - { stage: deep, shard: 1, timeout: 15 }
+          - { stage: deep, shard: 2, timeout: 15 }
+          - { stage: deep, shard: 3, timeout: 15 }
+          - { stage: large, shard: 0, timeout: 15 }
+          - { stage: large, shard: 1, timeout: 15 }
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: saves-build
+          path: .campaign/shared-build
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: saves-gate
+          path: .campaign/shared-gate
+      - run: node experiments/saves-ci-20261002/prepare.mjs sources
+      - run: node experiments/saves-ci-20261002/prepare.mjs attach .campaign/shared-build
+      - run: cp .campaign/shared-gate/GATE_SEAL.json .campaign/GATE_SEAL.json
+      - run: node experiments/saves-ci-20261002/runner.mjs ${{ matrix.stage }} ${{ matrix.shard }}
+      - id: budget
+        if: always()
+        run: node experiments/saves-ci-20261002/budget.mjs .campaign/artifacts/${{ matrix.stage }}-${{ matrix.shard }}
+      - if: always() && steps.budget.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: saves-${{ matrix.stage }}-${{ matrix.shard }}
+          path: .campaign/artifacts/${{ matrix.stage }}-${{ matrix.shard }}/
+          retention-days: 1
+          if-no-files-found: error
+
+  aggregate:
+    needs: [build, gate, anchor, measure]
+    if: always() && needs.build.outputs.enabled == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        continue-on-error: true
+        with:
+          pattern: saves-*
+          path: .campaign/downloads
+      - run: node experiments/saves-ci-20261002/aggregate.mjs .campaign/downloads
+      - id: budget
+        if: always()
+        run: node experiments/saves-ci-20261002/budget.mjs .campaign/artifacts/aggregate
+      - if: always() && steps.budget.outcome == 'success'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: saves-aggregate
+          path: .campaign/artifacts/aggregate/
+          retention-days: 1
+          if-no-files-found: error

@@ -1,0 +1,140 @@
+{
+  "schema": "saves-test-design-v1",
+  "date": "2026-10-02",
+  "status": "INPUTS_AND_PROTOCOL_FROZEN_NOT_EXECUTED",
+  "baselineCommit": "187fbf954ad0749e697b4e7f1252683b318d696e",
+  "candidateArtifactsSealed": false,
+  "parentPlan": "saves-core-revised-20261002.md (local historical plan)",
+  "databases": [
+    {"key":"cycle1","path":"cycle-1-setups.json","rows":45,"sha256":"58f02fe2e1f7939e127de4c7ea2886bcf45c91a797ffa0d25dc8a0e4fb262388"},
+    {"key":"qb","path":"cycle-7-2plus2-qb-setups.json","rows":356,"sha256":"3d21d8d97701af13261caea7381bf7b70e02931ce939d23b3381c6247e1dc69a"}
+  ],
+  "defaults":{"clear":4,"useHold":true,"outcomeCache":false,"singleSaveMask":true,"stats":false,"repetitions":2},
+  "boards": {
+    "C":{"id":"fixture-complete","source":"dev-branch/tests/saves-outcomes.test.mjs","fumen":"v115@9gRpDezhRpEeQ4hlg0zhBtR4gli0CeBtQ4glJeAgH","occupied":28,"required":3},
+    "J":{"id":"cycle1-alt-jaws-a","source":"cycle1","fumen":"v115@DhzhGeQ4hlEeBtR4glFeBtQ4glJeAgH","occupied":16,"required":6},
+    "E":{"id":"cycle1-elephant-a","source":"cycle1","fumen":"v115@DhzhFeR4hlEeR4RpglGeRpglJeAgH","occupied":16,"required":6},
+    "A":{"id":"cycle1-pcinfo-030","source":"cycle1","fumen":"v115@FhRpHeRpEezhglGeilJeAgH","occupied":12,"required":7},
+    "Q59":{"id":"c7-2plus2-qb-row-059","source":"qb","fumen":"v115@ChBtIeBtGeR4CezhR4zhJeAgH","occupied":16,"required":6},
+    "Q235":{"id":"c7-2plus2-qb-row-235","source":"qb","fumen":"v115@9gh0Heg0Ieg0T4CeRpT4DeRpJeAgH","occupied":16,"required":6},
+    "H8":{"id":"c7-2plus2-qb-row-008","source":"qb","fumen":"v115@9gxhHexhHexhCeR4CexhBeR4zhJeAgH","occupied":16,"required":6,"mirrorGroup":"00c0318ff3"},
+    "H9":{"id":"c7-2plus2-qb-row-009","source":"qb","fumen":"v115@GhwhIe0hR4CewhCeR40hJeAgH","occupied":16,"required":6,"mirrorGroup":"00401fc47f"},
+    "H10":{"id":"c7-2plus2-qb-row-010","source":"qb","fumen":"v115@Ohg0Beilzhi0glEezhJeAgH","occupied":16,"required":6,"mirrorGroup":"00004ffe0f"},
+    "H11":{"id":"c7-2plus2-qb-row-011","source":"qb","fumen":"v115@/gQ4IeR4FeilQ4zhBeglzhOeAgH","occupied":16,"required":6,"mirrorGroup":"0100c3fc1f"}
+  },
+  "patterns": {
+    "c210":{"text":"T,*p3","count":210,"length":4,"stratum":"fixture-prefix"},
+    "c1":{"text":"TTJ,[I]p1","count":1,"length":4,"stratum":"fixture-fixed"},
+    "r1":{"text":"TIJLSZ,[O]p1","count":1,"length":7,"stratum":"fixed"},
+    "r210":{"text":"TIJL,*p3","count":210,"length":7,"stratum":"prefix"},
+    "bag":{"text":"*!","count":5040,"length":7,"stratum":"single-bag"},
+    "restricted":{"text":"[TIL]p3,[JSZO]p4","count":144,"length":7,"stratum":"restricted-split"},
+    "mixed":{"text":"[IJL]p3,*p4","count":5040,"length":7,"stratum":"independent-split-restricted-prefix"},
+    "full":{"text":"*p3,*p4","count":176400,"length":7,"stratum":"independent-split"},
+    "a840":{"text":"TIJL,*p4","count":840,"length":8,"stratum":"req7-prefix"},
+    "q9":{"text":"[TLJ]!,*p6","count":30240,"length":9,"stratum":"generic-q9"},
+    "q10":{"text":"[TLJ]!,*!","count":30240,"length":10,"stratum":"generic-q10"},
+    "duplicate":{"text":"*!;*!","count":10080,"length":7,"distinctSolverKeys":5040,"stratum":"identical-branches"},
+    "partial":{"text":"*!{I<J};*!{J<T}","count":5040,"length":7,"distinctSolverKeys":4200,"stratum":"partial-overlap-same-bag"},
+    "disjoint":{"text":"TIJL,*p3;SZOT,*p3","count":420,"length":7,"distinctSolverKeys":420,"stratum":"disjoint-branches"},
+    "differentBag":{"text":"TTJ,[I]p1;TTJ,*p1","count":8,"length":4,"distinctSolverKeys":8,"stratum":"same-queue-different-bag"},
+    "cDuplicate":{"text":"T,*p3;T,*p3","count":420,"length":4,"distinctSolverKeys":210,"stratum":"fixture-identical-branches"}
+  },
+  "wanted": {
+    "all":"ALL","i":"I","multi8":"I,J,T,L,S,Z,O,IJ","or":"TIJ||IOS",
+    "complex8":"I,II,I&&J,^I,!I,^(I&&J),/I{2}/,!/T/"
+  },
+  "a6": [
+    {"id":"A601","board":"C","pattern":"c210","wanted":"all","temperature":"cold"},
+    {"id":"A602","board":"C","pattern":"c210","wanted":"multi8","temperature":"warm"},
+    {"id":"A603","board":"C","pattern":"c1","wanted":"i","temperature":"cold"},
+    {"id":"A604","board":"J","pattern":"r1","wanted":"i","temperature":"cold"},
+    {"id":"A605","board":"J","pattern":"r210","wanted":"all","temperature":"warm"},
+    {"id":"A606","board":"J","pattern":"bag","wanted":"multi8","temperature":"cold"},
+    {"id":"A607","board":"E","pattern":"restricted","wanted":"multi8","temperature":"warm"},
+    {"id":"A608","board":"E","pattern":"full","wanted":"all","temperature":"cold"},
+    {"id":"A609","board":"Q59","pattern":"r210","wanted":"i","temperature":"warm"},
+    {"id":"A610","board":"Q235","pattern":"full","wanted":"multi8","temperature":"warm"},
+    {"id":"A611","board":"A","pattern":"a840","wanted":"multi8","temperature":"cold"},
+    {"id":"A612","board":"A","pattern":"q9","wanted":"or","temperature":"warm"}
+  ],
+  "b4": [
+    {"id":"B401","board":"C","pattern":"c210","wanted":"all","temperature":"cold"},
+    {"id":"B403","board":"J","pattern":"r1","wanted":"i","temperature":"cold"},
+    {"id":"B405","board":"J","pattern":"bag","wanted":"all","temperature":"cold","useHold":false},
+    {"id":"B406","board":"E","pattern":"restricted","wanted":"multi8","temperature":"cold"},
+    {"id":"B407","board":"E","pattern":"full","wanted":"all","temperature":"warm"},
+    {"id":"B409","board":"Q235","pattern":"full","wanted":"multi8","temperature":"cold"},
+    {"id":"B410","board":"A","pattern":"a840","wanted":"i","temperature":"warm"},
+    {"id":"B411","board":"A","pattern":"bag","wanted":"all","temperature":"cold"},
+    {"id":"B412","board":"Q59","pattern":"q10","wanted":"or","temperature":"warm"}
+  ],
+  "b6": [
+    {"id":"B601","board":"C","pattern":"c210","queries":["I"],"bulk":true,"temperature":"cold","scenario":"one-use-cost"},
+    {"id":"B602","board":"C","pattern":"c210","queries":["I","J"],"bulk":true,"temperature":"warm","scenario":"two-known-queries"},
+    {"id":"B603","board":"J","pattern":"bag","queries":["I","I","I","I"],"bulk":true,"temperature":"warm","scenario":"repeat-same-query"},
+    {"id":"B604","board":"J","pattern":"bag","queries":["I","J","^T","I&&J"],"bulk":true,"temperature":"cold","scenario":"fixed-script-interactive-proxy"},
+    {"id":"B605","board":"E","pattern":"mixed","queries":["I","J"],"bulk":true,"temperature":"cold","scenario":"two-known-queries"},
+    {"id":"B606","board":"Q59","pattern":"q9","queries":["TIJ||IOS","TIJ,IOS"],"bulk":true,"temperature":"warm","scenario":"generic-two-queries"},
+    {"id":"B607","board":"Q235","pattern":"q10","queries":["I,J,T,L,S,Z,O,IJ","I,J,T,L,S,Z,O,IJ","I,J,T,L,S,Z,O,IJ","I,J,T,L,S,Z,O,IJ"],"bulk":true,"temperature":"warm","scenario":"generic-repeat-multi8"},
+    {"id":"B608","board":"C","pattern":"c210","queries":["ALL","I","J","ALL"],"bulk":false,"temperature":"cold","scenario":"all-mixed-bulk-not-supported"}
+  ],
+  "b3": [
+    {"id":"B301","board":"J","pattern":"q9","wanted":"i","temperature":"cold"},
+    {"id":"B302","board":"J","pattern":"q9","wanted":"complex8","temperature":"warm"},
+    {"id":"B303","board":"J","pattern":"q10","wanted":"i","temperature":"warm"},
+    {"id":"B304","board":"J","pattern":"q10","wanted":"complex8","temperature":"cold"},
+    {"id":"B305","board":"Q59","pattern":"q9","wanted":"i","temperature":"warm"},
+    {"id":"B306","board":"Q59","pattern":"q9","wanted":"complex8","temperature":"cold"},
+    {"id":"B307","board":"Q59","pattern":"q10","wanted":"i","temperature":"cold"},
+    {"id":"B308","board":"Q59","pattern":"q10","wanted":"complex8","temperature":"warm"},
+    {"id":"B309","board":"Q235","pattern":"q9","wanted":"i","temperature":"cold"},
+    {"id":"B310","board":"Q235","pattern":"q9","wanted":"complex8","temperature":"warm"},
+    {"id":"B311","board":"Q235","pattern":"q10","wanted":"i","temperature":"warm"},
+    {"id":"B312","board":"Q235","pattern":"q10","wanted":"complex8","temperature":"cold"}
+  ],
+  "b1": [
+    {"id":"B101","board":"J","pattern":"duplicate","wanted":"all","temperature":"cold"},
+    {"id":"B102","board":"J","pattern":"duplicate","wanted":"multi8","temperature":"warm"},
+    {"id":"B103","board":"J","pattern":"partial","wanted":"all","temperature":"warm"},
+    {"id":"B104","board":"J","pattern":"partial","wanted":"multi8","temperature":"cold"},
+    {"id":"B105","board":"E","pattern":"disjoint","wanted":"all","temperature":"cold"},
+    {"id":"B106","board":"E","pattern":"disjoint","wanted":"multi8","temperature":"warm"},
+    {"id":"B107","board":"C","pattern":"differentBag","wanted":"all","temperature":"warm"},
+    {"id":"B108","board":"C","pattern":"differentBag","wanted":"multi8","temperature":"cold"},
+    {"id":"B109","board":"Q59","pattern":"bag","wanted":"all","temperature":"cold"},
+    {"id":"B110","board":"Q59","pattern":"bag","wanted":"multi8","temperature":"warm"},
+    {"id":"B111","board":"C","pattern":"cDuplicate","wanted":"all","temperature":"warm"},
+    {"id":"B112","board":"C","pattern":"cDuplicate","wanted":"multi8","temperature":"cold"}
+  ],
+  "holdout": [
+    {"id":"H01","board":"H8","pattern":"r210","wanted":"i","temperature":"cold","reuseCount":1},
+    {"id":"H02","board":"H8","pattern":"bag","wanted":"multi8","temperature":"warm","reuseCount":4},
+    {"id":"H03","board":"H8","pattern":"full","wanted":"all","temperature":"warm","reuseCount":2},
+    {"id":"H04","board":"H9","pattern":"restricted","wanted":"multi8","temperature":"cold","reuseCount":2},
+    {"id":"H05","board":"H9","pattern":"bag","wanted":"i","temperature":"warm","reuseCount":4},
+    {"id":"H06","board":"H9","pattern":"full","wanted":"multi8","temperature":"cold","reuseCount":2},
+    {"id":"H07","board":"H10","pattern":"r1","wanted":"i","temperature":"warm","reuseCount":1},
+    {"id":"H08","board":"H10","pattern":"r210","wanted":"all","temperature":"cold","reuseCount":2},
+    {"id":"H09","board":"H10","pattern":"q9","wanted":"or","temperature":"warm","reuseCount":4},
+    {"id":"H10","board":"H11","pattern":"r210","wanted":"i","temperature":"warm","reuseCount":1},
+    {"id":"H11","board":"H11","pattern":"bag","wanted":"all","temperature":"cold","reuseCount":2},
+    {"id":"H12","board":"H11","pattern":"q10","wanted":"or","temperature":"warm","reuseCount":4}
+  ],
+  "conditions": {
+    "a6":["REF_UNCHANGED","A6_STATS_OFF"],
+    "b4":["BASELINE_PRODUCT","P_FIXED_PACKED","R_REBUILT_PACKED","M_DIRECT_MASK"],
+    "b6":["REPEATED","BULK_WHERE_VALID","COLLECT_REUSE"],
+    "b3":["CACHE_OFF","CURRENT_SET_CACHE","ONE_MINIMAL_IMPROVED_SET_CACHE"],
+    "b1":["DEDUPE_OFF","DEDUPE_ON"]
+  },
+  "timedUnitCaps":{"a6":48,"b4":72,"b6":46,"firstWave":166,"b3":72,"b1":48,"holdout":48,"concurrentBatches":12},
+  "limits":{"requestSeconds":15,"sequenceSeconds":30,"warmupSeconds":30,"coldInitializationSeconds":30,"initialBuildAndGateSeconds":1200,"firstWaveIncludingWarmupInitializationCleanupSeconds":1800,"laterCandidateSeconds":900,"holdoutSeconds":900,"concurrencySeconds":900,"browserGateSeconds":600},
+  "concurrentWorkloads":[
+    {"concurrency":1,"cells":["H02"]},
+    {"concurrency":2,"cells":["H02","H08"]},
+    {"concurrency":4,"cells":["H02","H08","H03","H09"]}
+  ],
+  "executionGates":{"b6":"CONFIRM_CALLER_AND_REUSE_LIFETIME_BEFORE_PROTOTYPE","b3":"REVIEW_PRIOR_COST_RESULTS_BEFORE_ACTIVATION","b1":"REVIEW_PRIOR_COST_RESULTS_BEFORE_ACTIVATION","holdout":"ONE_PROMISING_CANDIDATE_ONLY","concurrency":"ONE_PROMISING_CANDIDATE_WITH_REAL_WORKER_TRANSPORT"},
+  "expectedResultPolicy":"No solver golden hashes invented. Static counts and contracts frozen now; oracle/golden signatures and artifact hashes must be sealed in GATE_SEAL.json before timing. No input substitution after observing outcomes."
+}

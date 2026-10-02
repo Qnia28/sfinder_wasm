@@ -1,0 +1,30 @@
+{
+  "date":"2026-10-02",
+  "purpose":"Existing-evidence-first decisions; no past solver campaign executed again in this planning task.",
+  "historicalSources":{
+    "luna":"muse/saves-improve/tests/SAVES_PROMOTION_BENCH_20261001_KO.md",
+    "muse":"muse/saves-improve/bench/20260930-matrix/RESULT_KO.md",
+    "lunaManifest":"muse-promo-bench-20261001/manifest.json (local archive)",
+    "museRaw":"muse/saves-improve/bench/20260930-matrix/results/"
+  },
+  "historicalCampaign":{"lunaCells":1595,"pairedRuns":7975,"os":"Windows","node":"24.13.0","wasm":"640232e30c586e87d6c5f5ad5ab52856c9ab173df984e4915f383e9fd399eee2","reuseTimingAsLinuxObservations":false},
+  "items":[
+    {"item":"A1","existing":"539 cells, wall ratio0.999; Cycle1 all45 plus QB32","decision":"NO_REBENCH","reason":"No changed parsing algorithm or newly established bottleneck."},
+    {"item":"A2","existing":"Repeated wall1.001, eval0.984","decision":"NO_REBENCH","reason":"Do not introduce new global AST sharing without measured need."},
+    {"item":"A3","existing":"5000-case neutral; larger benefit unproven","decision":"DEFER","reason":"No standalone table prototype now."},
+    {"item":"A4","existing":"512-entry eviction/recompute checks","decision":"DELTA_RESOURCE_CHECK","newEvidence":"Per-predicate memo/key bounds, retained functions, hot/churn and long-lived request traces."},
+    {"item":"A5","existing":"Correct regex-inside-hash change; input-dependent parser cost","decision":"MINIMAL_REIMPLEMENTATION_REGRESSION","excluded":"2.5M parser-call microbench repetitions","newEvidence":"Reimplemented parser still preserves validation/lazy-regex order and shared caller contracts."},
+    {"item":"A6","existing":"Stage counters available; some off-path clocks remain","decision":"FOUR_CELL_OVERHEAD_ONLY","supersedes":"Old12 cells/48 requests","newEvidence":"Zero measurement-only work off, accurate stage definitions;16 paired-condition requests."},
+    {"item":"A7","decision":"DEFER","reason":"No validated board-handle caller need confirmed."},
+    {"item":"B1","existing":"27 setup x4 branch forms xALL/8;216 cells; overall0.991 and8-expression0.966","decision":"NO_ORIGINAL_ALGORITHM_REBENCH","supersedes":"Old12 cells/48 planned requests","reactivation":"Changed dedupe algorithm or routing condition plus explicit delta hypothesis."},
+    {"item":"B2","existing":"486 short/mid cells wall1.000;162 long cells wall0.989","decision":"NO_REBENCH","reason":"Set/ID universal speedup unsupported."},
+    {"item":"B3","existing":"Muse21 on/off conditions, high-hit multiple-expression improvements; Luna did not retime B3","decision":"DEFER_UNTIL_NEW_SET_CACHE_CANDIDATE","supersedes":"Automatic72-request plan","newEvidenceIfReopened":"Key/payload overhead and low-hit cases; do not repeat old ID-cache win just to migrate to CI."},
+    {"item":"B4","existing":"Mask/packed/scalar equivalence, large JS aggregation removal; limited large boards","decision":"NEW_FACTOR_SEPARATION_AND_DATABASE_COVERAGE","newEvidence":"True product/R/M/wrapper costs, CPU/memory,264 development geometries,64 deep groups,16 large groups.","caution":"Same input with a changed source diff is not the same experiment; keep old Windows records separate."},
+    {"item":"B5","decision":"DEFER","reason":"Synthetic countdown is not real asynchronous WASM cancellation."},
+    {"item":"B6","existing":"Small collect-shared176->33ms observation; parent/commit131-cell harness uses calculateSaves single calls","decision":"HOLD_FOR_REAL_CALLER","newEvidenceIfReopened":"Bulk comparison,one-use cost,handle lifetime. Do not treat single-call131-cell rows as multi-evaluation evidence."}
+  ],
+  "testReusePolicy":"Run existing regression tests rather than copy their assertions. Add only missing or changed behavior tests; correctness rerun after source changes is intentional and is not old performance-campaign replay.",
+  "newCampaignDedupKey":["rawOccupancy","literalPattern","orderedWantedSave","clear","Hold","cache","mask","coldWarm","baselineSourceWasmHash","candidateSourceWasmHash","repetition"],
+  "dedupOwnerRule":"Assign an entire paired comparison to one job before execution. Anchor > broad > deep > large. Never combine a baseline measured on one VM with a candidate on another.",
+  "exactCellLedgerStatus":"Final executable row ledger must be generated from immutable prototype/runner hashes before CI; no source candidate exists yet. Aggregate evidence decisions do not claim all historical cells have identical source hashes."
+}

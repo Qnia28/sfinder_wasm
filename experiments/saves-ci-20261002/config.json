@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+  "baseline": "187fbf954ad0749e697b4e7f1252683b318d696e",
+  "a5": "681b09681e89ec59734c64c52709485bae7f801c",
+  "a4": "023950c3653a46c554c9c7bb2a6a4f2b03b2f524",
+  "a6": "111c9d213f394ae5578cb41d12e858e89820de9a",
+  "b4": "fc377e7eac64bd580033f27b69ce609c53de9778",
+  "repetitions": 2,
+  "runner": "ubuntu-24.04",
+  "node": "24.13.0",
+  "rust": "1.90.0",
+  "maxParallel": 4,
+  "requestMs": 15000,
+  "initMs": 30000,
+  "warmupMs": 30000,
+  "resourceMs": 30000,
+  "artifactRetentionDays": 1,
+  "artifactTotalLimitBytes": 100663296,
+  "artifactPerJobLimitBytes": 4194304,
+  "paidFallback": false,
+  "storageGate": "USER_CONFIRMED_OVERAGE_BLOCK",
+  "holdoutEnabled": false
+}

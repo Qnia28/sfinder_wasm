@@ -1,0 +1,68 @@
+{
+  "schema": "saves-ci-design-seal-v1",
+  "protocol": "PLAN_KO + independent variants; no candidate performance inspected",
+  "files": {
+    "inputs/inventory.json": "6fe87476c46e424b63d874eb3cf0e4f599cb30e02d7b1607b6d000b75bccf58d",
+    "inputs/development.json": "2e2498cfdf97054a9aeaea3e5e201dc3b05989a3118c56eee2b1250f029cc3db",
+    "inputs/holdout.json": "5c8f4d2b36fe506ee29eac6a331242e234c19cd46c03a860917ebcd60dac6a79",
+    "inputs/cells.json": "0789ee1392b23539feaf1792c0d7957b93a5dc0c0ea6d385abc14f8179996cde",
+    "inputs/evidence-ledger.json": "4377b455f73a55fed28b125b4b699e4618e2df2a3d7ef923c68a5bbfae266f57"
+  },
+  "holdoutGroups": [
+    "00c0318ff3",
+    "00401fc47f",
+    "00004ffe0f",
+    "0100c3fc1f",
+    "00000ffe3d",
+    "0001c0fc7f",
+    "0000419fff",
+    "0641307c1f",
+    "00c0381f9f",
+    "000007ffc7",
+    "0000f07c7f",
+    "00001ffc67",
+    "01c1307c1f",
+    "00e0383f0f",
+    "000001efff",
+    "0003c1fc1f",
+    "00201fff03",
+    "07c0f03c07",
+    "00c0367f07",
+    "00000defcf",
+    "000071fc3f",
+    "0018160fdf",
+    "004031bc7f",
+    "01c03c3f07",
+    "00000ffde3",
+    "000481fc7f",
+    "00007e3e1f",
+    "0301c0fc1f",
+    "00c0103dff",
+    "00000ffdc7",
+    "000070fc7f",
+    "00002cff1f"
+  ],
+  "counts": {
+    "anchor": {
+      "cells": 9,
+      "timedRequests": 72
+    },
+    "a6": {
+      "cells": 4,
+      "timedRequests": 16
+    },
+    "broad": {
+      "cells": 527,
+      "timedRequests": 2108
+    },
+    "deep": {
+      "cells": 256,
+      "timedRequests": 1024
+    },
+    "large": {
+      "cells": 31,
+      "timedRequests": 124
+    }
+  },
+  "dedup": 2
+}

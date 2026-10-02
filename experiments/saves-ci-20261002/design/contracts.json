@@ -1,0 +1,68 @@
+{
+  "schema":"saves-contract-design-v1",
+  "status":"SPECIFICATION_ONLY_NOT_EXECUTED",
+  "f0Suites":["tests/saves-expression.test.mjs","tests/saves-outcomes.test.mjs","tests/saves-single-mask.test.mjs","tests/save-outcome-cache.test.mjs","tests/initial-complete-rows.test.mjs","tests/todo-extended.test.mjs"],
+  "sentinelCases":[
+    {"id":"S1","wantedSave":"I&J","solver":"throws-sentinel","expectedCalls":0,"expected":"SyntaxError"},
+    {"id":"S2","wantedSave":"/[/","solver":"throws-sentinel","expectedCalls":1,"expected":"same-sentinel-object"},
+    {"id":"S3","wantedSave":"/[/","solver":"returns-empty-packed","expectedCalls":1,"expected":"SyntaxError-at-evaluation"},
+    {"id":"S4","wantedSave":"ALL,I","solver":"throws-sentinel","expectedCalls":0,"expected":"SyntaxError"}
+  ],
+  "sentinelExpansion":{"board":"C","pattern":"c210","singleSaveMask":[true,false],"totalChecks":8},
+  "validationPriorityCases":[
+    {"id":"V1","clear":1,"pattern":"T,*p3","wantedSave":"I&J","expected":"UnsupportedClearHeightError-before-solver"},
+    {"id":"V2","clear":2,"board":"C","pattern":"T,*p3","wantedSave":"I&J","expected":"BoardExceedsClearHeightError-before-solver"},
+    {"id":"V3","board":"C","pattern":"[^TT]p1","wantedSave":"I&J","expected":"PatternSyntaxError-before-solver"},
+    {"id":"V4","board":"C","pattern":"T,*p3;TTJ,IIIIIIII,*p1","wantedSave":"I&J","expected":"PatternSyntaxError-equal-queue-length-before-solver"}
+  ],
+  "a5ParserCases":[
+    {"id":"P01","input":"I","expression":"I","alias":null},
+    {"id":"P02","input":" I#tag ","expression":"I","alias":"tag"},
+    {"id":"P03","input":"I#alias#extra","expression":"I","alias":"alias#extra"},
+    {"id":"P04","input":"/#/","expression":"/#/","alias":null},
+    {"id":"P05","input":"/a#b/","expression":"/a#b/","alias":null},
+    {"id":"P06","input":"/a#b/#tag","expression":"/a#b/","alias":"tag"},
+    {"id":"P07","input":"/[A-Z#]+/","expression":"/[A-Z#]+/","alias":null},
+    {"id":"P08","input":"/a\\/#b/#tag","expression":"/a\\/#b/","alias":"tag"},
+    {"id":"P09","input":"/a\\\\/#tag","expression":"/a\\\\/","alias":"tag"},
+    {"id":"P10","input":"/#/#","expression":"/#/","alias":""},
+    {"id":"P11","input":"/a#b","expression":"/a#b","alias":null,"compileExpected":"missing-ending-slash"},
+    {"id":"P12","input":"^(/#/)#tag","expression":"^(/#/)","alias":"tag"},
+    {"id":"P13","input":"I||/#/#mix","expression":"I||/#/","alias":"mix"},
+    {"id":"P14","input":"I\\#tag","expression":"I\\#tag","alias":null,"compileExpected":"unknown-character-backslash"},
+    {"id":"P15","input":"#tag","parseExpected":"SyntaxError-empty-expression"},
+    {"id":"P16","input":"","parseExpected":"SyntaxError-empty-expression"}
+  ],
+  "a5FeatureCases":[
+    {"id":"A5F1","wantedSave":"/#/","expectedSuccess":0},
+    {"id":"A5F2","wantedSave":"/#/#hash","expectedSuccess":0,"expectedAlias":"hash"},
+    {"id":"A5F3","wantedSave":"I#tag","reference":"baseline-equal"},
+    {"id":"A5F4","wantedSave":"/#/#hash,I#i","reference":"matches-array-form"},
+    {"id":"A5F5","wantedSave":["/#/#hash","I#i"],"reference":"matches-string-form"},
+    {"id":"A5F6","wantedSave":"/a\\/#b/#tag","expectedSuccess":0,"expectedAlias":"tag"}
+  ],
+  "a5FeatureDefaults":{"board":"C","pattern":"c210","singleSaveMask":[true,false],"totalRequests":12,"expectedDifference":"A5 regex-inside-hash corrections only; baseline may intentionally throw"},
+  "a4FirstCandidateContract":{"policy":"FIFO, no sweep of alternative policies","globalEntriesPerExistingMap":512,"globalMaps":["expressionTables","exactExpressionPredicates","bagInfoCache"],"predicateMemoEntries":256,"maxRetainedStringKeyChars":4096,"oversize":"compute exactly without caching","noNewOutcomeAstCache":true,"payloadClaim":"key character and entry bounds only; not exact heap/RSS bound"},
+  "a4Traces":[
+    {"id":"T1","kind":"different-expressions","expressions":"/^I{n}$/ for n=0..1023","passes":2,"expressionCallsPerApi":2048,"apis":["compileSaveExpression","compileExactSaveExpression"],"retainPredicatesForN":[0,1,2,3,4,5,6,7],"snapshotEvery":128},
+    {"id":"T2","kind":"same-expression-different-outcomes","expression":"/I/","outcome":"I repeated n times, n=0..4095","passes":2,"calls":8192,"snapshotEvery":256},
+    {"id":"T3","kind":"hot-and-near-capacity","hotExpressions":16,"hotRounds":64,"hotCallsPerApi":1024,"nearCapacityExpressions":520,"nearCapacityRounds":4,"nearCapacityCallsPerApi":2080,"snapshotEvery":128},
+    {"id":"T4","kind":"different-patterns","pattern":"I repeated n times + ',*p1', n=0..1023","queue":"I repeated n times + 'T'","api":"prepareSaveCase","passes":2,"calls":2048,"snapshotEvery":128}
+  ],
+  "a4ResourceSessions":{"conditions":["REF","A4_CAPS"],"repetitions":2,"traceCount":4,"sessions":16,"sessionSeconds":30,"budget":"included in initial 20-minute build/correctness/resource gate","gc":"one forced GC before trace and one after trace if --expose-gc available, no periodic forced GC; availability recorded","snapshots":"structural counters and heap/RSS diagnostic only; no hidden performance campaign"},
+  "a4EdgeChecks":{"stringKeyLengths":[4096,4097,65536],"prefixPolicy":"valid repeated-I atoms, no pathological regex","failedConstruction":"structural syntax errors do not add a predicate/table","failedEvaluation":"lazy invalid regex adds no memoized Boolean result","retainedFunction":"first 8 predicates still evaluate correctly after global eviction","mutableBagInput":"caller-owned Set must not be reused as a global mutable key"},
+  "a6GateChecks":["stats off: zero measurement-only clock calls/counter scans","stats field absent off, present on, strip-stats output exact equality","nonnegative finite stages; stage sum not greater than enclosing wall by more than 0.5ms","result allocation included; unassigned wall retained","no previous-request or previous-evaluation stats mutation","same sentinel errors and solver calls as F0"],
+  "a6StatsOnDiagnostic":{"cells":["A601","A606","A612"],"repetitions":1,"requests":3,"budget":"initial gate only; not performance evidence"},
+  "b4OracleVectors":{"board":"C","queues":["TTIJ","TTJI","TJII","ITJT","TTIJ"],"useHold":[false,true],"oracle":"scalar enumeratePc used-piece counts -> residual display-order bits; independently hand-check queue counts; three modes direct/packed/scalar","returnedOwnership":"retain first bytes, call another solver request and explicitly grow test-instance memory once, first bytes unchanged"},
+  "b4CompleteRowCases":{"clear":[2,3,4,5,6],"field":"XXXXXXXXXX repeated clear-1 times + XXXXXX____","pattern":"*p2","required":1,"caseCount":42,"useHold":[false,true],"wantedSave":["ALL","I,II,^I,!I,I&&J,/I{2}/"],"modes":["direct","packed","geometry"],"requests":60},
+  "b4CompatibilityChecks":["export missing -> packed once","direct decline -> packed once","direct success -> packed zero calls","returned mask length mismatch -> explicit error","empty queues -> empty owned bytes","short queues preserve zero outcomes","mixed/overlong inputs decline or preserve existing public validation","zero-required full-board remains compatible","used-piece counts inconsistent -> no silent truncated multiplicity"],
+  "b6GateChecks":["caller/use-case and session lifetime documented before activation","REPEATED/BULK/REUSE normalize to ordered per-query rows with same metadata and duplicates","ALL mixed bulk is N/A, no replacement input","collect once, evaluate 1/2/4 times, include collect and result allocations","one-use cost retained","handle mutation rejected or cannot alter later evaluations","explicit release clears owned references; post-release use is error","board/pattern/Hold/clear mismatch rejected","no global handle cache","standalone calculateSaves preserves F0 error order"],
+  "b3SyntheticTraces":[
+    {"id":"K1","queries":4096,"universeCycle":[[],[""],["I"],["I","J"]],"purpose":"high reuse including empty distinctions"},
+    {"id":"K2","queries":4096,"universe":"single exact string I repeated n+1, n=0..4095","purpose":"low reuse, key/payload saturation and oversize bypass"},
+    {"id":"K3","queries":128,"universe":"first 33 exact strings I repeated 0..32, insertion order reversed on alternating calls","purpose":"maxOutcomes=32 exact bypass and order independence"}
+  ],
+  "b3TraceDefaults":{"maxEntries":256,"maxBytes":65536,"maxOutcomes":32,"expressions":["I","II","I&&J","^I","!I","^(I&&J)","/I{2}/","!/T/"],"expected":"Set evaluator equality, no input mutation, no error memoization","note":"Real solver hit rates are measured outcomes, not frozen assumptions."},
+  "deferred":["A1","A2","A3","B2","A7","B5"],
+  "expectedKnownFixture":{"board":"C","pattern":"c210","useHold":true,"wantedSave":"ALL","success":190,"provenance":"existing saves-outcomes.test.mjs assertion, not newly executed"}
+}
