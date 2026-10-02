@@ -111,7 +111,7 @@ jobs:
       - name: Real WASM oracle, bounded and locked-prefix contracts
         run: |
           set -o pipefail
-          node --test --test-concurrency=1 bench/threshold/correctness.test.mjs bench/threshold/harness.test.mjs 2>&1 | tee bench/threshold/results/correctness/wasm.txt
+          node --test --test-concurrency=1 bench/threshold/correctness.test.mjs bench/threshold/harness.test.mjs bench/threshold/db-correctness.test.mjs 2>&1 | tee bench/threshold/results/correctness/wasm.txt
       - name: Existing secondary / worker / actual CP regression
         run: |
           npm ci

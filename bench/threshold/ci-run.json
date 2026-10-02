@@ -1,5 +1,5 @@
 {
-  "profile": "baseline",
+  "profile": "screen",
   "suite": "development",
   "fixtureSet": "cycle1",
   "candidateMask": 31,
