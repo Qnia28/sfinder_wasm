@@ -1,5 +1,5 @@
 {
-  "suite": "all",
+  "suite": "off",
   "enumerationSeconds": 300,
   "primarySeconds": 90
 }

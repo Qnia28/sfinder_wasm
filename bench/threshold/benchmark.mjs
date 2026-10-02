@@ -130,6 +130,10 @@ for (const caseId of ids) for (let comparisonIndex=0; comparisonIndex<comparison
     solverSpeedupMedian: median(complete.map(p=>p.find(r=>r.side==='left').solverMs / p.find(r=>r.side==='right').solverMs)),
     leftMedianMs: median(complete.map(p=>p.find(r=>r.side==='left').nativeMs)),
     rightMedianMs: median(complete.map(p=>p.find(r=>r.side==='right').nativeMs)),
+    leftPeakRssMedianKiB: median(complete.map(p=>p.find(r=>r.side==='left').processPeakRssKiB)),
+    rightPeakRssMedianKiB: median(complete.map(p=>p.find(r=>r.side==='right').processPeakRssKiB)),
+    leftWasmMemoryMedianBytes: median(complete.map(p=>p.find(r=>r.side==='left').wasmMemoryBytes)),
+    rightWasmMemoryMedianBytes: median(complete.map(p=>p.find(r=>r.side==='right').wasmMemoryBytes)),
     leftOnlyExact: paired.filter(p=>p.find(r=>r.side==='left')?.status==='EXACT'&&p.find(r=>r.side==='right')?.status==='TIMEOUT').length,
     rightOnlyExact: paired.filter(p=>p.find(r=>r.side==='right')?.status==='EXACT'&&p.find(r=>r.side==='left')?.status==='TIMEOUT').length,
   });

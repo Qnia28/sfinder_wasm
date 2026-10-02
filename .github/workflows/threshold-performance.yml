@@ -182,6 +182,7 @@ jobs:
       - run: node bench/threshold/summarize.mjs
         env:
           EXPECTED_MATRIX: ${{ needs.build.outputs.matrix }}
+      - run: node bench/threshold/evaluate.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

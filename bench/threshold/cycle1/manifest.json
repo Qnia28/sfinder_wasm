@@ -1,0 +1,2916 @@
+{
+  "version": 1,
+  "dataset": "cycle1-database",
+  "baseline": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+  "databaseHash": "58f02fe2e1f7939e127de4c7ea2886bcf45c91a797ffa0d25dc8a0e4fb262388",
+  "selectionPolicyHash": "7b9d368a2a7ad022367a26bec4535732059b0ccea9b3d9d44f63a9262934dc56",
+  "elements": [
+    "stagedBounds",
+    "removePresort",
+    "rootForced",
+    "priorPropagation",
+    "currentPropagation"
+  ],
+  "cases": [
+    {
+      "id": "cycle1-elephant-a-O",
+      "setupId": "cycle1-elephant-a",
+      "filter": "O",
+      "mirrorGroup": "0x3c0f07c07",
+      "occupied": 16,
+      "n": 458,
+      "K": 56,
+      "F": 37,
+      "rows": 4516,
+      "qualityLevels": 26,
+      "suite": "validation",
+      "file": "inputs/cycle1-elephant-a-O.json.gz",
+      "sha256": "95cccc1aad19e36c4eda48879ba84c7863138cbadff32aa39ade0cd04a82b9fe",
+      "compressedSha256": "db564582401f456e4017f418609e5e204bc6ef813c03af1b575ef221874d0e15",
+      "seedIds": [
+        7,
+        8,
+        12,
+        13,
+        14,
+        18,
+        21,
+        25,
+        37,
+        40,
+        45,
+        62,
+        65,
+        76,
+        77,
+        79,
+        81,
+        82,
+        83,
+        95,
+        97,
+        108,
+        109,
+        110,
+        140,
+        146,
+        147,
+        151,
+        154,
+        155,
+        158,
+        159,
+        169,
+        217,
+        220,
+        221,
+        236,
+        256,
+        261,
+        334,
+        364,
+        366,
+        375,
+        378,
+        385,
+        392,
+        397,
+        401,
+        408,
+        410,
+        411,
+        413,
+        433,
+        435,
+        437,
+        442
+      ],
+      "primaryBackend": "kernel",
+      "primaryStatus": "EXACT_KERNEL",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-jaws-a-Z",
+      "setupId": "cycle1-jaws-a",
+      "filter": "Z",
+      "mirrorGroup": "0x81e0383e07",
+      "occupied": 16,
+      "n": 325,
+      "K": 44,
+      "F": 25,
+      "rows": 4644,
+      "qualityLevels": 20,
+      "suite": "validation",
+      "file": "inputs/cycle1-jaws-a-Z.json.gz",
+      "sha256": "ab530b1bb953a7f1a8929f32f7fb87b1edee56504562a83f10bf30bdb1c5ea01",
+      "compressedSha256": "eb7e69083c6b7a3a2f4f2b691c29093594c2ec387a6e18ade6a6444a3985c3a7",
+      "seedIds": [
+        0,
+        3,
+        5,
+        8,
+        9,
+        11,
+        14,
+        15,
+        37,
+        42,
+        43,
+        45,
+        47,
+        51,
+        61,
+        66,
+        77,
+        83,
+        106,
+        109,
+        112,
+        113,
+        114,
+        118,
+        120,
+        122,
+        123,
+        133,
+        150,
+        154,
+        158,
+        168,
+        175,
+        191,
+        192,
+        194,
+        197,
+        204,
+        211,
+        212,
+        258,
+        279,
+        299,
+        317
+      ],
+      "primaryBackend": "kernel",
+      "primaryStatus": "EXACT_KERNEL",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-jeremy-a-L",
+      "setupId": "cycle1-jeremy-a",
+      "filter": "L",
+      "mirrorGroup": "0x80603e0f87",
+      "occupied": 16,
+      "n": 150,
+      "K": 38,
+      "F": 31,
+      "rows": 4408,
+      "qualityLevels": 27,
+      "suite": "validation",
+      "file": "inputs/cycle1-jeremy-a-L.json.gz",
+      "sha256": "0a414aea0d4c143d6a84a5358e94ae0cab0ae3043baa9fd54ad1480b8564d30f",
+      "compressedSha256": "6fa9559e3e5cc010d0ff75d0c47cf4232f4ef5145e1a32db20dc4fb7cfdc1080",
+      "seedIds": [
+        5,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        18,
+        19,
+        22,
+        28,
+        33,
+        34,
+        35,
+        36,
+        43,
+        47,
+        50,
+        51,
+        63,
+        69,
+        74,
+        75,
+        76,
+        83,
+        92,
+        106,
+        111,
+        112,
+        119,
+        122,
+        125,
+        126,
+        127,
+        141,
+        143,
+        145,
+        149
+      ],
+      "primaryBackend": "kernel",
+      "primaryStatus": "EXACT_KERNEL",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-legs-a-Z",
+      "setupId": "cycle1-legs-a",
+      "filter": "Z",
+      "mirrorGroup": "0x1c0703c3f",
+      "occupied": 16,
+      "n": 650,
+      "K": 44,
+      "F": 23,
+      "rows": 4678,
+      "qualityLevels": 27,
+      "suite": "validation",
+      "file": "inputs/cycle1-legs-a-Z.json.gz",
+      "sha256": "7cce514eeb43fcee9413f6c1a3d4cd5cfce9ad9addc5fcf8fec7d933075c1669",
+      "compressedSha256": "79aab4e1f466dc6e108c416c44c83cce04b6d26a34fc246f121c8412bbf0816a",
+      "seedIds": [
+        2,
+        10,
+        13,
+        19,
+        34,
+        37,
+        38,
+        43,
+        53,
+        61,
+        72,
+        83,
+        85,
+        89,
+        93,
+        94,
+        114,
+        182,
+        208,
+        209,
+        210,
+        227,
+        238,
+        253,
+        292,
+        351,
+        354,
+        377,
+        381,
+        425,
+        431,
+        432,
+        440,
+        519,
+        539,
+        540,
+        548,
+        561,
+        568,
+        576,
+        577,
+        581,
+        585,
+        629
+      ],
+      "primaryBackend": "kernel",
+      "primaryStatus": "EXACT_KERNEL",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-pcinfo-031-Z",
+      "setupId": "cycle1-pcinfo-031",
+      "filter": "Z",
+      "mirrorGroup": "0xc0301c1f",
+      "occupied": 12,
+      "n": 1676,
+      "K": 44,
+      "F": 22,
+      "rows": 19606,
+      "qualityLevels": 52,
+      "suite": "validation",
+      "file": "inputs/cycle1-pcinfo-031-Z.json.gz",
+      "sha256": "bc50fea07a47a2c8c2c277e0917d56b39dd75cb0cbb3e8e906d822752f70b1d3",
+      "compressedSha256": "56933dfdd375621ae5a3d3fa9be184be67c1d60a234288b4790520ea30c0a2ac",
+      "seedIds": [
+        30,
+        67,
+        89,
+        107,
+        118,
+        149,
+        160,
+        182,
+        196,
+        243,
+        254,
+        288,
+        301,
+        303,
+        305,
+        357,
+        369,
+        371,
+        396,
+        496,
+        509,
+        522,
+        593,
+        612,
+        649,
+        687,
+        692,
+        705,
+        731,
+        735,
+        775,
+        823,
+        907,
+        910,
+        957,
+        971,
+        1011,
+        1130,
+        1448,
+        1532,
+        1534,
+        1656,
+        1665,
+        1674
+      ],
+      "primaryBackend": "highs",
+      "primaryStatus": "Optimal",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-pcinfo-032-O",
+      "setupId": "cycle1-pcinfo-032",
+      "filter": "O",
+      "mirrorGroup": "0x3c0301c07",
+      "occupied": 12,
+      "n": 1421,
+      "K": 62,
+      "F": 37,
+      "rows": 19850,
+      "qualityLevels": 51,
+      "suite": "validation",
+      "file": "inputs/cycle1-pcinfo-032-O.json.gz",
+      "sha256": "069efb0b2bfd2591ce01c435863d9bdc7c85a8923ff2f2945dc204cc817d4d2c",
+      "compressedSha256": "96c17551fc4c34ab0bdb6f3555d71141435e43e14cc48e670ed775128511eb99",
+      "seedIds": [
+        24,
+        36,
+        44,
+        46,
+        54,
+        83,
+        123,
+        152,
+        166,
+        177,
+        179,
+        183,
+        192,
+        202,
+        207,
+        257,
+        283,
+        303,
+        306,
+        308,
+        326,
+        327,
+        331,
+        347,
+        370,
+        386,
+        395,
+        448,
+        469,
+        493,
+        521,
+        525,
+        564,
+        659,
+        675,
+        676,
+        677,
+        698,
+        704,
+        706,
+        709,
+        724,
+        730,
+        749,
+        769,
+        775,
+        1042,
+        1080,
+        1129,
+        1130,
+        1137,
+        1206,
+        1223,
+        1230,
+        1235,
+        1242,
+        1244,
+        1248,
+        1257,
+        1284,
+        1285,
+        1313
+      ],
+      "primaryBackend": "highs",
+      "primaryStatus": "Optimal",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-pcinfo-033-O",
+      "setupId": "cycle1-pcinfo-033",
+      "filter": "O",
+      "mirrorGroup": "0xc0701c0f",
+      "occupied": 12,
+      "n": 1768,
+      "K": 43,
+      "F": 19,
+      "rows": 19708,
+      "qualityLevels": 55,
+      "suite": "validation",
+      "file": "inputs/cycle1-pcinfo-033-O.json.gz",
+      "sha256": "2169e4e99dec5bf3c1183cf984fbae836853bd06292df9abb5e67bb51f46eb1d",
+      "compressedSha256": "fd3a1ddb78b894fcae0972c17f1560c0c1a18d9b2daca1316d0a4560ab16e000",
+      "seedIds": [
+        23,
+        24,
+        50,
+        60,
+        83,
+        87,
+        179,
+        186,
+        193,
+        244,
+        300,
+        318,
+        353,
+        354,
+        378,
+        445,
+        518,
+        561,
+        594,
+        742,
+        756,
+        842,
+        858,
+        892,
+        902,
+        918,
+        952,
+        974,
+        975,
+        983,
+        998,
+        999,
+        1076,
+        1113,
+        1229,
+        1234,
+        1338,
+        1468,
+        1511,
+        1622,
+        1623,
+        1746,
+        1749
+      ],
+      "primaryBackend": "highs",
+      "primaryStatus": "Optimal",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-grace-system-a-O",
+      "setupId": "cycle1-grace-system-a",
+      "filter": "O",
+      "mirrorGroup": "0xfc3f0fc3f",
+      "occupied": 24,
+      "n": 138,
+      "K": 32,
+      "F": 22,
+      "rows": 638,
+      "qualityLevels": 6,
+      "suite": "validation",
+      "file": "inputs/cycle1-grace-system-a-O.json.gz",
+      "sha256": "f376a385ae5604f34079923468a33540964d36633f3913c116bfa228083caa94",
+      "compressedSha256": "eba4317c52d44a8f02d29deff2249fde725fb6327a93535de66ba4650908c95b",
+      "seedIds": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        6,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15,
+        22,
+        23,
+        25,
+        26,
+        27,
+        28,
+        30,
+        35,
+        38,
+        39,
+        43,
+        54,
+        55,
+        62,
+        122,
+        125,
+        126,
+        128,
+        131,
+        132
+      ],
+      "primaryBackend": "kernel",
+      "primaryStatus": "EXACT_KERNEL",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-6p-pco-a-O",
+      "setupId": "cycle1-6p-pco-a",
+      "filter": "O",
+      "mirrorGroup": "0xc1f87f1f87",
+      "occupied": 24,
+      "n": 42,
+      "K": 22,
+      "F": 20,
+      "rows": 580,
+      "qualityLevels": 7,
+      "suite": "development",
+      "file": "inputs/cycle1-6p-pco-a-O.json.gz",
+      "sha256": "b326b6efcb72b4bec1be0ae85aa61f6229b40b658edf47815980ea5a00d77009",
+      "compressedSha256": "96aad3e4ac9f254ad8ea6f9254914ff299f8a8e6671fe01fc8b7e274f0266524",
+      "seedIds": [
+        10,
+        11,
+        12,
+        15,
+        16,
+        17,
+        18,
+        21,
+        22,
+        23,
+        24,
+        30,
+        31,
+        32,
+        33,
+        34,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41
+      ],
+      "primaryBackend": "kernel",
+      "primaryStatus": "EXACT_KERNEL",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-pcinfo-040-Z",
+      "setupId": "cycle1-pcinfo-040",
+      "filter": "Z",
+      "mirrorGroup": "0x1c0f00c07",
+      "occupied": 12,
+      "n": 1687,
+      "K": 59,
+      "F": 21,
+      "rows": 19696,
+      "qualityLevels": 52,
+      "suite": "development",
+      "file": "inputs/cycle1-pcinfo-040-Z.json.gz",
+      "sha256": "894b193068d9c14b0079b4f6905f0255bff248e21290117d4f22e4fd51059929",
+      "compressedSha256": "9009e7cf738bcdf6da7b6bf8939f369fc1a145f3cd7a0d7f993605d8b0d49a5a",
+      "seedIds": [
+        100,
+        113,
+        122,
+        130,
+        169,
+        196,
+        218,
+        220,
+        242,
+        249,
+        275,
+        286,
+        293,
+        303,
+        325,
+        326,
+        333,
+        334,
+        337,
+        397,
+        418,
+        522,
+        533,
+        550,
+        564,
+        598,
+        621,
+        623,
+        647,
+        668,
+        680,
+        693,
+        694,
+        713,
+        731,
+        750,
+        753,
+        758,
+        825,
+        879,
+        880,
+        881,
+        886,
+        890,
+        909,
+        1002,
+        1102,
+        1117,
+        1266,
+        1391,
+        1398,
+        1416,
+        1541,
+        1551,
+        1553,
+        1604,
+        1613,
+        1621,
+        1647
+      ],
+      "primaryBackend": "highs",
+      "primaryStatus": "Optimal",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-pcinfo-022-J",
+      "setupId": "cycle1-pcinfo-022",
+      "filter": "J",
+      "mirrorGroup": "0x80e0783e07",
+      "occupied": 16,
+      "n": 464,
+      "K": 36,
+      "F": 16,
+      "rows": 3690,
+      "qualityLevels": 26,
+      "suite": "development",
+      "file": "inputs/cycle1-pcinfo-022-J.json.gz",
+      "sha256": "a2be08916dfe34a4fde944a5f6f230031f268adca046e6a934545c7afb85ed00",
+      "compressedSha256": "013248a1275abb0c7c3fac1244aaf9fe43387532b3ca0bc3a81a2117a07922e6",
+      "seedIds": [
+        5,
+        22,
+        29,
+        30,
+        31,
+        32,
+        43,
+        50,
+        62,
+        63,
+        65,
+        72,
+        88,
+        108,
+        133,
+        136,
+        153,
+        166,
+        174,
+        179,
+        180,
+        202,
+        206,
+        231,
+        285,
+        287,
+        291,
+        293,
+        294,
+        331,
+        359,
+        415,
+        437,
+        440,
+        448,
+        455
+      ],
+      "primaryBackend": "kernel",
+      "primaryStatus": "EXACT_KERNEL",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-pcinfo-041-Z",
+      "setupId": "cycle1-pcinfo-041",
+      "filter": "Z",
+      "mirrorGroup": "0x1c0303c07",
+      "occupied": 12,
+      "n": 1769,
+      "K": 48,
+      "F": 14,
+      "rows": 19886,
+      "qualityLevels": 52,
+      "suite": "development",
+      "file": "inputs/cycle1-pcinfo-041-Z.json.gz",
+      "sha256": "c86a995bd65ec1e1b536e7c529753ec571c9519e07cedd7a834ebef4a51469c2",
+      "compressedSha256": "7c2bed875842f3ee7523a627351f848878e0896ad5d59cf82013cb2c7d16f16d",
+      "seedIds": [
+        125,
+        140,
+        227,
+        259,
+        274,
+        286,
+        297,
+        317,
+        321,
+        351,
+        363,
+        417,
+        421,
+        438,
+        442,
+        464,
+        471,
+        476,
+        534,
+        564,
+        617,
+        687,
+        808,
+        819,
+        820,
+        822,
+        824,
+        831,
+        918,
+        935,
+        984,
+        992,
+        1003,
+        1014,
+        1092,
+        1097,
+        1223,
+        1342,
+        1372,
+        1577,
+        1585,
+        1639,
+        1691,
+        1713,
+        1721,
+        1722,
+        1739,
+        1758
+      ],
+      "primaryBackend": "highs",
+      "primaryStatus": "Optimal",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-hills-a-O",
+      "setupId": "cycle1-hills-a",
+      "filter": "O",
+      "mirrorGroup": "0x1c0f03c1f",
+      "occupied": 16,
+      "n": 591,
+      "K": 40,
+      "F": 21,
+      "rows": 4720,
+      "qualityLevels": 26,
+      "suite": "development",
+      "file": "inputs/cycle1-hills-a-O.json.gz",
+      "sha256": "b9b598ee3ebc67ba6349dcd2b813853d671504668f75426eedb38bbc755b84f3",
+      "compressedSha256": "adad6c5307f40ead1e86d7390a83c70723433a260e74b11e8b794a61cc8a89c6",
+      "seedIds": [
+        1,
+        25,
+        33,
+        35,
+        49,
+        51,
+        58,
+        59,
+        75,
+        85,
+        95,
+        102,
+        112,
+        172,
+        178,
+        218,
+        221,
+        223,
+        251,
+        256,
+        270,
+        271,
+        276,
+        286,
+        293,
+        298,
+        322,
+        335,
+        359,
+        368,
+        371,
+        372,
+        375,
+        388,
+        413,
+        462,
+        524,
+        539,
+        570,
+        576
+      ],
+      "primaryBackend": "kernel",
+      "primaryStatus": "EXACT_KERNEL",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-pcinfo-035-Z",
+      "setupId": "cycle1-pcinfo-035",
+      "filter": "Z",
+      "mirrorGroup": "0x1c0703c03",
+      "occupied": 12,
+      "n": 1499,
+      "K": 57,
+      "F": 29,
+      "rows": 19798,
+      "qualityLevels": 50,
+      "suite": "development",
+      "file": "inputs/cycle1-pcinfo-035-Z.json.gz",
+      "sha256": "db1d68d6bf7deb285553bac479cce89ace6463639314439200bb9c8da919eabf",
+      "compressedSha256": "3927a09bb8d21ef59afd766bf780fba9ff009e184869afa178a8b47c93e45896",
+      "seedIds": [
+        74,
+        91,
+        197,
+        203,
+        205,
+        235,
+        250,
+        275,
+        290,
+        316,
+        325,
+        332,
+        341,
+        344,
+        347,
+        370,
+        377,
+        426,
+        427,
+        430,
+        432,
+        501,
+        502,
+        591,
+        599,
+        617,
+        632,
+        641,
+        645,
+        648,
+        655,
+        671,
+        692,
+        705,
+        709,
+        734,
+        779,
+        797,
+        861,
+        863,
+        865,
+        870,
+        879,
+        905,
+        914,
+        932,
+        971,
+        974,
+        982,
+        1003,
+        1044,
+        1085,
+        1089,
+        1223,
+        1322,
+        1344,
+        1381
+      ],
+      "primaryBackend": "highs",
+      "primaryStatus": "Optimal",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-alt-jaws-a-Z",
+      "setupId": "cycle1-alt-jaws-a",
+      "filter": "Z",
+      "mirrorGroup": "0x3c0707c0f",
+      "occupied": 16,
+      "n": 258,
+      "K": 43,
+      "F": 27,
+      "rows": 4300,
+      "qualityLevels": 16,
+      "suite": "development",
+      "file": "inputs/cycle1-alt-jaws-a-Z.json.gz",
+      "sha256": "ddfc808d0934550e9856730ebd81ede39bab8cd4e02727d178eb377279ee41e9",
+      "compressedSha256": "aca65ccf1d808adc9d4fc3d9de2aca28ec8655d40130518f6793f7e47c286719",
+      "seedIds": [
+        1,
+        3,
+        4,
+        9,
+        11,
+        13,
+        14,
+        16,
+        19,
+        28,
+        33,
+        37,
+        39,
+        41,
+        45,
+        54,
+        77,
+        80,
+        95,
+        98,
+        103,
+        108,
+        110,
+        130,
+        145,
+        146,
+        154,
+        163,
+        175,
+        177,
+        178,
+        179,
+        193,
+        205,
+        220,
+        222,
+        228,
+        230,
+        231,
+        236,
+        238,
+        243,
+        253
+      ],
+      "primaryBackend": "kernel",
+      "primaryStatus": "EXACT_KERNEL",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-pcinfo-030-O",
+      "setupId": "cycle1-pcinfo-030",
+      "filter": "O",
+      "mirrorGroup": "0xc0307c07",
+      "occupied": 12,
+      "n": 782,
+      "K": 80,
+      "F": 55,
+      "rows": 19708,
+      "qualityLevels": 39,
+      "suite": "development",
+      "file": "inputs/cycle1-pcinfo-030-O.json.gz",
+      "sha256": "b31370c322ba640bd2a6acc0ba4507a821aa5ba0d4dc0fbe52ca198fed30fbd6",
+      "compressedSha256": "b0f35e7579b1a8fa0914d2c509e74d11df5e103d5589089321554cd27b0a4ad8",
+      "seedIds": [
+        9,
+        10,
+        21,
+        22,
+        23,
+        46,
+        59,
+        60,
+        61,
+        76,
+        84,
+        85,
+        95,
+        96,
+        98,
+        103,
+        105,
+        107,
+        110,
+        112,
+        113,
+        119,
+        127,
+        149,
+        150,
+        153,
+        176,
+        195,
+        199,
+        200,
+        207,
+        209,
+        213,
+        216,
+        222,
+        230,
+        265,
+        271,
+        272,
+        274,
+        276,
+        286,
+        297,
+        334,
+        336,
+        339,
+        354,
+        360,
+        362,
+        364,
+        369,
+        389,
+        417,
+        422,
+        423,
+        442,
+        450,
+        454,
+        456,
+        458,
+        470,
+        480,
+        486,
+        501,
+        510,
+        511,
+        512,
+        514,
+        515,
+        519,
+        538,
+        594,
+        606,
+        612,
+        678,
+        701,
+        715,
+        726,
+        753,
+        754
+      ],
+      "primaryBackend": "highs",
+      "primaryStatus": "Optimal",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-pcinfo-015-Z",
+      "setupId": "cycle1-pcinfo-015",
+      "filter": "Z",
+      "mirrorGroup": "0x3c0f03c0f",
+      "occupied": 16,
+      "n": 475,
+      "K": 46,
+      "F": 31,
+      "rows": 4168,
+      "qualityLevels": 24,
+      "suite": "development",
+      "file": "inputs/cycle1-pcinfo-015-Z.json.gz",
+      "sha256": "7eabc299dd7c660002c21703f2a10dba6e4ef8a4edd2926ab5ba5791bf2d2e50",
+      "compressedSha256": "d949ec3ef3bd801f4ddb8f962217b5aa480762eea95da98697794b4c87307692",
+      "seedIds": [
+        0,
+        7,
+        8,
+        9,
+        10,
+        12,
+        15,
+        21,
+        36,
+        44,
+        51,
+        54,
+        67,
+        98,
+        111,
+        118,
+        122,
+        130,
+        131,
+        138,
+        139,
+        140,
+        150,
+        160,
+        185,
+        187,
+        207,
+        223,
+        226,
+        250,
+        275,
+        310,
+        322,
+        323,
+        326,
+        327,
+        391,
+        397,
+        398,
+        415,
+        424,
+        426,
+        439,
+        449,
+        457,
+        464
+      ],
+      "primaryBackend": "kernel",
+      "primaryStatus": "EXACT_KERNEL",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-pcinfo-036-O",
+      "setupId": "cycle1-pcinfo-036",
+      "filter": "O",
+      "mirrorGroup": "0x403c0f07",
+      "occupied": 12,
+      "n": 563,
+      "K": 42,
+      "F": 20,
+      "rows": 18496,
+      "qualityLevels": 53,
+      "suite": "development",
+      "file": "inputs/cycle1-pcinfo-036-O.json.gz",
+      "sha256": "8f337f2468435e4be22c301c41e39de3a314961959f68968007f0235044695ae",
+      "compressedSha256": "a76459a0ff003de4fb94019b5382bd3470b19b3e0a577f6caaf2a28c9668ad98",
+      "seedIds": [
+        75,
+        78,
+        80,
+        81,
+        97,
+        101,
+        134,
+        136,
+        141,
+        144,
+        163,
+        167,
+        187,
+        201,
+        209,
+        218,
+        221,
+        223,
+        229,
+        242,
+        264,
+        271,
+        274,
+        286,
+        293,
+        297,
+        299,
+        302,
+        307,
+        339,
+        342,
+        354,
+        388,
+        390,
+        449,
+        459,
+        488,
+        494,
+        495,
+        496,
+        533,
+        534
+      ],
+      "primaryBackend": "highs",
+      "primaryStatus": "Optimal",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-alt-shoes-a-Z",
+      "setupId": "cycle1-alt-shoes-a",
+      "filter": "Z",
+      "mirrorGroup": "0xc0707c3f",
+      "occupied": 16,
+      "n": 254,
+      "K": 25,
+      "F": 12,
+      "rows": 4626,
+      "qualityLevels": 27,
+      "suite": "development",
+      "file": "inputs/cycle1-alt-shoes-a-Z.json.gz",
+      "sha256": "33d3c6262c897ec7478107b313243b663fd8c546cb9fd3e52af17b1f67de48e1",
+      "compressedSha256": "7207ae88da051f4c33514f5b6326a6bd5f0721b1c4b4f3847c0f935a965d0e1e",
+      "seedIds": [
+        0,
+        2,
+        6,
+        17,
+        34,
+        38,
+        41,
+        49,
+        56,
+        62,
+        80,
+        94,
+        105,
+        114,
+        119,
+        131,
+        133,
+        137,
+        154,
+        173,
+        177,
+        223,
+        228,
+        231,
+        239
+      ],
+      "primaryBackend": "kernel",
+      "primaryStatus": "EXACT_KERNEL",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    },
+    {
+      "id": "cycle1-pcinfo-039-S",
+      "setupId": "cycle1-pcinfo-039",
+      "filter": "S",
+      "mirrorGroup": "0x3c0701c03",
+      "occupied": 12,
+      "n": 1304,
+      "K": 54,
+      "F": 33,
+      "rows": 19482,
+      "qualityLevels": 43,
+      "suite": "development",
+      "file": "inputs/cycle1-pcinfo-039-S.json.gz",
+      "sha256": "cce62fb739e533bc4ed7383e2b2bca44d24758566d8bdd9dc5b503dcf12606d9",
+      "compressedSha256": "c46dda55bb7c5de07a0fdcb653aa993d102cd98d5ec721ff33a26a1d65459100",
+      "seedIds": [
+        1,
+        8,
+        13,
+        31,
+        35,
+        63,
+        65,
+        117,
+        120,
+        131,
+        133,
+        137,
+        139,
+        188,
+        191,
+        206,
+        225,
+        237,
+        302,
+        311,
+        325,
+        337,
+        353,
+        356,
+        382,
+        406,
+        466,
+        480,
+        550,
+        560,
+        572,
+        576,
+        577,
+        594,
+        611,
+        619,
+        624,
+        634,
+        722,
+        806,
+        845,
+        850,
+        909,
+        926,
+        1071,
+        1072,
+        1073,
+        1080,
+        1167,
+        1168,
+        1204,
+        1216,
+        1236,
+        1241
+      ],
+      "primaryBackend": "highs",
+      "primaryStatus": "Optimal",
+      "KProofSource": "Actions original enumeration + exact primary kernel/HiGHS optimum",
+      "captureRunId": "37035704246"
+    }
+  ],
+  "smoke": [
+    "cycle1-6p-pco-a-O",
+    "cycle1-pcinfo-040-Z"
+  ],
+  "factorial": [
+    "cycle1-6p-pco-a-O",
+    "cycle1-pcinfo-040-Z",
+    "cycle1-pcinfo-022-J",
+    "cycle1-pcinfo-041-Z",
+    "cycle1-hills-a-O",
+    "cycle1-pcinfo-035-Z"
+  ],
+  "missingValidation": [],
+  "audit": [
+    {
+      "setupId": "cycle1-6p-pco-a",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-alt-jaws-a",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-alt-shoes-a",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-big-jaws-a",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-cliff-o-a",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-elephant-a",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-elephant-j-a",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-grace-system-a",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-grace-system-b",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-hills-a",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-jaws-a",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-jeremy-a",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-legs-a",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-006",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-007",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-011",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-013",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-014",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-015",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-016",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-018",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-019",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-020",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-021",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-022",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-023",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-024",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-025",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-026",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-027",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-028",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-029",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-030",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-031",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-032",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-033",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-034",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-035",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-036",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-037",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-038",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-039",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-040",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-pcinfo-041",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    },
+    {
+      "setupId": "cycle1-shoes-a",
+      "enumerationStatus": "OK",
+      "records": [
+        {
+          "filter": "T",
+          "status": "PROVED"
+        },
+        {
+          "filter": "I",
+          "status": "PROVED"
+        },
+        {
+          "filter": "L",
+          "status": "PROVED"
+        },
+        {
+          "filter": "J",
+          "status": "PROVED"
+        },
+        {
+          "filter": "S",
+          "status": "PROVED"
+        },
+        {
+          "filter": "Z",
+          "status": "PROVED"
+        },
+        {
+          "filter": "O",
+          "status": "PROVED"
+        }
+      ]
+    }
+  ]
+}

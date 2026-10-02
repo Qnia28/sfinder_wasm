@@ -1,15 +1,22 @@
 import assert from 'node:assert/strict';
-import { readdirSync, readFileSync, writeFileSync, mkdirSync, copyFileSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import { BASELINE_SHA, ELEMENTS, sha256, validateMatrix } from './engine.mjs';
 const input = resolve(process.argv[2]), output = resolve(process.argv[3] || 'bench/threshold/cycle1');
+assert(!existsSync(resolve(output, 'manifest.json')), 'selection is frozen; never overwrite it');
 const db = JSON.parse(readFileSync(new URL('./cycle1-setups.json', import.meta.url)));
 const policyBytes = readFileSync(new URL('./selection-policy.json', import.meta.url)), policy = JSON.parse(policyBytes);
 function walk(dir) { return readdirSync(dir, { withFileTypes: true }).flatMap(e => e.isDirectory()
   ? walk(resolve(dir, e.name)) : e.name === 'capture.json' ? [resolve(dir, e.name)] : []); }
 const reports = walk(input).map(path => ({ path, ...JSON.parse(readFileSync(path)) }));
 assert.equal(new Set(reports.map(r => r.setupId)).size, reports.length, 'duplicate capture setup');
+assert(reports.length > 0, 'no captures');
+for (const r of reports) {
+  assert.equal(r.runId, reports[0].runId, 'mixed capture runs');
+  assert.equal(r.runAttempt, reports[0].runAttempt, 'mixed capture attempts');
+  assert.equal(r.buildHash, reports[0].buildHash, 'mixed capture builds');
+}
 const candidates = [], audit = [];
 for (const report of reports) {
   assert.equal(report.databaseHash, db.sourceSha256);

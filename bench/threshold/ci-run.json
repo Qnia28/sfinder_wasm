@@ -1,6 +1,7 @@
 {
-  "profile": "smoke",
-  "suite": "smoke",
+  "profile": "baseline",
+  "suite": "development",
+  "fixtureSet": "cycle1",
   "candidateMask": 31,
   "pairs": null,
   "timeoutSeconds": null
