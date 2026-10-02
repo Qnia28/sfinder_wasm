@@ -1,0 +1,54 @@
+{
+  "status": "STOP_BEFORE_MAIN_OPERATIONAL_BUDGET_GATE",
+  "correctnessPassed": true,
+  "correctnessCalls": 6912,
+  "pilotRuns": 192,
+  "scheduledPilotComplete": true,
+  "pilotStatuses": {
+    "EXACT": 52,
+    "CAPPED": 86,
+    "TIMEOUT_API": 54
+  },
+  "timeoutsAreIndependentPerCall": true,
+  "timeoutMatrixIDs": [
+    "board-006--restricted-split--ordinary",
+    "board-010--restricted-split--ordinary",
+    "board-025--restricted-split--ordinary",
+    "board-045--restricted-split--ordinary",
+    "board-064--restricted-split--ordinary",
+    "board-066--restricted-split--ordinary",
+    "board-069--restricted-split--ordinary",
+    "board-090--restricted-split--ordinary",
+    "board-097--restricted-split--ordinary"
+  ],
+  "timeoutRoutes": {
+    "THRESHOLD_FIRST_PRIMARY_HARD": 54
+  },
+  "allTimedOutCallsHaveSIGKILL": true,
+  "processWallTimeoutRangeMs": [
+    10379.007528000016,
+    10772.161909000002
+  ],
+  "registeredMainEntryPredictionCapMinutes": 80,
+  "registeredPredictionMaxShardMinutes": 163.27995530760026,
+  "registeredPredictionTotalRunnerHours": 38.79075212766675,
+  "allocatedMainRunnerHours": 32,
+  "mainMeasurementCalls": 0,
+  "legacyMeasurementCalls": 0,
+  "reservedMeasurementCalls": 0,
+  "runtimeLimitChanged": false,
+  "selectionChanged": false,
+  "performanceGatesChanged": false,
+  "operationalBudgetApprovalRequired": true,
+  "proposedPackingOnlyChange": {
+    "chunks": 32,
+    "maxParallel": 16,
+    "perJobTimeoutMinutes": 120,
+    "mainRunnerHoursCeiling": 64,
+    "overallOriginalCeilingRunnerHours": 66.7,
+    "overallNewCeilingRunnerHours": 98.7,
+    "sameConditionsAndRepetitions": true,
+    "sameApiProcessTimeouts": true
+  },
+  "noAutomaticCandidatePromotion": true
+}

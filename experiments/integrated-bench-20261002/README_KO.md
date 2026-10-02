@@ -17,3 +17,15 @@ Node+WASM메모리는root가생성한Linuxcgroupv2에서child전체3GiB/memorysw
 Attempt1/run37004387878은checkout기본depth1때문에baselineGitobject가없어gitarchive에서실패했다. 컴파일·synthetic·pilot·본측정호출은0회였다. 전체Actions로그/RUN을로컬보존하고fetch-depth0만CI준비설정으로추가한다. 입력·candidateRust·flags·gate·예산은변경하지않는다.
 
 Attempt2/run37004697494는native debug29/release29검사와두WASMbuild가성공했다. Linuxcgroupchildlauncher의execargv에nodeexecutable이빠진하네스오류가watchdogtest에서발견되어synthetic/pilot/main호출은0회였다. 두binary/hosttest/전체Actions로그를보존하고launcher만수정한다. candidateRust·입력·예산·gate는동일하다.
+
+## 현재 실행 결과 / 본측정 전 중단
+
+Attempt3/run37005113356/commit36dbc5a: native debug29/release29PASS, Linuxhardcgroup/watchdog검사PASS, synthetic288fixture/6,912callsPASS(nonoptimalseed218fixture). 개발32개pilot192호출전부기록·회수했다. EXACT52/CAPPED86/TIMEOUT_API54,ERROR/OOM/cleanup실패0. timeout은primaryHard9행렬×6조건이며앞조건timeout이뒤조건을생략시키지않았다. 정상반환결과exact/bridge불일치0. timeoutincumbent는null이다.
+
+pilot집계의PASS는하네스/결과장부정합성상태이며본측정진입gate성공을뜻하지않는다. 보수적route최대시간예측은shard최대163.28분/전체38.79runner-hours로,사전등록한80분진입기준및개발32runner-hours상한을넘었다. `mayProceedToMain:false`. 예산을임의로늘리거나100K/호출시간/대상/gate를변경하지않고**본측정기동전에중단**했다. 본측정·구반례측정·예약측정은0회다.
+
+동일24calls/행렬을32chunk/최대16VM에재배치하는로컬초안의최대예측은72.77분이다. 그러나32job×120분은개발운영상한64runner-hours(기존32→64)로증액되므로사용자추가승인이필요하다. 전체원계획상한도66.7→98.7runner-hours다. 이제안은실행하지않았다. 기존호출상한API10초/process30초/회수2초와100K를그대로유지한다.
+
+본측정workflow/분석/빌드재사용검사코드는준비했지만launch-development.json은만들지않았다. explicitlaunch승인및저장된pilot/독립audit/예산gate없이기동되지않는다. source/docpush만으로pilot을재실행하지않는다.
+
+보존:`D:/AI/sfinder-wasm/tools/validation/integrated-bench-20261002/`. 세attempt전체로그/RUN,성공build·correctness·8pilot·summaryartifact,독립Python검사,중단판정/32chunk예산제안/sourcebundle를보존한다. 독립검사는32개inputpackhash/모든192runID,정상138개의witness/quality/states/bridge및54timeout의SIGKILL회수를확인했다. 독립최소K/qualityexactsolver를실행한것은아니다. 성능우세후보를pilot으로선정하지않았다.

@@ -5,7 +5,7 @@ on:
     inputs:
       phase:
         type: choice
-        options: [pilot]
+        options: [pilot, development]
         default: pilot
         required: true
   # Branch-only bootstrap: default main cannot be modified to register dispatch.
@@ -94,6 +94,177 @@ jobs:
         with:
           name: bench-correctness
           path: .bench/correctness/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: warn
+
+  preflight-main:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.event.repository.private == false && (contains(github.event.head_commit.message, '[bench-main]') || (github.event_name == 'workflow_dispatch' && inputs.phase == 'development'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      pilot-run: ${{ steps.launch.outputs.pilot-run }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - id: launch
+        run: echo "pilot-run=$(node -p 'JSON.parse(require("fs").readFileSync("experiments/integrated-bench-20261002/launch-development.json")).pilotRun')" >> "$GITHUB_OUTPUT"
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          pattern: bench-*
+          path: .bench/gates
+          run-id: ${{ steps.launch.outputs.pilot-run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: node experiments/integrated-bench-20261002/verify-readiness.mjs .bench/gates
+
+  development:
+    needs: preflight-main
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      max-parallel: 16
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: bench-build
+          path: .bench/build
+          run-id: ${{ needs.preflight-main.outputs.pilot-run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          mkdir -p .bench/baseline
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .bench/baseline
+          node experiments/integrated-bench-20261002/install-build.mjs .bench/build
+          sudo mkdir /sys/fs/cgroup/integrated-bench-child
+          echo 3221225472 | sudo tee /sys/fs/cgroup/integrated-bench-child/memory.max
+          echo 0 | sudo tee /sys/fs/cgroup/integrated-bench-child/memory.swap.max
+          echo 'BENCH_CGROUP=/sys/fs/cgroup/integrated-bench-child' >> "$GITHUB_ENV"
+      - run: node experiments/integrated-bench-20261002/run.mjs development ${{ matrix.shard }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bench-development-${{ matrix.shard }}
+          path: .bench/results/development-${{ matrix.shard }}/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+
+  aggregate-development:
+    needs: [preflight-main, development]
+    if: always() && needs.preflight-main.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          pattern: bench-development-*
+          path: .bench/downloads
+      - run: node experiments/integrated-bench-20261002/aggregate.mjs .bench/downloads .bench/development-summary development
+      - run: node experiments/integrated-bench-20261002/analyze.mjs .bench/development-summary .bench/development-analysis
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bench-development-summary
+          path: .bench/development-summary/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: warn
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bench-development-analysis
+          path: .bench/development-analysis/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: warn
+
+  legacy:
+    needs: [preflight-main, development]
+    if: always() && needs.preflight-main.result == 'success' && needs.development.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      max-parallel: 2
+      fail-fast: false
+      matrix:
+        shard: [0, 1]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: bench-build
+          path: .bench/build
+          run-id: ${{ needs.preflight-main.outputs.pilot-run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          mkdir -p .bench/baseline
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .bench/baseline
+          node experiments/integrated-bench-20261002/install-build.mjs .bench/build
+          sudo mkdir /sys/fs/cgroup/integrated-bench-child
+          echo 3221225472 | sudo tee /sys/fs/cgroup/integrated-bench-child/memory.max
+          echo 0 | sudo tee /sys/fs/cgroup/integrated-bench-child/memory.swap.max
+          echo 'BENCH_CGROUP=/sys/fs/cgroup/integrated-bench-child' >> "$GITHUB_ENV"
+      - run: node experiments/integrated-bench-20261002/run.mjs legacy ${{ matrix.shard }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bench-legacy-${{ matrix.shard }}
+          path: .bench/results/legacy-${{ matrix.shard }}/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+
+  aggregate-legacy:
+    needs: [preflight-main, legacy]
+    if: always() && needs.preflight-main.result == 'success' && needs.legacy.result != 'skipped'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          pattern: bench-legacy-*
+          path: .bench/downloads
+      - run: node experiments/integrated-bench-20261002/aggregate.mjs .bench/downloads .bench/legacy-summary legacy
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bench-legacy-summary
+          path: .bench/legacy-summary/
           include-hidden-files: true
           retention-days: 1
           if-no-files-found: warn
