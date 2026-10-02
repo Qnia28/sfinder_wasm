@@ -39,3 +39,7 @@ build25분+16capture각30분+aggregate10분이job상한이다. 실제완료보�
 raw와provenmatrix는동일rows/key순서를유지하고전자는primary재개증거다. 원DB·selectedaliases·source/build/runnerhash·stdout/stderr·enum/primaryoutcome보존.
 
 다음캠페인의N은선별결과에서확정한다. 95개기존입력이나2280회측정을이번에자동실행하지않는다.
+
+## 실행 복구 이력
+
+첫run36997921803/commit470ad28은16개VM의계산이끝났으나artifactglob이숨김`.capture`디렉터리를제외하여모든shardpayload업로드에실패했다. 빌드artifact/summary/전체Actions로그는로컬보존했다. VM의행렬파일은회수할수없어완료로인정하지않는다. `include-hidden-files:true`만추가하여새attempt로복구한다. 표본·큐·source·solver·budget·capture하네스는동일하며재생성필요성은보존실패이다. 최초관측을지우거나성공으로대체하지않는다.

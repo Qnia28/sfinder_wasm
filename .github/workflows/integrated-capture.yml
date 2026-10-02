@@ -41,6 +41,7 @@ jobs:
         with:
           name: capture-build
           path: .capture/build/
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: warn
 
@@ -72,6 +73,7 @@ jobs:
         with:
           name: capture-shard-${{ format('{0}', matrix.shard) }}
           path: .capture/shard-*/
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
 
@@ -97,5 +99,6 @@ jobs:
         with:
           name: capture-summary
           path: .capture/summary/
+          include-hidden-files: true
           retention-days: 1
           if-no-files-found: error
