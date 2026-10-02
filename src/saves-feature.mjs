@@ -51,7 +51,9 @@ export function calculateSaves({
   useHold = true,
   outcomeCache = false,
   singleSaveMask = true,
+  stats: measure = false,
 }) {
+  const timing = measure ? { started: performance.now() } : null;
   const { board } = decodeAndValidate(sourceFumen, clear);
   const pathPattern = queuesForFinder(pattern);
   const cases = expandPatternCasesInternal(pattern);
@@ -61,6 +63,10 @@ export function calculateSaves({
     }
   }
 
+  if (timing) {
+    timing.expandEnd = performance.now();
+    timing.expandMs = timing.expandEnd - timing.started;
+  }
   const requested = Array.isArray(wantedSave)
     ? wantedSave.map((value) => String(value).trim()).filter(Boolean)
     : splitWantedSaveExpressions(wantedSave);
@@ -84,8 +90,16 @@ export function calculateSaves({
       masks[caseIndex] |= 1 << TETRIS_DISPLAY_ORDER.indexOf(piece);
     } else outcomeCodes[caseIndex].add(savedCodePrepared(saveCases[caseIndex], usage));
   };
+  if (timing) {
+    timing.searchStart = performance.now();
+    timing.prepareMs = timing.searchStart - timing.expandEnd;
+  }
   const packed = solver.saveOutcomesPattern?.(board, cases.map((entry) => entry.queue), useHold);
   if (packed != null) {
+    if (timing) {
+      timing.searchEnd = performance.now();
+      timing.searchMs = timing.searchEnd - timing.searchStart;
+    }
     // Each record contains one used-piece multiset and its playable case IDs.
     // Convert the counter order once per record, not once per geometric solution.
     const usage = new Uint8Array(7);
@@ -119,8 +133,29 @@ export function calculateSaves({
         addOutcome(caseIndex, usage);
       },
     });
+    if (timing) {
+      timing.searchEnd = performance.now();
+      timing.searchMs = timing.searchEnd - timing.searchStart;
+    }
   }
 
+  if (timing) {
+    timing.evalStart = performance.now();
+    timing.aggregateMs = timing.evalStart - timing.searchEnd;
+  }
+  const finish = result => {
+    if (!timing) return result;
+    const ended = performance.now();
+    const evalMs = ended - timing.evalStart;
+    const wallMs = ended - timing.started;
+    return { ...result, stats: {
+      expandMs: timing.expandMs, prepareMs: timing.prepareMs,
+      searchMs: timing.searchMs, aggregateMs: timing.aggregateMs, evalMs, wallMs,
+      unassignedMs: Math.max(0, wallMs - timing.expandMs - timing.prepareMs - timing.searchMs - timing.aggregateMs - evalMs),
+      collectionMode: packed != null ? 'packed' : 'geometry',
+      searchIncludesAggregation: packed == null,
+    } };
+  };
   const total = cases.length;
   const baseResult = { pathPattern, analysisPattern: pattern, total };
   // Codes are opaque number|string keys; an empty save string is a valid hit.
@@ -169,7 +204,7 @@ export function calculateSaves({
         counts.set(save, (counts.get(save) ?? 0) + 1);
       }
     }
-    return {
+    return finish({
       ...baseResult,
       success,
       failed: failedQueues.length,
@@ -183,7 +218,7 @@ export function calculateSaves({
           total,
           percent: total ? 100 * count / total : 0,
         })),
-    };
+    });
   }
 
   const stats = saveSpecs.map((spec) => ({
@@ -219,6 +254,6 @@ export function calculateSaves({
     percent: total ? 100 * entry.success / total : 0,
   }));
 
-  if (wantedSaveResults.length === 1) return { ...baseResult, ...wantedSaveResults[0] };
-  return { ...baseResult, wantedSaveResults };
+  if (wantedSaveResults.length === 1) return finish({ ...baseResult, ...wantedSaveResults[0] });
+  return finish({ ...baseResult, wantedSaveResults });
 }
