@@ -42,6 +42,13 @@ test('real WASM root refinements preserve traversal, bounded proofs, oracle and 
   }
   try {
     assert.equal(engine.experimentVersion, 2);
+    for (const mask of [36, 52, 68, 84, 100, 116]) {
+      const empty = engine.solve({ keys: [], rows: [], K: 0, seed: [] }, { mask, stateBudget: 0 });
+      assert(empty.completed); assert.deepEqual(empty.selected, []);
+      const zero = engine.solve({ keys: ['000', '001'], rows: [[[0, 0]], [[0, 0], [1, 0]]], K: 1, seed: [0] },
+        { mask, allowZero: true });
+      assert(zero.completed); assert.deepEqual(zero.selected, [0]); assert.deepEqual(zero.quality, [0, 0]);
+    }
     for (const raw of fixtures) {
       const expected = oracle(raw), matrix = { ...raw, K: expected.K, seed: expected.seed };
       const levels = [...new Set(raw.rows.flatMap(row => row.map(([, q]) => q)))].sort((a, b) => a - b);

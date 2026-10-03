@@ -44,6 +44,9 @@ WASM에clockimport를추가하지않는다. 단계별wall time은추정하지않
 완료군paired median ratio 상위/하위10%(R7), OFF/ON/paired
 (max-min)/median≥10%, 회귀경보의합집합은각10pairs 재측정한다.
 필수후보수/covered비율별구조대조군도성능에무관하게고정해포함한다.
+screen 결과를다운로드하기전에root-structural-controls.json에18개를고정했다.
+F/covered비율의R7 삼분위9셀마다서로다른mirror그룹에서lexical2개를선택했다.
+F 경계22/29,covered비율경계0.7372093023/0.8479099343이며timing/완료자료는읽지않았다.
 timeout을시간으로치환하지않는다. mask16 대비추가가치가주판단이다.
 
 ## 최종 등급

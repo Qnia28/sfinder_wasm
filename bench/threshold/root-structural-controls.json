@@ -1,0 +1,143 @@
+{
+  "manifestHash": "616109d5e746843b1224dbc4aedfbe4c2f3b41fc4caf22df13a917b81b472541",
+  "cutoffs": {
+    "F": [
+      22,
+      29
+    ],
+    "coverage": [
+      0.7372093023255814,
+      0.8479099343271135
+    ]
+  },
+  "rule": "R7 tertiles of singleton-forced candidate count and forced original-row coverage. In each nonempty 3x3 cell, choose up to two lexical IDs from distinct mirror groups. Read only input structure, no timing or completion outcomes.",
+  "noneForcedInDB": 0,
+  "cases": [
+    {
+      "caseId": "cycle1-6p-pco-a-I",
+      "mirrorGroup": "0xc1f87f1f87",
+      "F": 20,
+      "coverage": 0.9766536964980544,
+      "bucket": "F-low-coverage-high"
+    },
+    {
+      "caseId": "cycle1-pcinfo-014-L",
+      "mirrorGroup": "0x3c07e1e03",
+      "F": 17,
+      "coverage": 0.9575033200531209,
+      "bucket": "F-low-coverage-high"
+    },
+    {
+      "caseId": "cycle1-alt-jaws-a-O",
+      "mirrorGroup": "0x3c0707c0f",
+      "F": 32,
+      "coverage": 0.8127853881278538,
+      "bucket": "F-high-coverage-mid"
+    },
+    {
+      "caseId": "cycle1-elephant-a-S",
+      "mirrorGroup": "0x3c0f07c07",
+      "F": 30,
+      "coverage": 0.8443935926773455,
+      "bucket": "F-high-coverage-mid"
+    },
+    {
+      "caseId": "cycle1-alt-jaws-a-S",
+      "mirrorGroup": "0x3c0707c0f",
+      "F": 27,
+      "coverage": 0.802007299270073,
+      "bucket": "F-mid-coverage-mid"
+    },
+    {
+      "caseId": "cycle1-hills-a-S",
+      "mirrorGroup": "0x1c0f03c1f",
+      "F": 27,
+      "coverage": 0.74643011683254,
+      "bucket": "F-mid-coverage-mid"
+    },
+    {
+      "caseId": "cycle1-alt-jaws-a-Z",
+      "mirrorGroup": "0x3c0707c0f",
+      "F": 27,
+      "coverage": 0.7372093023255814,
+      "bucket": "F-mid-coverage-low"
+    },
+    {
+      "caseId": "cycle1-pcinfo-013-T",
+      "mirrorGroup": "0x40f0fc1f",
+      "F": 28,
+      "coverage": 0.7345575959933222,
+      "bucket": "F-mid-coverage-low"
+    },
+    {
+      "caseId": "cycle1-alt-shoes-a-O",
+      "mirrorGroup": "0xc0707c3f",
+      "F": 15,
+      "coverage": 0.7177304964539007,
+      "bucket": "F-low-coverage-low"
+    },
+    {
+      "caseId": "cycle1-grace-system-a-O",
+      "mirrorGroup": "0xfc3f0fc3f",
+      "F": 22,
+      "coverage": 0.6896551724137931,
+      "bucket": "F-low-coverage-low"
+    },
+    {
+      "caseId": "cycle1-big-jaws-a-O",
+      "mirrorGroup": "0x78080fc1f",
+      "F": 40,
+      "coverage": 0.9583333333333334,
+      "bucket": "F-high-coverage-high"
+    },
+    {
+      "caseId": "cycle1-cliff-o-a-I",
+      "mirrorGroup": "0x3c07c1f03",
+      "F": 36,
+      "coverage": 0.9606892837910609,
+      "bucket": "F-high-coverage-high"
+    },
+    {
+      "caseId": "cycle1-elephant-j-a-O",
+      "mirrorGroup": "0x1e0783f03",
+      "F": 24,
+      "coverage": 0.920303605313093,
+      "bucket": "F-mid-coverage-high"
+    },
+    {
+      "caseId": "cycle1-jaws-a-S",
+      "mirrorGroup": "0x81e0383e07",
+      "F": 29,
+      "coverage": 0.8633540372670807,
+      "bucket": "F-mid-coverage-high"
+    },
+    {
+      "caseId": "cycle1-grace-system-a-S",
+      "mirrorGroup": "0xfc3f0fc3f",
+      "F": 19,
+      "coverage": 0.7764705882352941,
+      "bucket": "F-low-coverage-mid"
+    },
+    {
+      "caseId": "cycle1-legs-a-S",
+      "mirrorGroup": "0x1c0703c3f",
+      "F": 20,
+      "coverage": 0.7641549595572584,
+      "bucket": "F-low-coverage-mid"
+    },
+    {
+      "caseId": "cycle1-pcinfo-015-Z",
+      "mirrorGroup": "0x3c0f03c0f",
+      "F": 31,
+      "coverage": 0.7020153550863724,
+      "bucket": "F-high-coverage-low"
+    },
+    {
+      "caseId": "cycle1-pcinfo-031-O",
+      "mirrorGroup": "0xc0301c1f",
+      "F": 30,
+      "coverage": 0.5424316605467157,
+      "bucket": "F-high-coverage-low"
+    }
+  ]
+}

@@ -25,10 +25,11 @@ assert(Number.isInteger(pairs) && pairs >= 1 && pairs <= 10);
 assert(Number.isInteger(seconds) && seconds >= 1 && seconds <= 300);
 let ids = caseIds(profile,suite);
 if (config.caseSelection) {
-  assert.equal(config.caseSelection, 'retest-selection.json');
-  const selection = JSON.parse(readFileSync(new URL('./retest-selection.json', import.meta.url)));
+  assert(['retest-selection.json', 'root-retest-selection.json'].includes(config.caseSelection));
+  const selection = JSON.parse(readFileSync(new URL(`./${config.caseSelection}`, import.meta.url)));
   assert.equal(selection.manifestHash, sha256(readFileSync(manifestPath)));
-  assert.equal(profile, 'confirm-onoff'); assert.equal(mask, selection.mask);
+  assert.equal(profile, config.caseSelection === 'root-retest-selection.json' ? 'root-confirm' : 'confirm-onoff');
+  assert.equal(mask, selection.mask);
   assert.equal(pairs, selection.pairs); assert.equal(seconds, selection.timeoutSeconds);
   ids = selection.cases.map(c => c.caseId);
   assert(ids.length > 0 && new Set(ids).size === ids.length);

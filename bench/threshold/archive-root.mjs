@@ -3,6 +3,7 @@ import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import { sha256, validateWitness } from './engine.mjs';
+import { settings } from './profiles.mjs';
 const [runId, label] = process.argv.slice(2);
 assert(/^\d+$/.test(runId) && /^root-[a-z0-9-]+$/.test(label), 'supply run ID and root-* label');
 const bytes = readFileSync(`bench/threshold/results/remote-${label}-summary/threshold-summary-${runId}-1/results.json`);
@@ -12,6 +13,7 @@ const manifest = JSON.parse(manifestBytes);
 const initial = JSON.parse(readFileSync(new URL('./reports/expanded100.json', import.meta.url)));
 const reference = aggregate.reports[0].environment;
 assert(['root-screen', 'root-confirm'].includes(reference.profile));
+const expectedComparisons = settings(reference.profile, reference.mask);
 assert.equal(reference.timeoutSeconds, 300);
 assert.equal(reference.manifestHash, sha256(manifestBytes));
 assert.equal(reference.runId, runId); assert.equal(reference.runAttempt, '1');
@@ -27,6 +29,7 @@ for (const file of files) {
   const local = JSON.parse(readFileSync(resolve(dirname(file), 'summary.json')));
   assert.equal(local.invalid, false);
   const environment = local.environment;
+  assert.deepEqual(local.comparisons, expectedComparisons);
   for (const k of ['candidate', 'profile', 'mask', 'pairs', 'timeoutSeconds', 'manifestHash', 'runId', 'runAttempt', 'dirty']) {
     assert.deepEqual(environment[k], reference[k]);
   }
