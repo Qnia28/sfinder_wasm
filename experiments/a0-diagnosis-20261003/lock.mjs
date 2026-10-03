@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {ROOT,HERE,read,write,sha,jsonSha} from './common.mjs';
+const base='c0cb2a048e7275bfea587d176b1954efff0a8a08',wasmSha256=sha(fs.readFileSync(`${ROOT}/wasm/pc_wasm.wasm`));assert.equal(wasmSha256,'73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3');
+const git=(...a)=>execFileSync('git',a,{cwd:ROOT,maxBuffer:32*2**20});
+assert.equal(git('diff','--name-only','e77d19fafe12f76d09f426f647c5d2d14bfd9458','HEAD','--','src','rust','wasm','tests','package.json','package-lock.json').toString(),'');
+const changed=git('diff','--name-only',base,'HEAD','--','src','rust','wasm','package.json','package-lock.json').toString().trim().split('\n');assert.deepEqual(changed,['src/min-cover-exact-secondary.mjs','wasm/pc_wasm.wasm']);
+assert.equal(sha(fs.readFileSync(`${HERE}/inputs/diagnosis.bin`)),read(`${HERE}/INPUTS.json`).packSha256);
+const names=git('ls-tree','-r','--name-only','HEAD','--','src','rust','experiments/a0-diagnosis-20261003','.github/workflows/a0-diagnosis.yml').toString().trim().split('\n');
+const files=names.filter(f=>!f.includes('/inputs/')).map(file=>({file,sha256:sha(git('show',`HEAD:${file}`))}));
+const exports=WebAssembly.Module.exports(new WebAssembly.Module(fs.readFileSync(`${ROOT}/wasm/pc_wasm.wasm`))).map(e=>e.name);assert(exports.includes('solver_min_cover_at_count_integrated_partitioned_bounded'));
+write(`${ROOT}/.a0/build/LOCK.json`,{commit:git('rev-parse','HEAD').toString().trim(),baseline:base,wasmSha256,files,scheduleSha256:jsonSha(read(`${HERE}/SCHEDULE.json`)),inputsSha256:jsonSha(read(`${HERE}/INPUTS.json`)),newProductChanges:0,nativeThresholdCalls:0,confirmationCalls:0,goal:'cause diagnosis and response decision only',memoryNote:'Compiled/Warm share process cgroup cumulative peak; not per-worker isolated peak'});
+fs.copyFileSync(`${ROOT}/wasm/pc_wasm.wasm`,`${ROOT}/.a0/build/pc_wasm.wasm`);

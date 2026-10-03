@@ -1,0 +1,1797 @@
+{
+  "sourceSummaryFileSha256": "307a419ccefa5df03cf428ec1ac40971e860c97151e1858d672e69425a382657",
+  "inputs": [
+    {
+      "matrixId": "board-105--restricted-split--ordinary",
+      "mirrorGroup": "18160fdf",
+      "metadata": {
+        "n": 64,
+        "R": 3726,
+        "E": 13950,
+        "K": 20
+      },
+      "summaryMetric": {
+        "matrixId": "board-105--restricted-split--ordinary",
+        "mirrorGroup": "18160fdf",
+        "n": 64,
+        "E": 13950,
+        "R": 3726,
+        "baselineApiMedianMs": 7.792327500000006,
+        "candidateApiMedianMs": 9.324276500000003,
+        "ratio": 1.1965971014436951,
+        "baselineBoundaryMedianMs": 9.1927375,
+        "candidateBoundaryMedianMs": 10.607852999999999,
+        "baselinePeakBytes": 56887296,
+        "candidatePeakBytes": 56594432,
+        "baselineRssBytes": 105814016,
+        "candidateRssBytes": 105551872,
+        "baselineWasmBytes": 1703936,
+        "candidateWasmBytes": 1703936,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-105--restricted-split--ordinary--A--r1",
+          "variant": "A",
+          "apiMs": 9.179670999999999,
+          "states": 27,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-105--restricted-split--ordinary--A--r2",
+          "variant": "A",
+          "apiMs": 9.839163,
+          "states": 27,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-105--restricted-split--ordinary--A--r3",
+          "variant": "A",
+          "apiMs": 9.468882000000008,
+          "states": 27,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-105--restricted-split--ordinary--A--r4",
+          "variant": "A",
+          "apiMs": 7.0489080000000115,
+          "states": 27,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-105--restricted-split--ordinary--R--r1",
+          "variant": "R",
+          "apiMs": 6.510035000000002,
+          "states": 27,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-105--restricted-split--ordinary--R--r2",
+          "variant": "R",
+          "apiMs": 9.538977000000003,
+          "states": 27,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-105--restricted-split--ordinary--R--r3",
+          "variant": "R",
+          "apiMs": 8.039183000000008,
+          "states": 27,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-105--restricted-split--ordinary--R--r4",
+          "variant": "R",
+          "apiMs": 7.545472000000004,
+          "states": 27,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        }
+      ]
+    },
+    {
+      "matrixId": "board-107--restricted-split--L",
+      "mirrorGroup": "1c0731c67",
+      "metadata": {
+        "n": 98,
+        "R": 1578,
+        "E": 3266,
+        "K": 49
+      },
+      "summaryMetric": {
+        "matrixId": "board-107--restricted-split--L",
+        "mirrorGroup": "1c0731c67",
+        "n": 98,
+        "E": 3266,
+        "R": 1578,
+        "baselineApiMedianMs": 8.596752999999993,
+        "candidateApiMedianMs": 10.073870999999997,
+        "ratio": 1.1718227800659162,
+        "baselineBoundaryMedianMs": 10.809844999999996,
+        "candidateBoundaryMedianMs": 11.713133000000006,
+        "baselinePeakBytes": 47185920,
+        "candidatePeakBytes": 47183872,
+        "baselineRssBytes": 94982144,
+        "candidateRssBytes": 95019008,
+        "baselineWasmBytes": 1310720,
+        "candidateWasmBytes": 1310720,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-107--restricted-split--L--A--r1",
+          "variant": "A",
+          "apiMs": 10.943032000000002,
+          "states": 107,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--L--A--r2",
+          "variant": "A",
+          "apiMs": 10.646829999999994,
+          "states": 107,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--L--A--r3",
+          "variant": "A",
+          "apiMs": 8.766417000000004,
+          "states": 107,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--L--A--r4",
+          "variant": "A",
+          "apiMs": 9.500912,
+          "states": 107,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--L--R--r1",
+          "variant": "R",
+          "apiMs": 16.585746999999984,
+          "states": 107,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--L--R--r2",
+          "variant": "R",
+          "apiMs": 8.452847999999989,
+          "states": 107,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--L--R--r3",
+          "variant": "R",
+          "apiMs": 8.740657999999996,
+          "states": 107,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--L--R--r4",
+          "variant": "R",
+          "apiMs": 8.349625000000003,
+          "states": 107,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        }
+      ]
+    },
+    {
+      "matrixId": "board-107--restricted-split--O",
+      "mirrorGroup": "1c0731c67",
+      "metadata": {
+        "n": 94,
+        "R": 1366,
+        "E": 3962,
+        "K": 29
+      },
+      "summaryMetric": {
+        "matrixId": "board-107--restricted-split--O",
+        "mirrorGroup": "1c0731c67",
+        "n": 94,
+        "E": 3962,
+        "R": 1366,
+        "baselineApiMedianMs": 6.453800500000007,
+        "candidateApiMedianMs": 8.697441500000004,
+        "ratio": 1.3476464759020663,
+        "baselineBoundaryMedianMs": 8.002585999999994,
+        "candidateBoundaryMedianMs": 10.044784499999999,
+        "baselinePeakBytes": 46852096,
+        "candidatePeakBytes": 47069184,
+        "baselineRssBytes": 94588928,
+        "candidateRssBytes": 94834688,
+        "baselineWasmBytes": 1310720,
+        "candidateWasmBytes": 1310720,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-107--restricted-split--O--A--r1",
+          "variant": "A",
+          "apiMs": 8.872849000000002,
+          "states": 41,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--O--A--r2",
+          "variant": "A",
+          "apiMs": 6.42410000000001,
+          "states": 41,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--O--A--r3",
+          "variant": "A",
+          "apiMs": 9.372440999999995,
+          "states": 41,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--O--A--r4",
+          "variant": "A",
+          "apiMs": 8.522034000000005,
+          "states": 41,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--O--R--r1",
+          "variant": "R",
+          "apiMs": 6.976013999999992,
+          "states": 41,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--O--R--r2",
+          "variant": "R",
+          "apiMs": 6.483732000000003,
+          "states": 41,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--O--R--r3",
+          "variant": "R",
+          "apiMs": 6.224936,
+          "states": 41,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--O--R--r4",
+          "variant": "R",
+          "apiMs": 6.4238690000000105,
+          "states": 41,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        }
+      ]
+    },
+    {
+      "matrixId": "board-107--restricted-split--Z",
+      "mirrorGroup": "1c0731c67",
+      "metadata": {
+        "n": 112,
+        "R": 1522,
+        "E": 5138,
+        "K": 24
+      },
+      "summaryMetric": {
+        "matrixId": "board-107--restricted-split--Z",
+        "mirrorGroup": "1c0731c67",
+        "n": 112,
+        "E": 5138,
+        "R": 1522,
+        "baselineApiMedianMs": 15.537761500000002,
+        "candidateApiMedianMs": 19.102044499999998,
+        "ratio": 1.2293948841987306,
+        "baselineBoundaryMedianMs": 17.192062,
+        "candidateBoundaryMedianMs": 20.504299500000002,
+        "baselinePeakBytes": 48728064,
+        "candidatePeakBytes": 49629184,
+        "baselineRssBytes": 97888256,
+        "candidateRssBytes": 97574912,
+        "baselineWasmBytes": 1507328,
+        "candidateWasmBytes": 1507328,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-107--restricted-split--Z--A--r1",
+          "variant": "A",
+          "apiMs": 19.81650900000001,
+          "states": 209,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--Z--A--r2",
+          "variant": "A",
+          "apiMs": 13.97073499999999,
+          "states": 209,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--Z--A--r3",
+          "variant": "A",
+          "apiMs": 19.367795,
+          "states": 209,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--Z--A--r4",
+          "variant": "A",
+          "apiMs": 18.836293999999995,
+          "states": 209,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--Z--R--r1",
+          "variant": "R",
+          "apiMs": 19.250501,
+          "states": 209,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--Z--R--r2",
+          "variant": "R",
+          "apiMs": 13.274036999999993,
+          "states": 209,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--Z--R--r3",
+          "variant": "R",
+          "apiMs": 14.669747000000001,
+          "states": 209,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-107--restricted-split--Z--R--r4",
+          "variant": "R",
+          "apiMs": 16.405776000000003,
+          "states": 209,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+            "platform": "linux"
+          }
+        }
+      ]
+    },
+    {
+      "matrixId": "board-108--restricted-split--I",
+      "mirrorGroup": "7e3e1f",
+      "metadata": {
+        "n": 52,
+        "R": 1098,
+        "E": 2292,
+        "K": 24
+      },
+      "summaryMetric": {
+        "matrixId": "board-108--restricted-split--I",
+        "mirrorGroup": "7e3e1f",
+        "n": 52,
+        "E": 2292,
+        "R": 1098,
+        "baselineApiMedianMs": 4.245070499999997,
+        "candidateApiMedianMs": 5.575263,
+        "ratio": 1.313349919630311,
+        "baselineBoundaryMedianMs": 5.3726020000000005,
+        "candidateBoundaryMedianMs": 7.088808,
+        "baselinePeakBytes": 44476416,
+        "candidatePeakBytes": 46186496,
+        "baselineRssBytes": 91734016,
+        "candidateRssBytes": 92805120,
+        "baselineWasmBytes": 1310720,
+        "candidateWasmBytes": 1310720,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-108--restricted-split--I--A--r1",
+          "variant": "A",
+          "apiMs": 6.958289000000008,
+          "states": 29,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-108--restricted-split--I--A--r2",
+          "variant": "A",
+          "apiMs": 5.160581000000008,
+          "states": 29,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-108--restricted-split--I--A--r3",
+          "variant": "A",
+          "apiMs": 3.4237700000000046,
+          "states": 29,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-108--restricted-split--I--A--r4",
+          "variant": "A",
+          "apiMs": 5.989944999999992,
+          "states": 29,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-108--restricted-split--I--R--r1",
+          "variant": "R",
+          "apiMs": 4.108470999999994,
+          "states": 29,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-108--restricted-split--I--R--r2",
+          "variant": "R",
+          "apiMs": 4.435809000000006,
+          "states": 29,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-108--restricted-split--I--R--r3",
+          "variant": "R",
+          "apiMs": 4.38167,
+          "states": 29,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-108--restricted-split--I--R--r4",
+          "variant": "R",
+          "apiMs": 4.075051000000002,
+          "states": 29,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        }
+      ]
+    },
+    {
+      "matrixId": "board-111--restricted-split--J",
+      "mirrorGroup": "701c17cf",
+      "metadata": {
+        "n": 67,
+        "R": 1162,
+        "E": 2782,
+        "K": 32
+      },
+      "summaryMetric": {
+        "matrixId": "board-111--restricted-split--J",
+        "mirrorGroup": "701c17cf",
+        "n": 67,
+        "E": 2782,
+        "R": 1162,
+        "baselineApiMedianMs": 5.132793499999998,
+        "candidateApiMedianMs": 6.148296500000001,
+        "ratio": 1.197846065695026,
+        "baselineBoundaryMedianMs": 6.196407000000001,
+        "candidateBoundaryMedianMs": 7.208966000000004,
+        "baselinePeakBytes": 45467648,
+        "candidatePeakBytes": 45717504,
+        "baselineRssBytes": 92047360,
+        "candidateRssBytes": 91584512,
+        "baselineWasmBytes": 1310720,
+        "candidateWasmBytes": 1310720,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-111--restricted-split--J--A--r1",
+          "variant": "A",
+          "apiMs": 9.464926000000006,
+          "states": 71,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--J--A--r2",
+          "variant": "A",
+          "apiMs": 5.542995000000005,
+          "states": 71,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--J--A--r3",
+          "variant": "A",
+          "apiMs": 6.753597999999997,
+          "states": 71,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--J--A--r4",
+          "variant": "A",
+          "apiMs": 4.223399000000001,
+          "states": 71,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--J--R--r1",
+          "variant": "R",
+          "apiMs": 4.9165220000000005,
+          "states": 75,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--J--R--r2",
+          "variant": "R",
+          "apiMs": 5.320252999999994,
+          "states": 75,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--J--R--r3",
+          "variant": "R",
+          "apiMs": 7.871148999999988,
+          "states": 75,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--J--R--r4",
+          "variant": "R",
+          "apiMs": 4.945334000000003,
+          "states": 75,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        }
+      ]
+    },
+    {
+      "matrixId": "board-111--restricted-split--L",
+      "mirrorGroup": "701c17cf",
+      "metadata": {
+        "n": 61,
+        "R": 1450,
+        "E": 2646,
+        "K": 38
+      },
+      "summaryMetric": {
+        "matrixId": "board-111--restricted-split--L",
+        "mirrorGroup": "701c17cf",
+        "n": 61,
+        "E": 2646,
+        "R": 1450,
+        "baselineApiMedianMs": 4.9748480000000015,
+        "candidateApiMedianMs": 5.486452999999997,
+        "ratio": 1.1028383178742336,
+        "baselineBoundaryMedianMs": 6.249050000000004,
+        "candidateBoundaryMedianMs": 6.806739999999998,
+        "baselinePeakBytes": 45434880,
+        "candidatePeakBytes": 45844480,
+        "baselineRssBytes": 92459008,
+        "candidateRssBytes": 92882944,
+        "baselineWasmBytes": 1310720,
+        "candidateWasmBytes": 1310720,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-111--restricted-split--L--A--r1",
+          "variant": "A",
+          "apiMs": 5.568961000000002,
+          "states": 50,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--L--A--r2",
+          "variant": "A",
+          "apiMs": 5.110641999999999,
+          "states": 50,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--L--A--r3",
+          "variant": "A",
+          "apiMs": 5.480268999999993,
+          "states": 50,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--L--A--r4",
+          "variant": "A",
+          "apiMs": 5.492637000000002,
+          "states": 50,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--L--R--r1",
+          "variant": "R",
+          "apiMs": 5.264833999999993,
+          "states": 50,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--L--R--r2",
+          "variant": "R",
+          "apiMs": 4.594665000000006,
+          "states": 50,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--L--R--r3",
+          "variant": "R",
+          "apiMs": 4.821506999999997,
+          "states": 50,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-111--restricted-split--L--R--r4",
+          "variant": "R",
+          "apiMs": 5.128189000000006,
+          "states": 50,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        }
+      ]
+    },
+    {
+      "matrixId": "board-113--restricted-split--J",
+      "mirrorGroup": "c0103dff",
+      "metadata": {
+        "n": 99,
+        "R": 1874,
+        "E": 4846,
+        "K": 33
+      },
+      "summaryMetric": {
+        "matrixId": "board-113--restricted-split--J",
+        "mirrorGroup": "c0103dff",
+        "n": 99,
+        "E": 4846,
+        "R": 1874,
+        "baselineApiMedianMs": 15.450280499999998,
+        "candidateApiMedianMs": 19.478073000000002,
+        "ratio": 1.260693810704602,
+        "baselineBoundaryMedianMs": 16.953237,
+        "candidateBoundaryMedianMs": 21.013645500000003,
+        "baselinePeakBytes": 48433152,
+        "candidatePeakBytes": 49608704,
+        "baselineRssBytes": 96307200,
+        "candidateRssBytes": 98750464,
+        "baselineWasmBytes": 1507328,
+        "candidateWasmBytes": 1507328,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-113--restricted-split--J--A--r1",
+          "variant": "A",
+          "apiMs": 17.267305000000007,
+          "states": 218,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--J--A--r2",
+          "variant": "A",
+          "apiMs": 19.233538999999993,
+          "states": 218,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--J--A--r3",
+          "variant": "A",
+          "apiMs": 19.72260700000001,
+          "states": 218,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--J--A--r4",
+          "variant": "A",
+          "apiMs": 20.98090999999998,
+          "states": 218,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--J--R--r1",
+          "variant": "R",
+          "apiMs": 17.951246999999995,
+          "states": 218,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--J--R--r2",
+          "variant": "R",
+          "apiMs": 15.392223000000001,
+          "states": 218,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--J--R--r3",
+          "variant": "R",
+          "apiMs": 14.425779999999989,
+          "states": 218,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--J--R--r4",
+          "variant": "R",
+          "apiMs": 15.508337999999995,
+          "states": 218,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        }
+      ]
+    },
+    {
+      "matrixId": "board-113--restricted-split--S",
+      "mirrorGroup": "c0103dff",
+      "metadata": {
+        "n": 108,
+        "R": 1656,
+        "E": 5478,
+        "K": 26
+      },
+      "summaryMetric": {
+        "matrixId": "board-113--restricted-split--S",
+        "mirrorGroup": "c0103dff",
+        "n": 108,
+        "E": 5478,
+        "R": 1656,
+        "baselineApiMedianMs": 10.965679000000002,
+        "candidateApiMedianMs": 14.084994000000002,
+        "ratio": 1.2844616370769197,
+        "baselineBoundaryMedianMs": 12.078474,
+        "candidateBoundaryMedianMs": 15.186461999999999,
+        "baselinePeakBytes": 48975872,
+        "candidatePeakBytes": 49510400,
+        "baselineRssBytes": 97347584,
+        "candidateRssBytes": 98979840,
+        "baselineWasmBytes": 1507328,
+        "candidateWasmBytes": 1507328,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-113--restricted-split--S--A--r1",
+          "variant": "A",
+          "apiMs": 12.124594000000002,
+          "states": 402,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--S--A--r2",
+          "variant": "A",
+          "apiMs": 16.354565000000008,
+          "states": 402,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--S--A--r3",
+          "variant": "A",
+          "apiMs": 13.063206000000008,
+          "states": 402,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--S--A--r4",
+          "variant": "A",
+          "apiMs": 15.106781999999995,
+          "states": 402,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--S--R--r1",
+          "variant": "R",
+          "apiMs": 10.397609000000003,
+          "states": 402,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--S--R--r2",
+          "variant": "R",
+          "apiMs": 13.415060999999994,
+          "states": 402,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--S--R--r3",
+          "variant": "R",
+          "apiMs": 10.07424300000001,
+          "states": 402,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--S--R--r4",
+          "variant": "R",
+          "apiMs": 11.533749,
+          "states": 402,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        }
+      ]
+    },
+    {
+      "matrixId": "board-113--restricted-split--Z",
+      "mirrorGroup": "c0103dff",
+      "metadata": {
+        "n": 71,
+        "R": 1254,
+        "E": 3694,
+        "K": 21
+      },
+      "summaryMetric": {
+        "matrixId": "board-113--restricted-split--Z",
+        "mirrorGroup": "c0103dff",
+        "n": 71,
+        "E": 3694,
+        "R": 1254,
+        "baselineApiMedianMs": 6.529178999999999,
+        "candidateApiMedianMs": 7.439662500000004,
+        "ratio": 1.1394483900655819,
+        "baselineBoundaryMedianMs": 7.686907000000005,
+        "candidateBoundaryMedianMs": 9.367334499999998,
+        "baselinePeakBytes": 46848000,
+        "candidatePeakBytes": 46983168,
+        "baselineRssBytes": 94507008,
+        "candidateRssBytes": 93456384,
+        "baselineWasmBytes": 1310720,
+        "candidateWasmBytes": 1310720,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-113--restricted-split--Z--A--r1",
+          "variant": "A",
+          "apiMs": 6.546810000000008,
+          "states": 64,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--Z--A--r2",
+          "variant": "A",
+          "apiMs": 8.332515,
+          "states": 64,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--Z--A--r3",
+          "variant": "A",
+          "apiMs": 8.382890000000003,
+          "states": 64,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--Z--A--r4",
+          "variant": "A",
+          "apiMs": 5.226329000000007,
+          "states": 64,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--Z--R--r1",
+          "variant": "R",
+          "apiMs": 6.714521000000005,
+          "states": 64,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--Z--R--r2",
+          "variant": "R",
+          "apiMs": 6.3438369999999935,
+          "states": 64,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--Z--R--r3",
+          "variant": "R",
+          "apiMs": 8.01071499999999,
+          "states": 64,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-113--restricted-split--Z--R--r4",
+          "variant": "R",
+          "apiMs": 5.732524999999995,
+          "states": 64,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 9V74 80-Core Processor",
+            "platform": "linux"
+          }
+        }
+      ]
+    },
+    {
+      "matrixId": "board-114--restricted-split--I",
+      "mirrorGroup": "c190fc1f",
+      "metadata": {
+        "n": 143,
+        "R": 1440,
+        "E": 7774,
+        "K": 22
+      },
+      "summaryMetric": {
+        "matrixId": "board-114--restricted-split--I",
+        "mirrorGroup": "c190fc1f",
+        "n": 143,
+        "E": 7774,
+        "R": 1440,
+        "baselineApiMedianMs": 22.024024999999995,
+        "candidateApiMedianMs": 24.63450999999999,
+        "ratio": 1.1185289700679144,
+        "baselineBoundaryMedianMs": 23.235369500000004,
+        "candidateBoundaryMedianMs": 26.44389050000001,
+        "baselinePeakBytes": 52883456,
+        "candidatePeakBytes": 52627456,
+        "baselineRssBytes": 102160384,
+        "candidateRssBytes": 101908480,
+        "baselineWasmBytes": 1703936,
+        "candidateWasmBytes": 1703936,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-114--restricted-split--I--A--r1",
+          "variant": "A",
+          "apiMs": 25.721312999999995,
+          "states": 2158,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--I--A--r2",
+          "variant": "A",
+          "apiMs": 23.54770699999999,
+          "states": 2158,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--I--A--r3",
+          "variant": "A",
+          "apiMs": 19.655981999999995,
+          "states": 2158,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--I--A--r4",
+          "variant": "A",
+          "apiMs": 26.185678999999993,
+          "states": 2158,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--I--R--r1",
+          "variant": "R",
+          "apiMs": 23.23433399999999,
+          "states": 2158,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--I--R--r2",
+          "variant": "R",
+          "apiMs": 27.005061999999995,
+          "states": 2158,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--I--R--r3",
+          "variant": "R",
+          "apiMs": 19.45653999999999,
+          "states": 2158,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--I--R--r4",
+          "variant": "R",
+          "apiMs": 20.813716,
+          "states": 2158,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        }
+      ]
+    },
+    {
+      "matrixId": "board-114--restricted-split--T",
+      "mirrorGroup": "c190fc1f",
+      "metadata": {
+        "n": 74,
+        "R": 832,
+        "E": 4636,
+        "K": 9
+      },
+      "summaryMetric": {
+        "matrixId": "board-114--restricted-split--T",
+        "mirrorGroup": "c190fc1f",
+        "n": 74,
+        "E": 4636,
+        "R": 832,
+        "baselineApiMedianMs": 9.140584999999994,
+        "candidateApiMedianMs": 10.094584000000005,
+        "ratio": 1.1043695780959326,
+        "baselineBoundaryMedianMs": 10.204522500000003,
+        "candidateBoundaryMedianMs": 11.274409999999996,
+        "baselinePeakBytes": 44113920,
+        "candidatePeakBytes": 44032000,
+        "baselineRssBytes": 90542080,
+        "candidateRssBytes": 90165248,
+        "baselineWasmBytes": 1441792,
+        "candidateWasmBytes": 1441792,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-114--restricted-split--T--A--r1",
+          "variant": "A",
+          "apiMs": 9.482962,
+          "states": 275,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--T--A--r2",
+          "variant": "A",
+          "apiMs": 9.409368999999998,
+          "states": 275,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--T--A--r3",
+          "variant": "A",
+          "apiMs": 10.706206000000009,
+          "states": 275,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--T--A--r4",
+          "variant": "A",
+          "apiMs": 11.177440000000004,
+          "states": 275,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--T--R--r1",
+          "variant": "R",
+          "apiMs": 8.447045000000003,
+          "states": 275,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--T--R--r2",
+          "variant": "R",
+          "apiMs": 9.874503000000004,
+          "states": 275,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--T--R--r3",
+          "variant": "R",
+          "apiMs": 8.830663999999999,
+          "states": 275,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-114--restricted-split--T--R--r4",
+          "variant": "R",
+          "apiMs": 9.45050599999999,
+          "states": 275,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+            "platform": "linux"
+          }
+        }
+      ]
+    },
+    {
+      "matrixId": "board-116--restricted-split--ordinary",
+      "mirrorGroup": "c038cf9b",
+      "metadata": {
+        "n": 104,
+        "R": 4258,
+        "E": 15268,
+        "K": 34
+      },
+      "summaryMetric": {
+        "matrixId": "board-116--restricted-split--ordinary",
+        "mirrorGroup": "c038cf9b",
+        "n": 104,
+        "E": 15268,
+        "R": 4258,
+        "baselineApiMedianMs": 16.15252550000001,
+        "candidateApiMedianMs": 17.889768000000004,
+        "ratio": 1.1075523762522457,
+        "baselineBoundaryMedianMs": 18.230746499999995,
+        "candidateBoundaryMedianMs": 19.838432999999988,
+        "baselinePeakBytes": 59813888,
+        "candidatePeakBytes": 58894336,
+        "baselineRssBytes": 108711936,
+        "candidateRssBytes": 107755520,
+        "baselineWasmBytes": 1835008,
+        "candidateWasmBytes": 1835008,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-116--restricted-split--ordinary--A--r1",
+          "variant": "A",
+          "apiMs": 16.389037000000002,
+          "states": 61,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-116--restricted-split--ordinary--A--r2",
+          "variant": "A",
+          "apiMs": 30.18818299999998,
+          "states": 61,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-116--restricted-split--ordinary--A--r3",
+          "variant": "A",
+          "apiMs": 19.390499000000005,
+          "states": 61,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-116--restricted-split--ordinary--A--r4",
+          "variant": "A",
+          "apiMs": 13.562684000000004,
+          "states": 61,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-116--restricted-split--ordinary--R--r1",
+          "variant": "R",
+          "apiMs": 16.18737900000002,
+          "states": 61,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-116--restricted-split--ordinary--R--r2",
+          "variant": "R",
+          "apiMs": 14.986401,
+          "states": 61,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-116--restricted-split--ordinary--R--r3",
+          "variant": "R",
+          "apiMs": 17.796424000000002,
+          "states": 61,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-116--restricted-split--ordinary--R--r4",
+          "variant": "R",
+          "apiMs": 16.117672,
+          "states": 61,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        }
+      ]
+    },
+    {
+      "matrixId": "board-119--restricted-split--Z",
+      "mirrorGroup": "c130fc1f",
+      "metadata": {
+        "n": 71,
+        "R": 758,
+        "E": 4122,
+        "K": 9
+      },
+      "summaryMetric": {
+        "matrixId": "board-119--restricted-split--Z",
+        "mirrorGroup": "c130fc1f",
+        "n": 71,
+        "E": 4122,
+        "R": 758,
+        "baselineApiMedianMs": 5.030402999999993,
+        "candidateApiMedianMs": 5.635052999999999,
+        "ratio": 1.1201991172476653,
+        "baselineBoundaryMedianMs": 6.311398500000003,
+        "candidateBoundaryMedianMs": 6.940970999999998,
+        "baselinePeakBytes": 43571200,
+        "candidatePeakBytes": 44363776,
+        "baselineRssBytes": 88885248,
+        "candidateRssBytes": 89272320,
+        "baselineWasmBytes": 1310720,
+        "candidateWasmBytes": 1310720,
+        "baselineCompleted": true,
+        "candidateCompleted": true
+      },
+      "oldRuns": [
+        {
+          "runId": "reserved--board-119--restricted-split--Z--A--r1",
+          "variant": "A",
+          "apiMs": 5.697434999999999,
+          "states": 36,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-119--restricted-split--Z--A--r2",
+          "variant": "A",
+          "apiMs": 4.555706000000001,
+          "states": 36,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-119--restricted-split--Z--A--r3",
+          "variant": "A",
+          "apiMs": 5.572671,
+          "states": 36,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-119--restricted-split--Z--A--r4",
+          "variant": "A",
+          "apiMs": 5.710026999999997,
+          "states": 36,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-119--restricted-split--Z--R--r1",
+          "variant": "R",
+          "apiMs": 4.122052999999994,
+          "states": 36,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-119--restricted-split--Z--R--r2",
+          "variant": "R",
+          "apiMs": 4.410643999999991,
+          "states": 36,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-119--restricted-split--Z--R--r3",
+          "variant": "R",
+          "apiMs": 5.650161999999995,
+          "states": 36,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        },
+        {
+          "runId": "reserved--board-119--restricted-split--Z--R--r4",
+          "variant": "R",
+          "apiMs": 5.6991060000000004,
+          "states": 36,
+          "completed": true,
+          "runtime": {
+            "node": "v24.13.0",
+            "cpu": "AMD EPYC 7763 64-Core Processor",
+            "platform": "linux"
+          }
+        }
+      ]
+    }
+  ]
+}

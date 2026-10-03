@@ -1,0 +1,14 @@
+{
+  "goal": "cause diagnosis and response decision only",
+  "authorization": "실행하라. 지금 중요한 건 원인파악과 대응 결정임. 성능 벤치마크를 다시 돌리는 것이 아님.",
+  "diagnosticMatrices": 32,
+  "integratedDiagnosticCalls": 2560,
+  "includesWarmupCalls": 640,
+  "nativeThresholdCalls": 0,
+  "confirmation232Calls": 0,
+  "additional64Access": false,
+  "productChanges": false,
+  "devApplication": false,
+  "mainMerge": false,
+  "deployment": false
+}

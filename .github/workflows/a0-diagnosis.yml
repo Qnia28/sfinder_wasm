@@ -1,0 +1,136 @@
+name: A0 cause diagnosis only
+on:
+  push:
+    branches: [validation/a0-diagnosis-20261003]
+    paths: [experiments/a0-diagnosis-20261003/launch.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: a0-cause-diagnosis-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  preflight:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      deadline: ${{ steps.budget.outputs.compute-deadline }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - id: budget
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node experiments/a0-integrated-revalidation-20261003/deadline.mjs
+      - run: |
+          mkdir -p .a0/baseline .a0/build
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/baseline
+          cp wasm/pc_wasm.wasm .a0/baseline/wasm/pc_wasm.wasm
+          sudo mkdir /sys/fs/cgroup/a0-diagnosis
+          echo +memory | sudo tee /sys/fs/cgroup/a0-diagnosis/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-diagnosis' >> "$GITHUB_ENV"
+      - run: node experiments/a0-diagnosis-20261003/lock.mjs
+      - run: node --test experiments/a0-diagnosis-20261003/contracts.test.mjs > .a0/build/preflight.log 2>&1
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0d-build
+          path: .a0/build/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0d-preflight-raw
+          path: .a0/preflight-*/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: warn
+  host0:
+    needs: preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    env:
+      A0_COMPUTE_DEADLINE_MS: ${{ needs.preflight.outputs.deadline }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: a0d-build
+          path: .a0/build
+      - run: |
+          mkdir -p .a0/baseline
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/baseline
+          node experiments/a0-diagnosis-20261003/install.mjs
+          sudo mkdir /sys/fs/cgroup/a0-diagnosis
+          echo +memory | sudo tee /sys/fs/cgroup/a0-diagnosis/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-diagnosis' >> "$GITHUB_ENV"
+      - run: node experiments/a0-diagnosis-20261003/run.mjs 0 ${{ matrix.shard }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0d-h0-s${{ matrix.shard }}
+          path: .a0/results/h0-s${{ matrix.shard }}/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
+  host1:
+    needs: [preflight, host0]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    env:
+      A0_COMPUTE_DEADLINE_MS: ${{ needs.preflight.outputs.deadline }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: a0d-build
+          path: .a0/build
+      - run: |
+          mkdir -p .a0/baseline
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/baseline
+          node experiments/a0-diagnosis-20261003/install.mjs
+          sudo mkdir /sys/fs/cgroup/a0-diagnosis
+          echo +memory | sudo tee /sys/fs/cgroup/a0-diagnosis/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-diagnosis' >> "$GITHUB_ENV"
+      - run: node experiments/a0-diagnosis-20261003/run.mjs 1 ${{ matrix.shard }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0d-h1-s${{ matrix.shard }}
+          path: .a0/results/h1-s${{ matrix.shard }}/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
