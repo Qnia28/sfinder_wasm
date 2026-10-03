@@ -115,7 +115,12 @@ for (const file of files) {
         assert.equal(target, result.quality.filter(q => q >= levels[i]).length);
       }
     }
-    diagnostics.push(trace);
+    diagnostics.push({ ...trace, results: trace.results.map(result => ({
+      mask: result.mask, completed: result.completed, count: result.count,
+      searchedStates: result.searchedStates, provenPrefix: result.provenPrefix,
+      diagnostics: result.diagnostics, witnessHash: validateWitness(matrix, result),
+      note: 'Full selected/quality vectors verified against original rows before compacting; available in raw trace artifacts.',
+    })) });
   }
 }
 const median = xs => {
