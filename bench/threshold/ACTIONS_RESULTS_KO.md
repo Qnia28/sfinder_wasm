@@ -1,5 +1,21 @@
 # Actions 실행 기록
 
+## 확대·재테스트 완료
+
+| 단계 | Commit | Run | 결과 |
+|---|---|---|---|
+| 100ID 확대,5pairs/300초 | 74666a9 | [37097238109](https://github.com/Qnia28/sfinder_wasm/actions/runs/37097238109) | 모든job성공; 805EXACT/195TIMEOUT |
+| 선정66,10pairs/300초 | 4d63809 | [37105932317](https://github.com/Qnia28/sfinder_wasm/actions/runs/37105932317) | 모든job성공; 1,320/1,320EXACT |
+
+전체100에서57개향상/23개악화/1개ON-only완료/19개양측timeout이었다.
+P90개선/악화와반복편차10%이상의합집합66개를각각10회재측정한결과는
+45개향상/21개악화,최초회귀경보3개는동일경보로재현되지않았다.
+두실행의실험WASM/Rust/제품JS/입력hash일치,완료witness805+1,320개검산통과.
+확대100의중복1개는사용자지시에따라유지했다. 100ID/99핵심행렬/41그룹이다.
+편차61개와방향변화19개가있어작은차이는확정적개선으로주장하지않는다.
+최신종합보고서: [EXPANDED_FINAL_REPORT_KO.md](EXPANDED_FINAL_REPORT_KO.md).
+보호대상dev/main은clean/원래HEAD로최종확인했고제품통합없음.
+
 후속 확대 3회차: 사용자 요청으로 100행렬 / 300초 / 최대20VM 병렬의
 동일VM OFF(mask0)↔ON(mask16) 비교를 추가한다. 기존20입력과Rust구현은유지한다.
 조건과 선택 규칙은 [THIRD_RUN_KO.md](THIRD_RUN_KO.md)에 고정했다.

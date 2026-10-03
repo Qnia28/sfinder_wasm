@@ -1,5 +1,9 @@
 # Threshold 엔진 실험 최종 보고
 
+> 이 문서는 초기20개/2회확인 결과다. 이후 사용자 요청의100개 확대 및
+> 극단성능·편차66개/10회재테스트를 포함한 최신 보고서는
+> [EXPANDED_FINAL_REPORT_KO.md](EXPANDED_FINAL_REPORT_KO.md)를 참고한다.
+
 ## 결론
 
 **후속 통합 검토 대상으로 currentPropagation만 권장한다(mask16).**

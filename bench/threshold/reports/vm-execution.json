@@ -1,0 +1,27 @@
+{
+  "note": "Actual overlapping benchmark step intervals from GitHub job timestamps; each job serially ran both OFF/ON settings.",
+  "runs": [
+    {
+      "runId": "37097238109",
+      "startedAt": "2026-10-03T04:39:00Z",
+      "updatedAt": "2026-10-03T06:24:45Z",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "74666a9159d8e6b4121d9bd8073f8e4d5bffef56",
+      "benchmarkJobs": 100,
+      "maxSimultaneousBenchmarkSteps": 20,
+      "benchmarkWindowMinutes": 100.43333333333334
+    },
+    {
+      "runId": "37105932317",
+      "startedAt": "2026-10-03T07:18:49Z",
+      "updatedAt": "2026-10-03T08:11:55Z",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "4d6380986a8452d4231e47b60e8f54d19350705b",
+      "benchmarkJobs": 66,
+      "maxSimultaneousBenchmarkSteps": 13,
+      "benchmarkWindowMinutes": 47.9
+    }
+  ]
+}
