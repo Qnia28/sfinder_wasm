@@ -1,0 +1,49 @@
+name: A0 single-input execution-profile diagnosis
+on:
+  push:
+    branches: [validation/a0-execution-diagnosis-20261003]
+    paths: [experiments/a0-execution-diagnosis-20261003/launch.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: a0-execution-diagnosis-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  diagnosis:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - run: |
+          mkdir -p .a0/baseline .a0/execution
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/baseline
+          cp wasm/pc_wasm.wasm .a0/baseline/wasm/pc_wasm.wasm
+          sudo mkdir /sys/fs/cgroup/a0-execution-diagnosis
+          echo +memory | sudo tee /sys/fs/cgroup/a0-execution-diagnosis/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-execution-diagnosis' >> "$GITHUB_ENV"
+          cat /sys/devices/system/cpu/smt/active > .a0/execution/SMT.txt 2>&1 || true
+          lscpu > .a0/execution/LSCPU.txt
+          cat /proc/cpuinfo > .a0/execution/CPUINFO.txt
+      - run: node --test --test-concurrency=1 experiments/a0-execution-diagnosis-20261003/watchdog.test.mjs experiments/a0-execution-diagnosis-20261003/contracts.test.mjs > .a0/execution/preflight.log 2>&1
+      - run: node experiments/a0-execution-diagnosis-20261003/capability.mjs
+      - run: node experiments/a0-execution-diagnosis-20261003/lock.mjs
+      - run: node experiments/a0-execution-diagnosis-20261003/run.mjs
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0-execution-diagnosis
+          path: |
+            .a0/execution/
+            .a0/preflight-*/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error
