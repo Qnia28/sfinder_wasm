@@ -7,7 +7,7 @@ on:
     inputs:
       profile:
         type: choice
-        options: [smoke, baseline, screen, ablation, confirm, factorial, diagnostic]
+        options: [smoke, baseline, screen, ablation, confirm, confirm-onoff, factorial, diagnostic]
         default: smoke
       suite:
         type: choice
@@ -44,6 +44,8 @@ jobs:
       seconds: ${{ steps.plan.outputs.seconds }}
       matrix: ${{ steps.plan.outputs.matrix }}
       fixtureRoot: ${{ steps.plan.outputs.fixtureRoot }}
+      maxParallel: ${{ steps.plan.outputs.maxParallel }}
+      jobMinutes: ${{ steps.plan.outputs.jobMinutes }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -111,7 +113,7 @@ jobs:
       - name: Real WASM oracle, bounded and locked-prefix contracts
         run: |
           set -o pipefail
-          node --test --test-concurrency=1 bench/threshold/correctness.test.mjs bench/threshold/harness.test.mjs bench/threshold/db-correctness.test.mjs 2>&1 | tee bench/threshold/results/correctness/wasm.txt
+          node --test --test-concurrency=1 bench/threshold/correctness.test.mjs bench/threshold/harness.test.mjs bench/threshold/db-correctness.test.mjs bench/threshold/expanded.test.mjs 2>&1 | tee bench/threshold/results/correctness/wasm.txt
       - name: Existing secondary / worker / actual CP regression
         run: |
           npm ci
@@ -129,10 +131,10 @@ jobs:
   benchmark:
     needs: [build, correctness]
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: ${{ fromJSON(needs.build.outputs.jobMinutes) }}
     strategy:
       fail-fast: false
-      max-parallel: 2
+      max-parallel: ${{ fromJSON(needs.build.outputs.maxParallel) }}
       matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4

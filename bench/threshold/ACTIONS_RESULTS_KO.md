@@ -1,5 +1,9 @@
 # Actions 실행 기록
 
+후속 확대 3회차: 사용자 요청으로 100행렬 / 300초 / 최대20VM 병렬의
+동일VM OFF(mask0)↔ON(mask16) 비교를 추가한다. 기존20입력과Rust구현은유지한다.
+조건과 선택 규칙은 [THIRD_RUN_KO.md](THIRD_RUN_KO.md)에 고정했다.
+
 실험 branch: `experiment/threshold-engine-20261003`.
 로컬 dev와 GitHub main에는 변경/push/merge하지 않는다.
 

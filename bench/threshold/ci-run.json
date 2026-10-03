@@ -1,8 +1,9 @@
 {
-  "profile": "confirm",
+  "profile": "confirm-onoff",
   "suite": "all",
-  "fixtureSet": "cycle1",
+  "fixtureSet": "cycle1-100",
   "candidateMask": 16,
-  "pairs": null,
-  "timeoutSeconds": null
+  "pairs": 5,
+  "timeoutSeconds": 300,
+  "maxParallel": 20
 }

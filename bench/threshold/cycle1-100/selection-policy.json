@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "total": 100,
+  "retainPrevious": 20,
+  "additional": 80,
+  "maxPerMirrorGroup": 3,
+  "sourceCaptureRun": "37035704246",
+  "sourceCaptureAttempt": "1",
+  "previousManifestHash": "e894e9f6f1c7b66c44326cc69dd0e989d4188dc9c8e465ed1460712306eed1ab",
+  "rule": "Retain the exact previous 20 bytes/K/seeds. Build 41 group pools from all proved capture rows; rank within group by K-F descending, levels descending, n descending, rows descending, lexical ID. Round-robin groups sorted by occupied(24,12,16), then lexical mirror group. Limit 3 matrices per board/mirror group including previous20. Exclude already selected IDs. No performance/completion observations are read."
+}

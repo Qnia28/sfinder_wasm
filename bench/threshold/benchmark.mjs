@@ -13,12 +13,14 @@ import { sha256, validateWitness } from './engine.mjs';
 const args = process.argv.slice(2);
 const option = (name, fallback) => { const at = args.indexOf(`--${name}`); return at < 0 ? fallback : args[at + 1]; };
 const profile = option('profile','smoke'), mask = Number(option('mask','31'));
+if (profile === 'confirm-onoff') assert(option('mask', null) !== null,
+  'confirm-onoff requires an explicit --mask; do not silently use all-on');
 const comparisons = settings(profile, mask), [defaultPairs, defaultTimeout] = defaults(profile);
 const pairs = Number(option('pairs',defaultPairs)), timeoutSeconds = Number(option('timeout-seconds',defaultTimeout));
 assert(Number.isInteger(pairs) && pairs >= 1 && pairs <= 10);
-assert(Number.isFinite(timeoutSeconds) && timeoutSeconds > 0 && timeoutSeconds <= 120);
+assert(Number.isFinite(timeoutSeconds) && timeoutSeconds > 0 && timeoutSeconds <= 300);
 const build = resolve(option('build','bench/threshold/build'));
-const suite = option('suite', profile === 'confirm' ? 'all' : 'development');
+const suite = option('suite', profile.startsWith('confirm') ? 'all' : 'development');
 const ids = option('case',null) ? [option('case',null)] : caseIds(profile, suite);
 const out = resolve(option('out',`bench/threshold/results/${profile}`));
 mkdirSync(resolve(out,'witnesses'), { recursive: true });

@@ -1,5 +1,8 @@
 # Threshold 엔진 on/off 실험 — 2026-10-03
 
+후속 [확대 3회차](THIRD_RUN_KO.md)는 100행렬, 호출당300초, 최대20VM 병렬이며
+OFF/ON은 같은VM에서직렬비교한다. 기존20입력 결과와 혼동하지 않는다.
+
 ## 완료된 Actions 캠페인
 
 지정 cycle-1 DB에서 315개 행렬의 K 증명 → baseline → 단독 screening → ablation →

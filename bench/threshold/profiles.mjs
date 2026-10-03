@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { manifest } from './fixtures.mjs';
 
-export const PROFILES = ['smoke','baseline','screen','ablation','confirm','factorial','diagnostic'];
+export const PROFILES = ['smoke','baseline','screen','ablation','confirm','confirm-onoff','factorial','diagnostic'];
 export function settings(profile, mask) {
   assert(PROFILES.includes(profile), 'unknown benchmark profile');
   assert(Number.isInteger(mask) && mask >= 0 && mask <= 31);
@@ -11,6 +11,10 @@ export function settings(profile, mask) {
     { left: off, right: { engine: 'experiment', mask: 31 } }];
   if (profile === 'screen') return [1,2,4,8,16].map(bit => ({ left: off, right: { engine: 'experiment', mask: bit } }));
   if (profile === 'confirm') return [{ left: { engine: 'original', mask: 0 }, right: { engine: 'experiment', mask } }];
+  if (profile === 'confirm-onoff') {
+    assert(mask > 0, 'on/off confirmation requires an enabled candidate');
+    return [{ left: off, right: { engine: 'experiment', mask } }];
+  }
   if (profile === 'ablation') {
     assert(mask > 0, 'ablation needs a nonzero candidate mask');
     return [{ left: off, right: { engine: 'experiment', mask } },
@@ -26,7 +30,7 @@ export function settings(profile, mask) {
 export function defaults(profile) {
   return {
     smoke: [1, 10], baseline: [3, 20], screen: [3, 20], ablation: [3, 30],
-    confirm: [5, 60], factorial: [2, 10], diagnostic: [1, 20],
+    confirm: [5, 60], 'confirm-onoff': [5, 300], factorial: [2, 10], diagnostic: [1, 20],
   }[profile];
 }
 
