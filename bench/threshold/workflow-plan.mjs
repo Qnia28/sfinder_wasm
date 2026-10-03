@@ -38,6 +38,7 @@ if (config.caseSelection) {
 }
 const maxParallel = config.maxParallel ?? 2;
 assert(Number.isInteger(maxParallel) && maxParallel >= 1 && maxParallel <= 16);
+if (profile === 'root-confirm') assert(maxParallel <= 8, 'root repeat confirmation is limited to eight concurrent shards');
 if (config.caseSelection === 'root-resume-selection.json') assert.equal(maxParallel, 12);
 const comparisons = settings(profile,mask).length;
 // Worst case: every serial paired side times out. Leave setup/validation/upload
