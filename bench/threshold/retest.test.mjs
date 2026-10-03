@@ -32,7 +32,8 @@ test('retest selection is exactly the frozen percentile/spread union without tim
   assert(report.stats.regressionReview.every(id => ids.includes(id)));
 });
 test('retest workflow keeps 66 input jobs, ten serial pairs, 300 second calls and enough job time', () => {
-  const r = spawnSync(process.execPath, ['bench/threshold/workflow-plan.mjs'], { encoding: 'utf8' });
+  const r = spawnSync(process.execPath, ['bench/threshold/workflow-plan.mjs'], { encoding: 'utf8',
+    env: { ...process.env, THRESHOLD_RUN_CONFIG: 'bench/threshold/retest-run.json', GITHUB_EVENT_NAME: '' } });
   assert.equal(r.status, 0, r.stderr);
   const p = JSON.parse(r.stdout);
   assert.deepEqual(p.matrix.case, selection.cases.map(c => c.caseId));

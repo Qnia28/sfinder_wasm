@@ -210,3 +210,70 @@ fn invalid_masks_are_rejected() {
             .is_none()
     );
 }
+
+#[test]
+fn root_refinements_oracle_budget_locks_and_undo() {
+    let mut state = 0x96512abd;
+    for sample in 0..256 {
+        let (rows, n) = fixture(&mut state, sample);
+        check(&rows, n, &[4, 20, 36, 52, 68, 84, 100, 116, 127], true);
+    }
+    // No forced candidates, all forced, repeated singleton IDs, primary-covered
+    // rows with a live quality improvement, and nonzero stable IDs.
+    for rows in [
+        vec![vec![(0, 1), (1, 9)], vec![(0, 9), (1, 1)]],
+        vec![vec![(0, 1)], vec![(1, 9)], vec![(1, 1), (2, 9)]],
+        vec![vec![(2, 1), (2, 9)], vec![(2, 3)], vec![(0, 9), (2, 1)]],
+    ] {
+        let n = 1 + rows.iter().flatten().map(|x| x.0).max().unwrap() as usize;
+        check(&rows, n, &[4, 20, 36, 52, 68, 84, 100, 116], true);
+    }
+}
+
+#[test]
+fn root_refinements_preserve_exact_traversal_and_work_counters() {
+    let mut state = 0xa3645b21;
+    for sample in 0..128 {
+        let (rows, n) = fixture(&mut state, sample);
+        let (oracle, seed) = tests::brute_partition_oracle(&rows, n);
+        for base in [4, 20] {
+            for budget in [Some(0), Some(1), Some(5), Some(100), None] {
+                let reference = exact_quality_cover_at_count_experiment(
+                    &rows,
+                    n,
+                    oracle.selected.len(),
+                    &seed,
+                    &[],
+                    budget,
+                    base,
+                )
+                .unwrap();
+                for added in [32, 64, 96] {
+                    let refined = exact_quality_cover_at_count_experiment(
+                        &rows,
+                        n,
+                        oracle.selected.len(),
+                        &seed,
+                        &[],
+                        budget,
+                        base | added,
+                    )
+                    .unwrap();
+                    assert_eq!(reference.0, refined.0);
+                    assert_eq!(reference.1, refined.1);
+                    assert_eq!(reference.2[..12], refined.2[..12]);
+                    #[cfg(feature = "threshold-trace")]
+                    {
+                        assert_eq!(reference.2[14], refined.2[14]);
+                        if added & 32 != 0 {
+                            assert_eq!(refined.2[15], 0);
+                        }
+                        if added & 64 != 0 {
+                            assert_eq!(refined.2[17], 0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

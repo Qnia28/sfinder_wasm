@@ -1,0 +1,149 @@
+import assert from 'node:assert/strict';
+import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { gunzipSync } from 'node:zlib';
+import { sha256, validateWitness } from './engine.mjs';
+const [runId, label] = process.argv.slice(2);
+assert(/^\d+$/.test(runId) && /^root-[a-z0-9-]+$/.test(label), 'supply run ID and root-* label');
+const bytes = readFileSync(`bench/threshold/results/remote-${label}-summary/threshold-summary-${runId}-1/results.json`);
+const aggregate = JSON.parse(bytes); assert.equal(aggregate.invalid, false);
+const manifestBytes = readFileSync(new URL('./cycle1-100/manifest.json', import.meta.url));
+const manifest = JSON.parse(manifestBytes);
+const initial = JSON.parse(readFileSync(new URL('./reports/expanded100.json', import.meta.url)));
+const reference = aggregate.reports[0].environment;
+assert(['root-screen', 'root-confirm'].includes(reference.profile));
+assert.equal(reference.timeoutSeconds, 300);
+assert.equal(reference.manifestHash, sha256(manifestBytes));
+assert.equal(reference.runId, runId); assert.equal(reference.runAttempt, '1');
+assert.equal(reference.dirty, ''); assert.equal(reference.build.dirty, '');
+function walk(dir, name) {
+  return readdirSync(dir, { withFileTypes: true }).flatMap(e => e.isDirectory()
+    ? walk(resolve(dir, e.name), name) : e.name === name ? [resolve(dir, e.name)] : []);
+}
+const root = resolve(`bench/threshold/results/remote-${label}-raw`);
+const files = walk(root, 'samples.jsonl'); assert.equal(files.length, aggregate.reports.length);
+const matrices = new Map(), witnesses = new Map(), cases = new Set(), seen = new Set(), samples = [], diagnostics = [];
+for (const file of files) {
+  const local = JSON.parse(readFileSync(resolve(dirname(file), 'summary.json')));
+  assert.equal(local.invalid, false);
+  const environment = local.environment;
+  for (const k of ['candidate', 'profile', 'mask', 'pairs', 'timeoutSeconds', 'manifestHash', 'runId', 'runAttempt', 'dirty']) {
+    assert.deepEqual(environment[k], reference[k]);
+  }
+  assert.deepEqual(environment.build, reference.build);
+  const raw = readFileSync(file, 'utf8').trim().split('\n').map(line => JSON.parse(line));
+  assert.equal(raw.length, local.comparisons.length * reference.pairs * 2);
+  const caseId = raw[0].caseId; assert(!cases.has(caseId)); cases.add(caseId);
+  const entry = manifest.cases.find(c => c.id === caseId); assert(entry);
+  const gzip = readFileSync(new URL(`./cycle1-100/${entry.file}`, import.meta.url));
+  assert.equal(sha256(gzip), entry.compressedSha256);
+  const inputBytes = gunzipSync(gzip); assert.equal(sha256(inputBytes), entry.sha256);
+  const matrix = JSON.parse(inputBytes); matrices.set(caseId, matrix);
+  const matches = aggregate.rows.filter(r => r.caseId === caseId);
+  assert.equal(matches.length, local.comparisons.length);
+  const report = aggregate.reports.find(r => r.file === matches[0].report); assert(report);
+  assert.deepEqual(report.environment, environment);
+  for (const r of raw) {
+    assert.equal(r.caseId, caseId); assert.equal(r.inputHash, entry.sha256);
+    assert(['EXACT', 'TIMEOUT'].includes(r.status)); assert(['left', 'right'].includes(r.side));
+    assert.equal(r.engine, 'experiment'); assert.equal(r.traceEnabled, false);
+    assert.equal(r.wasmHash, reference.build.hashes.experiment);
+    assert(Number.isInteger(r.pair) && r.pair >= 0 && r.pair < reference.pairs);
+    const comparison = local.comparisons[r.comparisonIndex]; assert(comparison);
+    assert.equal(r.mask, comparison[r.side].mask);
+    const key = `${caseId}/${r.comparisonIndex}/${r.pair}/${r.side}`; assert(!seen.has(key)); seen.add(key);
+    if (r.status === 'EXACT') {
+      const witness = JSON.parse(gunzipSync(readFileSync(resolve(dirname(file), r.witness))));
+      assert.equal(witness.completed, true);
+      const hash = validateWitness(matrix, witness); assert.equal(hash, r.witnessHash);
+      assert.equal(witness.searchedStates, r.searchedStates);
+      if (initial.witnessHashes[caseId]) assert.equal(hash, initial.witnessHashes[caseId]);
+      if (witnesses.has(caseId)) assert.equal(hash, witnesses.get(caseId)); else witnesses.set(caseId, hash);
+      assert(Number.isFinite(r.nativeMs) && r.nativeMs > 0);
+    } else { assert.equal(r.nativeMs, undefined); assert.equal(r.solverMs, undefined); }
+    const { pair, comparisonIndex, side, mask, status, nativeMs, solverMs, outerMs, searchedStates,
+      processPeakRssKiB, wasmMemoryBytes, witnessHash } = r;
+    samples.push({ caseId, pair, comparisonIndex, side, mask, status, nativeMs, solverMs, outerMs,
+      searchedStates, processPeakRssKiB, wasmMemoryBytes, witnessHash });
+  }
+  if (reference.profile === 'root-screen') {
+    const trace = JSON.parse(readFileSync(resolve(dirname(file), 'root-diagnostics.json')));
+    assert.equal(trace.inputHash, entry.sha256); assert.equal(trace.caseId, caseId);
+    assert.equal(trace.traceWasmHash, reference.build.hashes.trace);
+    assert.equal(trace.stateBudget, 1000);
+    for (const result of trace.results) {
+      validateWitness(matrix, result); assert(result.searchedStates <= 1000);
+      if (result.completed && witnesses.has(caseId)) {
+        assert.equal(validateWitness(matrix, result), witnesses.get(caseId));
+      }
+      // The compact old archive omits quality vectors. Check prefix internal
+      // consistency here; full prefix optimality is covered by the oracle tests.
+      const levels = [...new Set(matrix.rows.flatMap(row => row.map(([, q]) => q)))].sort((a, b) => a - b);
+      if (levels.length > 1) levels.shift();
+      assert(result.provenPrefix.length <= levels.length);
+      for (const [i, target] of result.provenPrefix.entries()) {
+        assert.equal(target, result.quality.filter(q => q >= levels[i]).length);
+      }
+    }
+    diagnostics.push(trace);
+  }
+}
+const median = xs => {
+  if (!xs.length) return null;
+  const a = [...xs].sort((a, b) => a - b), at = Math.floor(a.length / 2);
+  return a.length % 2 ? a[at] : (a[at - 1] + a[at]) / 2;
+};
+const spread = xs => xs.length < 2 ? null : (Math.max(...xs) - Math.min(...xs)) / median(xs);
+const perCase = aggregate.rows.map(row => {
+  const raw = samples.filter(s => s.caseId === row.caseId && s.comparisonIndex === row.comparisonIndex);
+  const paired = Array.from({ length: reference.pairs }, (_, pair) => {
+    const off = raw.find(s => s.pair === pair && s.side === 'left');
+    const on = raw.find(s => s.pair === pair && s.side === 'right'); assert(off && on);
+    return { pair, offStatus: off.status, onStatus: on.status, offMs: off.nativeMs, onMs: on.nativeMs,
+      speedup: off.status === 'EXACT' && on.status === 'EXACT' ? off.nativeMs / on.nativeMs : null,
+      stateRatio: off.status === 'EXACT' && on.status === 'EXACT' && on.searchedStates > 0
+        ? off.searchedStates / on.searchedStates : null };
+  });
+  const done = paired.filter(p => p.speedup !== null), ratios = done.map(p => p.speedup);
+  assert.equal(row.pairedSpeedupMedian, median(ratios)); assert.equal(row.pairedComplete, ratios.length);
+  for (const [side, key] of [['left', 'leftExact'], ['right', 'rightExact']]) {
+    assert.equal(row[key], raw.filter(s => s.side === side && s.status === 'EXACT').length);
+  }
+  const { report, candidate, ...rest } = row;
+  const pairedDeltaMs = median(done.map(p => p.onMs - p.offMs));
+  return { ...rest, paired, pairedDeltaMs,
+    offSpread: spread(raw.filter(s => s.side === 'left' && s.status === 'EXACT').map(s => s.nativeMs)),
+    onSpread: spread(raw.filter(s => s.side === 'right' && s.status === 'EXACT').map(s => s.nativeMs)),
+    ratioSpread: spread(ratios), fasterPairs: ratios.filter(r => r > 1).length,
+    slowerPairs: ratios.filter(r => r < 1).length,
+    sideRegression: row.pairedComplete > 0 && row.rightMedianMs >= row.leftMedianMs * 1.1
+      && row.rightMedianMs - row.leftMedianMs >= 5,
+    pairedRegression: ratios.length > 0 && median(ratios) <= 1 / 1.1 && pairedDeltaMs >= 5,
+    memoryReview: row.rightPeakRssMedianKiB > row.leftPeakRssMedianKiB * 1.2
+      || row.rightWasmMemoryMedianBytes > row.leftWasmMemoryMedianBytes * 1.2 };
+});
+const comparisons = [...new Set(perCase.map(r => r.comparisonIndex))].map(index => {
+  const rows = perCase.filter(r => r.comparisonIndex === index);
+  const done = rows.filter(r => r.pairedComplete > 0);
+  return { index, name: rows[0].name, leftMask: rows[0].left.mask, rightMask: rows[0].right.mask,
+    cases: rows.length, pairedCompleteMatrices: done.length,
+    geomean: done.length ? Math.exp(done.reduce((s, r) => s + Math.log(r.pairedSpeedupMedian), 0) / done.length) : null,
+    faster: done.filter(r => r.pairedSpeedupMedian > 1).length,
+    slower: done.filter(r => r.pairedSpeedupMedian < 1).length,
+    gain110: done.filter(r => r.pairedSpeedupMedian >= 1.1).map(r => r.caseId),
+    sideRegressions: rows.filter(r => r.sideRegression).map(r => r.caseId),
+    pairedRegressions: rows.filter(r => r.pairedRegression).map(r => r.caseId),
+    exactToTimeout: rows.filter(r => r.leftOnlyExact > 0).map(r => r.caseId),
+    onOnlyPairs: rows.reduce((s, r) => s + r.rightOnlyExact, 0),
+    memoryAlerts: rows.filter(r => r.memoryReview).map(r => r.caseId) };
+});
+writeFileSync(new URL(`./reports/${label}.json`, import.meta.url), JSON.stringify({
+  runId, url: `https://github.com/Qnia28/sfinder_wasm/actions/runs/${runId}`, attempt: 1,
+  candidate: reference.candidate, profile: reference.profile, pairs: reference.pairs, timeoutSeconds: 300,
+  manifestHash: reference.manifestHash, wasmHashes: reference.build.hashes, sourceDigest: reference.build.sourceDigest,
+  aggregateSha256: sha256(bytes), cases: cases.size, exact: samples.filter(s => s.status === 'EXACT').length,
+  timeout: samples.filter(s => s.status === 'TIMEOUT').length, comparisons, perCase, diagnostics,
+  witnessHashes: Object.fromEntries(witnesses), samples,
+  audit: 'Unique samples/settings, same-VM environments, input/build/source hashes, and all completed original-row witnesses checked. Existing completed optima matched expanded100 hashes. Budgeted traces are not timing data.',
+}, null, 2) + '\n', { flag: 'wx' });
+console.log(JSON.stringify(comparisons, null, 2));

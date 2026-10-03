@@ -7,14 +7,14 @@ on:
     inputs:
       profile:
         type: choice
-        options: [smoke, baseline, screen, ablation, confirm, confirm-onoff, factorial, diagnostic]
+        options: [smoke, baseline, screen, ablation, confirm, confirm-onoff, factorial, diagnostic, root-screen, root-confirm]
         default: smoke
       suite:
         type: choice
         options: [smoke, development, validation, all]
         default: development
       candidateMask:
-        description: 'Five-bit mask (0..31); freeze candidate in the run commit'
+        description: 'Legacy mask 0..31; root-confirm: 4/36/68/100'
         type: string
         default: '31'
       pairs:
@@ -115,7 +115,7 @@ jobs:
       - name: Real WASM oracle, bounded and locked-prefix contracts
         run: |
           set -o pipefail
-          node --test --test-concurrency=1 bench/threshold/correctness.test.mjs bench/threshold/harness.test.mjs bench/threshold/db-correctness.test.mjs bench/threshold/expanded.test.mjs bench/threshold/retest.test.mjs 2>&1 | tee bench/threshold/results/correctness/wasm.txt
+          node --test --test-concurrency=1 bench/threshold/correctness.test.mjs bench/threshold/harness.test.mjs bench/threshold/db-correctness.test.mjs bench/threshold/expanded.test.mjs bench/threshold/retest.test.mjs bench/threshold/root-forced.test.mjs 2>&1 | tee bench/threshold/results/correctness/wasm.txt
       - name: Existing secondary / worker / actual CP regression
         run: |
           npm ci
@@ -149,6 +149,11 @@ jobs:
         with:
           name: threshold-build-${{ github.run_id }}-${{ github.run_attempt }}
           path: bench/threshold/build
+      - name: Bounded root diagnostics (never used as performance evidence)
+        if: ${{ needs.build.outputs.profile == 'root-screen' }}
+        env:
+          THRESHOLD_FIXTURE_ROOT: ${{ needs.build.outputs.fixtureRoot }}
+        run: timeout 300s node bench/threshold/root-diagnose.mjs --case "${{ matrix.case }}" --out "bench/threshold/results/${{ matrix.case }}"
       - name: Sequential paired comparisons on this runner
         env:
           PROFILE: ${{ needs.build.outputs.profile }}

@@ -246,7 +246,8 @@ pub unsafe extern "C" fn solver_threshold_experiment(
     solver.min_cover_searched_states = 0;
     solver.threshold_diagnostics.fill(0);
     if offsets_ptr.is_null()
-        || mask > 31
+        || mask > 127
+        || (mask & 96 != 0 && mask & 4 == 0)
         || seed_count != exact_count
         || (entry_count > 0 && (ids_ptr.is_null() || quality_ptr.is_null()))
         || (seed_count > 0 && seed_ptr.is_null())
@@ -323,7 +324,7 @@ pub unsafe extern "C" fn solver_threshold_experiment(
 #[cfg(feature = "threshold-experiment")]
 #[unsafe(no_mangle)]
 pub extern "C" fn solver_threshold_experiment_version() -> u32 {
-    1
+    2
 }
 
 #[cfg(feature = "threshold-experiment")]

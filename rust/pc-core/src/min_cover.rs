@@ -1261,6 +1261,14 @@ fn normalize_quality_cases(
     raw_cases: &[Vec<(u32, u32)>],
     solution_count: usize,
 ) -> Option<Vec<Vec<(u32, u32)>>> {
+    normalize_quality_cases_collect::<false>(raw_cases, solution_count, &mut Vec::new())
+}
+
+fn normalize_quality_cases_collect<const COLLECT: bool>(
+    raw_cases: &[Vec<(u32, u32)>],
+    solution_count: usize,
+    forced: &mut Vec<u32>,
+) -> Option<Vec<Vec<(u32, u32)>>> {
     let mut normalized = Vec::with_capacity(raw_cases.len());
     for case in raw_cases {
         let mut rows = case.clone();
@@ -1280,6 +1288,9 @@ fn normalize_quality_cases(
         }
         if deduped.is_empty() {
             return None;
+        }
+        if COLLECT && deduped.len() == 1 {
+            forced.push(deduped[0].0);
         }
         normalized.push(deduped);
     }
@@ -1335,12 +1346,23 @@ fn threshold_static_active_candidates(
 }
 
 type PrimaryKernel = (Vec<u64>, Vec<Vec<u32>>, Vec<Vec<u64>>);
+type RootPrimaryKernel = (PrimaryKernel, Option<Vec<u64>>);
 
 fn kernelize_primary_for_candidates(
     cases: &[Vec<(u32, u32)>],
     solution_count: usize,
     active_candidate: &[bool],
 ) -> Option<PrimaryKernel> {
+    kernelize_primary_with_root(cases, solution_count, active_candidate, &[])
+        .map(|(kernel, _)| kernel)
+}
+
+fn kernelize_primary_with_root(
+    cases: &[Vec<(u32, u32)>],
+    solution_count: usize,
+    active_candidate: &[bool],
+    forced: &[u32],
+) -> Option<RootPrimaryKernel> {
     let mut rows: Vec<Vec<u32>> = Vec::with_capacity(cases.len());
     for row in cases {
         let mut ids: Vec<u32> = row
@@ -1381,13 +1403,21 @@ fn kernelize_primary_for_candidates(
     }
     let mut case_candidates = Vec::with_capacity(kept.len());
     let mut solution_coverage = vec![vec![0u64; words]; solution_count];
+    let mut root_covered = (!forced.is_empty()).then(|| vec![0u64; words]);
     for (active_case_index, &case) in kept.iter().enumerate() {
         for &solution in &rows[case] {
             set_bit(&mut solution_coverage[solution as usize], active_case_index);
         }
+        // This is primary coverage only. Keep every quality row/group intact:
+        // a covered row may still be improved by another candidate.
+        if let Some(root) = root_covered.as_mut()
+            && rows[case].iter().any(|id| forced.binary_search(id).is_ok())
+        {
+            set_bit(root, active_case_index);
+        }
         case_candidates.push(rows[case].clone());
     }
-    Some((full, case_candidates, solution_coverage))
+    Some(((full, case_candidates, solution_coverage), root_covered))
 }
 
 #[inline]
@@ -1685,11 +1715,12 @@ impl ThresholdExperimentOptions {
     }
 }
 
-// Trace ABI v1: stages, dfsEntries, rootForcedSteps, propagatedSteps,
+// Historical counters: stages, dfsEntries, rootForcedSteps, propagatedSteps,
 // propagationScans, propagationConflicts, u0Prunes, u1Prunes, pairCalls,
 // priorSatisfied, qualityGroupUpdates, lexChecks. Counters are compiled out
 // without threshold-trace; zero counters must not be interpreted as observations.
-pub const THRESHOLD_TRACE_COUNTERS: usize = 12;
+// Append-only counters for rootForced follow the historical first 12.
+pub const THRESHOLD_TRACE_COUNTERS: usize = 20;
 
 struct SequentialThresholdSearch<'a, const EXPERIMENT: bool> {
     // Buffers are retained across siblings and grow with actual search depth.
@@ -1861,20 +1892,38 @@ impl<const EXPERIMENT: bool> SequentialThresholdSearch<'_, EXPERIMENT> {
         true
     }
 
-    fn start(&mut self, forced: &[u32]) {
+    fn start(&mut self, forced: &[u32], prepared_root: Option<&[u64]>) {
         let mut covered = vec![0; self.full.len()];
+        let mut applied = 0;
         for &id in forced {
             if !self.charge() {
                 break;
             }
+            #[cfg(feature = "threshold-trace")]
+            let before_updates = self.diagnostics[10];
             self.add_solution(id as usize);
-            or_into(&mut covered, &self.solution_coverage[id as usize]);
+            applied += 1;
+            if prepared_root.is_none() {
+                or_into(&mut covered, &self.solution_coverage[id as usize]);
+            }
             #[cfg(feature = "threshold-trace")]
             {
                 self.diagnostics[2] += 1;
+                self.diagnostics[16] += self.diagnostics[10] - before_updates;
+                if prepared_root.is_none() {
+                    self.diagnostics[17] += covered.len() as u64;
+                }
             }
         }
         if !self.budget_exceeded {
+            if let Some(root) = prepared_root {
+                debug_assert_eq!(applied, forced.len());
+                covered.copy_from_slice(root);
+                #[cfg(feature = "threshold-trace")]
+                {
+                    self.diagnostics[18] += covered.len() as u64;
+                }
+            }
             self.run(&covered);
         }
         while let Some(&id) = self.selected_ids.last() {
@@ -2244,16 +2293,36 @@ fn fixed_quality_impl<const EXPERIMENT: bool>(
     if solution_count == 0 || exact_count == 0 || seed_selected.len() != exact_count {
         return None;
     }
-    let normalized = normalize_quality_cases(raw_cases, solution_count)?;
     let mut forced = Vec::new();
+    let collect = EXPERIMENT && options.enabled(2) && options.enabled(5);
+    let normalized = if collect {
+        normalize_quality_cases_collect::<true>(raw_cases, solution_count, &mut forced)?
+    } else {
+        normalize_quality_cases(raw_cases, solution_count)?
+    };
+    #[cfg(feature = "threshold-trace")]
+    {
+        _diagnostics[12] = normalized.len() as u64;
+        _diagnostics[13] = normalized.iter().filter(|row| row.len() == 1).count() as u64;
+    }
     if EXPERIMENT && options.enabled(2) {
-        for row in &normalized {
-            if row.len() == 1 {
-                forced.push(row[0].0);
+        if !collect {
+            for row in &normalized {
+                if row.len() == 1 {
+                    forced.push(row[0].0);
+                }
+            }
+            #[cfg(feature = "threshold-trace")]
+            {
+                _diagnostics[15] = normalized.len() as u64;
             }
         }
         forced.sort_unstable();
         forced.dedup();
+        #[cfg(feature = "threshold-trace")]
+        {
+            _diagnostics[14] = forced.len() as u64;
+        }
         if forced.len() > exact_count {
             return None;
         }
@@ -2266,6 +2335,14 @@ fn fixed_quality_impl<const EXPERIMENT: bool>(
     }
 
     let primary_coverage = full_primary_coverage(&normalized, solution_count);
+    #[cfg(feature = "threshold-trace")]
+    {
+        let mut root = vec![0; normalized.len().div_ceil(64)];
+        for &id in &forced {
+            or_into(&mut root, &primary_coverage[id as usize]);
+        }
+        _diagnostics[19] = root.iter().map(|word| word.count_ones() as u64).sum();
+    }
     let mut seed_primary = vec![0u64; normalized.len().div_ceil(64)];
     for &id in &seed {
         or_into(&mut seed_primary, &primary_coverage[id as usize]);
@@ -2334,8 +2411,17 @@ fn fixed_quality_impl<const EXPERIMENT: bool>(
             current_index,
             stable_tie,
         );
-        let (full, mut case_candidates, solution_coverage) =
-            kernelize_primary_for_candidates(&normalized, solution_count, &active_candidate)?;
+        let ((full, mut case_candidates, solution_coverage), prepared_root) = if EXPERIMENT
+            && options.enabled(2)
+            && options.enabled(6)
+        {
+            kernelize_primary_with_root(&normalized, solution_count, &active_candidate, &forced)?
+        } else {
+            (
+                kernelize_primary_for_candidates(&normalized, solution_count, &active_candidate)?,
+                None,
+            )
+        };
         let incumbent =
             threshold_count_for_selected(&normalized, &best, levels[current_index], solution_count);
         if !(EXPERIMENT && options.enabled(1)) {
@@ -2398,7 +2484,7 @@ fn fixed_quality_impl<const EXPERIMENT: bool>(
             #[cfg(feature = "threshold-trace")]
             diagnostics: [0; THRESHOLD_TRACE_COUNTERS],
         };
-        search.start(&forced);
+        search.start(&forced, prepared_root.as_deref());
         #[cfg(feature = "threshold-trace")]
         {
             _diagnostics[0] += 1;
@@ -2435,8 +2521,17 @@ fn fixed_quality_impl<const EXPERIMENT: bool>(
         let last = threshold_data.len() - 1;
         let active_candidate =
             threshold_static_active_candidates(&primary_coverage, &threshold_data, last, true);
-        let (full, mut case_candidates, solution_coverage) =
-            kernelize_primary_for_candidates(&normalized, solution_count, &active_candidate)?;
+        let ((full, mut case_candidates, solution_coverage), prepared_root) = if EXPERIMENT
+            && options.enabled(2)
+            && options.enabled(6)
+        {
+            kernelize_primary_with_root(&normalized, solution_count, &active_candidate, &forced)?
+        } else {
+            (
+                kernelize_primary_for_candidates(&normalized, solution_count, &active_candidate)?,
+                None,
+            )
+        };
         if !(EXPERIMENT && options.enabled(1)) {
             let best_flag: Vec<bool> = (0..solution_count)
                 .map(|id| best.binary_search(&(id as u32)).is_ok())
@@ -2486,7 +2581,7 @@ fn fixed_quality_impl<const EXPERIMENT: bool>(
             #[cfg(feature = "threshold-trace")]
             diagnostics: [0; THRESHOLD_TRACE_COUNTERS],
         };
-        search.start(&forced);
+        search.start(&forced, prepared_root.as_deref());
         #[cfg(feature = "threshold-trace")]
         {
             _diagnostics[0] += 1;
@@ -2551,7 +2646,8 @@ pub fn exact_quality_cover_at_count_experiment(
     Vec<u32>,
     [u64; THRESHOLD_TRACE_COUNTERS],
 )> {
-    if mask > 31 {
+    // Bits 5/6 only modify rootForced, never enable it implicitly.
+    if mask > 127 || (mask & 96 != 0 && mask & 4 == 0) {
         return None;
     }
     let mut prefix = Vec::new();

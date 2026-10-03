@@ -6,7 +6,9 @@ import { withWasmU32Buffers } from '../../src/pc-wasm-cover-matrix.mjs';
 export const BASELINE_SHA = 'c0cb2a048e7275bfea587d176b1954efff0a8a08';
 export const ELEMENTS = ['stagedBounds', 'removePresort', 'rootForced', 'priorPropagation', 'currentPropagation'];
 export const COUNTERS = ['stages', 'dfsEntries', 'rootForcedSteps', 'propagatedSteps', 'propagationScans',
-  'propagationConflicts', 'u0Prunes', 'u1Prunes', 'pairCalls', 'priorSatisfied', 'qualityGroupUpdates', 'lexChecks'];
+  'propagationConflicts', 'u0Prunes', 'u1Prunes', 'pairCalls', 'priorSatisfied', 'qualityGroupUpdates', 'lexChecks',
+  'normalizedRows', 'singletonRows', 'uniqueRootForced', 'rootCollectionRows', 'rootQualityGroupUpdates',
+  'rootCoverageWordOrs', 'rootCoverageWordCopies', 'rootCoveredOriginalRows'];
 export const sha256 = data => createHash('sha256').update(data).digest('hex');
 
 export function validateMatrix(matrix, { allowZero = false } = {}) {
@@ -51,15 +53,18 @@ export async function openEngine(path) {
   assert(ptr, 'cannot create cover solver');
   const owner = { e, ptr };
   const experimental = typeof e.solver_threshold_experiment === 'function';
-  if (experimental) assert.equal(e.solver_threshold_experiment_version(), 1);
+  const experimentVersion = experimental ? e.solver_threshold_experiment_version() : null;
+  if (experimental) assert([1, 2].includes(experimentVersion));
   return {
-    wasmHash: sha256(bytes), experimental,
+    wasmHash: sha256(bytes), experimental, experimentVersion,
     traceEnabled: experimental && e.solver_threshold_trace_enabled() === 1,
     memoryBytes: () => e.memory.buffer.byteLength,
     close() { e.solver_free(ptr); },
     solve(matrix, { mask = 0, stateBudget = null, lockedPrefix = [], allowZero = false, timing = false } = {}) {
       validateMatrix(matrix, { allowZero });
-      assert(Number.isInteger(mask) && mask >= 0 && mask <= 31, 'invalid experiment mask');
+      assert(Number.isInteger(mask) && mask >= 0 && mask <= 127
+        && (!(mask & 96) || (mask & 4)), 'invalid experiment mask');
+      if (mask > 31) assert.equal(experimentVersion, 2, 'root refinements require experiment ABI v2');
       assert(stateBudget === null || (Number.isSafeInteger(stateBudget) && stateBudget >= 0 && stateBudget < 0xffffffff));
       assert(lockedPrefix.every(x => Number.isInteger(x) && x >= 0 && x <= matrix.rows.length));
       if (!experimental) assert.equal(mask, 0, 'original engine does not support experiment masks');
@@ -101,7 +106,8 @@ export async function openEngine(path) {
         const provenPrefix = prefixAvailable ? Array.from({ length: e.solver_min_cover_proven_prefix_len(ptr) >>> 0 },
           (_, i) => e.solver_min_cover_proven_prefix(ptr, i) >>> 0) : undefined;
         const diagnostics = experimental && e.solver_threshold_trace_enabled() === 1
-          ? Object.fromEntries(COUNTERS.map((name, i) => [name, Number(e.solver_threshold_diagnostic(ptr, i))])) : undefined;
+          ? Object.fromEntries(COUNTERS.slice(0, experimentVersion === 1 ? 12 : 20)
+            .map((name, i) => [name, Number(e.solver_threshold_diagnostic(ptr, i))])) : undefined;
         return { completed, count, selected, quality, searchedStates: Number(e.solver_min_cover_searched_states(ptr)),
           ...(provenPrefix ? { provenPrefix } : {}), ...(diagnostics ? { diagnostics } : {}),
           ...(timing ? { nativeMs } : {}) };
