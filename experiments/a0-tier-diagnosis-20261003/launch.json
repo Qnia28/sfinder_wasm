@@ -1,0 +1,14 @@
+{
+  "goal": "single-input engine-tier intervention and separate compilation trace",
+  "matrixId": "board-028--restricted-split--ordinary",
+  "untracedCalls": 18,
+  "tracedCalls": 6,
+  "maximumCalls": 24,
+  "campaignOriginRunId": 37096100399,
+  "campaignClockReset": false,
+  "productChanges": false,
+  "confirmationCalls": 0,
+  "nativeThresholdCalls": 0,
+  "actualPrimaryCalls": 0,
+  "actualPcCalls": 0
+}
