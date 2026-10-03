@@ -13,6 +13,8 @@
 | DB 개발12 baseline | 98bfff9 | [37037039327](https://github.com/Qnia28/sfinder_wasm/actions/runs/37037039327) | 모든 job 성공; 6입력 양측3회 exact, 6입력 양측3회 timeout |
 | DB 개발12 five-single screen | 988fa59 | [37038377376](https://github.com/Qnia28/sfinder_wasm/actions/runs/37038377376) | 모든 job 성공; 180 exact / 180 timeout; 완료 witness 일치 |
 | DB 개발12 mask18 ablation | 96ee4b1 | [37042810532](https://github.com/Qnia28/sfinder_wasm/actions/runs/37042810532) | 모든 job 성공; 108 exact / 108 timeout; 완료 witness 일치 |
+| DB 전체20 mask16 confirm 제1회 | ac54ba6 | [37046842107 attempt1](https://github.com/Qnia28/sfinder_wasm/actions/runs/37046842107/attempts/1) | 모든 job 성공; 110 exact / 90 timeout; 완료 witness 일치 |
+| DB 전체20 mask16 confirm 제2회 | ac54ba6 | [37046842107 attempt2](https://github.com/Qnia28/sfinder_wasm/actions/runs/37046842107/attempts/2) | 모든 job 성공; 110 exact / 90 timeout; 실행 간 witness 일치 |
 
 원본 DB SHA256:
 `58f02fe2e1f7939e127de4c7ea2886bcf45c91a797ffa0d25dc8a0e4fb262388`.
@@ -34,9 +36,10 @@ capture run/attempt/build 일치를 검산했다. 전부 증명 완료하여 inp
 
 ## 진행
 
-DB 개발12의 baseline/screen/ablation이 완료되었다. 최종 확인 후보mask16을
-동결하고 개발12+검증8의 confirm(5pairs, 60초/call)을 다음 실행으로 지정한다.
-그 다음 동일후보 confirm 제2회 → 최종보고다.
+baseline → screen → ablation → confirm 두 차례의 캠페인을 완료했다.
+두 확인 실행은 동일 commit ac54ba6, mask16, 입력20, 5pairs, 60초 제한이다.
+검증군 결과에 맞춘 튜닝은 없었다. 최종 결과와 한계는
+[FINAL_REPORT_KO.md](FINAL_REPORT_KO.md)에 기록했다. 제품 통합은 수행하지 않는다.
 정확성/증명 불일치는 즉시 중단한다. all-on은 자동 승격하지 않는다.
 
 초기 legacy smoke는 1pair뿐이며 성능 판단용이 아니다. original↔off의
@@ -73,6 +76,34 @@ off→18=1.0885, 16→18=1.0149, 2→18=1.0862 (완료입력 paired ratio 기술
 pcinfo-022/J에서 off→18=1.6544, 2→18=1.6479로 current전파의 기여를 확인.
 presort제거의 조합내기여는작아 최종확인 후보를mask16으로단순화했다.
 정답오류, exact→timeout, 회귀/메모리경보는없었다. 최종채택은미정이다.
+
+### S3 confirm 제1회 결과
+
+200호출:110 EXACT,90 TIMEOUT. Raw/witness를다운로드해완료110개원본검산통과.
+완료입력11개는양쪽모두5/5exact, 미완료9개는양쪽모두5/5timeout이다.
+
+| 군 | 입력수 | 양측완료입력 | 완료입력 paired ratio 기하평균 |
+|---|---:|---:|---:|
+| 개발 | 12 | 6 | 1.151 |
+| 검증 | 8 | 5 | 1.195 |
+
+pcinfo-022/J(original→16)=1.6384, elephant/O=1.2447, grace-system/O=1.5981.
+10%/5ms회귀, exact→timeout, 20%메모리증가경보없음. 후보only완료없음.
+20초/30초때보다시간한도를60초로늘려도개발timeout6개는미완료다.
+검증pcinfo031/Z,032/O,033/O도양쪽timeout이어서이9입력의성능비는알수없다.
+완료입력기하평균은전체20입력의속도개선을증명하지않으며, 짧은grace/O의
+큰비율은절대시간과잡음도같이봐야한다. 제2회로효과재현성을확인한다.
+
+### S3 confirm 제2회 및 최종 감사
+
+200호출:110 EXACT/90 TIMEOUT으로 제1회와 동일하다.
+완료군 paired ratio 기하평균: 개발1.168배, 검증1.112배.
+pcinfo022/J=1.6291, ELEPHANT/O=1.2773으로 핵심 개선이 재현됐다.
+회귀/완료율악화/메모리증가 경보는 없으나 9개 양측timeout 입력은 여전히 미확인이다.
+두 실행 source/WASM/manifest hash가 동일하며, 400sample/220exact witness 검산 통과.
+감사 스크립트와 장기 보존용 축약 raw/요약은 archive-confirmation.mjs 및
+reports/confirmation.json에 저장했다. currentPropagation만 후속 통합 검토 대상으로
+권장하되 main/dev 통합이나 제품 기본값 변경은 하지 않았다.
 
 ## 보호 확인
 

@@ -1,5 +1,12 @@
 # Threshold 엔진 on/off 실험 — 2026-10-03
 
+## 완료된 Actions 캠페인
+
+지정 cycle-1 DB에서 315개 행렬의 K 증명 → baseline → 단독 screening → ablation →
+동일 후보 확인 두 차례를 완료했다. [최종 보고서](FINAL_REPORT_KO.md)와
+[실행 기록](ACTIONS_RESULTS_KO.md)을 참고한다. 현재 권장 검토 후보는 mask16이며,
+dev/main에 통합하지 않았다. 아래 로컬 계획/초기20 stress 입력은 이전 단계 설명이다.
+
 ## 범위와 안전장치
 
 - 원본 `D:\AI\sfinder-wasm\dev-branch`는 읽기 전용이다.

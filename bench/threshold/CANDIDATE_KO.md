@@ -1,5 +1,8 @@
 # 동결 후보: S2 mask18 → S3 mask16
 
+최종 상태: S3 두 차례 성공. currentPropagation만 후속 통합 검토 대상으로 권장하며,
+제품 승격은 하지 않았다. 결과와 timeout 한계는 [FINAL_REPORT_KO.md](FINAL_REPORT_KO.md).
+
 이 문서는 S1 screen 후, S2/S3의 후보 timing을 보기 전에 작성했다.
 성능 채택/제품 옵션 기본값 변경을 뜻하지 않는다.
 
