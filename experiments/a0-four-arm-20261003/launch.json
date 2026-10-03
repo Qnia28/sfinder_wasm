@@ -7,5 +7,6 @@
  "localControlByteEqual":true,"linuxControlByteEqualityNotYetObserved":true,
  "workDiagnosticsTimingEvidence":false,"automaticSearchBudgetIncrease":false,
  "oldPreparationCommit":"4508ddde1292a8223d9c4d41777d3bf2e72e29dd",
+ "campaignOriginRunId":37134128882,"clockResetWithinCampaign":false,"correction":"Cross-platform canonical selection hash fixture; same selected records and schedule, prior actual-input calls zero",
  "productApplyMergeDeploy":false
 }

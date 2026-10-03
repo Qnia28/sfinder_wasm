@@ -2,6 +2,8 @@
   "seed": "four-arm-v1",
   "status": "FROZEN_PRE_NATIVE",
   "originalSelectionSha256": "2e0a1dce48a7ce104876fff019a2851b2a8a578b030b17513fa199355241332b",
+  "originalSelectionCanonicalSha256": "3c31b55ab1bd14d8f5840409161d55de61e795b5b33b242ad45e8726efde2cc3",
+  "originalSelectionSha256Scope": "Historical Windows worktree bytes (CRLF); canonical JSON hash guards semantic identity across checkout platforms",
   "originalRulesSha256": "2f19b83dd01343f7cabcd972e5bd2a4fcf593ed665346afbf0ecbefe446c1d5c",
   "originalSelectedWithControls": 121,
   "addedHotspot": 1,

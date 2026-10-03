@@ -41,7 +41,7 @@ for(let host=0;host<5;host++){
 assert.equal(runs.length,4960);
 write(`${HERE}/INPUTS.json`,{entries:inputs});
 write(`${HERE}/REFERENCES.json`,{references,sourceFiles:sources,originalProofReused:true,newNativeCalls:0});
-write(`${HERE}/SELECTION.json`,{seed:'four-arm-v1',status:'FROZEN_PRE_NATIVE',originalSelectionSha256:sha(fs.readFileSync(`${ROOT}/experiments/a0-proof-retest-20261003/RETEST_SELECTION.json`)),originalRulesSha256:old.rulesSha256,
+write(`${HERE}/SELECTION.json`,{seed:'four-arm-v1',status:'FROZEN_PRE_NATIVE',originalSelectionSha256:sha(fs.readFileSync(`${ROOT}/experiments/a0-proof-retest-20261003/RETEST_SELECTION.json`)),originalSelectionCanonicalSha256:jsonSha(old),originalSelectionSha256Scope:'Historical preparation worktree bytes; canonical JSON hash guards identity across checkout platforms',originalRulesSha256:old.rulesSha256,
  originalSelectedWithControls:121,addedHotspot:1,inputs:122,records,environmentControlIds:Object.fromEntries(['development','reserved'].map(p=>[p,old.populations[p].environmentControlId])),wholePopulationGateReplacement:false});
 write(`${HERE}/SCHEDULE.json`,{arms:ARMS,orders:ORDERS,blocksPerInput:10,jobs:5,callsPerJob:992,comparisonCalls:4880,environmentCalls:80,totalCalls:4960,runs});
 console.log(JSON.stringify({status:'SELECTION_SCHEDULE_PREPARED',inputs:122,calls:4960,newSolverCalls:0}));

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 import test from 'node:test';
-import {ROOT,HERE,read,ARMS,ORDERS,matrix,sha} from './common.mjs';
+import {ROOT,HERE,read,ARMS,ORDERS,matrix,sha,jsonSha} from './common.mjs';
 import {Journal,Session} from '../a0-diagnosis-20261003/supervisor.mjs';
 test('frozen 122-input four-arm design: 10 balanced blocks and 80 environment calls',()=>{
  const selection=read(`${HERE}/SELECTION.json`),inputs=read(`${HERE}/INPUTS.json`).entries,runs=read(`${HERE}/SCHEDULE.json`).runs;
@@ -23,7 +23,9 @@ test('frozen 122-input four-arm design: 10 balanced blocks and 80 environment ca
  }
  const old=read(`${ROOT}/experiments/a0-proof-retest-20261003/RETEST_SELECTION.json`);
  for(const r of old.records.filter(r=>r.selected))assert(selection.records.some(s=>s.id===r.matrixId));
- assert.equal(selection.originalSelectionSha256,sha(fs.readFileSync(`${ROOT}/experiments/a0-proof-retest-20261003/RETEST_SELECTION.json`)));
+ assert.equal(selection.originalSelectionCanonicalSha256,jsonSha(old));
+ const lf=fs.readFileSync(`${ROOT}/experiments/a0-proof-retest-20261003/RETEST_SELECTION.json`,'utf8').replaceAll('\r\n','\n');
+ assert.equal(jsonSha(JSON.parse(lf)),jsonSha(JSON.parse(lf.replaceAll('\n','\r\n'))));
 });
 test('arm independence, no automatic activation or actual-input budget increase',()=>{
  const source=fs.readFileSync(`${ROOT}/rust/pc-core/src/min_cover_four_arm.rs`,'utf8');assert(source.includes('compile_error!'));assert(source.includes('#[cfg(not(feature = "a0-lower-cutoff"))]'));

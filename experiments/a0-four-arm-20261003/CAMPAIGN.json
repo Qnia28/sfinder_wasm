@@ -1,5 +1,6 @@
 {
  "campaignId":"a0-four-arm-20261003","status":"AUTHORIZED_AFTER_REINFORCEMENT_GATED_ON_LINUX_PREFLIGHT",
+ "campaignOriginRunId":37134128882,"campaignOriginCreatedAt":"2026-10-03T15:41:25Z",
  "authorization":"User: reinforce per Astra advice, then GitHub Actions if no outstanding issue. Strict feature-off full-byte control gate; any Linux drift blocks actual calls.",
  "origin":"Future first build workflow run.created_at; frozen before any actual-input call. Previous campaign closed; no inherited clock reset.",
  "computeMinutes":160,"cancelMinutes":175,"overallMinutes":180,"runnerHoursCap":64,
