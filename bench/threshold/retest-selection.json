@@ -1,0 +1,996 @@
+{
+  "version": 1,
+  "sourceRunId": "37097238109",
+  "sourceReportHash": "f5deedfeca2805a6411f53ffeaea2c446ce53e12ec31d39d939d8ec9ef63fdf9",
+  "manifestHash": "616109d5e746843b1224dbc4aedfbe4c2f3b41fc4caf22df13a917b81b472541",
+  "wasmHash": "b5b25a31cb05e9fe97bd58296849057251791f4c6247a49ef58d381c4abf8066",
+  "sourceDigest": {
+    "originalRust": "c3c6e9414e1b02a962aa1ef4c0ee7195fc65e6f8e06cec2feeed74e4d5770573",
+    "candidateRust": "90e53c1a2015c41edb353411d7bab3360f4c127d69cf2bae84657491879e7d27",
+    "candidateJs": "2da702544ba7422eba1ed8ab6a14f5de5a048a67705e1420a79b03bfd6b778a9",
+    "harness": "bb5b59a4009fb6d1c4ad41f4a9bc3794669f5fa08cab63a2eb20ce0a0b19e3bb"
+  },
+  "mask": 16,
+  "pairs": 10,
+  "timeoutSeconds": 300,
+  "policy": "P90 fast/slow = upper/lower deciles of per-matrix paired-median OFF/ON ratios among 80 matrices with five complete pairs (R7 quantile). Spread = (max-min)/median of OFF nativeMs, ON nativeMs or complete paired ratios; any >=10% selects a matrix. Censored timeout is never converted to a time. Select the union, do not replace the initial100 or duplicate matrix.",
+  "cutoff": {
+    "completeMatrices": 80,
+    "p90Speedup": 1.1862406727109407,
+    "p10Speedup": 0.9506998750068167,
+    "relativeRange": 0.1
+  },
+  "cases": [
+    {
+      "caseId": "cycle1-6p-pco-a-I",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0355783984680227,
+      "offSpread": 0.34179512871747114,
+      "onSpread": 1.5937267681239178,
+      "ratioSpread": 0.8651397389181099,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-6p-pco-a-O",
+      "suite": "development",
+      "reasons": [
+        "p90-fast",
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.2162346727032634,
+      "offSpread": 0.3799260179024613,
+      "onSpread": 0.2521558539555143,
+      "ratioSpread": 0.4664790670836819,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-6p-pco-a-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0551597382376705,
+      "offSpread": 0.7634800821306916,
+      "onSpread": 0.5737797736912148,
+      "ratioSpread": 0.9254985931731238,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-alt-jaws-a-O",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0037655640491587,
+      "offSpread": 0.11741073330765898,
+      "onSpread": 0.21244624195209938,
+      "ratioSpread": 0.2398628773244321,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-alt-jaws-a-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9969224819040647,
+      "offSpread": 0.2109668621251852,
+      "onSpread": 0.07303326072204683,
+      "ratioSpread": 0.13066489953946164,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-alt-jaws-a-Z",
+      "suite": "development",
+      "reasons": [
+        "off-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9778210097771213,
+      "offSpread": 0.12445439117042723,
+      "onSpread": 0.07687974050894773,
+      "ratioSpread": 0.1687907820688006,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-alt-shoes-a-O",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0037598143940496,
+      "offSpread": 0.3018740456908298,
+      "onSpread": 0.11532217373998363,
+      "ratioSpread": 0.40926877358444474,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-alt-shoes-a-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9511562573912788,
+      "offSpread": 0.1596646733999029,
+      "onSpread": 0.41232449080987793,
+      "ratioSpread": 0.30367806319348123,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-alt-shoes-a-Z",
+      "suite": "development",
+      "reasons": [
+        "p90-slow",
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9461286883937425,
+      "offSpread": 0.1011786298055725,
+      "onSpread": 0.1264021271778261,
+      "ratioSpread": 0.14161867976800332,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-big-jaws-a-O",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0669919976105255,
+      "offSpread": 0.5284843767289291,
+      "onSpread": 0.1539924942136716,
+      "ratioSpread": 0.48641788544164744,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-big-jaws-a-S",
+      "suite": "expansion",
+      "reasons": [
+        "p90-slow",
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.8852613791801061,
+      "offSpread": 0.4533298052861379,
+      "onSpread": 0.27242706448694753,
+      "ratioSpread": 0.2558384417310064,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-cliff-o-a-I",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9786797283778612,
+      "offSpread": 0.5113959282441247,
+      "onSpread": 0.18461214000723866,
+      "ratioSpread": 0.6197688252732536,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-cliff-o-a-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0408384262766424,
+      "offSpread": 0.24697535844620389,
+      "onSpread": 0.23690476709865338,
+      "ratioSpread": 0.22041372465457043,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-elephant-a-I",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0176969065310157,
+      "offSpread": 0.1018097793458836,
+      "onSpread": 0.08159538745697034,
+      "ratioSpread": 0.1322932928184737,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-elephant-a-O",
+      "suite": "validation",
+      "reasons": [
+        "p90-fast"
+      ],
+      "firstSpeedup": 1.3279652402658804,
+      "offSpread": 0.01805753536210613,
+      "onSpread": 0.03101010935988343,
+      "ratioSpread": 0.030760537184352593,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-elephant-j-a-O",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9727706393001984,
+      "offSpread": 0.34868912023097065,
+      "onSpread": 0.5272342701216354,
+      "ratioSpread": 0.41720199938402075,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-elephant-j-a-Z",
+      "suite": "expansion",
+      "reasons": [
+        "p90-fast",
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.3125872462019463,
+      "offSpread": 0.36719901096827495,
+      "onSpread": 0.14464176577567836,
+      "ratioSpread": 0.3631659106148607,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-grace-system-a-O",
+      "suite": "validation",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0636761702579196,
+      "offSpread": 0.9379563566354661,
+      "onSpread": 0.9357468056639274,
+      "ratioSpread": 0.9583039713328838,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-grace-system-a-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.1266690586531496,
+      "offSpread": 0.5607952851581708,
+      "onSpread": 0.43474788334901165,
+      "ratioSpread": 0.4399549717889161,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-grace-system-b-O",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9855553945498352,
+      "offSpread": 0.5951733132332154,
+      "onSpread": 0.19244860910869324,
+      "ratioSpread": 0.6857100591983486,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-hills-a-O",
+      "suite": "development",
+      "reasons": [
+        "off-spread>=10%"
+      ],
+      "firstSpeedup": 1.012826225567677,
+      "offSpread": 0.1029743713767241,
+      "onSpread": 0.045887441509284616,
+      "ratioSpread": 0.09046187479229673,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-hills-a-S",
+      "suite": "expansion",
+      "reasons": [
+        "p90-fast"
+      ],
+      "firstSpeedup": 1.1866869864841536,
+      "offSpread": 0.006101729249407598,
+      "onSpread": 0.013070972369129992,
+      "ratioSpread": 0.00859312196538456,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-jaws-a-I",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.1468068535016012,
+      "offSpread": 0.17225266488879912,
+      "onSpread": 0.16613115225653283,
+      "ratioSpread": 0.15674727502669616,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-jaws-a-S",
+      "suite": "expansion",
+      "reasons": [
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0244436380323512,
+      "offSpread": 0.07649218707435032,
+      "onSpread": 0.14243947141286342,
+      "ratioSpread": 0.15458905348641377,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-jaws-a-Z",
+      "suite": "validation",
+      "reasons": [
+        "off-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0166513043224488,
+      "offSpread": 0.22638656883042088,
+      "onSpread": 0.054609399167174937,
+      "ratioSpread": 0.19938887828202723,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-jeremy-a-L",
+      "suite": "validation",
+      "reasons": [
+        "p90-slow",
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9174389291674105,
+      "offSpread": 0.37285495420197107,
+      "onSpread": 0.3174582069615709,
+      "ratioSpread": 0.7358201138626601,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-jeremy-a-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.010981642919847,
+      "offSpread": 0.11050698072999861,
+      "onSpread": 0.20861420797628724,
+      "ratioSpread": 0.19383804705596785,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-jeremy-a-Z",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9768765960461343,
+      "offSpread": 0.23625390255751386,
+      "onSpread": 0.27347977972641835,
+      "ratioSpread": 0.12111882411270683,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-legs-a-O",
+      "suite": "expansion",
+      "reasons": [
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.1389012979047448,
+      "offSpread": 0.09684445406986285,
+      "onSpread": 0.026008957749112098,
+      "ratioSpread": 0.12269607762560901,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-legs-a-Z",
+      "suite": "validation",
+      "reasons": [
+        "off-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.1310992943077833,
+      "offSpread": 0.11011146723499018,
+      "onSpread": 0.012351264354352433,
+      "ratioSpread": 0.10761617642383696,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-007-J",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.1450542925747964,
+      "offSpread": 0.4301469851403551,
+      "onSpread": 0.22793428219000877,
+      "ratioSpread": 0.27253150986504465,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-007-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0066194547936052,
+      "offSpread": 0.2761928729800883,
+      "onSpread": 0.07685559344115463,
+      "ratioSpread": 0.25831626972312055,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-011-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.060338506088441,
+      "offSpread": 0.17027939919732457,
+      "onSpread": 0.11198796061625185,
+      "ratioSpread": 0.23338687678966435,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-011-Z",
+      "suite": "expansion",
+      "reasons": [
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0064167570757194,
+      "offSpread": 0.09897806302227458,
+      "onSpread": 0.5927171743899352,
+      "ratioSpread": 0.45502353766695125,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-013-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.011919933160647,
+      "offSpread": 0.1363852310485248,
+      "onSpread": 0.09311486626213963,
+      "ratioSpread": 0.14262789004734402,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-013-T",
+      "suite": "expansion",
+      "reasons": [
+        "p90-slow",
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.907460063306722,
+      "offSpread": 0.23235737974385248,
+      "onSpread": 0.2112524189858924,
+      "ratioSpread": 0.29984864202874784,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-014-L",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0059098600394953,
+      "offSpread": 0.19358508245018388,
+      "onSpread": 0.31011588995818207,
+      "ratioSpread": 0.2683407066834577,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-014-O",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9985816271654716,
+      "offSpread": 0.19859161441196124,
+      "onSpread": 0.20857700815665772,
+      "ratioSpread": 0.3306182759572655,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-015-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9957339334465847,
+      "offSpread": 0.3656470960793597,
+      "onSpread": 0.15077057426176407,
+      "ratioSpread": 0.38320390510969576,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-015-Z",
+      "suite": "development",
+      "reasons": [
+        "off-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0614743821845576,
+      "offSpread": 0.13707193047434854,
+      "onSpread": 0.08925793093398866,
+      "ratioSpread": 0.11492667778616808,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-016-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0070090964927378,
+      "offSpread": 0.14319854654283776,
+      "onSpread": 0.2043928809398986,
+      "ratioSpread": 0.24544681561746443,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-016-T",
+      "suite": "expansion",
+      "reasons": [
+        "p90-slow",
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.8992689636856729,
+      "offSpread": 0.25593843251223924,
+      "onSpread": 0.44310160504897267,
+      "ratioSpread": 0.5631427613596731,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-018-O",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0633288715645277,
+      "offSpread": 0.15443567535288732,
+      "onSpread": 0.1687547858004548,
+      "ratioSpread": 0.2345131513256573,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-018-Z",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.1378406382778112,
+      "offSpread": 0.2540300862126164,
+      "onSpread": 0.1269042548480254,
+      "ratioSpread": 0.26317901673508687,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-019-O",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9648365405571245,
+      "offSpread": 0.3258933265819265,
+      "onSpread": 0.19512931322786345,
+      "ratioSpread": 0.5361729001099033,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-019-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0544707245903566,
+      "offSpread": 0.3135725695048377,
+      "onSpread": 0.2411516172447571,
+      "ratioSpread": 0.34720027304268375,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-020-O",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.032259967139119,
+      "offSpread": 0.17336942396902727,
+      "onSpread": 0.05018846051025909,
+      "ratioSpread": 0.22066350726889003,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-021-J",
+      "suite": "expansion",
+      "reasons": [
+        "p90-fast"
+      ],
+      "firstSpeedup": 1.3576353148332452,
+      "offSpread": 0.06765884907957445,
+      "onSpread": 0.08197889826662083,
+      "ratioSpread": 0.06129444578019403,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-021-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0596266148204168,
+      "offSpread": 0.25491819608444616,
+      "onSpread": 0.061854996535373775,
+      "ratioSpread": 0.22156564661006653,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-022-J",
+      "suite": "development",
+      "reasons": [
+        "p90-fast"
+      ],
+      "firstSpeedup": 1.625408613978032,
+      "offSpread": 0.013351375296903114,
+      "onSpread": 0.00826213669422862,
+      "ratioSpread": 0.011210791912668652,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-023-L",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0252879685458447,
+      "offSpread": 0.18084713503297897,
+      "onSpread": 0.24983245231990972,
+      "ratioSpread": 0.25036506603459746,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-023-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.032470351217593,
+      "offSpread": 0.19116723619010215,
+      "onSpread": 0.45893065850825476,
+      "ratioSpread": 0.29972514951158347,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-024-I",
+      "suite": "expansion",
+      "reasons": [
+        "p90-slow",
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9465924335466581,
+      "offSpread": 0.18885527488559678,
+      "onSpread": 0.2078801272269533,
+      "ratioSpread": 0.29311684403021404,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-024-Z",
+      "suite": "expansion",
+      "reasons": [
+        "p90-slow",
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.918098635948022,
+      "offSpread": 0.2261388515691702,
+      "onSpread": 0.2228379702336682,
+      "ratioSpread": 0.2868465959260837,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-025-I",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9821911112979633,
+      "offSpread": 0.23854284258316583,
+      "onSpread": 0.3871457162938124,
+      "ratioSpread": 0.5109838526645079,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-025-O",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9952514132395213,
+      "offSpread": 0.1320038034207215,
+      "onSpread": 0.15148690594460565,
+      "ratioSpread": 0.1327682393304666,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-026-O",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0002321509601928,
+      "offSpread": 0.28757950963569034,
+      "onSpread": 0.13095541126496466,
+      "ratioSpread": 0.39622002025187303,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-027-O",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0117521359161903,
+      "offSpread": 0.2762951489584442,
+      "onSpread": 0.16309714194589792,
+      "ratioSpread": 0.2618393327864793,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-027-S",
+      "suite": "expansion",
+      "reasons": [
+        "p90-slow",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9441252625641109,
+      "offSpread": 0.04237965816997749,
+      "onSpread": 0.11483331543564362,
+      "ratioSpread": 0.12601625320896986,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-028-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9573857138292368,
+      "offSpread": 0.2210815864888378,
+      "onSpread": 0.10582035699031826,
+      "ratioSpread": 0.21814925630351586,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-029-O",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0092664123697253,
+      "offSpread": 0.14177140432550275,
+      "onSpread": 0.2638322061265984,
+      "ratioSpread": 0.4025129718485144,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-029-S",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0660523445533574,
+      "offSpread": 0.1909940519535411,
+      "onSpread": 0.18087404647044564,
+      "ratioSpread": 0.23042588930863692,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-037-S",
+      "suite": "expansion",
+      "reasons": [
+        "p90-fast"
+      ],
+      "firstSpeedup": 1.2367607215655179,
+      "offSpread": 0.034574346329783096,
+      "onSpread": 0.04073079980898819,
+      "ratioSpread": 0.03943103177767071,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-pcinfo-039-I",
+      "suite": "expansion",
+      "reasons": [
+        "p90-fast"
+      ],
+      "firstSpeedup": 1.195400613163034,
+      "offSpread": 0.006429052023515388,
+      "onSpread": 0.013443987686917918,
+      "ratioSpread": 0.01750237428612143,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-shoes-a-I",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 0.9962072223093047,
+      "offSpread": 0.12364903351497884,
+      "onSpread": 0.12475128557848059,
+      "ratioSpread": 0.19262351198102876,
+      "offExact": 5,
+      "onExact": 5
+    },
+    {
+      "caseId": "cycle1-shoes-a-Z",
+      "suite": "expansion",
+      "reasons": [
+        "off-spread>=10%",
+        "on-spread>=10%",
+        "paired-spread>=10%"
+      ],
+      "firstSpeedup": 1.0797021286187687,
+      "offSpread": 0.10662748928868203,
+      "onSpread": 0.1415112781191448,
+      "ratioSpread": 0.20625370150648337,
+      "offExact": 5,
+      "onExact": 5
+    }
+  ]
+}

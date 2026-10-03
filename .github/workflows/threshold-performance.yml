@@ -71,6 +71,8 @@ jobs:
           rustup default 1.90.0
       - name: Rebuild original, production, experiment and trace
         run: node bench/threshold/build.mjs
+      - name: Retest identity gate
+        run: node bench/threshold/check-retest-build.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -113,7 +115,7 @@ jobs:
       - name: Real WASM oracle, bounded and locked-prefix contracts
         run: |
           set -o pipefail
-          node --test --test-concurrency=1 bench/threshold/correctness.test.mjs bench/threshold/harness.test.mjs bench/threshold/db-correctness.test.mjs bench/threshold/expanded.test.mjs 2>&1 | tee bench/threshold/results/correctness/wasm.txt
+          node --test --test-concurrency=1 bench/threshold/correctness.test.mjs bench/threshold/harness.test.mjs bench/threshold/db-correctness.test.mjs bench/threshold/expanded.test.mjs bench/threshold/retest.test.mjs 2>&1 | tee bench/threshold/results/correctness/wasm.txt
       - name: Existing secondary / worker / actual CP regression
         run: |
           npm ci

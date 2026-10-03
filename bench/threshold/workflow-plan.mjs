@@ -9,7 +9,8 @@ const fixtureRoot = config.fixtureSet === 'cycle1-100' ? 'bench/threshold/cycle1
   : config.fixtureSet === 'cycle1' ? 'bench/threshold/cycle1' : 'bench/threshold';
 process.env.THRESHOLD_FIXTURE_ROOT = fixtureRoot;
 const { settings, defaults, caseIds } = await import('./profiles.mjs');
-const { manifest, loadFixture } = await import('./fixtures.mjs');
+const { manifest, manifestPath, loadFixture } = await import('./fixtures.mjs');
+const { sha256 } = await import('./engine.mjs');
 for (const entry of manifest.cases) loadFixture(entry.id);
 const dispatch = process.env.GITHUB_EVENT_NAME === 'workflow_dispatch';
 const value = (name, fallback) => dispatch && process.env[`INPUT_${name}`] ? process.env[`INPUT_${name}`] : fallback;
@@ -22,7 +23,17 @@ const pairs = Number(value('PAIRS',config.pairs ?? defaultPairs));
 const seconds = Number(value('TIMEOUT',config.timeoutSeconds ?? defaultTimeout));
 assert(Number.isInteger(pairs) && pairs >= 1 && pairs <= 10);
 assert(Number.isInteger(seconds) && seconds >= 1 && seconds <= 300);
-const ids = caseIds(profile,suite);
+let ids = caseIds(profile,suite);
+if (config.caseSelection) {
+  assert.equal(config.caseSelection, 'retest-selection.json');
+  const selection = JSON.parse(readFileSync(new URL('./retest-selection.json', import.meta.url)));
+  assert.equal(selection.manifestHash, sha256(readFileSync(manifestPath)));
+  assert.equal(profile, 'confirm-onoff'); assert.equal(mask, selection.mask);
+  assert.equal(pairs, selection.pairs); assert.equal(seconds, selection.timeoutSeconds);
+  ids = selection.cases.map(c => c.caseId);
+  assert(ids.length > 0 && new Set(ids).size === ids.length);
+  assert(ids.every(id => manifest.cases.some(c => c.id === id)));
+}
 const maxParallel = config.maxParallel ?? 2;
 assert(Number.isInteger(maxParallel) && maxParallel >= 1 && maxParallel <= 20);
 const comparisons = settings(profile,mask).length;

@@ -3,7 +3,8 @@
   "suite": "all",
   "fixtureSet": "cycle1-100",
   "candidateMask": 16,
-  "pairs": 5,
+  "pairs": 10,
   "timeoutSeconds": 300,
-  "maxParallel": 20
+  "maxParallel": 20,
+  "caseSelection": "retest-selection.json"
 }
