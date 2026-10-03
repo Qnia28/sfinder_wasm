@@ -1,0 +1,17 @@
+{
+  "status": "CROSS_STAGE_PROVENANCE_AND_DIAGNOSTIC_CONTRACT_PASS",
+  "sourceBlobsVerified": 246,
+  "runtimeFilesVerified": 768,
+  "identicalLockAcrossTimingAndWork": true,
+  "diagnosticCalls": 20,
+  "diagnosticRawRecords": 60,
+  "actualInputCalls": 4980,
+  "probeStatusCounts": {
+    "PROBE_EXACT": 3685,
+    "PROBE_CAPPED": 1295
+  },
+  "originalInputCallsOnFailedRun": 0,
+  "noClockReset": true,
+  "noSolverInvocationInAudit": true,
+  "workTimeNotPerformanceEvidence": true
+}

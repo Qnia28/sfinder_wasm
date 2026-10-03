@@ -1,0 +1,23 @@
+{
+ "campaignId":"a0-four-arm-20261003","status":"AUTHORIZED_AFTER_REINFORCEMENT_GATED_ON_LINUX_PREFLIGHT",
+ "authorization":"User: reinforce per Astra advice, then GitHub Actions if no outstanding issue. Strict feature-off full-byte control gate; any Linux drift blocks actual calls.",
+ "origin":"Future first build workflow run.created_at; frozen before any actual-input call. Previous campaign closed; no inherited clock reset.",
+ "computeMinutes":160,"cancelMinutes":175,"overallMinutes":180,"runnerHoursCap":64,
+ "buildJobMinutes":30,"benchmarkJobMinutes":60,"jobs":5,"maxParallel":5,"allowedMaxParallel":16,
+ "runnerHoursUpper":6,"inputs":122,"comparisonCalls":4880,"environmentCalls":80,"timingNativeCalls":4960,"diagnosticNativeCalls":20,"maxNativeCalls":4980,
+ "diagnosticJobMinutes":30,"diagnosticApiMs":30000,"diagnosticProcessMs":45000,
+ "syntheticWasmFixtureCallsExpected":4167,"rustTests":"Synthetic-only direct Rust calls, debug/release all three feature modes; costs included in build job cap",
+ "apiMs":10000,"processMs":30000,"startupMs":30000,"auditMs":30000,"durableAckMs":10000,"reapMs":2000,
+ "stateBudget":100000,"childMemoryBytes":3221225472,"swapBytes":0,
+ "measurement":"fresh unpinned Worker, exactly one integrated native call, no warmup; raw fsync-before-ACK before audit/next call",
+ "benchComputeGuardMinutes":55,"perCallAdmissionSeconds":167,"blockAdmissionSeconds":668,
+ "automaticBudgetIncrease":false,"actualPrimaryCalls":0,"actualPcCalls":0,"actualThresholdCalls":0,
+ "diagnosticsInBenchmark":false,"actualInputDiagnosticsAuthorized":true,"diagnosticsAfterBenchmarkOnSeparateRunner":true,
+ "controlGate":"Feature-off control must reproduce full original bytes; ABI/semantic equivalence is insufficient; fail before any actual-input call",
+ "productChange":false,"wholePopulationGateReplacement":false,"promoteOnSelectedSet":false,
+ "expectedRSource":"c0cb2a048e7275bfea587d176b1954efff0a8a08",
+ "expectedA0Source":"f0bc2647d67353edb7e78bb54afeadb6c9817444",
+ "linuxBaselineWasmSha256":"73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+ "failures":"Preserve all outcomes, no successful-rerun substitution; stop on mismatch/OOM/protocol failure. Partial blocks not scored. No host replacement.",
+ "decision":"Only compare technical improvement; original reserved p95=1.197846065695026>1.10 remains failed. No automatic combined arm/232/675/merge/deployment."
+}

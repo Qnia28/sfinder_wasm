@@ -1,0 +1,64 @@
+{
+  "mode": "local",
+  "benchmarkEligible": false,
+  "compiler": "rustc 1.90.0 (1159e78c4 2025-09-14)",
+  "originalExpectedLinuxSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+  "outputs": {
+    "R": {
+      "runtime": ".a0/four/runtime/R",
+      "wasmSha256": "aac18952a36ee9112219702ce084a9534ad42a244565cc24e0b8f52a79bcd48c",
+      "bytes": 560696,
+      "partitioned": false,
+      "measured": true,
+      "features": [],
+      "diagnostics": false
+    },
+    "A0": {
+      "runtime": ".a0/four/runtime/A0",
+      "wasmSha256": "aac18952a36ee9112219702ce084a9534ad42a244565cc24e0b8f52a79bcd48c",
+      "bytes": 560696,
+      "partitioned": true,
+      "measured": true,
+      "features": [],
+      "diagnostics": false
+    },
+    "M1": {
+      "runtime": ".a0/four/runtime/M1",
+      "wasmSha256": "3dcf4bae76ffe85577741ce39090fec7c5e0608b802835abb1225db78c8c2044",
+      "bytes": 561030,
+      "partitioned": true,
+      "measured": true,
+      "features": [
+        "pc-core/a0-lower-cutoff"
+      ],
+      "diagnostics": false
+    },
+    "M2": {
+      "runtime": ".a0/four/runtime/M2",
+      "wasmSha256": "7ceb4e5bec4cdc8b954930e9786d9a3a86095535576afb744d1f2a80d2467d28",
+      "bytes": 560712,
+      "partitioned": true,
+      "measured": true,
+      "features": [
+        "pc-core/a0-last-sibling"
+      ],
+      "diagnostics": false
+    },
+    "control": {
+      "runtime": ".a0/four/runtime/control",
+      "wasmSha256": "aac18952a36ee9112219702ce084a9534ad42a244565cc24e0b8f52a79bcd48c",
+      "bytes": 560696,
+      "partitioned": true,
+      "measured": false,
+      "features": [],
+      "diagnostics": false
+    }
+  },
+  "sourceDefaultControlMatchesOriginal": true,
+  "layoutLimit": "Independent binaries can have code-layout/compiler differences. Default-source control is synthetic-only; do not claim timing alone isolates arithmetic/trail causation.",
+  "source": "f0bc2647d67353edb7e78bb54afeadb6c9817444",
+  "finalRustSourceHashes": {
+    "rust/pc-core/src/min_cover.rs": "6159c646bffc0ed8c49d67445b41778b95b5fbbf5ee4f8fb97aba74bedb698c9",
+    "rust/pc-wasm/src/min_cover.rs": "7c760e25421ab84ea3932498b48da3ee79ace7b80dfcf78da8bda394316e4dc4"
+  }
+}

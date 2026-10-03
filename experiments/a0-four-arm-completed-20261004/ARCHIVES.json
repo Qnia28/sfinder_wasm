@@ -1,0 +1,77 @@
+{
+  "schema": "a0-four-arm-archive-v1",
+  "archives": [
+    {
+      "file": "PACKED/github-run-37134128882-a0-four-build.zip",
+      "bytes": 66233543,
+      "sha256": "e4e456198a61b57398d578eb161a4b70f9ce687de69978dcae78913e24cc9157",
+      "files": 897,
+      "source": "github-run-37134128882/a0-four-build"
+    },
+    {
+      "file": "PACKED/github-run-37134128882-metadata.zip",
+      "bytes": 11442,
+      "sha256": "d6ce19e9ff658259338ca717d47a398bc4968778fc49267663bf6b362468a6dd",
+      "files": 7,
+      "source": "github-run-37134128882 (metadata)"
+    },
+    {
+      "file": "PACKED/github-run-37134463920-a0-four-build.zip",
+      "bytes": 66233543,
+      "sha256": "6df8c1c4c0708b115c83d9e86ba92b8b5a649c272de1f325783bb4b9feb5d596",
+      "files": 898,
+      "source": "github-run-37134463920/a0-four-build"
+    },
+    {
+      "file": "PACKED/github-run-37134463920-a0-four-host-0.zip",
+      "bytes": 2144421,
+      "sha256": "ac14667d4f26067f7ea1b7d9904e750b6f88594ed443a5f0649dfa0ac96ff01e",
+      "files": 1000,
+      "source": "github-run-37134463920/a0-four-host-0"
+    },
+    {
+      "file": "PACKED/github-run-37134463920-a0-four-host-1.zip",
+      "bytes": 2144341,
+      "sha256": "06b1eccdc996b2ac3e9bee2c8c76fd6245258e10dd4680f0eb75aece0fa9cf7f",
+      "files": 1000,
+      "source": "github-run-37134463920/a0-four-host-1"
+    },
+    {
+      "file": "PACKED/github-run-37134463920-a0-four-host-2.zip",
+      "bytes": 2144435,
+      "sha256": "4b6ae39e62ed544e91bd668e72dddd99822b48a01268328b0c192eb00948800d",
+      "files": 1000,
+      "source": "github-run-37134463920/a0-four-host-2"
+    },
+    {
+      "file": "PACKED/github-run-37134463920-a0-four-host-3.zip",
+      "bytes": 2140981,
+      "sha256": "2cb235c9827d3e6c4524d6101738cd2d4a00cb692afd00093b7d859bdb63799b",
+      "files": 1000,
+      "source": "github-run-37134463920/a0-four-host-3"
+    },
+    {
+      "file": "PACKED/github-run-37134463920-a0-four-host-4.zip",
+      "bytes": 2142394,
+      "sha256": "cacba58ed28c41f01ef2c6813ed35dd55a40c29bc2a0740ba739cc80c74eb0ca",
+      "files": 1000,
+      "source": "github-run-37134463920/a0-four-host-4"
+    },
+    {
+      "file": "PACKED/github-run-37134463920-a0-four-work-diagnostics.zip",
+      "bytes": 88055,
+      "sha256": "60ff2d50d450ce56455054d44cecf7b35c80b538c82beecf48ae08a88922f0a1",
+      "files": 28,
+      "source": "github-run-37134463920/a0-four-work-diagnostics"
+    },
+    {
+      "file": "PACKED/github-run-37134463920-metadata.zip",
+      "bytes": 459779,
+      "sha256": "6ad31a5b6bf4a096d79439853584da52bc9f28b49c933d361ca71ef944431469",
+      "files": 9,
+      "source": "github-run-37134463920 (metadata)"
+    }
+  ],
+  "rawOriginalsPreservedLocally": true,
+  "allArchivedBytesVerified": true
+}

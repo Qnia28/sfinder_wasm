@@ -1,0 +1,125 @@
+name: A0 four-arm frozen comparison
+on:
+  push:
+    branches: [validation/a0-four-arm-20261003]
+    paths: [experiments/a0-four-arm-20261003/launch.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: a0-four-arm-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node experiments/a0-four-arm-20261003/origin.mjs
+      - run: npm ci --ignore-scripts
+      - run: rustup toolchain install 1.90.0 --profile minimal --target wasm32-unknown-unknown
+      - run: |
+          sudo mkdir /sys/fs/cgroup/a0-four-preflight
+          echo +memory | sudo tee /sys/fs/cgroup/a0-four-preflight/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-four-preflight' >> "$GITHUB_ENV"
+      - run: bash experiments/a0-four-arm-20261003/build.sh
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0-four-build
+          path: |
+            .a0/four/BUILD.json
+            .a0/four/BASELINE_GATE.json
+            .a0/four/CONTROL_GATE.json
+            .a0/four/DIAGNOSTIC_BUILD.json
+            .a0/four/ORIGIN.json
+            .a0/four/runtime/
+            .a0/four/diagnostic-runtime/
+            .a0/four/preflight/
+          include-hidden-files: true
+          retention-days: 7
+          if-no-files-found: error
+  work-diagnostics:
+    needs: [build, benchmark]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: a0-four-build
+          path: .a0/four
+      - run: |
+          sudo mkdir /sys/fs/cgroup/a0-four-work
+          echo +memory | sudo tee /sys/fs/cgroup/a0-four-work/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-four-work' >> "$GITHUB_ENV"
+      - run: node experiments/a0-four-arm-20261003/lock.mjs
+      - run: node experiments/a0-four-arm-20261003/run-diagnostics.mjs
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0-four-work-diagnostics
+          path: |
+            .a0/four/LOCK.json
+            .a0/four/DIAGNOSTIC_BUILD.json
+            .a0/four/ORIGIN.json
+            .a0/four/work-results/
+          include-hidden-files: true
+          retention-days: 7
+          if-no-files-found: error
+  benchmark:
+    needs: build
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        host: [0,1,2,3,4]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: a0-four-build
+          path: .a0/four
+      - run: |
+          sudo mkdir /sys/fs/cgroup/a0-four
+          echo +memory | sudo tee /sys/fs/cgroup/a0-four/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-four' >> "$GITHUB_ENV"
+      - run: node experiments/a0-four-arm-20261003/lock.mjs
+      - run: node experiments/a0-four-arm-20261003/run.mjs ${{ matrix.host }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0-four-host-${{ matrix.host }}
+          path: |
+            .a0/four/LOCK.json
+            .a0/four/BUILD.json
+            .a0/four/ORIGIN.json
+            .a0/four/results/
+          include-hidden-files: true
+          retention-days: 7
+          if-no-files-found: error

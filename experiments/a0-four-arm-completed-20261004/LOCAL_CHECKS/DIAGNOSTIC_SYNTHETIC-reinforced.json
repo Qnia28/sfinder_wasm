@@ -1,0 +1,114 @@
+{
+  "status": "DIAGNOSTIC_SYNTHETIC_WORK_REDUCTION_PASS",
+  "mode": "local",
+  "syntheticNativeCalls": 3,
+  "actualInputCalls": 0,
+  "timingEvidence": false,
+  "records": {
+    "A0": {
+      "probe": {
+        "count": 2,
+        "keys": [
+          "000",
+          "001"
+        ],
+        "qualityVector": [
+          1,
+          1,
+          7,
+          23
+        ],
+        "searchedStates": 6,
+        "completed": true
+      },
+      "witness": {
+        "selectedIDs": [
+          0,
+          1
+        ],
+        "qualitySha256": "34ed23ac07b1653efc84f11e487bb0b37e9208c4953cd74679f5539b17d40f08",
+        "seedSha256": "7eb380318203cc3acbecd69f7c13b5525d304191bb8819b9bab13f0624709ce9",
+        "originalRowCount": 4
+      },
+      "counters": {
+        "boundCalls": 3,
+        "boundCandidates": 9,
+        "boundWords": 9,
+        "cutoffHits": 0,
+        "prunes": 0,
+        "trailPushes": 5,
+        "avoidedTrailPushes": 0
+      }
+    },
+    "M1": {
+      "probe": {
+        "count": 2,
+        "keys": [
+          "000",
+          "001"
+        ],
+        "qualityVector": [
+          1,
+          1,
+          7,
+          23
+        ],
+        "searchedStates": 6,
+        "completed": true
+      },
+      "witness": {
+        "selectedIDs": [
+          0,
+          1
+        ],
+        "qualitySha256": "34ed23ac07b1653efc84f11e487bb0b37e9208c4953cd74679f5539b17d40f08",
+        "seedSha256": "7eb380318203cc3acbecd69f7c13b5525d304191bb8819b9bab13f0624709ce9",
+        "originalRowCount": 4
+      },
+      "counters": {
+        "boundCalls": 3,
+        "boundCandidates": 4,
+        "boundWords": 4,
+        "cutoffHits": 3,
+        "prunes": 0,
+        "trailPushes": 5,
+        "avoidedTrailPushes": 0
+      }
+    },
+    "M2": {
+      "probe": {
+        "count": 2,
+        "keys": [
+          "000",
+          "001"
+        ],
+        "qualityVector": [
+          1,
+          1,
+          7,
+          23
+        ],
+        "searchedStates": 6,
+        "completed": true
+      },
+      "witness": {
+        "selectedIDs": [
+          0,
+          1
+        ],
+        "qualitySha256": "34ed23ac07b1653efc84f11e487bb0b37e9208c4953cd74679f5539b17d40f08",
+        "seedSha256": "7eb380318203cc3acbecd69f7c13b5525d304191bb8819b9bab13f0624709ce9",
+        "originalRowCount": 4
+      },
+      "counters": {
+        "boundCalls": 3,
+        "boundCandidates": 9,
+        "boundWords": 9,
+        "cutoffHits": 0,
+        "prunes": 0,
+        "trailPushes": 2,
+        "avoidedTrailPushes": 3
+      }
+    }
+  }
+}

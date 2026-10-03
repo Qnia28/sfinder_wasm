@@ -1,0 +1,12 @@
+{
+ "status":"AUTHORIZED_EXECUTION",
+ "authorization":"User: Astra의 조언에 따라 보완하라. 보완 후, 특이사항 없으면 이어서 Github actions 단계까지 수행하라",
+ "arms":["R","A0","M1","M2"],"inputs":122,"timingCalls":4960,"separateWorkDiagnosticCalls":20,
+ "maxActualInputNativeCalls":4980,"combinedArm":false,
+ "mandatoryGate":"Full original Linux WASM reproduction AND feature-off control byte equality; failure blocks all actual-input work",
+ "localControlByteEqual":true,"linuxControlByteEqualityNotYetObserved":true,
+ "workDiagnosticsTimingEvidence":false,"automaticSearchBudgetIncrease":false,
+ "oldPreparationCommit":"4508ddde1292a8223d9c4d41777d3bf2e72e29dd",
+ "campaignOriginRunId":37134128882,"clockResetWithinCampaign":false,"correction":"Cross-platform canonical selection hash fixture; same selected records and schedule, prior actual-input calls zero",
+ "productApplyMergeDeploy":false
+}

@@ -1,0 +1,13 @@
+{
+  "status": "ALL_MEASURED_ROWS_PAIRED_ARITHMETIC_VERIFIED",
+  "timingRows": 4960,
+  "inputs": 122,
+  "completeBlocks": 1220,
+  "comparisonSeriesChecked": 732,
+  "environmentPairs": 40,
+  "environmentAlarms": 2,
+  "noHistoricalTimingUsed": true,
+  "noRatioOfMedians": true,
+  "noHostExcluded": true,
+  "noDiagnosticTimesIncluded": true
+}

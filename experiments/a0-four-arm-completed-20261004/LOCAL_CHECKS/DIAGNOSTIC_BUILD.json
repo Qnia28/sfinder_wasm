@@ -1,0 +1,46 @@
+{
+  "status": "DIAGNOSTIC_ONLY_NOT_TIMING",
+  "outputs": {
+    "R": {
+      "runtime": ".a0/four/diagnostic-runtime/R",
+      "wasmSha256": "54d2c6a97e18020654fa09f1dd3025c6fe158f0d51b82bfbf12f5f3ddcfea462",
+      "diagnostics": true,
+      "measured": false,
+      "partitioned": false,
+      "compiledModuleSha256": "4b69440c0c443f500c7e56309a1bdec5635f1ab498ca30826c5a202fc1dfe002"
+    },
+    "A0": {
+      "runtime": ".a0/four/diagnostic-runtime/A0",
+      "wasmSha256": "54d2c6a97e18020654fa09f1dd3025c6fe158f0d51b82bfbf12f5f3ddcfea462",
+      "diagnostics": true,
+      "measured": false,
+      "partitioned": true,
+      "compiledModuleSha256": "4b69440c0c443f500c7e56309a1bdec5635f1ab498ca30826c5a202fc1dfe002"
+    },
+    "M1": {
+      "runtime": ".a0/four/diagnostic-runtime/M1",
+      "wasmSha256": "27bca694c9d86055b010fe6c4f7e1aa604670d7ba0718ed06c5e05e84bb46858",
+      "diagnostics": true,
+      "measured": false,
+      "partitioned": true,
+      "compiledModuleSha256": "4b69440c0c443f500c7e56309a1bdec5635f1ab498ca30826c5a202fc1dfe002"
+    },
+    "M2": {
+      "runtime": ".a0/four/diagnostic-runtime/M2",
+      "wasmSha256": "c16adc9e217ccf7155b425e3b3b9321f074a8699c4f2311d05b9012c1bcda957",
+      "diagnostics": true,
+      "measured": false,
+      "partitioned": true,
+      "compiledModuleSha256": "4b69440c0c443f500c7e56309a1bdec5635f1ab498ca30826c5a202fc1dfe002"
+    }
+  },
+  "counterNames": [
+    "boundCalls",
+    "boundCandidates",
+    "boundWords",
+    "cutoffHits",
+    "prunes",
+    "trailPushes",
+    "avoidedTrailPushes"
+  ]
+}

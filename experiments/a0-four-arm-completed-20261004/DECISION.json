@@ -1,0 +1,88 @@
+{
+  "devHead": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+  "localMain": "187fbf954ad0749e697b4e7f1252683b318d696e",
+  "remoteMain": "03b637730c5b541f4f2934be613498fbe65327fd",
+  "status": "COMPLETE_AUDITED_SELECTED_SET_ONLY_PRODUCT_HOLD",
+  "sourceCommit": "f4716e1f2686fa25c4e844e47b51e88835a980da",
+  "runId": 37134463920,
+  "priorRunId": 37134128882,
+  "originRunId": 37134128882,
+  "clockReset": false,
+  "callsVerified": 4980,
+  "timingCalls": 4960,
+  "diagnosticCalls": 20,
+  "complete10BlockInputs": 122,
+  "stateQualitySeedIdsPreserved": true,
+  "actualPrimaryPcThresholdCalls": 0,
+  "missingTimeoutOomErrorCalls": 0,
+  "rawRecordsVerified": 14940,
+  "environmentAlarms": [
+    {
+      "blockId": "env-h3-reserved-R",
+      "phase": "reserved",
+      "host": 3,
+      "arm": "R",
+      "maxToMin": 1.1204143560595667,
+      "alarm": true
+    },
+    {
+      "blockId": "env-h0-reserved-M1",
+      "phase": "reserved",
+      "host": 0,
+      "arm": "M1",
+      "maxToMin": 1.1250671054540966,
+      "alarm": true
+    }
+  ],
+  "environmentSensitiveJointComparisonInputs": 88,
+  "environmentClearJointImprovementCounts": {
+    "M1": 18,
+    "M2": 5
+  },
+  "environmentClearM2OverA0Improvements": 16,
+  "m2OverA0NewMagnitudeSlowdowns": [
+    {
+      "matrixId": "board-107--bag--ordinary",
+      "ratio": 1.1642307436221089,
+      "deltaMs": 1.8312309999999883,
+      "slowdownAbove1_10Hosts": 4,
+      "environmentAlarm": false
+    },
+    {
+      "matrixId": "board-119--restricted-split--T",
+      "ratio": 1.1496697573844386,
+      "deltaMs": 0.8140445000000014,
+      "slowdownAbove1_10Hosts": 4,
+      "environmentAlarm": false
+    }
+  ],
+  "workReductionVerifiedFiveInputs": true,
+  "preferredFurtherResearchCandidate": "M1_ONLY_NOT_PROMOTED",
+  "productIntegration": "HOLD",
+  "originalReservedP95": 1.197846065695026,
+  "gate": 1.1,
+  "originalGateRecomputed": false,
+  "productApplyMergeDeploy": false,
+  "combinedArm": false,
+  "automaticFurtherNativeCalls": 0,
+  "automatic232Or675Campaign": false,
+  "favorableHostReplacement": false,
+  "successfulTimingRerunSubstitution": false,
+  "searchBudgetIncreased": false,
+  "runnerHoursIncludingFailedPreflight": 0.6188888888888889,
+  "completedAt": "2026-10-03T15:58:16+00:00",
+  "campaignClosed": true,
+  "oldSealsReverified": [
+    {
+      "directory": "a0-four-arm-preparation-20261003",
+      "sealSha256": "e2eb86db0b4fd6b6b8e5fdbee9439473a52c018a12a6327b6b855d4d29f00c1e",
+      "verifiedFiles": 40
+    },
+    {
+      "directory": "a0-proof-retest-completed-20261003",
+      "sealSha256": "0b5a1e40036f6951c2dafa9cc93a76e1c2d400487a5666585ddc87e6d1672830",
+      "verifiedFiles": 2544
+    }
+  ],
+  "limit": "Selected 122 inputs; ten blocks on five runners, not ten independent hosts. Descriptive paired ratios, no population PASS or significance claim. Active M1/M2 WASM code layout differs. Work counters confirm targeted reductions only on five fixed diagnostics; timing attribution is not exclusive."
+}

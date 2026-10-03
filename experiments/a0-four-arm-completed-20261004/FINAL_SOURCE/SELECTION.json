@@ -1,0 +1,1092 @@
+{
+  "seed": "four-arm-v1",
+  "status": "FROZEN_PRE_NATIVE",
+  "originalSelectionSha256": "2e0a1dce48a7ce104876fff019a2851b2a8a578b030b17513fa199355241332b",
+  "originalSelectionCanonicalSha256": "3c31b55ab1bd14d8f5840409161d55de61e795b5b33b242ad45e8726efde2cc3",
+  "originalSelectionSha256Scope": "Historical Windows worktree bytes (CRLF); canonical JSON hash guards semantic identity across checkout platforms",
+  "originalRulesSha256": "2f19b83dd01343f7cabcd972e5bd2a4fcf593ed665346afbf0ecbefe446c1d5c",
+  "originalSelectedWithControls": 121,
+  "addedHotspot": 1,
+  "inputs": 122,
+  "records": [
+    {
+      "id": "board-031--restricted-split--S",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--bag--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "IMPROVEMENT_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-027--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-012--bag--ordinary",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "IMPROVEMENT_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-116--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-112--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-118--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-116--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-112--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "IMPROVEMENT_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-116--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-085--restricted-split--S",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-108--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "IMPROVEMENT_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-117--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-110--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-118--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "IMPROVEMENT_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-075--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "INPUT_SLOWDOWN_GATE_1_10",
+        "REGRESSION_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-028--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-090--bag--ordinary",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_A",
+        "IMPROVEMENT_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-108--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A",
+        "INPUT_SLOWDOWN_GATE_1_10",
+        "REGRESSION_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-117--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-105--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "INPUT_SLOWDOWN_GATE_1_10",
+        "REGRESSION_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-108--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-099--restricted-split--J",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-064--bag--T",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "IMPROVEMENT_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-011--restricted-split--O",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "INPUT_SLOWDOWN_GATE_1_10",
+        "REGRESSION_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-120--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "EXACT_STATUS_TRANSITION",
+        "IMPROVEMENT_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-052--restricted-split--Z",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "INPUT_SLOWDOWN_GATE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-120--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "HASH_STRATIFIED_UNSELECTED_CONTROL"
+      ],
+      "isControl": true
+    },
+    {
+      "id": "board-110--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-067--restricted-split--L",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-017--restricted-split--L",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-040--restricted-split--I",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-112--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-117--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "HASH_STRATIFIED_UNSELECTED_CONTROL"
+      ],
+      "isControl": true
+    },
+    {
+      "id": "board-049--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "INPUT_SLOWDOWN_GATE_1_10",
+        "REGRESSION_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-108--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-026--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-112--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-112--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-070--bag--ordinary",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-120--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-110--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-110--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-025--restricted-split--J",
+      "phase": "development",
+      "reasons": [
+        "HASH_STRATIFIED_UNSELECTED_CONTROL"
+      ],
+      "isControl": true
+    },
+    {
+      "id": "board-118--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-118--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--bag--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-093--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-110--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--bag--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "INPUT_SLOWDOWN_GATE_1_10",
+        "REGRESSION_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "INPUT_SLOWDOWN_GATE_1_10",
+        "REGRESSION_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-068--restricted-split--J",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-009--restricted-split--O",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "IMPROVEMENT_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-112--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-088--restricted-split--ordinary",
+      "phase": "development",
+      "reasons": [
+        "HASH_STRATIFIED_UNSELECTED_CONTROL"
+      ],
+      "isControl": true
+    },
+    {
+      "id": "board-118--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-080--restricted-split--S",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-120--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-024--restricted-split--I",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "INPUT_SLOWDOWN_GATE_1_10",
+        "REGRESSION_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-038--restricted-split--Z",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-028--restricted-split--ordinary",
+      "phase": "development",
+      "reasons": [
+        "PREVIOUS_COMMON_LOWER_BOUND_HOTSPOT"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-041--restricted-split--L",
+      "phase": "development",
+      "reasons": [
+        "HASH_STRATIFIED_UNSELECTED_CONTROL"
+      ],
+      "isControl": true
+    },
+    {
+      "id": "board-118--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-117--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-011--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "HASH_STRATIFIED_UNSELECTED_CONTROL"
+      ],
+      "isControl": true
+    },
+    {
+      "id": "board-110--bag--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-120--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "IMPROVEMENT_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-008--restricted-split--S",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-118--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-044--restricted-split--Z",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_A",
+        "INPUT_SLOWDOWN_GATE_1_10",
+        "REGRESSION_TAIL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-065--restricted-split--ordinary",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-012--restricted-split--L",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-100--bag--ordinary",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-081--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false
+    }
+  ],
+  "environmentControlIds": {
+    "development": "board-088--restricted-split--ordinary",
+    "reserved": "board-117--restricted-split--Z"
+  },
+  "wholePopulationGateReplacement": false
+}

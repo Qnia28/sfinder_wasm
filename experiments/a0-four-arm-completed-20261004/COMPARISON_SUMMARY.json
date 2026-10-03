@@ -1,0 +1,1118 @@
+{
+  "status": "COMPLETE_AUDITED_SELECTED_SET_ONLY",
+  "runId": 37134463920,
+  "originRunId": 37134128882,
+  "sourceCommit": "f4716e1f2686fa25c4e844e47b51e88835a980da",
+  "verifiedTimingCalls": 4960,
+  "verifiedDiagnosticCalls": 20,
+  "completeInputs": 122,
+  "blocksPerInput": 10,
+  "runnerJobs": 5,
+  "environmentAlarmCount": 2,
+  "environmentAlarms": [
+    {
+      "blockId": "env-h3-reserved-R",
+      "phase": "reserved",
+      "host": 3,
+      "arm": "R",
+      "maxToMin": 1.1204143560595667,
+      "alarm": true
+    },
+    {
+      "blockId": "env-h0-reserved-M1",
+      "phase": "reserved",
+      "host": 0,
+      "arm": "M1",
+      "maxToMin": 1.1250671054540966,
+      "alarm": true
+    }
+  ],
+  "environmentSensitiveJointComparisonInputs": 88,
+  "comparisons": {
+    "A0/R": {
+      "selectedInputCount": 122,
+      "medianOfInputWithinBlockMedianRatios": 1.000789705693684,
+      "directionBelow1AndAtLeast4FasterHosts": 23,
+      "magnitudeBelow0_9AndAtLeast4Hosts": 8,
+      "magnitudeAbove1_1AndAtLeast4Hosts": 2,
+      "unfilteredDescriptiveNumbersNotPerformancePass": true,
+      "environmentClearInputCount": 34,
+      "environmentClearDirectionalImprovementCount": 14,
+      "environmentClearMagnitudeSlowdownCount": 0,
+      "worst10": [
+        {
+          "matrixId": "board-115--bag--ordinary",
+          "ratio": 1.1510332403765158,
+          "deltaMs": 3.268375999999975,
+          "slowdownAbove1_10Hosts": 4,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-107--restricted-split--J",
+          "ratio": 1.1497434346519175,
+          "deltaMs": 2.5130835000000005,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-107--restricted-split--Z",
+          "ratio": 1.1377024874126243,
+          "deltaMs": 1.335899999999981,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-119--restricted-split--I",
+          "ratio": 1.1181557078658564,
+          "deltaMs": 1.678006499999988,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-119--restricted-split--J",
+          "ratio": 1.10920039665102,
+          "deltaMs": 1.3112144999999984,
+          "slowdownAbove1_10Hosts": 4,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-115--restricted-split--T",
+          "ratio": 1.1024191844122335,
+          "deltaMs": 1.9521239999999977,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-115--restricted-split--J",
+          "ratio": 1.1017966988367547,
+          "deltaMs": 1.2334940000000074,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-110--bag--ordinary",
+          "ratio": 1.088369452331435,
+          "deltaMs": 2.008741999999984,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-113--restricted-split--O",
+          "ratio": 1.0829705818799376,
+          "deltaMs": 0.6952155000000104,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-119--restricted-split--Z",
+          "ratio": 1.0815238038963133,
+          "deltaMs": 0.3890090000000015,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        }
+      ]
+    },
+    "M1/A0": {
+      "selectedInputCount": 122,
+      "medianOfInputWithinBlockMedianRatios": 0.9535829562551407,
+      "directionBelow1AndAtLeast4FasterHosts": 59,
+      "magnitudeBelow0_9AndAtLeast4Hosts": 11,
+      "magnitudeAbove1_1AndAtLeast4Hosts": 2,
+      "unfilteredDescriptiveNumbersNotPerformancePass": true,
+      "environmentClearInputCount": 34,
+      "environmentClearDirectionalImprovementCount": 18,
+      "environmentClearMagnitudeSlowdownCount": 0,
+      "worst10": [
+        {
+          "matrixId": "board-115--restricted-split--L",
+          "ratio": 1.2046807882425763,
+          "deltaMs": 3.0700674999999933,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-119--restricted-split--T",
+          "ratio": 1.1809792403849002,
+          "deltaMs": 0.9369419999999877,
+          "slowdownAbove1_10Hosts": 5,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-107--restricted-split--S",
+          "ratio": 1.1772980236471005,
+          "deltaMs": 1.4374085000000036,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-114--restricted-split--J",
+          "ratio": 1.1687643415417917,
+          "deltaMs": 1.4022065000000055,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-106--restricted-split--S",
+          "ratio": 1.120690958093276,
+          "deltaMs": 1.3395795000000064,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-116--restricted-split--ordinary",
+          "ratio": 1.1042958002874936,
+          "deltaMs": 1.6911764999999974,
+          "slowdownAbove1_10Hosts": 4,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-115--restricted-split--O",
+          "ratio": 1.0952623973917301,
+          "deltaMs": 1.5168675000000036,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-108--restricted-split--J",
+          "ratio": 1.0907440518643639,
+          "deltaMs": 0.6087794999999971,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-024--restricted-split--I",
+          "ratio": 1.0871626397622594,
+          "deltaMs": 0.8242600000000024,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-067--restricted-split--L",
+          "ratio": 1.069401474973857,
+          "deltaMs": 1.6508234999999942,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": false
+        }
+      ]
+    },
+    "M2/A0": {
+      "selectedInputCount": 122,
+      "medianOfInputWithinBlockMedianRatios": 1.0025526938018698,
+      "directionBelow1AndAtLeast4FasterHosts": 16,
+      "magnitudeBelow0_9AndAtLeast4Hosts": 0,
+      "magnitudeAbove1_1AndAtLeast4Hosts": 2,
+      "unfilteredDescriptiveNumbersNotPerformancePass": true,
+      "environmentClearInputCount": 122,
+      "environmentClearDirectionalImprovementCount": 16,
+      "environmentClearMagnitudeSlowdownCount": 2,
+      "worst10": [
+        {
+          "matrixId": "board-107--bag--ordinary",
+          "ratio": 1.1642307436221089,
+          "deltaMs": 1.8312309999999883,
+          "slowdownAbove1_10Hosts": 4,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-049--restricted-split--T",
+          "ratio": 1.1600302224403092,
+          "deltaMs": 1.352164000000002,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-119--restricted-split--T",
+          "ratio": 1.1496697573844386,
+          "deltaMs": 0.8140445000000014,
+          "slowdownAbove1_10Hosts": 4,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-114--restricted-split--L",
+          "ratio": 1.1068336663868883,
+          "deltaMs": 1.5119350000000047,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-113--restricted-split--I",
+          "ratio": 1.1051242209824508,
+          "deltaMs": 0.6057969999999884,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-106--restricted-split--L",
+          "ratio": 1.0999300163919765,
+          "deltaMs": 1.0158415000000076,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-106--restricted-split--S",
+          "ratio": 1.095003282309392,
+          "deltaMs": 1.1700730000000021,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-114--restricted-split--O",
+          "ratio": 1.0918364062230317,
+          "deltaMs": 0.7916634999999985,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-111--restricted-split--S",
+          "ratio": 1.0911660240557461,
+          "deltaMs": 1.6563335000000095,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-106--restricted-split--T",
+          "ratio": 1.084718255619123,
+          "deltaMs": 0.6646619999999999,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": false
+        }
+      ]
+    },
+    "M1/R": {
+      "selectedInputCount": 122,
+      "medianOfInputWithinBlockMedianRatios": 0.9651874055322565,
+      "directionBelow1AndAtLeast4FasterHosts": 51,
+      "magnitudeBelow0_9AndAtLeast4Hosts": 19,
+      "magnitudeAbove1_1AndAtLeast4Hosts": 2,
+      "unfilteredDescriptiveNumbersNotPerformancePass": true,
+      "environmentClearInputCount": 34,
+      "environmentClearDirectionalImprovementCount": 20,
+      "environmentClearMagnitudeSlowdownCount": 0,
+      "worst10": [
+        {
+          "matrixId": "board-119--restricted-split--T",
+          "ratio": 1.2037638346580475,
+          "deltaMs": 1.057583000000001,
+          "slowdownAbove1_10Hosts": 5,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-107--restricted-split--S",
+          "ratio": 1.1735380310348131,
+          "deltaMs": 1.4066230000000033,
+          "slowdownAbove1_10Hosts": 4,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-115--restricted-split--O",
+          "ratio": 1.1595703623539224,
+          "deltaMs": 2.407421500000005,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-107--restricted-split--I",
+          "ratio": 1.1501922264721833,
+          "deltaMs": 2.1435940000000073,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-068--restricted-split--J",
+          "ratio": 1.121500097144132,
+          "deltaMs": 1.4754459999999838,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-112--restricted-split--J",
+          "ratio": 1.0980109879986197,
+          "deltaMs": 0.40548199999999923,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-119--restricted-split--S",
+          "ratio": 1.09305170863637,
+          "deltaMs": 0.7903050000000036,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-065--restricted-split--ordinary",
+          "ratio": 1.0908816186146102,
+          "deltaMs": 2.5372620000000197,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-106--restricted-split--J",
+          "ratio": 1.0818516868120245,
+          "deltaMs": 0.7326369999999969,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-115--restricted-split--L",
+          "ratio": 1.0788583645291623,
+          "deltaMs": 1.0691300000000012,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": true
+        }
+      ]
+    },
+    "M2/R": {
+      "selectedInputCount": 122,
+      "medianOfInputWithinBlockMedianRatios": 0.9995189948349933,
+      "directionBelow1AndAtLeast4FasterHosts": 31,
+      "magnitudeBelow0_9AndAtLeast4Hosts": 9,
+      "magnitudeAbove1_1AndAtLeast4Hosts": 2,
+      "unfilteredDescriptiveNumbersNotPerformancePass": true,
+      "environmentClearInputCount": 34,
+      "environmentClearDirectionalImprovementCount": 16,
+      "environmentClearMagnitudeSlowdownCount": 0,
+      "worst10": [
+        {
+          "matrixId": "board-115--bag--ordinary",
+          "ratio": 1.2129033224171968,
+          "deltaMs": 3.690962500000005,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-114--restricted-split--J",
+          "ratio": 1.1766361307064868,
+          "deltaMs": 1.0143494999999945,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-049--restricted-split--T",
+          "ratio": 1.1765523514700633,
+          "deltaMs": 1.5356995000000069,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-106--restricted-split--T",
+          "ratio": 1.1727980809211274,
+          "deltaMs": 0.8704409999999996,
+          "slowdownAbove1_10Hosts": 4,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-115--restricted-split--T",
+          "ratio": 1.1518642539498596,
+          "deltaMs": 2.5309070000000062,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-040--restricted-split--I",
+          "ratio": 1.1266861038464602,
+          "deltaMs": 0.8454295000000016,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-107--restricted-split--Z",
+          "ratio": 1.1103735977068698,
+          "deltaMs": 0.8883004999999997,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-119--restricted-split--T",
+          "ratio": 1.1103535794503139,
+          "deltaMs": 0.6826574999999977,
+          "slowdownAbove1_10Hosts": 4,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-115--restricted-split--J",
+          "ratio": 1.1080347073128234,
+          "deltaMs": 1.7222329999999886,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-068--restricted-split--J",
+          "ratio": 1.0964727742830616,
+          "deltaMs": 1.512958999999995,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": false
+        }
+      ]
+    },
+    "M1/M2": {
+      "selectedInputCount": 122,
+      "medianOfInputWithinBlockMedianRatios": 0.9660021241415936,
+      "directionBelow1AndAtLeast4FasterHosts": 51,
+      "magnitudeBelow0_9AndAtLeast4Hosts": 9,
+      "magnitudeAbove1_1AndAtLeast4Hosts": 0,
+      "unfilteredDescriptiveNumbersNotPerformancePass": true,
+      "environmentClearInputCount": 34,
+      "environmentClearDirectionalImprovementCount": 16,
+      "environmentClearMagnitudeSlowdownCount": 0,
+      "worst10": [
+        {
+          "matrixId": "board-119--restricted-split--T",
+          "ratio": 1.1072887058910272,
+          "deltaMs": 0.7966784999999987,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-105--restricted-split--ordinary",
+          "ratio": 1.1031514247253094,
+          "deltaMs": 0.6518845000000013,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-067--restricted-split--L",
+          "ratio": 1.0928028747830711,
+          "deltaMs": 2.088624000000003,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": false
+        },
+        {
+          "matrixId": "board-108--restricted-split--ordinary",
+          "ratio": 1.0894011827624088,
+          "deltaMs": 2.2477864999999895,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-115--restricted-split--O",
+          "ratio": 1.076732576599377,
+          "deltaMs": 1.321765500000005,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-112--restricted-split--ordinary",
+          "ratio": 1.0718095026017211,
+          "deltaMs": 2.072303000000005,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-108--restricted-split--J",
+          "ratio": 1.071439831686045,
+          "deltaMs": 0.45445149999999757,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-106--restricted-split--J",
+          "ratio": 1.0709371767046152,
+          "deltaMs": 0.6309520000000006,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-114--restricted-split--ordinary",
+          "ratio": 1.0693533808519833,
+          "deltaMs": 2.398777999999993,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": true
+        },
+        {
+          "matrixId": "board-107--restricted-split--S",
+          "ratio": 1.067852719229443,
+          "deltaMs": 0.6467595000000017,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true
+        }
+      ]
+    }
+  },
+  "verdictCounts": {
+    "M1": {
+      "A0_IMPROVED_R_COMPARISON_SEPARATE": 18,
+      "ENVIRONMENT_SENSITIVE": 88,
+      "NO_CONSISTENT_A0_IMPROVEMENT": 16
+    },
+    "M2": {
+      "NO_CONSISTENT_A0_IMPROVEMENT": 29,
+      "ENVIRONMENT_SENSITIVE": 88,
+      "A0_IMPROVED_R_COMPARISON_SEPARATE": 5
+    }
+  },
+  "diagnosticHighlights": [
+    {
+      "matrixId": "board-119--restricted-split--L",
+      "timing": {
+        "A0/R": {
+          "medianRatio": 1.0333605554287604,
+          "medianDeltaMs": 0.13546099999999228,
+          "fasterHosts": 1,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M1/A0": {
+          "medianRatio": 0.9790444966911034,
+          "medianDeltaMs": -0.10191600000000278,
+          "fasterHosts": 4,
+          "slowdownAbove1_10Hosts": 0,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M2/A0": {
+          "medianRatio": 0.9895155839717729,
+          "medianDeltaMs": -0.04618149999999588,
+          "fasterHosts": 3,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": false,
+          "environmentMissing": false
+        },
+        "M1/R": {
+          "medianRatio": 0.9692839128222744,
+          "medianDeltaMs": -0.17490449999998958,
+          "fasterHosts": 3,
+          "slowdownAbove1_10Hosts": 0,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M2/R": {
+          "medianRatio": 1.0685587338546219,
+          "medianDeltaMs": 0.33805449999999126,
+          "fasterHosts": 1,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M1/M2": {
+          "medianRatio": 0.85339684425632,
+          "medianDeltaMs": -0.6582309999999865,
+          "fasterHosts": 3,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        }
+      },
+      "verdicts": {
+        "M1": {
+          "directionalImprovementVsA0": false,
+          "slowdownMagnitudeVsR": false,
+          "rGapReducedBelowAlarm": false,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        "M2": {
+          "directionalImprovementVsA0": false,
+          "slowdownMagnitudeVsR": false,
+          "rGapReducedBelowAlarm": false,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        }
+      },
+      "workCounts": {
+        "matrixId": "board-119--restricted-split--L",
+        "counters": {
+          "R": {
+            "boundCalls": 26,
+            "boundCandidates": 1482,
+            "boundWords": 1482,
+            "cutoffHits": 0,
+            "prunes": 0,
+            "trailPushes": 0,
+            "avoidedTrailPushes": 0
+          },
+          "A0": {
+            "boundCalls": 26,
+            "boundCandidates": 1482,
+            "boundWords": 1482,
+            "cutoffHits": 0,
+            "prunes": 0,
+            "trailPushes": 57,
+            "avoidedTrailPushes": 0
+          },
+          "M1": {
+            "boundCalls": 26,
+            "boundCandidates": 194,
+            "boundWords": 194,
+            "cutoffHits": 26,
+            "prunes": 0,
+            "trailPushes": 57,
+            "avoidedTrailPushes": 0
+          },
+          "M2": {
+            "boundCalls": 26,
+            "boundCandidates": 1482,
+            "boundWords": 1482,
+            "cutoffHits": 0,
+            "prunes": 0,
+            "trailPushes": 31,
+            "avoidedTrailPushes": 26
+          }
+        },
+        "m1BoundWordRatio": 0.13090418353576247,
+        "m2TrailPushRatio": 0.543859649122807,
+        "sameA0StatesQualityIds": true,
+        "timingEvidence": false
+      }
+    },
+    {
+      "matrixId": "board-106--restricted-split--J",
+      "timing": {
+        "A0/R": {
+          "medianRatio": 1.0232642568854442,
+          "medianDeltaMs": 0.11214900000000227,
+          "fasterHosts": 2,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M1/A0": {
+          "medianRatio": 0.9627494036540885,
+          "medianDeltaMs": -0.22116999999999365,
+          "fasterHosts": 2,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M2/A0": {
+          "medianRatio": 1.0004242912390202,
+          "medianDeltaMs": 0.0015169999999997685,
+          "fasterHosts": 3,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": false,
+          "environmentMissing": false
+        },
+        "M1/R": {
+          "medianRatio": 1.0818516868120245,
+          "medianDeltaMs": 0.7326369999999969,
+          "fasterHosts": 2,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M2/R": {
+          "medianRatio": 1.051911966163959,
+          "medianDeltaMs": 0.3446145000000058,
+          "fasterHosts": 2,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M1/M2": {
+          "medianRatio": 1.0709371767046152,
+          "medianDeltaMs": 0.6309520000000006,
+          "fasterHosts": 2,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        }
+      },
+      "verdicts": {
+        "M1": {
+          "directionalImprovementVsA0": false,
+          "slowdownMagnitudeVsR": false,
+          "rGapReducedBelowAlarm": false,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        "M2": {
+          "directionalImprovementVsA0": false,
+          "slowdownMagnitudeVsR": false,
+          "rGapReducedBelowAlarm": false,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        }
+      },
+      "workCounts": {
+        "matrixId": "board-106--restricted-split--J",
+        "counters": {
+          "R": {
+            "boundCalls": 84,
+            "boundCandidates": 10752,
+            "boundWords": 10752,
+            "cutoffHits": 0,
+            "prunes": 0,
+            "trailPushes": 0,
+            "avoidedTrailPushes": 0
+          },
+          "A0": {
+            "boundCalls": 84,
+            "boundCandidates": 10752,
+            "boundWords": 10752,
+            "cutoffHits": 0,
+            "prunes": 0,
+            "trailPushes": 131,
+            "avoidedTrailPushes": 0
+          },
+          "M1": {
+            "boundCalls": 84,
+            "boundCandidates": 2268,
+            "boundWords": 2268,
+            "cutoffHits": 84,
+            "prunes": 0,
+            "trailPushes": 131,
+            "avoidedTrailPushes": 0
+          },
+          "M2": {
+            "boundCalls": 84,
+            "boundCandidates": 10752,
+            "boundWords": 10752,
+            "cutoffHits": 0,
+            "prunes": 0,
+            "trailPushes": 47,
+            "avoidedTrailPushes": 84
+          }
+        },
+        "m1BoundWordRatio": 0.2109375,
+        "m2TrailPushRatio": 0.35877862595419846,
+        "sameA0StatesQualityIds": true,
+        "timingEvidence": false
+      }
+    },
+    {
+      "matrixId": "board-111--restricted-split--ordinary",
+      "timing": {
+        "A0/R": {
+          "medianRatio": 0.7866403043595169,
+          "medianDeltaMs": -32.43980649999999,
+          "fasterHosts": 5,
+          "slowdownAbove1_10Hosts": 0,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M1/A0": {
+          "medianRatio": 0.9775894795759936,
+          "medianDeltaMs": -2.0555465000000126,
+          "fasterHosts": 4,
+          "slowdownAbove1_10Hosts": 0,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M2/A0": {
+          "medianRatio": 0.9812087476417749,
+          "medianDeltaMs": -2.3529674999999983,
+          "fasterHosts": 3,
+          "slowdownAbove1_10Hosts": 0,
+          "environmentAlarm": false,
+          "environmentMissing": false
+        },
+        "M1/R": {
+          "medianRatio": 0.7551556496633709,
+          "medianDeltaMs": -35.48985800000003,
+          "fasterHosts": 5,
+          "slowdownAbove1_10Hosts": 0,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M2/R": {
+          "medianRatio": 0.7867656220690266,
+          "medianDeltaMs": -36.22264649999998,
+          "fasterHosts": 5,
+          "slowdownAbove1_10Hosts": 0,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M1/M2": {
+          "medianRatio": 0.9636163024128854,
+          "medianDeltaMs": -3.7203104999999965,
+          "fasterHosts": 3,
+          "slowdownAbove1_10Hosts": 0,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        }
+      },
+      "verdicts": {
+        "M1": {
+          "directionalImprovementVsA0": false,
+          "slowdownMagnitudeVsR": false,
+          "rGapReducedBelowAlarm": false,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        "M2": {
+          "directionalImprovementVsA0": false,
+          "slowdownMagnitudeVsR": false,
+          "rGapReducedBelowAlarm": false,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        }
+      },
+      "workCounts": {
+        "matrixId": "board-111--restricted-split--ordinary",
+        "counters": {
+          "R": {
+            "boundCalls": 27314,
+            "boundCandidates": 4370240,
+            "boundWords": 4370240,
+            "cutoffHits": 0,
+            "prunes": 12081,
+            "trailPushes": 0,
+            "avoidedTrailPushes": 0
+          },
+          "A0": {
+            "boundCalls": 19208,
+            "boundCandidates": 3073280,
+            "boundWords": 3073280,
+            "cutoffHits": 0,
+            "prunes": 8068,
+            "trailPushes": 66727,
+            "avoidedTrailPushes": 0
+          },
+          "M1": {
+            "boundCalls": 19208,
+            "boundCandidates": 1689120,
+            "boundWords": 1689120,
+            "cutoffHits": 11140,
+            "prunes": 8068,
+            "trailPushes": 66727,
+            "avoidedTrailPushes": 0
+          },
+          "M2": {
+            "boundCalls": 19208,
+            "boundCandidates": 3073280,
+            "boundWords": 3073280,
+            "cutoffHits": 0,
+            "prunes": 8068,
+            "trailPushes": 55595,
+            "avoidedTrailPushes": 11132
+          }
+        },
+        "m1BoundWordRatio": 0.5496147438567264,
+        "m2TrailPushRatio": 0.8331709802628621,
+        "sameA0StatesQualityIds": true,
+        "timingEvidence": false
+      }
+    },
+    {
+      "matrixId": "board-115--bag--ordinary",
+      "timing": {
+        "A0/R": {
+          "medianRatio": 1.1510332403765158,
+          "medianDeltaMs": 3.268375999999975,
+          "fasterHosts": 1,
+          "slowdownAbove1_10Hosts": 4,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M1/A0": {
+          "medianRatio": 0.7980187950416624,
+          "medianDeltaMs": -4.4261524999999935,
+          "fasterHosts": 4,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M2/A0": {
+          "medianRatio": 0.9686797678836865,
+          "medianDeltaMs": -0.8506859999999818,
+          "fasterHosts": 3,
+          "slowdownAbove1_10Hosts": 2,
+          "environmentAlarm": false,
+          "environmentMissing": false
+        },
+        "M1/R": {
+          "medianRatio": 0.9227822039005371,
+          "medianDeltaMs": -1.1564035000000032,
+          "fasterHosts": 3,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M2/R": {
+          "medianRatio": 1.2129033224171968,
+          "medianDeltaMs": 3.690962500000005,
+          "fasterHosts": 2,
+          "slowdownAbove1_10Hosts": 3,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        },
+        "M1/M2": {
+          "medianRatio": 0.8429320220931404,
+          "medianDeltaMs": -3.1519659999999945,
+          "fasterHosts": 5,
+          "slowdownAbove1_10Hosts": 0,
+          "environmentAlarm": true,
+          "environmentMissing": false
+        }
+      },
+      "verdicts": {
+        "M1": {
+          "directionalImprovementVsA0": false,
+          "slowdownMagnitudeVsR": false,
+          "rGapReducedBelowAlarm": false,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        "M2": {
+          "directionalImprovementVsA0": false,
+          "slowdownMagnitudeVsR": false,
+          "rGapReducedBelowAlarm": false,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        }
+      },
+      "workCounts": {
+        "matrixId": "board-115--bag--ordinary",
+        "counters": {
+          "R": {
+            "boundCalls": 670,
+            "boundCandidates": 42880,
+            "boundWords": 85760,
+            "cutoffHits": 0,
+            "prunes": 419,
+            "trailPushes": 0,
+            "avoidedTrailPushes": 0
+          },
+          "A0": {
+            "boundCalls": 424,
+            "boundCandidates": 27136,
+            "boundWords": 54272,
+            "cutoffHits": 0,
+            "prunes": 215,
+            "trailPushes": 473,
+            "avoidedTrailPushes": 0
+          },
+          "M1": {
+            "boundCalls": 424,
+            "boundCandidates": 20143,
+            "boundWords": 40253,
+            "cutoffHits": 209,
+            "prunes": 215,
+            "trailPushes": 473,
+            "avoidedTrailPushes": 0
+          },
+          "M2": {
+            "boundCalls": 424,
+            "boundCandidates": 27136,
+            "boundWords": 54272,
+            "cutoffHits": 0,
+            "prunes": 215,
+            "trailPushes": 272,
+            "avoidedTrailPushes": 201
+          }
+        },
+        "m1BoundWordRatio": 0.7416900058962265,
+        "m2TrailPushRatio": 0.5750528541226215,
+        "sameA0StatesQualityIds": true,
+        "timingEvidence": false
+      }
+    },
+    {
+      "matrixId": "board-028--restricted-split--ordinary",
+      "timing": {
+        "A0/R": {
+          "medianRatio": 0.9993899781489228,
+          "medianDeltaMs": -4.73098550000077,
+          "fasterHosts": 3,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": false,
+          "environmentMissing": false
+        },
+        "M1/A0": {
+          "medianRatio": 0.9956606976369062,
+          "medianDeltaMs": -30.431301500000245,
+          "fasterHosts": 3,
+          "slowdownAbove1_10Hosts": 0,
+          "environmentAlarm": false,
+          "environmentMissing": false
+        },
+        "M2/A0": {
+          "medianRatio": 1.0048712738227117,
+          "medianDeltaMs": 35.691763500000434,
+          "fasterHosts": 0,
+          "slowdownAbove1_10Hosts": 0,
+          "environmentAlarm": false,
+          "environmentMissing": false
+        },
+        "M1/R": {
+          "medianRatio": 1.0027775668801289,
+          "medianDeltaMs": 19.448353500000394,
+          "fasterHosts": 2,
+          "slowdownAbove1_10Hosts": 0,
+          "environmentAlarm": false,
+          "environmentMissing": false
+        },
+        "M2/R": {
+          "medianRatio": 1.0083121193252251,
+          "medianDeltaMs": 58.46985450000011,
+          "fasterHosts": 0,
+          "slowdownAbove1_10Hosts": 1,
+          "environmentAlarm": false,
+          "environmentMissing": false
+        },
+        "M1/M2": {
+          "medianRatio": 0.991723725893417,
+          "medianDeltaMs": -53.90386550000085,
+          "fasterHosts": 3,
+          "slowdownAbove1_10Hosts": 0,
+          "environmentAlarm": false,
+          "environmentMissing": false
+        }
+      },
+      "verdicts": {
+        "M1": {
+          "directionalImprovementVsA0": false,
+          "slowdownMagnitudeVsR": false,
+          "rGapReducedBelowAlarm": false,
+          "classification": "NO_CONSISTENT_A0_IMPROVEMENT"
+        },
+        "M2": {
+          "directionalImprovementVsA0": false,
+          "slowdownMagnitudeVsR": false,
+          "rGapReducedBelowAlarm": false,
+          "classification": "NO_CONSISTENT_A0_IMPROVEMENT"
+        }
+      },
+      "workCounts": {
+        "matrixId": "board-028--restricted-split--ordinary",
+        "counters": {
+          "R": {
+            "boundCalls": 100000,
+            "boundCandidates": 289300000,
+            "boundWords": 6943200000,
+            "cutoffHits": 0,
+            "prunes": 97187,
+            "trailPushes": 0,
+            "avoidedTrailPushes": 0
+          },
+          "A0": {
+            "boundCalls": 100000,
+            "boundCandidates": 289300000,
+            "boundWords": 6943200000,
+            "cutoffHits": 0,
+            "prunes": 96023,
+            "trailPushes": 100000,
+            "avoidedTrailPushes": 0
+          },
+          "M1": {
+            "boundCalls": 100000,
+            "boundCandidates": 280301961,
+            "boundWords": 6727231896,
+            "cutoffHits": 3977,
+            "prunes": 96023,
+            "trailPushes": 100000,
+            "avoidedTrailPushes": 0
+          },
+          "M2": {
+            "boundCalls": 100000,
+            "boundCandidates": 289300000,
+            "boundWords": 6943200000,
+            "cutoffHits": 0,
+            "prunes": 96023,
+            "trailPushes": 96023,
+            "avoidedTrailPushes": 3977
+          }
+        },
+        "m1BoundWordRatio": 0.9688950190114068,
+        "m2TrailPushRatio": 0.96023,
+        "sameA0StatesQualityIds": true,
+        "timingEvidence": false
+      }
+    }
+  ],
+  "priorFailedRunActualCalls": 0,
+  "origin": "2026-10-03T15:41:25+00:00",
+  "completedAt": "2026-10-03T15:58:16+00:00",
+  "wallMinutes": 16.85,
+  "runnerHoursIncludingFailedPreflight": 0.6188888888888889,
+  "originalReservedP95": 1.197846065695026,
+  "originalReservedGateLimit": 1.1,
+  "originalPopulationGateRecomputed": false,
+  "productIntegration": "HOLD",
+  "noProductApplyMergeDeployment": true,
+  "automaticFurtherCampaign": false,
+  "causalLimit": "Active M1/M2 WASM code layout differs. Work counters confirm targeted reductions only on five fixed diagnostics; timing attribution is not exclusive.",
+  "statisticalLimit": "Selected 122 inputs; ten blocks on five runners, not ten independent hosts. Descriptive paired ratios, no population PASS or significance claim."
+}
