@@ -649,3 +649,15 @@ pub unsafe extern "C" fn solver_min_cover_searched_states(ptr: *mut WasmSolver) 
         unsafe { &*ptr }.min_cover_searched_states
     }
 }
+// Only diagnostic binaries expose counters; measured builds must lack these.
+#[cfg(feature = "a0-diagnostics")]
+#[unsafe(no_mangle)]
+pub extern "C" fn solver_four_arm_diag_reset() {
+    pc_core::min_cover::four_arm_diagnostics::reset();
+}
+
+#[cfg(feature = "a0-diagnostics")]
+#[unsafe(no_mangle)]
+pub extern "C" fn solver_four_arm_diag_get(index: u32) -> f64 {
+    pc_core::min_cover::four_arm_diagnostics::get(index as usize) as f64
+}

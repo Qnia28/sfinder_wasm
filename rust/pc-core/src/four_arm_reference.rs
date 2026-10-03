@@ -1,28 +1,5 @@
 use std::collections::{HashMap, HashSet};
 
-#[cfg(all(feature = "a0-lower-cutoff", feature = "a0-last-sibling"))]
-compile_error!("Four-arm experiment requires independent M1 and M2 builds");
-
-#[cfg(feature = "a0-diagnostics")]
-pub mod four_arm_diagnostics {
-    use std::sync::atomic::{AtomicU64, Ordering};
-    // Diagnostic build only; not timing or budget evidence.
-    static COUNTERS: [AtomicU64; 7] = [const { AtomicU64::new(0) }; 7];
-    pub fn add(index: usize, value: u64) {
-        COUNTERS[index].fetch_add(value, Ordering::Relaxed);
-    }
-    pub fn reset() {
-        for c in &COUNTERS {
-            c.store(0, Ordering::Relaxed);
-        }
-    }
-    pub fn get(index: usize) -> u64 {
-        COUNTERS.get(index).map_or(0, |c| c.load(Ordering::Relaxed))
-    }
-    // 0 bound calls, 1 candidates, 2 words, 3 cutoff hits,
-    // 4 prune decisions, 5 trail pushes, 6 avoided trail pushes.
-}
-
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct MinimumCoverResult {
     pub selected: Vec<u32>,
@@ -94,22 +71,13 @@ fn gain(coverage: &[u64], covered: &[u64], full: &[u64]) -> u32 {
 }
 
 fn lower_bound(covered: &[u64], full: &[u64], solution_coverage: &[Vec<u64>]) -> usize {
-    #[cfg(feature = "a0-diagnostics")]
-    four_arm_diagnostics::add(0, 1);
     let remaining = uncovered_count(covered, full) as usize;
     if remaining == 0 {
         return 0;
     }
     let max_gain = solution_coverage
         .iter()
-        .map(|s| {
-            #[cfg(feature = "a0-diagnostics")]
-            {
-                four_arm_diagnostics::add(1, 1);
-                four_arm_diagnostics::add(2, s.len().min(covered.len()).min(full.len()) as u64);
-            }
-            gain(s, covered, full) as usize
-        })
+        .map(|s| gain(s, covered, full) as usize)
         .max()
         .unwrap_or(0);
     if max_gain == 0 {
@@ -117,43 +85,6 @@ fn lower_bound(covered: &[u64], full: &[u64], solution_coverage: &[Vec<u64>]) ->
     } else {
         remaining.div_ceil(max_gain)
     }
-}
-
-// M1 computes exactly the old prune predicate, not a new/stronger bound.
-// A witness reaching ceil(remaining/slots) suffices to reject that predicate.
-#[cfg(any(feature = "a0-lower-cutoff", test))]
-fn lower_bound_exceeds_slots(
-    covered: &[u64],
-    full: &[u64],
-    solution_coverage: &[Vec<u64>],
-    slots: usize,
-) -> bool {
-    #[cfg(feature = "a0-diagnostics")]
-    four_arm_diagnostics::add(0, 1);
-    let remaining = uncovered_count(covered, full) as usize;
-    if remaining == 0 {
-        return false;
-    }
-    if slots == 0 {
-        return true;
-    }
-    let required_gain = remaining.div_ceil(slots);
-    for coverage in solution_coverage {
-        #[cfg(feature = "a0-diagnostics")]
-        four_arm_diagnostics::add(1, 1);
-        let mut current_gain = 0usize;
-        for ((s, c), f) in coverage.iter().zip(covered).zip(full) {
-            #[cfg(feature = "a0-diagnostics")]
-            four_arm_diagnostics::add(2, 1);
-            current_gain += (s & (f & !c)).count_ones() as usize;
-            if current_gain >= required_gain {
-                #[cfg(feature = "a0-diagnostics")]
-                four_arm_diagnostics::add(3, 1);
-                return false;
-            }
-        }
-    }
-    true
 }
 
 fn choose_case(covered: &[u64], full: &[u64], case_candidates: &[Vec<u32>]) -> Option<usize> {
@@ -541,27 +472,8 @@ impl<const PARTITION: bool> BestSetSearch<'_, PARTITION> {
         if selected.len() >= self.best_count {
             return;
         }
-        let prune = if PARTITION && cfg!(feature = "a0-lower-cutoff") {
-            #[cfg(feature = "a0-lower-cutoff")]
-            {
-                lower_bound_exceeds_slots(
-                    covered,
-                    self.full,
-                    self.solution_coverage,
-                    self.best_count - selected.len(),
-                )
-            }
-            #[cfg(not(feature = "a0-lower-cutoff"))]
-            {
-                unreachable!()
-            }
-        } else {
-            let bound = lower_bound(covered, self.full, self.solution_coverage);
-            bound == usize::MAX || selected.len().saturating_add(bound) > self.best_count
-        };
-        if prune {
-            #[cfg(feature = "a0-diagnostics")]
-            four_arm_diagnostics::add(4, 1);
+        let bound = lower_bound(&covered, self.full, self.solution_coverage);
+        if bound == usize::MAX || selected.len().saturating_add(bound) > self.best_count {
             return;
         }
         let Some(case) = choose_case(&covered, self.full, self.case_candidates) else {
@@ -582,8 +494,7 @@ impl<const PARTITION: bool> BestSetSearch<'_, PARTITION> {
             .collect();
         branches.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(&b.0)));
         let exclusion_checkpoint = self.exclusion_trail.len();
-        let branch_count = branches.len();
-        for (branch_index, (solution, _)) in branches.into_iter().enumerate() {
+        for (solution, _) in branches {
             if selected.contains(&solution) {
                 continue;
             }
@@ -602,20 +513,11 @@ impl<const PARTITION: bool> BestSetSearch<'_, PARTITION> {
             }
             selected.pop();
             if PARTITION {
-                if cfg!(feature = "a0-last-sibling")
-                    && (self.budget_exceeded || branch_index + 1 == branch_count)
-                {
-                    #[cfg(feature = "a0-diagnostics")]
-                    four_arm_diagnostics::add(6, 1);
-                    break;
-                }
                 // Every feasible extension belongs to its earliest selected
                 // sibling. Restore only this frame's additions on return,
                 // including a state-budget exit; ancestor exclusions survive.
                 self.sibling_excluded[solution as usize] = true;
                 self.exclusion_trail.push(solution);
-                #[cfg(feature = "a0-diagnostics")]
-                four_arm_diagnostics::add(5, 1);
                 if self.budget_exceeded {
                     break;
                 }
@@ -1168,7 +1070,6 @@ pub fn exact_quality_cover_at_count_integrated(
         BoundedQualityResult::BudgetExceeded(_) => unreachable!(),
     }
 }
-
 #[derive(Clone, Debug)]
 struct QualityThresholdData {
     weights: Vec<u32>,
@@ -2299,15 +2200,8 @@ pub fn exact_quality_cover_at_count_progress_bounded(
     state_budget: Option<u64>,
 ) -> Option<(BoundedQualityResult, Vec<u32>)> {
     let mut prefix = Vec::new();
-    let result = fixed_quality_internal(
-        raw_cases,
-        solution_count,
-        exact_count,
-        seed_selected,
-        &[],
-        state_budget,
-        Some(&mut prefix),
-    )?;
+    let result = fixed_quality_internal(raw_cases, solution_count, exact_count,
+        seed_selected, &[], state_budget, Some(&mut prefix))?;
     Some((result, prefix))
 }
 
@@ -2351,11 +2245,3 @@ pub fn exact_quality_cover_at_count_with_locked_prefix(
         BoundedQualityResult::BudgetExceeded(_) => unreachable!(),
     }
 }
-
-#[cfg(test)]
-#[path = "min_cover_tests.rs"]
-mod tests;
-
-#[cfg(test)]
-#[path = "min_cover_four_arm_tests.rs"]
-mod four_arm_tests;

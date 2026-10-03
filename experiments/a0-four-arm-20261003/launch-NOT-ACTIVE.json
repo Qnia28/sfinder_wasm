@@ -1,0 +1,1 @@
+{"status":"PREPARATION_ONLY_NO_PUSH_NO_ACTIONS","activateOnlyAfterUserApproval":true,"workflowTrigger":"Create launch.json with status AUTHORIZED_EXECUTION and push the isolated branch","arms":["R","A0","M1","M2"],"combinedArm":false,"calls":4960,"inputs":122}

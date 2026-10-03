@@ -4,5 +4,12 @@ version = "0.2.0"
 edition = "2024"
 license = "Apache-2.0"
 
+[features]
+default = []
+# Isolated experiment arms; never enable together or in a product build.
+a0-lower-cutoff = []
+a0-last-sibling = []
+a0-diagnostics = []
+
 [lib]
 path = "src/lib.rs"

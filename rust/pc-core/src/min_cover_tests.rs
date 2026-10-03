@@ -41,7 +41,7 @@ fn bounded_threshold_prefix_matches_independent_oracle() {
     assert!(partial_prefixes>0,"must exercise budget exits after a proved threshold");
 }
 
-fn brute_partition_oracle(cases: &[Vec<(u32, u32)>], n: usize) -> (MinimumCoverResult, Vec<u32>) {
+pub(super) fn brute_partition_oracle(cases: &[Vec<(u32, u32)>], n: usize) -> (MinimumCoverResult, Vec<u32>) {
     let mut best: Option<MinimumCoverResult> = None;
     let mut seed = Vec::new();
     for mask in 0usize..(1usize << n) {
