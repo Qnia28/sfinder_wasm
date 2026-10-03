@@ -9,11 +9,12 @@ let solver,current,probe,start,cpu,threadCpu;process.on('message',async m=>{
  try{
   if(m.type==='call'){
    assert(!current);current=m.run;assert.equal(current.matrixId,MATRIX_ID);
-   const options={seedKeys:input.seedKeys,stateBudget:2000000,integrated:false,partitioned:false,dominance:false};
+    const options={seedKeys:input.seedKeys,stateBudget:2000000,integrated:false,partitioned:false,dominance:false,qualityFor:()=>{throw Error('Numeric coverage only; quality fallback forbidden');}};
    process.send({type:'phase-start',runId:current.runId});
    const pcpu=process.cpuUsage(),tcpu=process.threadCpuUsage();start=performance.now();probe=solver.minimumCoverAtCount(coverage,input.K,options);
    const apiMs=performance.now()-start;cpu=process.cpuUsage(pcpu);threadCpu=process.threadCpuUsage(tcpu);
-   process.send({type:'phase-result',runId:current.runId,raw:probe,options,apiMs,cpu,threadCpu,backend:'baseline-fixed-K-threshold'});
+    const recordedOptions={...options};delete recordedOptions.qualityFor;
+    process.send({type:'phase-result',runId:current.runId,raw:probe,options:recordedOptions,apiMs,cpu,threadCpu,backend:'baseline-fixed-K-threshold'});
   }else if(m.type==='ack'){
    assert.equal(m.runId,current.runId);const audit=performance.now(),witness=verify(input,probe),expected=read(`${HERE}/EXPECTED.json`);
    assert(probe.searchedStates>=1&&probe.searchedStates<=2000000);

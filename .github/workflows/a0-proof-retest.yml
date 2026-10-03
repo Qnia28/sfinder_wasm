@@ -34,6 +34,7 @@ jobs:
           echo +memory | sudo tee /sys/fs/cgroup/a0-proof-retest/cgroup.subtree_control
           echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-proof-retest' >> "$GITHUB_ENV"
       - run: node --test --test-concurrency=1 experiments/a0-execution-diagnosis-20261003/watchdog.test.mjs > .a0/proof/preflight.log 2>&1
+      - run: node experiments/a0-proof-retest-20261003/direct-threshold-fixture.mjs > .a0/proof/direct-threshold-fixture.json
       - run: node experiments/a0-proof-retest-20261003/lock.mjs
       - run: node experiments/a0-proof-retest-20261003/run-proof.mjs
       - if: always()
