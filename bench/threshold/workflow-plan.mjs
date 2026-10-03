@@ -25,10 +25,11 @@ assert(Number.isInteger(pairs) && pairs >= 1 && pairs <= 10);
 assert(Number.isInteger(seconds) && seconds >= 1 && seconds <= 300);
 let ids = caseIds(profile,suite);
 if (config.caseSelection) {
-  assert(['retest-selection.json', 'root-retest-selection.json'].includes(config.caseSelection));
+  assert(['retest-selection.json', 'root-retest-selection.json', 'root-resume-selection.json'].includes(config.caseSelection));
   const selection = JSON.parse(readFileSync(new URL(`./${config.caseSelection}`, import.meta.url)));
   assert.equal(selection.manifestHash, sha256(readFileSync(manifestPath)));
-  assert.equal(profile, config.caseSelection === 'root-retest-selection.json' ? 'root-confirm' : 'confirm-onoff');
+  assert.equal(profile, config.caseSelection === 'root-resume-selection.json' ? 'root-screen'
+    : config.caseSelection === 'root-retest-selection.json' ? 'root-confirm' : 'confirm-onoff');
   assert.equal(mask, selection.mask);
   assert.equal(pairs, selection.pairs); assert.equal(seconds, selection.timeoutSeconds);
   ids = selection.cases.map(c => c.caseId);
@@ -37,6 +38,7 @@ if (config.caseSelection) {
 }
 const maxParallel = config.maxParallel ?? 2;
 assert(Number.isInteger(maxParallel) && maxParallel >= 1 && maxParallel <= 16);
+if (config.caseSelection === 'root-resume-selection.json') assert.equal(maxParallel, 12);
 const comparisons = settings(profile,mask).length;
 // Worst case: every serial paired side times out. Leave setup/validation/upload
 // margin so a legitimate 5-minute call is not cut short by the job deadline.

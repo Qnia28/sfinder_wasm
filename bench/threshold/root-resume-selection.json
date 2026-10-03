@@ -1,0 +1,332 @@
+{
+  "sourceRunId": "37113754448",
+  "sourceReportHash": "0f691fecc956b2d721ab3f641d19be9c43314048edf1bd5c7b0a01b5e8fd4f22",
+  "manifestHash": "616109d5e746843b1224dbc4aedfbe4c2f3b41fc4caf22df13a917b81b472541",
+  "profile": "root-screen",
+  "mask": 4,
+  "pairs": 1,
+  "timeoutSeconds": 300,
+  "maxParallel": 12,
+  "wasmHash": "425888e502363eccf7a240c0fe37b999106da90cf829faa39142052ed59b2adf",
+  "sourceDigest": {
+    "originalRust": "c3c6e9414e1b02a962aa1ef4c0ee7195fc65e6f8e06cec2feeed74e4d5770573",
+    "candidateRust": "90161cc480b1d597dd96b1468542560388eb50b0e359d766341a74f07277aada",
+    "candidateJs": "2da702544ba7422eba1ed8ab6a14f5de5a048a67705e1420a79b03bfd6b778a9",
+    "harness": "580680bb4a9fa1d13fd8f3ea229ff8f5675319a45db1d236a128241010ccb2ef"
+  },
+  "reuseCompleteCases": [
+    "cycle1-elephant-a-O",
+    "cycle1-jaws-a-Z",
+    "cycle1-jeremy-a-L",
+    "cycle1-legs-a-Z",
+    "cycle1-pcinfo-031-Z",
+    "cycle1-pcinfo-032-O",
+    "cycle1-pcinfo-033-O",
+    "cycle1-grace-system-a-O",
+    "cycle1-6p-pco-a-O",
+    "cycle1-pcinfo-040-Z",
+    "cycle1-pcinfo-022-J",
+    "cycle1-pcinfo-041-Z",
+    "cycle1-hills-a-O",
+    "cycle1-pcinfo-035-Z",
+    "cycle1-alt-jaws-a-Z",
+    "cycle1-pcinfo-030-O",
+    "cycle1-pcinfo-015-Z",
+    "cycle1-pcinfo-036-O",
+    "cycle1-alt-shoes-a-Z",
+    "cycle1-pcinfo-039-S",
+    "cycle1-6p-pco-a-I",
+    "cycle1-grace-system-b-O",
+    "cycle1-pcinfo-034-S",
+    "cycle1-pcinfo-039-Z",
+    "cycle1-pcinfo-037-T",
+    "cycle1-pcinfo-030-I",
+    "cycle1-legs-a-S",
+    "cycle1-hills-a-Z",
+    "cycle1-elephant-j-a-O",
+    "cycle1-pcinfo-025-O",
+    "cycle1-alt-jaws-a-S",
+    "cycle1-cliff-o-a-S",
+    "cycle1-pcinfo-014-O",
+    "cycle1-pcinfo-020-O",
+    "cycle1-elephant-a-S",
+    "cycle1-shoes-a-Z",
+    "cycle1-pcinfo-016-S",
+    "cycle1-pcinfo-013-S",
+    "cycle1-pcinfo-029-S",
+    "cycle1-pcinfo-023-S",
+    "cycle1-pcinfo-018-Z",
+    "cycle1-big-jaws-a-S",
+    "cycle1-pcinfo-027-S",
+    "cycle1-jeremy-a-S",
+    "cycle1-pcinfo-022-O",
+    "cycle1-jaws-a-S",
+    "cycle1-pcinfo-007-S",
+    "cycle1-pcinfo-019-O",
+    "cycle1-alt-shoes-a-O",
+    "cycle1-pcinfo-021-S",
+    "cycle1-pcinfo-011-Z",
+    "cycle1-pcinfo-024-I",
+    "cycle1-pcinfo-028-S",
+    "cycle1-pcinfo-026-O",
+    "cycle1-6p-pco-a-S",
+    "cycle1-grace-system-a-S",
+    "cycle1-pcinfo-034-Z",
+    "cycle1-pcinfo-039-I"
+  ],
+  "rule": "Retain all58 complete twelve-call cases, including actual TIMEOUTs. Rerun all42 incomplete/no-artifact cases from scratch. Do not combine old partial calls with new pairs or select faster runs.",
+  "cases": [
+    {
+      "caseId": "cycle1-pcinfo-041-I",
+      "previousRecordedCalls": 11,
+      "previousExact": 0,
+      "reason": "rerun-whole-partial-case"
+    },
+    {
+      "caseId": "cycle1-pcinfo-035-S",
+      "previousRecordedCalls": 11,
+      "previousExact": 0,
+      "reason": "rerun-whole-partial-case"
+    },
+    {
+      "caseId": "cycle1-pcinfo-040-J",
+      "previousRecordedCalls": 11,
+      "previousExact": 0,
+      "reason": "rerun-whole-partial-case"
+    },
+    {
+      "caseId": "cycle1-pcinfo-032-S",
+      "previousRecordedCalls": 11,
+      "previousExact": 0,
+      "reason": "rerun-whole-partial-case"
+    },
+    {
+      "caseId": "cycle1-pcinfo-036-S",
+      "previousRecordedCalls": 11,
+      "previousExact": 0,
+      "reason": "rerun-whole-partial-case"
+    },
+    {
+      "caseId": "cycle1-pcinfo-031-S",
+      "previousRecordedCalls": 11,
+      "previousExact": 0,
+      "reason": "rerun-whole-partial-case"
+    },
+    {
+      "caseId": "cycle1-pcinfo-033-S",
+      "previousRecordedCalls": 11,
+      "previousExact": 0,
+      "reason": "rerun-whole-partial-case"
+    },
+    {
+      "caseId": "cycle1-pcinfo-041-O",
+      "previousRecordedCalls": 10,
+      "previousExact": 0,
+      "reason": "rerun-whole-partial-case"
+    },
+    {
+      "caseId": "cycle1-pcinfo-035-I",
+      "previousRecordedCalls": 10,
+      "previousExact": 0,
+      "reason": "rerun-whole-partial-case"
+    },
+    {
+      "caseId": "cycle1-pcinfo-040-O",
+      "previousRecordedCalls": 10,
+      "previousExact": 0,
+      "reason": "rerun-whole-partial-case"
+    },
+    {
+      "caseId": "cycle1-pcinfo-032-Z",
+      "previousRecordedCalls": 9,
+      "previousExact": 9,
+      "reason": "rerun-whole-partial-case"
+    },
+    {
+      "caseId": "cycle1-pcinfo-036-Z",
+      "previousRecordedCalls": 4,
+      "previousExact": 0,
+      "reason": "rerun-whole-partial-case"
+    },
+    {
+      "caseId": "cycle1-pcinfo-037-S",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-031-O",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-030-Z",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-033-Z",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-legs-a-O",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-hills-a-S",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-elephant-j-a-Z",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-025-I",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-alt-jaws-a-O",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-cliff-o-a-I",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-014-L",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-015-S",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-elephant-a-I",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-shoes-a-I",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-016-T",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-013-T",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-029-O",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-023-L",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-018-O",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-big-jaws-a-O",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-027-O",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-jeremy-a-Z",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-022-L",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-jaws-a-I",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-007-J",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-019-S",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-alt-shoes-a-S",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-021-J",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-011-S",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    },
+    {
+      "caseId": "cycle1-pcinfo-024-Z",
+      "previousRecordedCalls": 0,
+      "previousExact": 0,
+      "reason": "no-previous-artifact"
+    }
+  ]
+}
