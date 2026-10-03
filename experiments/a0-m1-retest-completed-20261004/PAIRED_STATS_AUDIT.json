@@ -1,0 +1,15 @@
+{
+  "status": "ALL_ADJACENT100PAIR_STATS_INDEPENDENTLY_VERIFIED",
+  "calls": 73320,
+  "selectedPairs": 36600,
+  "comparisonSeries": 366,
+  "inputs": 122,
+  "runnerJobs": 10,
+  "pairsPerRunnerPerComparison": 10,
+  "environmentPairs": 60,
+  "environmentAlarms": 22,
+  "noRatioOfMedians": true,
+  "noOriginalTimingReplacement": true,
+  "noHostExcluded": true,
+  "noActualSolverCallsInAudit": true
+}

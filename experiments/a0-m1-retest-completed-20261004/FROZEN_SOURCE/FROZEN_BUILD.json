@@ -1,0 +1,3208 @@
+{
+  "originalArtifactRunId": 37134463920,
+  "build": {
+    "mode": "linux",
+    "benchmarkEligible": true,
+    "compiler": "rustc 1.90.0 (1159e78c4 2025-09-14)",
+    "originalExpectedLinuxSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+    "outputs": {
+      "R": {
+        "runtime": ".a0/four/runtime/R",
+        "wasmSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+        "bytes": 560696,
+        "partitioned": false,
+        "measured": true,
+        "features": [],
+        "diagnostics": false,
+        "compiledModuleSha256": "35d08bccf37b7351bb9d49e609974f6c3fcc5a5a540ce91b0d30ae09e4f64148"
+      },
+      "A0": {
+        "runtime": ".a0/four/runtime/A0",
+        "wasmSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+        "bytes": 560696,
+        "partitioned": true,
+        "measured": true,
+        "features": [],
+        "diagnostics": false,
+        "compiledModuleSha256": "35d08bccf37b7351bb9d49e609974f6c3fcc5a5a540ce91b0d30ae09e4f64148"
+      },
+      "M1": {
+        "runtime": ".a0/four/runtime/M1",
+        "wasmSha256": "c3c9a8844148341db69a1216d348a09f857f9f3259d2d5b6a2ac0517cf654530",
+        "bytes": 561030,
+        "partitioned": true,
+        "measured": true,
+        "features": [
+          "pc-core/a0-lower-cutoff"
+        ],
+        "diagnostics": false,
+        "compiledModuleSha256": "4b69440c0c443f500c7e56309a1bdec5635f1ab498ca30826c5a202fc1dfe002"
+      },
+      "M2": {
+        "runtime": ".a0/four/runtime/M2",
+        "wasmSha256": "40bd58ddc06b58f726e02de0365a2da2baf94b6f5b95f9220e7c3f9e250c8aa7",
+        "bytes": 560712,
+        "partitioned": true,
+        "measured": true,
+        "features": [
+          "pc-core/a0-last-sibling"
+        ],
+        "diagnostics": false,
+        "compiledModuleSha256": "4b69440c0c443f500c7e56309a1bdec5635f1ab498ca30826c5a202fc1dfe002"
+      },
+      "control": {
+        "runtime": ".a0/four/runtime/control",
+        "wasmSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+        "bytes": 560696,
+        "partitioned": true,
+        "measured": false,
+        "features": [],
+        "diagnostics": false,
+        "compiledModuleSha256": "35d08bccf37b7351bb9d49e609974f6c3fcc5a5a540ce91b0d30ae09e4f64148"
+      }
+    },
+    "sourceDefaultControlMatchesOriginal": true,
+    "layoutLimit": "Feature-off control must equal original bytes on Linux. Active independent fixes can still change code layout; use separate work counters, not timing alone, for algorithm attribution.",
+    "source": "f0bc2647d67353edb7e78bb54afeadb6c9817444"
+  },
+  "diagnosticBuild": {
+    "status": "DIAGNOSTIC_ONLY_NOT_TIMING",
+    "outputs": {
+      "R": {
+        "runtime": ".a0/four/diagnostic-runtime/R",
+        "wasmSha256": "13ce51b1a61dc02b9317b2110213718b809596bf5c58d14fe9af3d84db860713",
+        "diagnostics": true,
+        "measured": false,
+        "partitioned": false,
+        "compiledModuleSha256": "4b69440c0c443f500c7e56309a1bdec5635f1ab498ca30826c5a202fc1dfe002"
+      },
+      "A0": {
+        "runtime": ".a0/four/diagnostic-runtime/A0",
+        "wasmSha256": "13ce51b1a61dc02b9317b2110213718b809596bf5c58d14fe9af3d84db860713",
+        "diagnostics": true,
+        "measured": false,
+        "partitioned": true,
+        "compiledModuleSha256": "4b69440c0c443f500c7e56309a1bdec5635f1ab498ca30826c5a202fc1dfe002"
+      },
+      "M1": {
+        "runtime": ".a0/four/diagnostic-runtime/M1",
+        "wasmSha256": "de6191a0b39e4b2d0ca22b653ba3d907088f3601340eb4f591864fc65e1ba175",
+        "diagnostics": true,
+        "measured": false,
+        "partitioned": true,
+        "compiledModuleSha256": "4b69440c0c443f500c7e56309a1bdec5635f1ab498ca30826c5a202fc1dfe002"
+      },
+      "M2": {
+        "runtime": ".a0/four/diagnostic-runtime/M2",
+        "wasmSha256": "a4ea097bcc0784d35fd12d0c20edb745273bdad99c9cce0eccba50f9e07ea03c",
+        "diagnostics": true,
+        "measured": false,
+        "partitioned": true,
+        "compiledModuleSha256": "4b69440c0c443f500c7e56309a1bdec5635f1ab498ca30826c5a202fc1dfe002"
+      }
+    },
+    "counterNames": [
+      "boundCalls",
+      "boundCandidates",
+      "boundWords",
+      "cutoffHits",
+      "prunes",
+      "trailPushes",
+      "avoidedTrailPushes"
+    ]
+  },
+  "runtimeFiles": [
+    {
+      "file": ".a0/four/runtime/R/src/batch-backend.mjs",
+      "sha256": "5eedaffd96edcd3994d17eddcb2ae01dddc98430a7a84401ea45bbd4467fb7ab"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-congruent-feature.mjs",
+      "sha256": "8b367ef161b91841f9a726b3b905d9334c0e0fec31c6dcb36ffdce9d26f8b19a"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-cover-count-feature.mjs",
+      "sha256": "073542c39f72c1c1fd042ea13dd76a116362d4b8aeb7849fc14314b67f44fbed"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-cover-feature.mjs",
+      "sha256": "e9598815b0e2358e997f6b607f7c8aba490ea1811d4809c798753a5d8f5fbb82"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-cover-percent-feature.mjs",
+      "sha256": "1c5166f9ca5da63de023f0c9e529ae750dfb7b647301bbb07d61b85a9fdfc498"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-cover.mjs",
+      "sha256": "7eaa6f8d8c104ab92f356b555aef6294bff2b77b30e356df0638b722c3e59fe4"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-feature-common.mjs",
+      "sha256": "9a964e08601a395b9d5b6f3db7421371a287a36487bc8018d2fa80dc9a9bcffe"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-features.mjs",
+      "sha256": "b5d8d043ce564e837583a05c4e16b15571bc2a37f3489f5a17ff069cb5eb3e27"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-geometry.mjs",
+      "sha256": "c80f36a4ed82142d8288c986b36b56702354834c4baf0d7986ac198e8b440628"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-limits.mjs",
+      "sha256": "7f421c6aa924ea4f78631ecaa4068e50efb33f8133bdd2e96a5ef690c7c24923"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-orders.mjs",
+      "sha256": "1a2e74684b50b2609b3059bf5675ea316a37024796bbb21fbff6955f34f20f83"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-routing-policy.mjs",
+      "sha256": "1ad709755b60928e56c8492edc104e9232b7d4ebffd583838cff4f61bb34f3aa"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-setup.mjs",
+      "sha256": "57cee4c9c8214b8737cbd864e35657f87187329c6eb205c30ff7ea6821aeebc5"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-targets.mjs",
+      "sha256": "b01c54586209ecbfa5bb9ea02aab1f4325efdf60272d7fe48b17658ec41e9927"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-worker-client.mjs",
+      "sha256": "749bf60a1c4ff4a4f10723b33de754143bd8fe39dfc106709d68ab30ae38ac86"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch-worker-runtime.mjs",
+      "sha256": "474240fad6d81ec735c6ab17e364b33fbf7bbd02e1a021518a083f3fc51e1bc3"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/batch.worker.mjs",
+      "sha256": "96e27df282df33929dd1820310abc8af6d7849731beb8e372d81564c8703482e"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/board.mjs",
+      "sha256": "7419f5a7d47c59088e049d61e9e5f4c6339bfd2ed945b49084c4c65dbe619507"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/chance-feature.mjs",
+      "sha256": "bcc1bb7e71363d8c4969e338d996f7796721aba1746bbf540d9d07f7052fd5af"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/compact-geometry.mjs",
+      "sha256": "f1e070eb78ca49ed715da6370162a8760c2ce4706f7cc3504b86d2bf8486b42c"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/cpsat-secondary-model.mjs",
+      "sha256": "5972578a5c2e20ab5886a94b3a7a113ddc7cd8b1442bb7a698f4e0cdafca2a49"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/exact-secondary-pool.mjs",
+      "sha256": "1e608e2c387963639103149874b4e52a41a41145451007c1a12842bf80c3caf7"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/exact-secondary.worker.mjs",
+      "sha256": "8c2c894461a68c9859622a5c9a6148f2e1e339f1823df7e478c2cc4de5bc1942"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/features.mjs",
+      "sha256": "dbe7459069657f781b323e8736293854409ab49dacbf4d3d5c1a54ba1cc7f22c"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/fifth-feature.mjs",
+      "sha256": "faaa7d84615f6843421432aad274ac1729091c4f3a4ca4c217259b73c91093cf"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/fifth.mjs",
+      "sha256": "0096136d0900c0c26a2471d338fc89ed7831805c0ab7b9471dc9cee56e45c126"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/filter-cover-pool.mjs",
+      "sha256": "8368cc81a94767de9abec9b0f9efa9b09799fa3b7ced5d23c0084828bd20f722"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/filter-cover-task.mjs",
+      "sha256": "3538c05cacfc1d536992f8be12424f1b7b3184a70f37f0dbc3e7e14cc5468ab8"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/filter-cover.worker.mjs",
+      "sha256": "91b2f5b58cccac3b3866d492d1195a27d01e0d42fbcd547c2aff14b473cd3092"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/fourth.mjs",
+      "sha256": "77fa742bf6be9b21e76d4bb690665adbaefed8110e4504be761f04d262f23d9b"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/fumen.mjs",
+      "sha256": "9217985c6b4705b44519943e2993fcdc276328f3993fc161661a474eeecb594f"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/highs-cardinality.mjs",
+      "sha256": "0b7394d753aa30febf39d4c8c409d0005e59f1c85e5e2770a101a1efa5fe379f"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/highs-min-cover.mjs",
+      "sha256": "dbf26bc4453356e5a694cad72f86b43177b61555ca79c3a09a003a5bf62a308d"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/human-ranking.mjs",
+      "sha256": "75aef33643797f5a92e87af7a563e254aa596b6c161ebfef40cd15ea953dde1a"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/min-cover-adaptive.mjs",
+      "sha256": "fda92e1fe0abc0b97b7fbdb4185ca0f5e0b4f7457630960b85ce06ad1f3ca118"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/min-cover-components.mjs",
+      "sha256": "bdde6f724fc0f028587832ac7f7f0cdbdc45c4ab1d665a7495186aa8f58343f5"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/min-cover-exact-secondary.mjs",
+      "sha256": "ff3eaf3fd91b818a7eda9139fc32cfc7a6e99e63ee1986a03f91707052c719a3"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/min-cover-quality-refine.mjs",
+      "sha256": "34ef8d5f80f1cbf48c35e67edb638c954c14326cf73a5d6f5fc64ba29328be4d"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/min-cover-rounded-cuts.mjs",
+      "sha256": "a475dd7fd97333f1e0a28f2c13168e796bb3a95cf033e0d2aa06af492be5ca26"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/min-cover-routing.mjs",
+      "sha256": "3a302676fdf7ff91637ebb8eb6e8a0428fe9a7380c267841a390a8290f70a89d"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/min-cover-secondary-portfolio.mjs",
+      "sha256": "ef29f5e218051bb9019e4a0ecb2f2d77b1ac9114bb035727675e8b06ab064ff7"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/min-cover-three-engine.mjs",
+      "sha256": "e250f5ae87b4e803a87d1dcbf03142b82fd942412532b4e813ad376adcafd4b1"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/min-cover.mjs",
+      "sha256": "e8105860ae8496cef529acddb9f818f9c0a7182c7a8f98fafd2a8bc65474dbdf"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/minimal-order.mjs",
+      "sha256": "5d76a5081b99c4e54b917f16c68e0c6898f7a3203a6b65cbec950cc7398c351a"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/minimals-compact.mjs",
+      "sha256": "9406dd9aa536badfa37a0d976264f571761f375dc0e916ca9ef80fdeb75d453b"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/minimals-feature.mjs",
+      "sha256": "b9f802940d45d6595ed3e880a073dea887bd9479c80fecfd68db7906fde28937"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/minimals-wrapper.mjs",
+      "sha256": "40f5c14d273b97ded666ed95b31d9d67d32add897fecc0ea164b35da6ab25c50"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/numeric-cover-data.mjs",
+      "sha256": "8f219c4b1fa72c992134e66d4bab34ae1df3a8068fbd6115b89fc434b81c5e90"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/ortools-min-cover.mjs",
+      "sha256": "87f0312fe5b112b1e961b789990b6d0ec96b7872da82b19459041a41dbe198c6"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/ortools-primary-worker.mjs",
+      "sha256": "b97b68f340c1b6e6984905f197de6aa5f29ba89184302795e0b2291dda776fd7"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/path-core.mjs",
+      "sha256": "043efe65aa411c4cbc8e97b005e7487edb6e6fffb0424544fff39dc76fa3ef52"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/path-engine.mjs",
+      "sha256": "26c9119540a3168f1d6b091b2cc0deefea292921858e619e031c86613439ed0f"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/path-feature.mjs",
+      "sha256": "6a19ca88c69080bdf51a89083d74f70431d9957f361b0b72cc0b5fc50bd4696b"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pattern-prefix-source.mjs",
+      "sha256": "56f0c99415dd42ae63158334bd5b16c3b38608cc0f49cc0fd72e122d48905efc"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pattern.mjs",
+      "sha256": "ee5de43286f5d3c7a5968fcdad47b0ec89219497752d4e4a4d05019303eeb9d9"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pc-enumeration-engine.mjs",
+      "sha256": "f06c2c6f3277950a53a9f24f558fa0957822c64957eab2f9543cf365f1dcc007"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pc-input.mjs",
+      "sha256": "4b9b49a3d17e4c53579763e4326e04e3cdd536c62bb010f730af93e6cdb16b56"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pc-queue-utils.mjs",
+      "sha256": "187b5171b664a8aaab2299e1d94da0505a8561909a3da1948f2f8dc7e9bea508"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pc-routing-policy.mjs",
+      "sha256": "236b634ae0f9bab35a0bf201beab00be02353c8e3de66f3eef28aafc46a34ee4"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pc-solve.mjs",
+      "sha256": "17cc787867d824ddfdb4ee6d0905486f34d56ecba67db3c91cf2eb264f60ced8"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pc-tail-legal.mjs",
+      "sha256": "04e71fc3df4ba5babb49064f049d1dc8024586993e9badc79f098db520ef8bbc"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pc-wasm-abi.mjs",
+      "sha256": "c643c5de98bd299aac7f93341c58f77ff0b59da707b5d11b9047878f0e76a072"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pc-wasm-compat.mjs",
+      "sha256": "194eb9df0bb48c4422eeb7ea3703df8ee62bea43a53cc55165bb308fceaabaf8"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pc-wasm-cover-matrix.mjs",
+      "sha256": "1541471253cf3ea55e7059af63c8b4463691b1120ab8047b949e83169fb7776b"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pc-wasm-enumeration.mjs",
+      "sha256": "4248f1d8ac9eca996cf1b09799d07482c16b87e3069e20b3aa76073d0e00846e"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pc-wasm-min-cover.mjs",
+      "sha256": "39f34b78330bb089373a3bbb4e9af2079e376fd5f7e577d7c16da5192ee2e89b"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/pc.worker.mjs",
+      "sha256": "c507c704b497e91d9019c092403a88598fb235452b3b584a1d3ce363c8acc2c6"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/per-save-minimals-core.mjs",
+      "sha256": "a8562d2dde6b94b49bdfed362b76d7c63a3e2036fafbef72d0d5e63f2cd3bcf7"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/per-save-minimals-feature.mjs",
+      "sha256": "ae89d5c7a694365e16c71e332d1b833780c0837b758dbbf80931ec13d2f4365e"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/per-save-minimals.mjs",
+      "sha256": "78d45fd3729f453c30c6c0c6614c761f90c926b83e70528575670e309ddc0bbd"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/piece-order.mjs",
+      "sha256": "421911ffda44c0d7fc7f6729973dce77c5fbdd22789e3a69da55ee7744a12180"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/primary-backend.mjs",
+      "sha256": "666f2157237c02dd284d13a8306230dd785e5875811e434f41ddbf4f6c9924bd"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/promise-utils.mjs",
+      "sha256": "5957269c9621143603064e9bbf4cd9cdf962948b5a59e336beee47446cd86ffb"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/quality-contract.mjs",
+      "sha256": "bb2d4fe599f6a6106d481e5fd297812e8ff4c5dadb4fc6fbf9bef8c4316fda35"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/save-outcome-cache.mjs",
+      "sha256": "d4c4df13fe7c1bac480599f63982aaf8417670a94d3896f67d30cb8dfe1d838a"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/save-piece.mjs",
+      "sha256": "74713f60017c31bb04ed1c78710fb5754f7ce8c20d0048214377d5a811d50651"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/saves-feature.mjs",
+      "sha256": "aa5bf4020318286a2b9cb0f84c0cb65ec09a7fc59f5ae49cca02d59dd2a99821"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/saves.mjs",
+      "sha256": "5f39bba21bdcb67d6f150275c9ab0c4050a599897c5ce1a06204b08f556dcf2f"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/secondary-engine-runner.mjs",
+      "sha256": "973b9a39769b608791639cf5a0784af245f3cd85ab6e392f3b296dc26c0f9104"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/secondary-engine.worker.mjs",
+      "sha256": "6771b84455280082cb01c0c33805e0570a20931b22c294b5eca843fdd2e6e30c"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/tiling.mjs",
+      "sha256": "10cac5c0c53807a01ac0c8a26a113d03db5d3e2a1c03a1457845a46cf6da458a"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/vendor/highs.mjs",
+      "sha256": "c2eb1c846d3642eb066f48e3473c3c6443bfe0bbb4bb782691cd5864449c230b"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/vendor/ortools/browser/cp-sat.js",
+      "sha256": "49113758e249251cf1087443fbb63b7dadfdeff7f19b14e7d7319554e4758427"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/vendor/ortools/browser/runtime_loader.js",
+      "sha256": "47b3d77fb5f8121ffe0758ea210f0a7f811df15465f6617e93cce01fb643f688"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/vendor/ortools/browser/runtime_loader_core.js",
+      "sha256": "b34148e1548062068d7dead335d12bfc18ea03e95019590cead19d67dce60813"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/vendor/ortools/node/cp-sat.js",
+      "sha256": "8ed1333dd1c902c87a2c561d77df467f28dc66118c29a5107289e7c9bd83a5a0"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/vendor/ortools/node/runtime_loader.js",
+      "sha256": "f1c0c4011528eacc3581741f212aa3e1cb934c16519910a2192bcaed905f77e3"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/vendor/ortools/node-wasm/cp_sat_runtime_node.js",
+      "sha256": "53c1c552604384115049d9ab3e9b41ab230bd3d44aa2937ff099e7347589e6fe"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/vendor/ortools/node-wasm/cp_sat_runtime_node.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/vendor/ortools/wasm/cp_sat_runtime.js",
+      "sha256": "708dd156b9f2da75e93b37177c66ae8e2c83d72cbf0efb18a22210aa633c20e1"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/vendor/ortools/wasm/cp_sat_runtime.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/wasm-backend.mjs",
+      "sha256": "b45648591d411df098b2ef5c7538c0fb31854996734259647940e6ad13af658f"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/worker-client.mjs",
+      "sha256": "5dc2143728dcc7ff92d77eb4cbc9207b95e22669461422eaa2500761bfe1cb55"
+    },
+    {
+      "file": ".a0/four/runtime/R/src/worker-runtime.mjs",
+      "sha256": "278e97cb15012dc72378d0b4e1a7b671ff336e9bf4f1d7a7a1bd9866b043e273"
+    },
+    {
+      "file": ".a0/four/runtime/R/wasm/legal_boards_4.lgb",
+      "sha256": "4cb7cfca0003409908ab179c0b795d0aafa36d1dfb1aadec7a0e52fc2c3a649f"
+    },
+    {
+      "file": ".a0/four/runtime/R/wasm/pc_wasm.wasm",
+      "sha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-backend.mjs",
+      "sha256": "5eedaffd96edcd3994d17eddcb2ae01dddc98430a7a84401ea45bbd4467fb7ab"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-congruent-feature.mjs",
+      "sha256": "8b367ef161b91841f9a726b3b905d9334c0e0fec31c6dcb36ffdce9d26f8b19a"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-cover-count-feature.mjs",
+      "sha256": "073542c39f72c1c1fd042ea13dd76a116362d4b8aeb7849fc14314b67f44fbed"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-cover-feature.mjs",
+      "sha256": "e9598815b0e2358e997f6b607f7c8aba490ea1811d4809c798753a5d8f5fbb82"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-cover-percent-feature.mjs",
+      "sha256": "1c5166f9ca5da63de023f0c9e529ae750dfb7b647301bbb07d61b85a9fdfc498"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-cover.mjs",
+      "sha256": "7eaa6f8d8c104ab92f356b555aef6294bff2b77b30e356df0638b722c3e59fe4"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-feature-common.mjs",
+      "sha256": "9a964e08601a395b9d5b6f3db7421371a287a36487bc8018d2fa80dc9a9bcffe"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-features.mjs",
+      "sha256": "b5d8d043ce564e837583a05c4e16b15571bc2a37f3489f5a17ff069cb5eb3e27"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-geometry.mjs",
+      "sha256": "c80f36a4ed82142d8288c986b36b56702354834c4baf0d7986ac198e8b440628"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-limits.mjs",
+      "sha256": "7f421c6aa924ea4f78631ecaa4068e50efb33f8133bdd2e96a5ef690c7c24923"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-orders.mjs",
+      "sha256": "1a2e74684b50b2609b3059bf5675ea316a37024796bbb21fbff6955f34f20f83"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-routing-policy.mjs",
+      "sha256": "1ad709755b60928e56c8492edc104e9232b7d4ebffd583838cff4f61bb34f3aa"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-setup.mjs",
+      "sha256": "57cee4c9c8214b8737cbd864e35657f87187329c6eb205c30ff7ea6821aeebc5"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-targets.mjs",
+      "sha256": "b01c54586209ecbfa5bb9ea02aab1f4325efdf60272d7fe48b17658ec41e9927"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-worker-client.mjs",
+      "sha256": "749bf60a1c4ff4a4f10723b33de754143bd8fe39dfc106709d68ab30ae38ac86"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch-worker-runtime.mjs",
+      "sha256": "474240fad6d81ec735c6ab17e364b33fbf7bbd02e1a021518a083f3fc51e1bc3"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/batch.worker.mjs",
+      "sha256": "96e27df282df33929dd1820310abc8af6d7849731beb8e372d81564c8703482e"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/board.mjs",
+      "sha256": "7419f5a7d47c59088e049d61e9e5f4c6339bfd2ed945b49084c4c65dbe619507"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/chance-feature.mjs",
+      "sha256": "bcc1bb7e71363d8c4969e338d996f7796721aba1746bbf540d9d07f7052fd5af"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/compact-geometry.mjs",
+      "sha256": "f1e070eb78ca49ed715da6370162a8760c2ce4706f7cc3504b86d2bf8486b42c"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/cpsat-secondary-model.mjs",
+      "sha256": "5972578a5c2e20ab5886a94b3a7a113ddc7cd8b1442bb7a698f4e0cdafca2a49"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/exact-secondary-pool.mjs",
+      "sha256": "1e608e2c387963639103149874b4e52a41a41145451007c1a12842bf80c3caf7"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/exact-secondary.worker.mjs",
+      "sha256": "8c2c894461a68c9859622a5c9a6148f2e1e339f1823df7e478c2cc4de5bc1942"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/features.mjs",
+      "sha256": "dbe7459069657f781b323e8736293854409ab49dacbf4d3d5c1a54ba1cc7f22c"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/fifth-feature.mjs",
+      "sha256": "faaa7d84615f6843421432aad274ac1729091c4f3a4ca4c217259b73c91093cf"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/fifth.mjs",
+      "sha256": "0096136d0900c0c26a2471d338fc89ed7831805c0ab7b9471dc9cee56e45c126"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/filter-cover-pool.mjs",
+      "sha256": "8368cc81a94767de9abec9b0f9efa9b09799fa3b7ced5d23c0084828bd20f722"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/filter-cover-task.mjs",
+      "sha256": "3538c05cacfc1d536992f8be12424f1b7b3184a70f37f0dbc3e7e14cc5468ab8"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/filter-cover.worker.mjs",
+      "sha256": "91b2f5b58cccac3b3866d492d1195a27d01e0d42fbcd547c2aff14b473cd3092"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/fourth.mjs",
+      "sha256": "77fa742bf6be9b21e76d4bb690665adbaefed8110e4504be761f04d262f23d9b"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/fumen.mjs",
+      "sha256": "9217985c6b4705b44519943e2993fcdc276328f3993fc161661a474eeecb594f"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/highs-cardinality.mjs",
+      "sha256": "0b7394d753aa30febf39d4c8c409d0005e59f1c85e5e2770a101a1efa5fe379f"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/highs-min-cover.mjs",
+      "sha256": "dbf26bc4453356e5a694cad72f86b43177b61555ca79c3a09a003a5bf62a308d"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/human-ranking.mjs",
+      "sha256": "75aef33643797f5a92e87af7a563e254aa596b6c161ebfef40cd15ea953dde1a"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/min-cover-adaptive.mjs",
+      "sha256": "fda92e1fe0abc0b97b7fbdb4185ca0f5e0b4f7457630960b85ce06ad1f3ca118"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/min-cover-components.mjs",
+      "sha256": "bdde6f724fc0f028587832ac7f7f0cdbdc45c4ab1d665a7495186aa8f58343f5"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/min-cover-exact-secondary.mjs",
+      "sha256": "0781e8736d7b9d3b190884bed47e54e98365d72841df3792a92b7b95f13d4f5a"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/min-cover-quality-refine.mjs",
+      "sha256": "34ef8d5f80f1cbf48c35e67edb638c954c14326cf73a5d6f5fc64ba29328be4d"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/min-cover-rounded-cuts.mjs",
+      "sha256": "a475dd7fd97333f1e0a28f2c13168e796bb3a95cf033e0d2aa06af492be5ca26"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/min-cover-routing.mjs",
+      "sha256": "3a302676fdf7ff91637ebb8eb6e8a0428fe9a7380c267841a390a8290f70a89d"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/min-cover-secondary-portfolio.mjs",
+      "sha256": "ef29f5e218051bb9019e4a0ecb2f2d77b1ac9114bb035727675e8b06ab064ff7"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/min-cover-three-engine.mjs",
+      "sha256": "e250f5ae87b4e803a87d1dcbf03142b82fd942412532b4e813ad376adcafd4b1"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/min-cover.mjs",
+      "sha256": "e8105860ae8496cef529acddb9f818f9c0a7182c7a8f98fafd2a8bc65474dbdf"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/minimal-order.mjs",
+      "sha256": "5d76a5081b99c4e54b917f16c68e0c6898f7a3203a6b65cbec950cc7398c351a"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/minimals-compact.mjs",
+      "sha256": "9406dd9aa536badfa37a0d976264f571761f375dc0e916ca9ef80fdeb75d453b"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/minimals-feature.mjs",
+      "sha256": "b9f802940d45d6595ed3e880a073dea887bd9479c80fecfd68db7906fde28937"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/minimals-wrapper.mjs",
+      "sha256": "40f5c14d273b97ded666ed95b31d9d67d32add897fecc0ea164b35da6ab25c50"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/numeric-cover-data.mjs",
+      "sha256": "8f219c4b1fa72c992134e66d4bab34ae1df3a8068fbd6115b89fc434b81c5e90"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/ortools-min-cover.mjs",
+      "sha256": "87f0312fe5b112b1e961b789990b6d0ec96b7872da82b19459041a41dbe198c6"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/ortools-primary-worker.mjs",
+      "sha256": "b97b68f340c1b6e6984905f197de6aa5f29ba89184302795e0b2291dda776fd7"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/path-core.mjs",
+      "sha256": "043efe65aa411c4cbc8e97b005e7487edb6e6fffb0424544fff39dc76fa3ef52"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/path-engine.mjs",
+      "sha256": "26c9119540a3168f1d6b091b2cc0deefea292921858e619e031c86613439ed0f"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/path-feature.mjs",
+      "sha256": "6a19ca88c69080bdf51a89083d74f70431d9957f361b0b72cc0b5fc50bd4696b"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pattern-prefix-source.mjs",
+      "sha256": "56f0c99415dd42ae63158334bd5b16c3b38608cc0f49cc0fd72e122d48905efc"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pattern.mjs",
+      "sha256": "ee5de43286f5d3c7a5968fcdad47b0ec89219497752d4e4a4d05019303eeb9d9"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pc-enumeration-engine.mjs",
+      "sha256": "f06c2c6f3277950a53a9f24f558fa0957822c64957eab2f9543cf365f1dcc007"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pc-input.mjs",
+      "sha256": "4b9b49a3d17e4c53579763e4326e04e3cdd536c62bb010f730af93e6cdb16b56"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pc-queue-utils.mjs",
+      "sha256": "187b5171b664a8aaab2299e1d94da0505a8561909a3da1948f2f8dc7e9bea508"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pc-routing-policy.mjs",
+      "sha256": "236b634ae0f9bab35a0bf201beab00be02353c8e3de66f3eef28aafc46a34ee4"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pc-solve.mjs",
+      "sha256": "17cc787867d824ddfdb4ee6d0905486f34d56ecba67db3c91cf2eb264f60ced8"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pc-tail-legal.mjs",
+      "sha256": "04e71fc3df4ba5babb49064f049d1dc8024586993e9badc79f098db520ef8bbc"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pc-wasm-abi.mjs",
+      "sha256": "c643c5de98bd299aac7f93341c58f77ff0b59da707b5d11b9047878f0e76a072"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pc-wasm-compat.mjs",
+      "sha256": "194eb9df0bb48c4422eeb7ea3703df8ee62bea43a53cc55165bb308fceaabaf8"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pc-wasm-cover-matrix.mjs",
+      "sha256": "1541471253cf3ea55e7059af63c8b4463691b1120ab8047b949e83169fb7776b"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pc-wasm-enumeration.mjs",
+      "sha256": "4248f1d8ac9eca996cf1b09799d07482c16b87e3069e20b3aa76073d0e00846e"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pc-wasm-min-cover.mjs",
+      "sha256": "39f34b78330bb089373a3bbb4e9af2079e376fd5f7e577d7c16da5192ee2e89b"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/pc.worker.mjs",
+      "sha256": "c507c704b497e91d9019c092403a88598fb235452b3b584a1d3ce363c8acc2c6"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/per-save-minimals-core.mjs",
+      "sha256": "a8562d2dde6b94b49bdfed362b76d7c63a3e2036fafbef72d0d5e63f2cd3bcf7"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/per-save-minimals-feature.mjs",
+      "sha256": "ae89d5c7a694365e16c71e332d1b833780c0837b758dbbf80931ec13d2f4365e"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/per-save-minimals.mjs",
+      "sha256": "78d45fd3729f453c30c6c0c6614c761f90c926b83e70528575670e309ddc0bbd"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/piece-order.mjs",
+      "sha256": "421911ffda44c0d7fc7f6729973dce77c5fbdd22789e3a69da55ee7744a12180"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/primary-backend.mjs",
+      "sha256": "666f2157237c02dd284d13a8306230dd785e5875811e434f41ddbf4f6c9924bd"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/promise-utils.mjs",
+      "sha256": "5957269c9621143603064e9bbf4cd9cdf962948b5a59e336beee47446cd86ffb"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/quality-contract.mjs",
+      "sha256": "bb2d4fe599f6a6106d481e5fd297812e8ff4c5dadb4fc6fbf9bef8c4316fda35"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/save-outcome-cache.mjs",
+      "sha256": "d4c4df13fe7c1bac480599f63982aaf8417670a94d3896f67d30cb8dfe1d838a"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/save-piece.mjs",
+      "sha256": "74713f60017c31bb04ed1c78710fb5754f7ce8c20d0048214377d5a811d50651"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/saves-feature.mjs",
+      "sha256": "aa5bf4020318286a2b9cb0f84c0cb65ec09a7fc59f5ae49cca02d59dd2a99821"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/saves.mjs",
+      "sha256": "5f39bba21bdcb67d6f150275c9ab0c4050a599897c5ce1a06204b08f556dcf2f"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/secondary-engine-runner.mjs",
+      "sha256": "973b9a39769b608791639cf5a0784af245f3cd85ab6e392f3b296dc26c0f9104"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/secondary-engine.worker.mjs",
+      "sha256": "6771b84455280082cb01c0c33805e0570a20931b22c294b5eca843fdd2e6e30c"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/tiling.mjs",
+      "sha256": "10cac5c0c53807a01ac0c8a26a113d03db5d3e2a1c03a1457845a46cf6da458a"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/vendor/highs.mjs",
+      "sha256": "c2eb1c846d3642eb066f48e3473c3c6443bfe0bbb4bb782691cd5864449c230b"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/vendor/ortools/browser/cp-sat.js",
+      "sha256": "49113758e249251cf1087443fbb63b7dadfdeff7f19b14e7d7319554e4758427"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/vendor/ortools/browser/runtime_loader.js",
+      "sha256": "47b3d77fb5f8121ffe0758ea210f0a7f811df15465f6617e93cce01fb643f688"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/vendor/ortools/browser/runtime_loader_core.js",
+      "sha256": "b34148e1548062068d7dead335d12bfc18ea03e95019590cead19d67dce60813"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/vendor/ortools/node/cp-sat.js",
+      "sha256": "8ed1333dd1c902c87a2c561d77df467f28dc66118c29a5107289e7c9bd83a5a0"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/vendor/ortools/node/runtime_loader.js",
+      "sha256": "f1c0c4011528eacc3581741f212aa3e1cb934c16519910a2192bcaed905f77e3"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/vendor/ortools/node-wasm/cp_sat_runtime_node.js",
+      "sha256": "53c1c552604384115049d9ab3e9b41ab230bd3d44aa2937ff099e7347589e6fe"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/vendor/ortools/node-wasm/cp_sat_runtime_node.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/vendor/ortools/wasm/cp_sat_runtime.js",
+      "sha256": "708dd156b9f2da75e93b37177c66ae8e2c83d72cbf0efb18a22210aa633c20e1"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/vendor/ortools/wasm/cp_sat_runtime.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/wasm-backend.mjs",
+      "sha256": "b45648591d411df098b2ef5c7538c0fb31854996734259647940e6ad13af658f"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/worker-client.mjs",
+      "sha256": "5dc2143728dcc7ff92d77eb4cbc9207b95e22669461422eaa2500761bfe1cb55"
+    },
+    {
+      "file": ".a0/four/runtime/A0/src/worker-runtime.mjs",
+      "sha256": "278e97cb15012dc72378d0b4e1a7b671ff336e9bf4f1d7a7a1bd9866b043e273"
+    },
+    {
+      "file": ".a0/four/runtime/A0/wasm/legal_boards_4.lgb",
+      "sha256": "4cb7cfca0003409908ab179c0b795d0aafa36d1dfb1aadec7a0e52fc2c3a649f"
+    },
+    {
+      "file": ".a0/four/runtime/A0/wasm/pc_wasm.wasm",
+      "sha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-backend.mjs",
+      "sha256": "5eedaffd96edcd3994d17eddcb2ae01dddc98430a7a84401ea45bbd4467fb7ab"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-congruent-feature.mjs",
+      "sha256": "8b367ef161b91841f9a726b3b905d9334c0e0fec31c6dcb36ffdce9d26f8b19a"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-cover-count-feature.mjs",
+      "sha256": "073542c39f72c1c1fd042ea13dd76a116362d4b8aeb7849fc14314b67f44fbed"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-cover-feature.mjs",
+      "sha256": "e9598815b0e2358e997f6b607f7c8aba490ea1811d4809c798753a5d8f5fbb82"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-cover-percent-feature.mjs",
+      "sha256": "1c5166f9ca5da63de023f0c9e529ae750dfb7b647301bbb07d61b85a9fdfc498"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-cover.mjs",
+      "sha256": "7eaa6f8d8c104ab92f356b555aef6294bff2b77b30e356df0638b722c3e59fe4"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-feature-common.mjs",
+      "sha256": "9a964e08601a395b9d5b6f3db7421371a287a36487bc8018d2fa80dc9a9bcffe"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-features.mjs",
+      "sha256": "b5d8d043ce564e837583a05c4e16b15571bc2a37f3489f5a17ff069cb5eb3e27"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-geometry.mjs",
+      "sha256": "c80f36a4ed82142d8288c986b36b56702354834c4baf0d7986ac198e8b440628"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-limits.mjs",
+      "sha256": "7f421c6aa924ea4f78631ecaa4068e50efb33f8133bdd2e96a5ef690c7c24923"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-orders.mjs",
+      "sha256": "1a2e74684b50b2609b3059bf5675ea316a37024796bbb21fbff6955f34f20f83"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-routing-policy.mjs",
+      "sha256": "1ad709755b60928e56c8492edc104e9232b7d4ebffd583838cff4f61bb34f3aa"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-setup.mjs",
+      "sha256": "57cee4c9c8214b8737cbd864e35657f87187329c6eb205c30ff7ea6821aeebc5"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-targets.mjs",
+      "sha256": "b01c54586209ecbfa5bb9ea02aab1f4325efdf60272d7fe48b17658ec41e9927"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-worker-client.mjs",
+      "sha256": "749bf60a1c4ff4a4f10723b33de754143bd8fe39dfc106709d68ab30ae38ac86"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch-worker-runtime.mjs",
+      "sha256": "474240fad6d81ec735c6ab17e364b33fbf7bbd02e1a021518a083f3fc51e1bc3"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/batch.worker.mjs",
+      "sha256": "96e27df282df33929dd1820310abc8af6d7849731beb8e372d81564c8703482e"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/board.mjs",
+      "sha256": "7419f5a7d47c59088e049d61e9e5f4c6339bfd2ed945b49084c4c65dbe619507"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/chance-feature.mjs",
+      "sha256": "bcc1bb7e71363d8c4969e338d996f7796721aba1746bbf540d9d07f7052fd5af"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/compact-geometry.mjs",
+      "sha256": "f1e070eb78ca49ed715da6370162a8760c2ce4706f7cc3504b86d2bf8486b42c"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/cpsat-secondary-model.mjs",
+      "sha256": "5972578a5c2e20ab5886a94b3a7a113ddc7cd8b1442bb7a698f4e0cdafca2a49"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/exact-secondary-pool.mjs",
+      "sha256": "1e608e2c387963639103149874b4e52a41a41145451007c1a12842bf80c3caf7"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/exact-secondary.worker.mjs",
+      "sha256": "8c2c894461a68c9859622a5c9a6148f2e1e339f1823df7e478c2cc4de5bc1942"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/features.mjs",
+      "sha256": "dbe7459069657f781b323e8736293854409ab49dacbf4d3d5c1a54ba1cc7f22c"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/fifth-feature.mjs",
+      "sha256": "faaa7d84615f6843421432aad274ac1729091c4f3a4ca4c217259b73c91093cf"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/fifth.mjs",
+      "sha256": "0096136d0900c0c26a2471d338fc89ed7831805c0ab7b9471dc9cee56e45c126"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/filter-cover-pool.mjs",
+      "sha256": "8368cc81a94767de9abec9b0f9efa9b09799fa3b7ced5d23c0084828bd20f722"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/filter-cover-task.mjs",
+      "sha256": "3538c05cacfc1d536992f8be12424f1b7b3184a70f37f0dbc3e7e14cc5468ab8"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/filter-cover.worker.mjs",
+      "sha256": "91b2f5b58cccac3b3866d492d1195a27d01e0d42fbcd547c2aff14b473cd3092"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/fourth.mjs",
+      "sha256": "77fa742bf6be9b21e76d4bb690665adbaefed8110e4504be761f04d262f23d9b"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/fumen.mjs",
+      "sha256": "9217985c6b4705b44519943e2993fcdc276328f3993fc161661a474eeecb594f"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/highs-cardinality.mjs",
+      "sha256": "0b7394d753aa30febf39d4c8c409d0005e59f1c85e5e2770a101a1efa5fe379f"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/highs-min-cover.mjs",
+      "sha256": "dbf26bc4453356e5a694cad72f86b43177b61555ca79c3a09a003a5bf62a308d"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/human-ranking.mjs",
+      "sha256": "75aef33643797f5a92e87af7a563e254aa596b6c161ebfef40cd15ea953dde1a"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/min-cover-adaptive.mjs",
+      "sha256": "fda92e1fe0abc0b97b7fbdb4185ca0f5e0b4f7457630960b85ce06ad1f3ca118"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/min-cover-components.mjs",
+      "sha256": "bdde6f724fc0f028587832ac7f7f0cdbdc45c4ab1d665a7495186aa8f58343f5"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/min-cover-exact-secondary.mjs",
+      "sha256": "0781e8736d7b9d3b190884bed47e54e98365d72841df3792a92b7b95f13d4f5a"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/min-cover-quality-refine.mjs",
+      "sha256": "34ef8d5f80f1cbf48c35e67edb638c954c14326cf73a5d6f5fc64ba29328be4d"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/min-cover-rounded-cuts.mjs",
+      "sha256": "a475dd7fd97333f1e0a28f2c13168e796bb3a95cf033e0d2aa06af492be5ca26"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/min-cover-routing.mjs",
+      "sha256": "3a302676fdf7ff91637ebb8eb6e8a0428fe9a7380c267841a390a8290f70a89d"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/min-cover-secondary-portfolio.mjs",
+      "sha256": "ef29f5e218051bb9019e4a0ecb2f2d77b1ac9114bb035727675e8b06ab064ff7"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/min-cover-three-engine.mjs",
+      "sha256": "e250f5ae87b4e803a87d1dcbf03142b82fd942412532b4e813ad376adcafd4b1"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/min-cover.mjs",
+      "sha256": "e8105860ae8496cef529acddb9f818f9c0a7182c7a8f98fafd2a8bc65474dbdf"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/minimal-order.mjs",
+      "sha256": "5d76a5081b99c4e54b917f16c68e0c6898f7a3203a6b65cbec950cc7398c351a"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/minimals-compact.mjs",
+      "sha256": "9406dd9aa536badfa37a0d976264f571761f375dc0e916ca9ef80fdeb75d453b"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/minimals-feature.mjs",
+      "sha256": "b9f802940d45d6595ed3e880a073dea887bd9479c80fecfd68db7906fde28937"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/minimals-wrapper.mjs",
+      "sha256": "40f5c14d273b97ded666ed95b31d9d67d32add897fecc0ea164b35da6ab25c50"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/numeric-cover-data.mjs",
+      "sha256": "8f219c4b1fa72c992134e66d4bab34ae1df3a8068fbd6115b89fc434b81c5e90"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/ortools-min-cover.mjs",
+      "sha256": "87f0312fe5b112b1e961b789990b6d0ec96b7872da82b19459041a41dbe198c6"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/ortools-primary-worker.mjs",
+      "sha256": "b97b68f340c1b6e6984905f197de6aa5f29ba89184302795e0b2291dda776fd7"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/path-core.mjs",
+      "sha256": "043efe65aa411c4cbc8e97b005e7487edb6e6fffb0424544fff39dc76fa3ef52"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/path-engine.mjs",
+      "sha256": "26c9119540a3168f1d6b091b2cc0deefea292921858e619e031c86613439ed0f"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/path-feature.mjs",
+      "sha256": "6a19ca88c69080bdf51a89083d74f70431d9957f361b0b72cc0b5fc50bd4696b"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pattern-prefix-source.mjs",
+      "sha256": "56f0c99415dd42ae63158334bd5b16c3b38608cc0f49cc0fd72e122d48905efc"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pattern.mjs",
+      "sha256": "ee5de43286f5d3c7a5968fcdad47b0ec89219497752d4e4a4d05019303eeb9d9"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pc-enumeration-engine.mjs",
+      "sha256": "f06c2c6f3277950a53a9f24f558fa0957822c64957eab2f9543cf365f1dcc007"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pc-input.mjs",
+      "sha256": "4b9b49a3d17e4c53579763e4326e04e3cdd536c62bb010f730af93e6cdb16b56"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pc-queue-utils.mjs",
+      "sha256": "187b5171b664a8aaab2299e1d94da0505a8561909a3da1948f2f8dc7e9bea508"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pc-routing-policy.mjs",
+      "sha256": "236b634ae0f9bab35a0bf201beab00be02353c8e3de66f3eef28aafc46a34ee4"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pc-solve.mjs",
+      "sha256": "17cc787867d824ddfdb4ee6d0905486f34d56ecba67db3c91cf2eb264f60ced8"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pc-tail-legal.mjs",
+      "sha256": "04e71fc3df4ba5babb49064f049d1dc8024586993e9badc79f098db520ef8bbc"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pc-wasm-abi.mjs",
+      "sha256": "c643c5de98bd299aac7f93341c58f77ff0b59da707b5d11b9047878f0e76a072"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pc-wasm-compat.mjs",
+      "sha256": "194eb9df0bb48c4422eeb7ea3703df8ee62bea43a53cc55165bb308fceaabaf8"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pc-wasm-cover-matrix.mjs",
+      "sha256": "1541471253cf3ea55e7059af63c8b4463691b1120ab8047b949e83169fb7776b"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pc-wasm-enumeration.mjs",
+      "sha256": "4248f1d8ac9eca996cf1b09799d07482c16b87e3069e20b3aa76073d0e00846e"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pc-wasm-min-cover.mjs",
+      "sha256": "39f34b78330bb089373a3bbb4e9af2079e376fd5f7e577d7c16da5192ee2e89b"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/pc.worker.mjs",
+      "sha256": "c507c704b497e91d9019c092403a88598fb235452b3b584a1d3ce363c8acc2c6"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/per-save-minimals-core.mjs",
+      "sha256": "a8562d2dde6b94b49bdfed362b76d7c63a3e2036fafbef72d0d5e63f2cd3bcf7"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/per-save-minimals-feature.mjs",
+      "sha256": "ae89d5c7a694365e16c71e332d1b833780c0837b758dbbf80931ec13d2f4365e"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/per-save-minimals.mjs",
+      "sha256": "78d45fd3729f453c30c6c0c6614c761f90c926b83e70528575670e309ddc0bbd"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/piece-order.mjs",
+      "sha256": "421911ffda44c0d7fc7f6729973dce77c5fbdd22789e3a69da55ee7744a12180"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/primary-backend.mjs",
+      "sha256": "666f2157237c02dd284d13a8306230dd785e5875811e434f41ddbf4f6c9924bd"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/promise-utils.mjs",
+      "sha256": "5957269c9621143603064e9bbf4cd9cdf962948b5a59e336beee47446cd86ffb"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/quality-contract.mjs",
+      "sha256": "bb2d4fe599f6a6106d481e5fd297812e8ff4c5dadb4fc6fbf9bef8c4316fda35"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/save-outcome-cache.mjs",
+      "sha256": "d4c4df13fe7c1bac480599f63982aaf8417670a94d3896f67d30cb8dfe1d838a"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/save-piece.mjs",
+      "sha256": "74713f60017c31bb04ed1c78710fb5754f7ce8c20d0048214377d5a811d50651"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/saves-feature.mjs",
+      "sha256": "aa5bf4020318286a2b9cb0f84c0cb65ec09a7fc59f5ae49cca02d59dd2a99821"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/saves.mjs",
+      "sha256": "5f39bba21bdcb67d6f150275c9ab0c4050a599897c5ce1a06204b08f556dcf2f"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/secondary-engine-runner.mjs",
+      "sha256": "973b9a39769b608791639cf5a0784af245f3cd85ab6e392f3b296dc26c0f9104"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/secondary-engine.worker.mjs",
+      "sha256": "6771b84455280082cb01c0c33805e0570a20931b22c294b5eca843fdd2e6e30c"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/tiling.mjs",
+      "sha256": "10cac5c0c53807a01ac0c8a26a113d03db5d3e2a1c03a1457845a46cf6da458a"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/vendor/highs.mjs",
+      "sha256": "c2eb1c846d3642eb066f48e3473c3c6443bfe0bbb4bb782691cd5864449c230b"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/vendor/ortools/browser/cp-sat.js",
+      "sha256": "49113758e249251cf1087443fbb63b7dadfdeff7f19b14e7d7319554e4758427"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/vendor/ortools/browser/runtime_loader.js",
+      "sha256": "47b3d77fb5f8121ffe0758ea210f0a7f811df15465f6617e93cce01fb643f688"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/vendor/ortools/browser/runtime_loader_core.js",
+      "sha256": "b34148e1548062068d7dead335d12bfc18ea03e95019590cead19d67dce60813"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/vendor/ortools/node/cp-sat.js",
+      "sha256": "8ed1333dd1c902c87a2c561d77df467f28dc66118c29a5107289e7c9bd83a5a0"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/vendor/ortools/node/runtime_loader.js",
+      "sha256": "f1c0c4011528eacc3581741f212aa3e1cb934c16519910a2192bcaed905f77e3"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/vendor/ortools/node-wasm/cp_sat_runtime_node.js",
+      "sha256": "53c1c552604384115049d9ab3e9b41ab230bd3d44aa2937ff099e7347589e6fe"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/vendor/ortools/node-wasm/cp_sat_runtime_node.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/vendor/ortools/wasm/cp_sat_runtime.js",
+      "sha256": "708dd156b9f2da75e93b37177c66ae8e2c83d72cbf0efb18a22210aa633c20e1"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/vendor/ortools/wasm/cp_sat_runtime.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/wasm-backend.mjs",
+      "sha256": "b45648591d411df098b2ef5c7538c0fb31854996734259647940e6ad13af658f"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/worker-client.mjs",
+      "sha256": "5dc2143728dcc7ff92d77eb4cbc9207b95e22669461422eaa2500761bfe1cb55"
+    },
+    {
+      "file": ".a0/four/runtime/M1/src/worker-runtime.mjs",
+      "sha256": "278e97cb15012dc72378d0b4e1a7b671ff336e9bf4f1d7a7a1bd9866b043e273"
+    },
+    {
+      "file": ".a0/four/runtime/M1/wasm/legal_boards_4.lgb",
+      "sha256": "4cb7cfca0003409908ab179c0b795d0aafa36d1dfb1aadec7a0e52fc2c3a649f"
+    },
+    {
+      "file": ".a0/four/runtime/M1/wasm/pc_wasm.wasm",
+      "sha256": "c3c9a8844148341db69a1216d348a09f857f9f3259d2d5b6a2ac0517cf654530"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-backend.mjs",
+      "sha256": "5eedaffd96edcd3994d17eddcb2ae01dddc98430a7a84401ea45bbd4467fb7ab"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-congruent-feature.mjs",
+      "sha256": "8b367ef161b91841f9a726b3b905d9334c0e0fec31c6dcb36ffdce9d26f8b19a"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-cover-count-feature.mjs",
+      "sha256": "073542c39f72c1c1fd042ea13dd76a116362d4b8aeb7849fc14314b67f44fbed"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-cover-feature.mjs",
+      "sha256": "e9598815b0e2358e997f6b607f7c8aba490ea1811d4809c798753a5d8f5fbb82"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-cover-percent-feature.mjs",
+      "sha256": "1c5166f9ca5da63de023f0c9e529ae750dfb7b647301bbb07d61b85a9fdfc498"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-cover.mjs",
+      "sha256": "7eaa6f8d8c104ab92f356b555aef6294bff2b77b30e356df0638b722c3e59fe4"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-feature-common.mjs",
+      "sha256": "9a964e08601a395b9d5b6f3db7421371a287a36487bc8018d2fa80dc9a9bcffe"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-features.mjs",
+      "sha256": "b5d8d043ce564e837583a05c4e16b15571bc2a37f3489f5a17ff069cb5eb3e27"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-geometry.mjs",
+      "sha256": "c80f36a4ed82142d8288c986b36b56702354834c4baf0d7986ac198e8b440628"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-limits.mjs",
+      "sha256": "7f421c6aa924ea4f78631ecaa4068e50efb33f8133bdd2e96a5ef690c7c24923"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-orders.mjs",
+      "sha256": "1a2e74684b50b2609b3059bf5675ea316a37024796bbb21fbff6955f34f20f83"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-routing-policy.mjs",
+      "sha256": "1ad709755b60928e56c8492edc104e9232b7d4ebffd583838cff4f61bb34f3aa"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-setup.mjs",
+      "sha256": "57cee4c9c8214b8737cbd864e35657f87187329c6eb205c30ff7ea6821aeebc5"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-targets.mjs",
+      "sha256": "b01c54586209ecbfa5bb9ea02aab1f4325efdf60272d7fe48b17658ec41e9927"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-worker-client.mjs",
+      "sha256": "749bf60a1c4ff4a4f10723b33de754143bd8fe39dfc106709d68ab30ae38ac86"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch-worker-runtime.mjs",
+      "sha256": "474240fad6d81ec735c6ab17e364b33fbf7bbd02e1a021518a083f3fc51e1bc3"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/batch.worker.mjs",
+      "sha256": "96e27df282df33929dd1820310abc8af6d7849731beb8e372d81564c8703482e"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/board.mjs",
+      "sha256": "7419f5a7d47c59088e049d61e9e5f4c6339bfd2ed945b49084c4c65dbe619507"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/chance-feature.mjs",
+      "sha256": "bcc1bb7e71363d8c4969e338d996f7796721aba1746bbf540d9d07f7052fd5af"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/compact-geometry.mjs",
+      "sha256": "f1e070eb78ca49ed715da6370162a8760c2ce4706f7cc3504b86d2bf8486b42c"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/cpsat-secondary-model.mjs",
+      "sha256": "5972578a5c2e20ab5886a94b3a7a113ddc7cd8b1442bb7a698f4e0cdafca2a49"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/exact-secondary-pool.mjs",
+      "sha256": "1e608e2c387963639103149874b4e52a41a41145451007c1a12842bf80c3caf7"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/exact-secondary.worker.mjs",
+      "sha256": "8c2c894461a68c9859622a5c9a6148f2e1e339f1823df7e478c2cc4de5bc1942"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/features.mjs",
+      "sha256": "dbe7459069657f781b323e8736293854409ab49dacbf4d3d5c1a54ba1cc7f22c"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/fifth-feature.mjs",
+      "sha256": "faaa7d84615f6843421432aad274ac1729091c4f3a4ca4c217259b73c91093cf"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/fifth.mjs",
+      "sha256": "0096136d0900c0c26a2471d338fc89ed7831805c0ab7b9471dc9cee56e45c126"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/filter-cover-pool.mjs",
+      "sha256": "8368cc81a94767de9abec9b0f9efa9b09799fa3b7ced5d23c0084828bd20f722"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/filter-cover-task.mjs",
+      "sha256": "3538c05cacfc1d536992f8be12424f1b7b3184a70f37f0dbc3e7e14cc5468ab8"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/filter-cover.worker.mjs",
+      "sha256": "91b2f5b58cccac3b3866d492d1195a27d01e0d42fbcd547c2aff14b473cd3092"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/fourth.mjs",
+      "sha256": "77fa742bf6be9b21e76d4bb690665adbaefed8110e4504be761f04d262f23d9b"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/fumen.mjs",
+      "sha256": "9217985c6b4705b44519943e2993fcdc276328f3993fc161661a474eeecb594f"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/highs-cardinality.mjs",
+      "sha256": "0b7394d753aa30febf39d4c8c409d0005e59f1c85e5e2770a101a1efa5fe379f"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/highs-min-cover.mjs",
+      "sha256": "dbf26bc4453356e5a694cad72f86b43177b61555ca79c3a09a003a5bf62a308d"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/human-ranking.mjs",
+      "sha256": "75aef33643797f5a92e87af7a563e254aa596b6c161ebfef40cd15ea953dde1a"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/min-cover-adaptive.mjs",
+      "sha256": "fda92e1fe0abc0b97b7fbdb4185ca0f5e0b4f7457630960b85ce06ad1f3ca118"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/min-cover-components.mjs",
+      "sha256": "bdde6f724fc0f028587832ac7f7f0cdbdc45c4ab1d665a7495186aa8f58343f5"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/min-cover-exact-secondary.mjs",
+      "sha256": "0781e8736d7b9d3b190884bed47e54e98365d72841df3792a92b7b95f13d4f5a"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/min-cover-quality-refine.mjs",
+      "sha256": "34ef8d5f80f1cbf48c35e67edb638c954c14326cf73a5d6f5fc64ba29328be4d"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/min-cover-rounded-cuts.mjs",
+      "sha256": "a475dd7fd97333f1e0a28f2c13168e796bb3a95cf033e0d2aa06af492be5ca26"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/min-cover-routing.mjs",
+      "sha256": "3a302676fdf7ff91637ebb8eb6e8a0428fe9a7380c267841a390a8290f70a89d"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/min-cover-secondary-portfolio.mjs",
+      "sha256": "ef29f5e218051bb9019e4a0ecb2f2d77b1ac9114bb035727675e8b06ab064ff7"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/min-cover-three-engine.mjs",
+      "sha256": "e250f5ae87b4e803a87d1dcbf03142b82fd942412532b4e813ad376adcafd4b1"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/min-cover.mjs",
+      "sha256": "e8105860ae8496cef529acddb9f818f9c0a7182c7a8f98fafd2a8bc65474dbdf"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/minimal-order.mjs",
+      "sha256": "5d76a5081b99c4e54b917f16c68e0c6898f7a3203a6b65cbec950cc7398c351a"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/minimals-compact.mjs",
+      "sha256": "9406dd9aa536badfa37a0d976264f571761f375dc0e916ca9ef80fdeb75d453b"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/minimals-feature.mjs",
+      "sha256": "b9f802940d45d6595ed3e880a073dea887bd9479c80fecfd68db7906fde28937"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/minimals-wrapper.mjs",
+      "sha256": "40f5c14d273b97ded666ed95b31d9d67d32add897fecc0ea164b35da6ab25c50"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/numeric-cover-data.mjs",
+      "sha256": "8f219c4b1fa72c992134e66d4bab34ae1df3a8068fbd6115b89fc434b81c5e90"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/ortools-min-cover.mjs",
+      "sha256": "87f0312fe5b112b1e961b789990b6d0ec96b7872da82b19459041a41dbe198c6"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/ortools-primary-worker.mjs",
+      "sha256": "b97b68f340c1b6e6984905f197de6aa5f29ba89184302795e0b2291dda776fd7"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/path-core.mjs",
+      "sha256": "043efe65aa411c4cbc8e97b005e7487edb6e6fffb0424544fff39dc76fa3ef52"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/path-engine.mjs",
+      "sha256": "26c9119540a3168f1d6b091b2cc0deefea292921858e619e031c86613439ed0f"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/path-feature.mjs",
+      "sha256": "6a19ca88c69080bdf51a89083d74f70431d9957f361b0b72cc0b5fc50bd4696b"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pattern-prefix-source.mjs",
+      "sha256": "56f0c99415dd42ae63158334bd5b16c3b38608cc0f49cc0fd72e122d48905efc"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pattern.mjs",
+      "sha256": "ee5de43286f5d3c7a5968fcdad47b0ec89219497752d4e4a4d05019303eeb9d9"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pc-enumeration-engine.mjs",
+      "sha256": "f06c2c6f3277950a53a9f24f558fa0957822c64957eab2f9543cf365f1dcc007"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pc-input.mjs",
+      "sha256": "4b9b49a3d17e4c53579763e4326e04e3cdd536c62bb010f730af93e6cdb16b56"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pc-queue-utils.mjs",
+      "sha256": "187b5171b664a8aaab2299e1d94da0505a8561909a3da1948f2f8dc7e9bea508"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pc-routing-policy.mjs",
+      "sha256": "236b634ae0f9bab35a0bf201beab00be02353c8e3de66f3eef28aafc46a34ee4"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pc-solve.mjs",
+      "sha256": "17cc787867d824ddfdb4ee6d0905486f34d56ecba67db3c91cf2eb264f60ced8"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pc-tail-legal.mjs",
+      "sha256": "04e71fc3df4ba5babb49064f049d1dc8024586993e9badc79f098db520ef8bbc"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pc-wasm-abi.mjs",
+      "sha256": "c643c5de98bd299aac7f93341c58f77ff0b59da707b5d11b9047878f0e76a072"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pc-wasm-compat.mjs",
+      "sha256": "194eb9df0bb48c4422eeb7ea3703df8ee62bea43a53cc55165bb308fceaabaf8"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pc-wasm-cover-matrix.mjs",
+      "sha256": "1541471253cf3ea55e7059af63c8b4463691b1120ab8047b949e83169fb7776b"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pc-wasm-enumeration.mjs",
+      "sha256": "4248f1d8ac9eca996cf1b09799d07482c16b87e3069e20b3aa76073d0e00846e"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pc-wasm-min-cover.mjs",
+      "sha256": "39f34b78330bb089373a3bbb4e9af2079e376fd5f7e577d7c16da5192ee2e89b"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/pc.worker.mjs",
+      "sha256": "c507c704b497e91d9019c092403a88598fb235452b3b584a1d3ce363c8acc2c6"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/per-save-minimals-core.mjs",
+      "sha256": "a8562d2dde6b94b49bdfed362b76d7c63a3e2036fafbef72d0d5e63f2cd3bcf7"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/per-save-minimals-feature.mjs",
+      "sha256": "ae89d5c7a694365e16c71e332d1b833780c0837b758dbbf80931ec13d2f4365e"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/per-save-minimals.mjs",
+      "sha256": "78d45fd3729f453c30c6c0c6614c761f90c926b83e70528575670e309ddc0bbd"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/piece-order.mjs",
+      "sha256": "421911ffda44c0d7fc7f6729973dce77c5fbdd22789e3a69da55ee7744a12180"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/primary-backend.mjs",
+      "sha256": "666f2157237c02dd284d13a8306230dd785e5875811e434f41ddbf4f6c9924bd"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/promise-utils.mjs",
+      "sha256": "5957269c9621143603064e9bbf4cd9cdf962948b5a59e336beee47446cd86ffb"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/quality-contract.mjs",
+      "sha256": "bb2d4fe599f6a6106d481e5fd297812e8ff4c5dadb4fc6fbf9bef8c4316fda35"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/save-outcome-cache.mjs",
+      "sha256": "d4c4df13fe7c1bac480599f63982aaf8417670a94d3896f67d30cb8dfe1d838a"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/save-piece.mjs",
+      "sha256": "74713f60017c31bb04ed1c78710fb5754f7ce8c20d0048214377d5a811d50651"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/saves-feature.mjs",
+      "sha256": "aa5bf4020318286a2b9cb0f84c0cb65ec09a7fc59f5ae49cca02d59dd2a99821"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/saves.mjs",
+      "sha256": "5f39bba21bdcb67d6f150275c9ab0c4050a599897c5ce1a06204b08f556dcf2f"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/secondary-engine-runner.mjs",
+      "sha256": "973b9a39769b608791639cf5a0784af245f3cd85ab6e392f3b296dc26c0f9104"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/secondary-engine.worker.mjs",
+      "sha256": "6771b84455280082cb01c0c33805e0570a20931b22c294b5eca843fdd2e6e30c"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/tiling.mjs",
+      "sha256": "10cac5c0c53807a01ac0c8a26a113d03db5d3e2a1c03a1457845a46cf6da458a"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/vendor/highs.mjs",
+      "sha256": "c2eb1c846d3642eb066f48e3473c3c6443bfe0bbb4bb782691cd5864449c230b"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/vendor/ortools/browser/cp-sat.js",
+      "sha256": "49113758e249251cf1087443fbb63b7dadfdeff7f19b14e7d7319554e4758427"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/vendor/ortools/browser/runtime_loader.js",
+      "sha256": "47b3d77fb5f8121ffe0758ea210f0a7f811df15465f6617e93cce01fb643f688"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/vendor/ortools/browser/runtime_loader_core.js",
+      "sha256": "b34148e1548062068d7dead335d12bfc18ea03e95019590cead19d67dce60813"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/vendor/ortools/node/cp-sat.js",
+      "sha256": "8ed1333dd1c902c87a2c561d77df467f28dc66118c29a5107289e7c9bd83a5a0"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/vendor/ortools/node/runtime_loader.js",
+      "sha256": "f1c0c4011528eacc3581741f212aa3e1cb934c16519910a2192bcaed905f77e3"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/vendor/ortools/node-wasm/cp_sat_runtime_node.js",
+      "sha256": "53c1c552604384115049d9ab3e9b41ab230bd3d44aa2937ff099e7347589e6fe"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/vendor/ortools/node-wasm/cp_sat_runtime_node.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/vendor/ortools/wasm/cp_sat_runtime.js",
+      "sha256": "708dd156b9f2da75e93b37177c66ae8e2c83d72cbf0efb18a22210aa633c20e1"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/vendor/ortools/wasm/cp_sat_runtime.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/wasm-backend.mjs",
+      "sha256": "b45648591d411df098b2ef5c7538c0fb31854996734259647940e6ad13af658f"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/worker-client.mjs",
+      "sha256": "5dc2143728dcc7ff92d77eb4cbc9207b95e22669461422eaa2500761bfe1cb55"
+    },
+    {
+      "file": ".a0/four/runtime/M2/src/worker-runtime.mjs",
+      "sha256": "278e97cb15012dc72378d0b4e1a7b671ff336e9bf4f1d7a7a1bd9866b043e273"
+    },
+    {
+      "file": ".a0/four/runtime/M2/wasm/legal_boards_4.lgb",
+      "sha256": "4cb7cfca0003409908ab179c0b795d0aafa36d1dfb1aadec7a0e52fc2c3a649f"
+    },
+    {
+      "file": ".a0/four/runtime/M2/wasm/pc_wasm.wasm",
+      "sha256": "40bd58ddc06b58f726e02de0365a2da2baf94b6f5b95f9220e7c3f9e250c8aa7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-backend.mjs",
+      "sha256": "5eedaffd96edcd3994d17eddcb2ae01dddc98430a7a84401ea45bbd4467fb7ab"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-congruent-feature.mjs",
+      "sha256": "8b367ef161b91841f9a726b3b905d9334c0e0fec31c6dcb36ffdce9d26f8b19a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-cover-count-feature.mjs",
+      "sha256": "073542c39f72c1c1fd042ea13dd76a116362d4b8aeb7849fc14314b67f44fbed"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-cover-feature.mjs",
+      "sha256": "e9598815b0e2358e997f6b607f7c8aba490ea1811d4809c798753a5d8f5fbb82"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-cover-percent-feature.mjs",
+      "sha256": "1c5166f9ca5da63de023f0c9e529ae750dfb7b647301bbb07d61b85a9fdfc498"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-cover.mjs",
+      "sha256": "7eaa6f8d8c104ab92f356b555aef6294bff2b77b30e356df0638b722c3e59fe4"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-feature-common.mjs",
+      "sha256": "9a964e08601a395b9d5b6f3db7421371a287a36487bc8018d2fa80dc9a9bcffe"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-features.mjs",
+      "sha256": "b5d8d043ce564e837583a05c4e16b15571bc2a37f3489f5a17ff069cb5eb3e27"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-geometry.mjs",
+      "sha256": "c80f36a4ed82142d8288c986b36b56702354834c4baf0d7986ac198e8b440628"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-limits.mjs",
+      "sha256": "7f421c6aa924ea4f78631ecaa4068e50efb33f8133bdd2e96a5ef690c7c24923"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-orders.mjs",
+      "sha256": "1a2e74684b50b2609b3059bf5675ea316a37024796bbb21fbff6955f34f20f83"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-routing-policy.mjs",
+      "sha256": "1ad709755b60928e56c8492edc104e9232b7d4ebffd583838cff4f61bb34f3aa"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-setup.mjs",
+      "sha256": "57cee4c9c8214b8737cbd864e35657f87187329c6eb205c30ff7ea6821aeebc5"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-targets.mjs",
+      "sha256": "b01c54586209ecbfa5bb9ea02aab1f4325efdf60272d7fe48b17658ec41e9927"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-worker-client.mjs",
+      "sha256": "749bf60a1c4ff4a4f10723b33de754143bd8fe39dfc106709d68ab30ae38ac86"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch-worker-runtime.mjs",
+      "sha256": "474240fad6d81ec735c6ab17e364b33fbf7bbd02e1a021518a083f3fc51e1bc3"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/batch.worker.mjs",
+      "sha256": "96e27df282df33929dd1820310abc8af6d7849731beb8e372d81564c8703482e"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/board.mjs",
+      "sha256": "7419f5a7d47c59088e049d61e9e5f4c6339bfd2ed945b49084c4c65dbe619507"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/chance-feature.mjs",
+      "sha256": "bcc1bb7e71363d8c4969e338d996f7796721aba1746bbf540d9d07f7052fd5af"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/compact-geometry.mjs",
+      "sha256": "f1e070eb78ca49ed715da6370162a8760c2ce4706f7cc3504b86d2bf8486b42c"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/cpsat-secondary-model.mjs",
+      "sha256": "5972578a5c2e20ab5886a94b3a7a113ddc7cd8b1442bb7a698f4e0cdafca2a49"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/exact-secondary-pool.mjs",
+      "sha256": "1e608e2c387963639103149874b4e52a41a41145451007c1a12842bf80c3caf7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/exact-secondary.worker.mjs",
+      "sha256": "8c2c894461a68c9859622a5c9a6148f2e1e339f1823df7e478c2cc4de5bc1942"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/features.mjs",
+      "sha256": "dbe7459069657f781b323e8736293854409ab49dacbf4d3d5c1a54ba1cc7f22c"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/fifth-feature.mjs",
+      "sha256": "faaa7d84615f6843421432aad274ac1729091c4f3a4ca4c217259b73c91093cf"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/fifth.mjs",
+      "sha256": "0096136d0900c0c26a2471d338fc89ed7831805c0ab7b9471dc9cee56e45c126"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/filter-cover-pool.mjs",
+      "sha256": "8368cc81a94767de9abec9b0f9efa9b09799fa3b7ced5d23c0084828bd20f722"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/filter-cover-task.mjs",
+      "sha256": "3538c05cacfc1d536992f8be12424f1b7b3184a70f37f0dbc3e7e14cc5468ab8"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/filter-cover.worker.mjs",
+      "sha256": "91b2f5b58cccac3b3866d492d1195a27d01e0d42fbcd547c2aff14b473cd3092"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/fourth.mjs",
+      "sha256": "77fa742bf6be9b21e76d4bb690665adbaefed8110e4504be761f04d262f23d9b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/fumen.mjs",
+      "sha256": "9217985c6b4705b44519943e2993fcdc276328f3993fc161661a474eeecb594f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/highs-cardinality.mjs",
+      "sha256": "0b7394d753aa30febf39d4c8c409d0005e59f1c85e5e2770a101a1efa5fe379f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/highs-min-cover.mjs",
+      "sha256": "dbf26bc4453356e5a694cad72f86b43177b61555ca79c3a09a003a5bf62a308d"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/human-ranking.mjs",
+      "sha256": "75aef33643797f5a92e87af7a563e254aa596b6c161ebfef40cd15ea953dde1a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/min-cover-adaptive.mjs",
+      "sha256": "fda92e1fe0abc0b97b7fbdb4185ca0f5e0b4f7457630960b85ce06ad1f3ca118"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/min-cover-components.mjs",
+      "sha256": "bdde6f724fc0f028587832ac7f7f0cdbdc45c4ab1d665a7495186aa8f58343f5"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/min-cover-exact-secondary.mjs",
+      "sha256": "ff3eaf3fd91b818a7eda9139fc32cfc7a6e99e63ee1986a03f91707052c719a3"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/min-cover-quality-refine.mjs",
+      "sha256": "34ef8d5f80f1cbf48c35e67edb638c954c14326cf73a5d6f5fc64ba29328be4d"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/min-cover-rounded-cuts.mjs",
+      "sha256": "a475dd7fd97333f1e0a28f2c13168e796bb3a95cf033e0d2aa06af492be5ca26"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/min-cover-routing.mjs",
+      "sha256": "3a302676fdf7ff91637ebb8eb6e8a0428fe9a7380c267841a390a8290f70a89d"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/min-cover-secondary-portfolio.mjs",
+      "sha256": "ef29f5e218051bb9019e4a0ecb2f2d77b1ac9114bb035727675e8b06ab064ff7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/min-cover-three-engine.mjs",
+      "sha256": "e250f5ae87b4e803a87d1dcbf03142b82fd942412532b4e813ad376adcafd4b1"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/min-cover.mjs",
+      "sha256": "e8105860ae8496cef529acddb9f818f9c0a7182c7a8f98fafd2a8bc65474dbdf"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/minimal-order.mjs",
+      "sha256": "5d76a5081b99c4e54b917f16c68e0c6898f7a3203a6b65cbec950cc7398c351a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/minimals-compact.mjs",
+      "sha256": "9406dd9aa536badfa37a0d976264f571761f375dc0e916ca9ef80fdeb75d453b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/minimals-feature.mjs",
+      "sha256": "b9f802940d45d6595ed3e880a073dea887bd9479c80fecfd68db7906fde28937"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/minimals-wrapper.mjs",
+      "sha256": "40f5c14d273b97ded666ed95b31d9d67d32add897fecc0ea164b35da6ab25c50"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/numeric-cover-data.mjs",
+      "sha256": "8f219c4b1fa72c992134e66d4bab34ae1df3a8068fbd6115b89fc434b81c5e90"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/ortools-min-cover.mjs",
+      "sha256": "87f0312fe5b112b1e961b789990b6d0ec96b7872da82b19459041a41dbe198c6"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/ortools-primary-worker.mjs",
+      "sha256": "b97b68f340c1b6e6984905f197de6aa5f29ba89184302795e0b2291dda776fd7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/path-core.mjs",
+      "sha256": "043efe65aa411c4cbc8e97b005e7487edb6e6fffb0424544fff39dc76fa3ef52"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/path-engine.mjs",
+      "sha256": "26c9119540a3168f1d6b091b2cc0deefea292921858e619e031c86613439ed0f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/path-feature.mjs",
+      "sha256": "6a19ca88c69080bdf51a89083d74f70431d9957f361b0b72cc0b5fc50bd4696b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pattern-prefix-source.mjs",
+      "sha256": "56f0c99415dd42ae63158334bd5b16c3b38608cc0f49cc0fd72e122d48905efc"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pattern.mjs",
+      "sha256": "ee5de43286f5d3c7a5968fcdad47b0ec89219497752d4e4a4d05019303eeb9d9"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pc-enumeration-engine.mjs",
+      "sha256": "f06c2c6f3277950a53a9f24f558fa0957822c64957eab2f9543cf365f1dcc007"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pc-input.mjs",
+      "sha256": "4b9b49a3d17e4c53579763e4326e04e3cdd536c62bb010f730af93e6cdb16b56"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pc-queue-utils.mjs",
+      "sha256": "187b5171b664a8aaab2299e1d94da0505a8561909a3da1948f2f8dc7e9bea508"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pc-routing-policy.mjs",
+      "sha256": "236b634ae0f9bab35a0bf201beab00be02353c8e3de66f3eef28aafc46a34ee4"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pc-solve.mjs",
+      "sha256": "17cc787867d824ddfdb4ee6d0905486f34d56ecba67db3c91cf2eb264f60ced8"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pc-tail-legal.mjs",
+      "sha256": "04e71fc3df4ba5babb49064f049d1dc8024586993e9badc79f098db520ef8bbc"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pc-wasm-abi.mjs",
+      "sha256": "c643c5de98bd299aac7f93341c58f77ff0b59da707b5d11b9047878f0e76a072"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pc-wasm-compat.mjs",
+      "sha256": "194eb9df0bb48c4422eeb7ea3703df8ee62bea43a53cc55165bb308fceaabaf8"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pc-wasm-cover-matrix.mjs",
+      "sha256": "1541471253cf3ea55e7059af63c8b4463691b1120ab8047b949e83169fb7776b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pc-wasm-enumeration.mjs",
+      "sha256": "4248f1d8ac9eca996cf1b09799d07482c16b87e3069e20b3aa76073d0e00846e"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pc-wasm-min-cover.mjs",
+      "sha256": "39f34b78330bb089373a3bbb4e9af2079e376fd5f7e577d7c16da5192ee2e89b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/pc.worker.mjs",
+      "sha256": "c507c704b497e91d9019c092403a88598fb235452b3b584a1d3ce363c8acc2c6"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/per-save-minimals-core.mjs",
+      "sha256": "a8562d2dde6b94b49bdfed362b76d7c63a3e2036fafbef72d0d5e63f2cd3bcf7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/per-save-minimals-feature.mjs",
+      "sha256": "ae89d5c7a694365e16c71e332d1b833780c0837b758dbbf80931ec13d2f4365e"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/per-save-minimals.mjs",
+      "sha256": "78d45fd3729f453c30c6c0c6614c761f90c926b83e70528575670e309ddc0bbd"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/piece-order.mjs",
+      "sha256": "421911ffda44c0d7fc7f6729973dce77c5fbdd22789e3a69da55ee7744a12180"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/primary-backend.mjs",
+      "sha256": "666f2157237c02dd284d13a8306230dd785e5875811e434f41ddbf4f6c9924bd"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/promise-utils.mjs",
+      "sha256": "5957269c9621143603064e9bbf4cd9cdf962948b5a59e336beee47446cd86ffb"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/quality-contract.mjs",
+      "sha256": "bb2d4fe599f6a6106d481e5fd297812e8ff4c5dadb4fc6fbf9bef8c4316fda35"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/save-outcome-cache.mjs",
+      "sha256": "d4c4df13fe7c1bac480599f63982aaf8417670a94d3896f67d30cb8dfe1d838a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/save-piece.mjs",
+      "sha256": "74713f60017c31bb04ed1c78710fb5754f7ce8c20d0048214377d5a811d50651"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/saves-feature.mjs",
+      "sha256": "aa5bf4020318286a2b9cb0f84c0cb65ec09a7fc59f5ae49cca02d59dd2a99821"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/saves.mjs",
+      "sha256": "5f39bba21bdcb67d6f150275c9ab0c4050a599897c5ce1a06204b08f556dcf2f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/secondary-engine-runner.mjs",
+      "sha256": "973b9a39769b608791639cf5a0784af245f3cd85ab6e392f3b296dc26c0f9104"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/secondary-engine.worker.mjs",
+      "sha256": "6771b84455280082cb01c0c33805e0570a20931b22c294b5eca843fdd2e6e30c"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/tiling.mjs",
+      "sha256": "10cac5c0c53807a01ac0c8a26a113d03db5d3e2a1c03a1457845a46cf6da458a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/vendor/highs.mjs",
+      "sha256": "c2eb1c846d3642eb066f48e3473c3c6443bfe0bbb4bb782691cd5864449c230b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/vendor/ortools/browser/cp-sat.js",
+      "sha256": "49113758e249251cf1087443fbb63b7dadfdeff7f19b14e7d7319554e4758427"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/vendor/ortools/browser/runtime_loader.js",
+      "sha256": "47b3d77fb5f8121ffe0758ea210f0a7f811df15465f6617e93cce01fb643f688"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/vendor/ortools/browser/runtime_loader_core.js",
+      "sha256": "b34148e1548062068d7dead335d12bfc18ea03e95019590cead19d67dce60813"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/vendor/ortools/node/cp-sat.js",
+      "sha256": "8ed1333dd1c902c87a2c561d77df467f28dc66118c29a5107289e7c9bd83a5a0"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/vendor/ortools/node/runtime_loader.js",
+      "sha256": "f1c0c4011528eacc3581741f212aa3e1cb934c16519910a2192bcaed905f77e3"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/vendor/ortools/node-wasm/cp_sat_runtime_node.js",
+      "sha256": "53c1c552604384115049d9ab3e9b41ab230bd3d44aa2937ff099e7347589e6fe"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/vendor/ortools/node-wasm/cp_sat_runtime_node.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/vendor/ortools/wasm/cp_sat_runtime.js",
+      "sha256": "708dd156b9f2da75e93b37177c66ae8e2c83d72cbf0efb18a22210aa633c20e1"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/vendor/ortools/wasm/cp_sat_runtime.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/wasm-backend.mjs",
+      "sha256": "b45648591d411df098b2ef5c7538c0fb31854996734259647940e6ad13af658f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/worker-client.mjs",
+      "sha256": "5dc2143728dcc7ff92d77eb4cbc9207b95e22669461422eaa2500761bfe1cb55"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/src/worker-runtime.mjs",
+      "sha256": "278e97cb15012dc72378d0b4e1a7b671ff336e9bf4f1d7a7a1bd9866b043e273"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/wasm/legal_boards_4.lgb",
+      "sha256": "4cb7cfca0003409908ab179c0b795d0aafa36d1dfb1aadec7a0e52fc2c3a649f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/R/wasm/pc_wasm.wasm",
+      "sha256": "13ce51b1a61dc02b9317b2110213718b809596bf5c58d14fe9af3d84db860713"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-backend.mjs",
+      "sha256": "5eedaffd96edcd3994d17eddcb2ae01dddc98430a7a84401ea45bbd4467fb7ab"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-congruent-feature.mjs",
+      "sha256": "8b367ef161b91841f9a726b3b905d9334c0e0fec31c6dcb36ffdce9d26f8b19a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-cover-count-feature.mjs",
+      "sha256": "073542c39f72c1c1fd042ea13dd76a116362d4b8aeb7849fc14314b67f44fbed"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-cover-feature.mjs",
+      "sha256": "e9598815b0e2358e997f6b607f7c8aba490ea1811d4809c798753a5d8f5fbb82"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-cover-percent-feature.mjs",
+      "sha256": "1c5166f9ca5da63de023f0c9e529ae750dfb7b647301bbb07d61b85a9fdfc498"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-cover.mjs",
+      "sha256": "7eaa6f8d8c104ab92f356b555aef6294bff2b77b30e356df0638b722c3e59fe4"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-feature-common.mjs",
+      "sha256": "9a964e08601a395b9d5b6f3db7421371a287a36487bc8018d2fa80dc9a9bcffe"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-features.mjs",
+      "sha256": "b5d8d043ce564e837583a05c4e16b15571bc2a37f3489f5a17ff069cb5eb3e27"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-geometry.mjs",
+      "sha256": "c80f36a4ed82142d8288c986b36b56702354834c4baf0d7986ac198e8b440628"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-limits.mjs",
+      "sha256": "7f421c6aa924ea4f78631ecaa4068e50efb33f8133bdd2e96a5ef690c7c24923"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-orders.mjs",
+      "sha256": "1a2e74684b50b2609b3059bf5675ea316a37024796bbb21fbff6955f34f20f83"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-routing-policy.mjs",
+      "sha256": "1ad709755b60928e56c8492edc104e9232b7d4ebffd583838cff4f61bb34f3aa"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-setup.mjs",
+      "sha256": "57cee4c9c8214b8737cbd864e35657f87187329c6eb205c30ff7ea6821aeebc5"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-targets.mjs",
+      "sha256": "b01c54586209ecbfa5bb9ea02aab1f4325efdf60272d7fe48b17658ec41e9927"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-worker-client.mjs",
+      "sha256": "749bf60a1c4ff4a4f10723b33de754143bd8fe39dfc106709d68ab30ae38ac86"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch-worker-runtime.mjs",
+      "sha256": "474240fad6d81ec735c6ab17e364b33fbf7bbd02e1a021518a083f3fc51e1bc3"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/batch.worker.mjs",
+      "sha256": "96e27df282df33929dd1820310abc8af6d7849731beb8e372d81564c8703482e"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/board.mjs",
+      "sha256": "7419f5a7d47c59088e049d61e9e5f4c6339bfd2ed945b49084c4c65dbe619507"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/chance-feature.mjs",
+      "sha256": "bcc1bb7e71363d8c4969e338d996f7796721aba1746bbf540d9d07f7052fd5af"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/compact-geometry.mjs",
+      "sha256": "f1e070eb78ca49ed715da6370162a8760c2ce4706f7cc3504b86d2bf8486b42c"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/cpsat-secondary-model.mjs",
+      "sha256": "5972578a5c2e20ab5886a94b3a7a113ddc7cd8b1442bb7a698f4e0cdafca2a49"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/exact-secondary-pool.mjs",
+      "sha256": "1e608e2c387963639103149874b4e52a41a41145451007c1a12842bf80c3caf7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/exact-secondary.worker.mjs",
+      "sha256": "8c2c894461a68c9859622a5c9a6148f2e1e339f1823df7e478c2cc4de5bc1942"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/features.mjs",
+      "sha256": "dbe7459069657f781b323e8736293854409ab49dacbf4d3d5c1a54ba1cc7f22c"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/fifth-feature.mjs",
+      "sha256": "faaa7d84615f6843421432aad274ac1729091c4f3a4ca4c217259b73c91093cf"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/fifth.mjs",
+      "sha256": "0096136d0900c0c26a2471d338fc89ed7831805c0ab7b9471dc9cee56e45c126"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/filter-cover-pool.mjs",
+      "sha256": "8368cc81a94767de9abec9b0f9efa9b09799fa3b7ced5d23c0084828bd20f722"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/filter-cover-task.mjs",
+      "sha256": "3538c05cacfc1d536992f8be12424f1b7b3184a70f37f0dbc3e7e14cc5468ab8"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/filter-cover.worker.mjs",
+      "sha256": "91b2f5b58cccac3b3866d492d1195a27d01e0d42fbcd547c2aff14b473cd3092"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/fourth.mjs",
+      "sha256": "77fa742bf6be9b21e76d4bb690665adbaefed8110e4504be761f04d262f23d9b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/fumen.mjs",
+      "sha256": "9217985c6b4705b44519943e2993fcdc276328f3993fc161661a474eeecb594f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/highs-cardinality.mjs",
+      "sha256": "0b7394d753aa30febf39d4c8c409d0005e59f1c85e5e2770a101a1efa5fe379f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/highs-min-cover.mjs",
+      "sha256": "dbf26bc4453356e5a694cad72f86b43177b61555ca79c3a09a003a5bf62a308d"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/human-ranking.mjs",
+      "sha256": "75aef33643797f5a92e87af7a563e254aa596b6c161ebfef40cd15ea953dde1a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/min-cover-adaptive.mjs",
+      "sha256": "fda92e1fe0abc0b97b7fbdb4185ca0f5e0b4f7457630960b85ce06ad1f3ca118"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/min-cover-components.mjs",
+      "sha256": "bdde6f724fc0f028587832ac7f7f0cdbdc45c4ab1d665a7495186aa8f58343f5"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/min-cover-exact-secondary.mjs",
+      "sha256": "0781e8736d7b9d3b190884bed47e54e98365d72841df3792a92b7b95f13d4f5a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/min-cover-quality-refine.mjs",
+      "sha256": "34ef8d5f80f1cbf48c35e67edb638c954c14326cf73a5d6f5fc64ba29328be4d"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/min-cover-rounded-cuts.mjs",
+      "sha256": "a475dd7fd97333f1e0a28f2c13168e796bb3a95cf033e0d2aa06af492be5ca26"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/min-cover-routing.mjs",
+      "sha256": "3a302676fdf7ff91637ebb8eb6e8a0428fe9a7380c267841a390a8290f70a89d"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/min-cover-secondary-portfolio.mjs",
+      "sha256": "ef29f5e218051bb9019e4a0ecb2f2d77b1ac9114bb035727675e8b06ab064ff7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/min-cover-three-engine.mjs",
+      "sha256": "e250f5ae87b4e803a87d1dcbf03142b82fd942412532b4e813ad376adcafd4b1"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/min-cover.mjs",
+      "sha256": "e8105860ae8496cef529acddb9f818f9c0a7182c7a8f98fafd2a8bc65474dbdf"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/minimal-order.mjs",
+      "sha256": "5d76a5081b99c4e54b917f16c68e0c6898f7a3203a6b65cbec950cc7398c351a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/minimals-compact.mjs",
+      "sha256": "9406dd9aa536badfa37a0d976264f571761f375dc0e916ca9ef80fdeb75d453b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/minimals-feature.mjs",
+      "sha256": "b9f802940d45d6595ed3e880a073dea887bd9479c80fecfd68db7906fde28937"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/minimals-wrapper.mjs",
+      "sha256": "40f5c14d273b97ded666ed95b31d9d67d32add897fecc0ea164b35da6ab25c50"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/numeric-cover-data.mjs",
+      "sha256": "8f219c4b1fa72c992134e66d4bab34ae1df3a8068fbd6115b89fc434b81c5e90"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/ortools-min-cover.mjs",
+      "sha256": "87f0312fe5b112b1e961b789990b6d0ec96b7872da82b19459041a41dbe198c6"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/ortools-primary-worker.mjs",
+      "sha256": "b97b68f340c1b6e6984905f197de6aa5f29ba89184302795e0b2291dda776fd7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/path-core.mjs",
+      "sha256": "043efe65aa411c4cbc8e97b005e7487edb6e6fffb0424544fff39dc76fa3ef52"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/path-engine.mjs",
+      "sha256": "26c9119540a3168f1d6b091b2cc0deefea292921858e619e031c86613439ed0f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/path-feature.mjs",
+      "sha256": "6a19ca88c69080bdf51a89083d74f70431d9957f361b0b72cc0b5fc50bd4696b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pattern-prefix-source.mjs",
+      "sha256": "56f0c99415dd42ae63158334bd5b16c3b38608cc0f49cc0fd72e122d48905efc"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pattern.mjs",
+      "sha256": "ee5de43286f5d3c7a5968fcdad47b0ec89219497752d4e4a4d05019303eeb9d9"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pc-enumeration-engine.mjs",
+      "sha256": "f06c2c6f3277950a53a9f24f558fa0957822c64957eab2f9543cf365f1dcc007"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pc-input.mjs",
+      "sha256": "4b9b49a3d17e4c53579763e4326e04e3cdd536c62bb010f730af93e6cdb16b56"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pc-queue-utils.mjs",
+      "sha256": "187b5171b664a8aaab2299e1d94da0505a8561909a3da1948f2f8dc7e9bea508"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pc-routing-policy.mjs",
+      "sha256": "236b634ae0f9bab35a0bf201beab00be02353c8e3de66f3eef28aafc46a34ee4"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pc-solve.mjs",
+      "sha256": "17cc787867d824ddfdb4ee6d0905486f34d56ecba67db3c91cf2eb264f60ced8"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pc-tail-legal.mjs",
+      "sha256": "04e71fc3df4ba5babb49064f049d1dc8024586993e9badc79f098db520ef8bbc"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pc-wasm-abi.mjs",
+      "sha256": "c643c5de98bd299aac7f93341c58f77ff0b59da707b5d11b9047878f0e76a072"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pc-wasm-compat.mjs",
+      "sha256": "194eb9df0bb48c4422eeb7ea3703df8ee62bea43a53cc55165bb308fceaabaf8"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pc-wasm-cover-matrix.mjs",
+      "sha256": "1541471253cf3ea55e7059af63c8b4463691b1120ab8047b949e83169fb7776b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pc-wasm-enumeration.mjs",
+      "sha256": "4248f1d8ac9eca996cf1b09799d07482c16b87e3069e20b3aa76073d0e00846e"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pc-wasm-min-cover.mjs",
+      "sha256": "39f34b78330bb089373a3bbb4e9af2079e376fd5f7e577d7c16da5192ee2e89b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/pc.worker.mjs",
+      "sha256": "c507c704b497e91d9019c092403a88598fb235452b3b584a1d3ce363c8acc2c6"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/per-save-minimals-core.mjs",
+      "sha256": "a8562d2dde6b94b49bdfed362b76d7c63a3e2036fafbef72d0d5e63f2cd3bcf7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/per-save-minimals-feature.mjs",
+      "sha256": "ae89d5c7a694365e16c71e332d1b833780c0837b758dbbf80931ec13d2f4365e"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/per-save-minimals.mjs",
+      "sha256": "78d45fd3729f453c30c6c0c6614c761f90c926b83e70528575670e309ddc0bbd"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/piece-order.mjs",
+      "sha256": "421911ffda44c0d7fc7f6729973dce77c5fbdd22789e3a69da55ee7744a12180"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/primary-backend.mjs",
+      "sha256": "666f2157237c02dd284d13a8306230dd785e5875811e434f41ddbf4f6c9924bd"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/promise-utils.mjs",
+      "sha256": "5957269c9621143603064e9bbf4cd9cdf962948b5a59e336beee47446cd86ffb"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/quality-contract.mjs",
+      "sha256": "bb2d4fe599f6a6106d481e5fd297812e8ff4c5dadb4fc6fbf9bef8c4316fda35"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/save-outcome-cache.mjs",
+      "sha256": "d4c4df13fe7c1bac480599f63982aaf8417670a94d3896f67d30cb8dfe1d838a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/save-piece.mjs",
+      "sha256": "74713f60017c31bb04ed1c78710fb5754f7ce8c20d0048214377d5a811d50651"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/saves-feature.mjs",
+      "sha256": "aa5bf4020318286a2b9cb0f84c0cb65ec09a7fc59f5ae49cca02d59dd2a99821"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/saves.mjs",
+      "sha256": "5f39bba21bdcb67d6f150275c9ab0c4050a599897c5ce1a06204b08f556dcf2f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/secondary-engine-runner.mjs",
+      "sha256": "973b9a39769b608791639cf5a0784af245f3cd85ab6e392f3b296dc26c0f9104"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/secondary-engine.worker.mjs",
+      "sha256": "6771b84455280082cb01c0c33805e0570a20931b22c294b5eca843fdd2e6e30c"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/tiling.mjs",
+      "sha256": "10cac5c0c53807a01ac0c8a26a113d03db5d3e2a1c03a1457845a46cf6da458a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/vendor/highs.mjs",
+      "sha256": "c2eb1c846d3642eb066f48e3473c3c6443bfe0bbb4bb782691cd5864449c230b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/vendor/ortools/browser/cp-sat.js",
+      "sha256": "49113758e249251cf1087443fbb63b7dadfdeff7f19b14e7d7319554e4758427"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/vendor/ortools/browser/runtime_loader.js",
+      "sha256": "47b3d77fb5f8121ffe0758ea210f0a7f811df15465f6617e93cce01fb643f688"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/vendor/ortools/browser/runtime_loader_core.js",
+      "sha256": "b34148e1548062068d7dead335d12bfc18ea03e95019590cead19d67dce60813"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/vendor/ortools/node/cp-sat.js",
+      "sha256": "8ed1333dd1c902c87a2c561d77df467f28dc66118c29a5107289e7c9bd83a5a0"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/vendor/ortools/node/runtime_loader.js",
+      "sha256": "f1c0c4011528eacc3581741f212aa3e1cb934c16519910a2192bcaed905f77e3"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/vendor/ortools/node-wasm/cp_sat_runtime_node.js",
+      "sha256": "53c1c552604384115049d9ab3e9b41ab230bd3d44aa2937ff099e7347589e6fe"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/vendor/ortools/node-wasm/cp_sat_runtime_node.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/vendor/ortools/wasm/cp_sat_runtime.js",
+      "sha256": "708dd156b9f2da75e93b37177c66ae8e2c83d72cbf0efb18a22210aa633c20e1"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/vendor/ortools/wasm/cp_sat_runtime.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/wasm-backend.mjs",
+      "sha256": "b45648591d411df098b2ef5c7538c0fb31854996734259647940e6ad13af658f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/worker-client.mjs",
+      "sha256": "5dc2143728dcc7ff92d77eb4cbc9207b95e22669461422eaa2500761bfe1cb55"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/src/worker-runtime.mjs",
+      "sha256": "278e97cb15012dc72378d0b4e1a7b671ff336e9bf4f1d7a7a1bd9866b043e273"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/wasm/legal_boards_4.lgb",
+      "sha256": "4cb7cfca0003409908ab179c0b795d0aafa36d1dfb1aadec7a0e52fc2c3a649f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/A0/wasm/pc_wasm.wasm",
+      "sha256": "13ce51b1a61dc02b9317b2110213718b809596bf5c58d14fe9af3d84db860713"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-backend.mjs",
+      "sha256": "5eedaffd96edcd3994d17eddcb2ae01dddc98430a7a84401ea45bbd4467fb7ab"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-congruent-feature.mjs",
+      "sha256": "8b367ef161b91841f9a726b3b905d9334c0e0fec31c6dcb36ffdce9d26f8b19a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-cover-count-feature.mjs",
+      "sha256": "073542c39f72c1c1fd042ea13dd76a116362d4b8aeb7849fc14314b67f44fbed"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-cover-feature.mjs",
+      "sha256": "e9598815b0e2358e997f6b607f7c8aba490ea1811d4809c798753a5d8f5fbb82"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-cover-percent-feature.mjs",
+      "sha256": "1c5166f9ca5da63de023f0c9e529ae750dfb7b647301bbb07d61b85a9fdfc498"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-cover.mjs",
+      "sha256": "7eaa6f8d8c104ab92f356b555aef6294bff2b77b30e356df0638b722c3e59fe4"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-feature-common.mjs",
+      "sha256": "9a964e08601a395b9d5b6f3db7421371a287a36487bc8018d2fa80dc9a9bcffe"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-features.mjs",
+      "sha256": "b5d8d043ce564e837583a05c4e16b15571bc2a37f3489f5a17ff069cb5eb3e27"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-geometry.mjs",
+      "sha256": "c80f36a4ed82142d8288c986b36b56702354834c4baf0d7986ac198e8b440628"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-limits.mjs",
+      "sha256": "7f421c6aa924ea4f78631ecaa4068e50efb33f8133bdd2e96a5ef690c7c24923"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-orders.mjs",
+      "sha256": "1a2e74684b50b2609b3059bf5675ea316a37024796bbb21fbff6955f34f20f83"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-routing-policy.mjs",
+      "sha256": "1ad709755b60928e56c8492edc104e9232b7d4ebffd583838cff4f61bb34f3aa"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-setup.mjs",
+      "sha256": "57cee4c9c8214b8737cbd864e35657f87187329c6eb205c30ff7ea6821aeebc5"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-targets.mjs",
+      "sha256": "b01c54586209ecbfa5bb9ea02aab1f4325efdf60272d7fe48b17658ec41e9927"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-worker-client.mjs",
+      "sha256": "749bf60a1c4ff4a4f10723b33de754143bd8fe39dfc106709d68ab30ae38ac86"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch-worker-runtime.mjs",
+      "sha256": "474240fad6d81ec735c6ab17e364b33fbf7bbd02e1a021518a083f3fc51e1bc3"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/batch.worker.mjs",
+      "sha256": "96e27df282df33929dd1820310abc8af6d7849731beb8e372d81564c8703482e"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/board.mjs",
+      "sha256": "7419f5a7d47c59088e049d61e9e5f4c6339bfd2ed945b49084c4c65dbe619507"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/chance-feature.mjs",
+      "sha256": "bcc1bb7e71363d8c4969e338d996f7796721aba1746bbf540d9d07f7052fd5af"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/compact-geometry.mjs",
+      "sha256": "f1e070eb78ca49ed715da6370162a8760c2ce4706f7cc3504b86d2bf8486b42c"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/cpsat-secondary-model.mjs",
+      "sha256": "5972578a5c2e20ab5886a94b3a7a113ddc7cd8b1442bb7a698f4e0cdafca2a49"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/exact-secondary-pool.mjs",
+      "sha256": "1e608e2c387963639103149874b4e52a41a41145451007c1a12842bf80c3caf7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/exact-secondary.worker.mjs",
+      "sha256": "8c2c894461a68c9859622a5c9a6148f2e1e339f1823df7e478c2cc4de5bc1942"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/features.mjs",
+      "sha256": "dbe7459069657f781b323e8736293854409ab49dacbf4d3d5c1a54ba1cc7f22c"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/fifth-feature.mjs",
+      "sha256": "faaa7d84615f6843421432aad274ac1729091c4f3a4ca4c217259b73c91093cf"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/fifth.mjs",
+      "sha256": "0096136d0900c0c26a2471d338fc89ed7831805c0ab7b9471dc9cee56e45c126"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/filter-cover-pool.mjs",
+      "sha256": "8368cc81a94767de9abec9b0f9efa9b09799fa3b7ced5d23c0084828bd20f722"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/filter-cover-task.mjs",
+      "sha256": "3538c05cacfc1d536992f8be12424f1b7b3184a70f37f0dbc3e7e14cc5468ab8"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/filter-cover.worker.mjs",
+      "sha256": "91b2f5b58cccac3b3866d492d1195a27d01e0d42fbcd547c2aff14b473cd3092"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/fourth.mjs",
+      "sha256": "77fa742bf6be9b21e76d4bb690665adbaefed8110e4504be761f04d262f23d9b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/fumen.mjs",
+      "sha256": "9217985c6b4705b44519943e2993fcdc276328f3993fc161661a474eeecb594f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/highs-cardinality.mjs",
+      "sha256": "0b7394d753aa30febf39d4c8c409d0005e59f1c85e5e2770a101a1efa5fe379f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/highs-min-cover.mjs",
+      "sha256": "dbf26bc4453356e5a694cad72f86b43177b61555ca79c3a09a003a5bf62a308d"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/human-ranking.mjs",
+      "sha256": "75aef33643797f5a92e87af7a563e254aa596b6c161ebfef40cd15ea953dde1a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/min-cover-adaptive.mjs",
+      "sha256": "fda92e1fe0abc0b97b7fbdb4185ca0f5e0b4f7457630960b85ce06ad1f3ca118"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/min-cover-components.mjs",
+      "sha256": "bdde6f724fc0f028587832ac7f7f0cdbdc45c4ab1d665a7495186aa8f58343f5"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/min-cover-exact-secondary.mjs",
+      "sha256": "0781e8736d7b9d3b190884bed47e54e98365d72841df3792a92b7b95f13d4f5a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/min-cover-quality-refine.mjs",
+      "sha256": "34ef8d5f80f1cbf48c35e67edb638c954c14326cf73a5d6f5fc64ba29328be4d"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/min-cover-rounded-cuts.mjs",
+      "sha256": "a475dd7fd97333f1e0a28f2c13168e796bb3a95cf033e0d2aa06af492be5ca26"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/min-cover-routing.mjs",
+      "sha256": "3a302676fdf7ff91637ebb8eb6e8a0428fe9a7380c267841a390a8290f70a89d"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/min-cover-secondary-portfolio.mjs",
+      "sha256": "ef29f5e218051bb9019e4a0ecb2f2d77b1ac9114bb035727675e8b06ab064ff7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/min-cover-three-engine.mjs",
+      "sha256": "e250f5ae87b4e803a87d1dcbf03142b82fd942412532b4e813ad376adcafd4b1"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/min-cover.mjs",
+      "sha256": "e8105860ae8496cef529acddb9f818f9c0a7182c7a8f98fafd2a8bc65474dbdf"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/minimal-order.mjs",
+      "sha256": "5d76a5081b99c4e54b917f16c68e0c6898f7a3203a6b65cbec950cc7398c351a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/minimals-compact.mjs",
+      "sha256": "9406dd9aa536badfa37a0d976264f571761f375dc0e916ca9ef80fdeb75d453b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/minimals-feature.mjs",
+      "sha256": "b9f802940d45d6595ed3e880a073dea887bd9479c80fecfd68db7906fde28937"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/minimals-wrapper.mjs",
+      "sha256": "40f5c14d273b97ded666ed95b31d9d67d32add897fecc0ea164b35da6ab25c50"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/numeric-cover-data.mjs",
+      "sha256": "8f219c4b1fa72c992134e66d4bab34ae1df3a8068fbd6115b89fc434b81c5e90"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/ortools-min-cover.mjs",
+      "sha256": "87f0312fe5b112b1e961b789990b6d0ec96b7872da82b19459041a41dbe198c6"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/ortools-primary-worker.mjs",
+      "sha256": "b97b68f340c1b6e6984905f197de6aa5f29ba89184302795e0b2291dda776fd7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/path-core.mjs",
+      "sha256": "043efe65aa411c4cbc8e97b005e7487edb6e6fffb0424544fff39dc76fa3ef52"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/path-engine.mjs",
+      "sha256": "26c9119540a3168f1d6b091b2cc0deefea292921858e619e031c86613439ed0f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/path-feature.mjs",
+      "sha256": "6a19ca88c69080bdf51a89083d74f70431d9957f361b0b72cc0b5fc50bd4696b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pattern-prefix-source.mjs",
+      "sha256": "56f0c99415dd42ae63158334bd5b16c3b38608cc0f49cc0fd72e122d48905efc"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pattern.mjs",
+      "sha256": "ee5de43286f5d3c7a5968fcdad47b0ec89219497752d4e4a4d05019303eeb9d9"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pc-enumeration-engine.mjs",
+      "sha256": "f06c2c6f3277950a53a9f24f558fa0957822c64957eab2f9543cf365f1dcc007"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pc-input.mjs",
+      "sha256": "4b9b49a3d17e4c53579763e4326e04e3cdd536c62bb010f730af93e6cdb16b56"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pc-queue-utils.mjs",
+      "sha256": "187b5171b664a8aaab2299e1d94da0505a8561909a3da1948f2f8dc7e9bea508"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pc-routing-policy.mjs",
+      "sha256": "236b634ae0f9bab35a0bf201beab00be02353c8e3de66f3eef28aafc46a34ee4"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pc-solve.mjs",
+      "sha256": "17cc787867d824ddfdb4ee6d0905486f34d56ecba67db3c91cf2eb264f60ced8"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pc-tail-legal.mjs",
+      "sha256": "04e71fc3df4ba5babb49064f049d1dc8024586993e9badc79f098db520ef8bbc"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pc-wasm-abi.mjs",
+      "sha256": "c643c5de98bd299aac7f93341c58f77ff0b59da707b5d11b9047878f0e76a072"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pc-wasm-compat.mjs",
+      "sha256": "194eb9df0bb48c4422eeb7ea3703df8ee62bea43a53cc55165bb308fceaabaf8"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pc-wasm-cover-matrix.mjs",
+      "sha256": "1541471253cf3ea55e7059af63c8b4463691b1120ab8047b949e83169fb7776b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pc-wasm-enumeration.mjs",
+      "sha256": "4248f1d8ac9eca996cf1b09799d07482c16b87e3069e20b3aa76073d0e00846e"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pc-wasm-min-cover.mjs",
+      "sha256": "39f34b78330bb089373a3bbb4e9af2079e376fd5f7e577d7c16da5192ee2e89b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/pc.worker.mjs",
+      "sha256": "c507c704b497e91d9019c092403a88598fb235452b3b584a1d3ce363c8acc2c6"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/per-save-minimals-core.mjs",
+      "sha256": "a8562d2dde6b94b49bdfed362b76d7c63a3e2036fafbef72d0d5e63f2cd3bcf7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/per-save-minimals-feature.mjs",
+      "sha256": "ae89d5c7a694365e16c71e332d1b833780c0837b758dbbf80931ec13d2f4365e"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/per-save-minimals.mjs",
+      "sha256": "78d45fd3729f453c30c6c0c6614c761f90c926b83e70528575670e309ddc0bbd"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/piece-order.mjs",
+      "sha256": "421911ffda44c0d7fc7f6729973dce77c5fbdd22789e3a69da55ee7744a12180"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/primary-backend.mjs",
+      "sha256": "666f2157237c02dd284d13a8306230dd785e5875811e434f41ddbf4f6c9924bd"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/promise-utils.mjs",
+      "sha256": "5957269c9621143603064e9bbf4cd9cdf962948b5a59e336beee47446cd86ffb"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/quality-contract.mjs",
+      "sha256": "bb2d4fe599f6a6106d481e5fd297812e8ff4c5dadb4fc6fbf9bef8c4316fda35"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/save-outcome-cache.mjs",
+      "sha256": "d4c4df13fe7c1bac480599f63982aaf8417670a94d3896f67d30cb8dfe1d838a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/save-piece.mjs",
+      "sha256": "74713f60017c31bb04ed1c78710fb5754f7ce8c20d0048214377d5a811d50651"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/saves-feature.mjs",
+      "sha256": "aa5bf4020318286a2b9cb0f84c0cb65ec09a7fc59f5ae49cca02d59dd2a99821"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/saves.mjs",
+      "sha256": "5f39bba21bdcb67d6f150275c9ab0c4050a599897c5ce1a06204b08f556dcf2f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/secondary-engine-runner.mjs",
+      "sha256": "973b9a39769b608791639cf5a0784af245f3cd85ab6e392f3b296dc26c0f9104"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/secondary-engine.worker.mjs",
+      "sha256": "6771b84455280082cb01c0c33805e0570a20931b22c294b5eca843fdd2e6e30c"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/tiling.mjs",
+      "sha256": "10cac5c0c53807a01ac0c8a26a113d03db5d3e2a1c03a1457845a46cf6da458a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/vendor/highs.mjs",
+      "sha256": "c2eb1c846d3642eb066f48e3473c3c6443bfe0bbb4bb782691cd5864449c230b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/vendor/ortools/browser/cp-sat.js",
+      "sha256": "49113758e249251cf1087443fbb63b7dadfdeff7f19b14e7d7319554e4758427"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/vendor/ortools/browser/runtime_loader.js",
+      "sha256": "47b3d77fb5f8121ffe0758ea210f0a7f811df15465f6617e93cce01fb643f688"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/vendor/ortools/browser/runtime_loader_core.js",
+      "sha256": "b34148e1548062068d7dead335d12bfc18ea03e95019590cead19d67dce60813"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/vendor/ortools/node/cp-sat.js",
+      "sha256": "8ed1333dd1c902c87a2c561d77df467f28dc66118c29a5107289e7c9bd83a5a0"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/vendor/ortools/node/runtime_loader.js",
+      "sha256": "f1c0c4011528eacc3581741f212aa3e1cb934c16519910a2192bcaed905f77e3"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/vendor/ortools/node-wasm/cp_sat_runtime_node.js",
+      "sha256": "53c1c552604384115049d9ab3e9b41ab230bd3d44aa2937ff099e7347589e6fe"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/vendor/ortools/node-wasm/cp_sat_runtime_node.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/vendor/ortools/wasm/cp_sat_runtime.js",
+      "sha256": "708dd156b9f2da75e93b37177c66ae8e2c83d72cbf0efb18a22210aa633c20e1"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/vendor/ortools/wasm/cp_sat_runtime.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/wasm-backend.mjs",
+      "sha256": "b45648591d411df098b2ef5c7538c0fb31854996734259647940e6ad13af658f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/worker-client.mjs",
+      "sha256": "5dc2143728dcc7ff92d77eb4cbc9207b95e22669461422eaa2500761bfe1cb55"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/src/worker-runtime.mjs",
+      "sha256": "278e97cb15012dc72378d0b4e1a7b671ff336e9bf4f1d7a7a1bd9866b043e273"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/wasm/legal_boards_4.lgb",
+      "sha256": "4cb7cfca0003409908ab179c0b795d0aafa36d1dfb1aadec7a0e52fc2c3a649f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M1/wasm/pc_wasm.wasm",
+      "sha256": "de6191a0b39e4b2d0ca22b653ba3d907088f3601340eb4f591864fc65e1ba175"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-backend.mjs",
+      "sha256": "5eedaffd96edcd3994d17eddcb2ae01dddc98430a7a84401ea45bbd4467fb7ab"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-congruent-feature.mjs",
+      "sha256": "8b367ef161b91841f9a726b3b905d9334c0e0fec31c6dcb36ffdce9d26f8b19a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-cover-count-feature.mjs",
+      "sha256": "073542c39f72c1c1fd042ea13dd76a116362d4b8aeb7849fc14314b67f44fbed"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-cover-feature.mjs",
+      "sha256": "e9598815b0e2358e997f6b607f7c8aba490ea1811d4809c798753a5d8f5fbb82"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-cover-percent-feature.mjs",
+      "sha256": "1c5166f9ca5da63de023f0c9e529ae750dfb7b647301bbb07d61b85a9fdfc498"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-cover.mjs",
+      "sha256": "7eaa6f8d8c104ab92f356b555aef6294bff2b77b30e356df0638b722c3e59fe4"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-feature-common.mjs",
+      "sha256": "9a964e08601a395b9d5b6f3db7421371a287a36487bc8018d2fa80dc9a9bcffe"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-features.mjs",
+      "sha256": "b5d8d043ce564e837583a05c4e16b15571bc2a37f3489f5a17ff069cb5eb3e27"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-geometry.mjs",
+      "sha256": "c80f36a4ed82142d8288c986b36b56702354834c4baf0d7986ac198e8b440628"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-limits.mjs",
+      "sha256": "7f421c6aa924ea4f78631ecaa4068e50efb33f8133bdd2e96a5ef690c7c24923"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-orders.mjs",
+      "sha256": "1a2e74684b50b2609b3059bf5675ea316a37024796bbb21fbff6955f34f20f83"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-routing-policy.mjs",
+      "sha256": "1ad709755b60928e56c8492edc104e9232b7d4ebffd583838cff4f61bb34f3aa"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-setup.mjs",
+      "sha256": "57cee4c9c8214b8737cbd864e35657f87187329c6eb205c30ff7ea6821aeebc5"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-targets.mjs",
+      "sha256": "b01c54586209ecbfa5bb9ea02aab1f4325efdf60272d7fe48b17658ec41e9927"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-worker-client.mjs",
+      "sha256": "749bf60a1c4ff4a4f10723b33de754143bd8fe39dfc106709d68ab30ae38ac86"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch-worker-runtime.mjs",
+      "sha256": "474240fad6d81ec735c6ab17e364b33fbf7bbd02e1a021518a083f3fc51e1bc3"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/batch.worker.mjs",
+      "sha256": "96e27df282df33929dd1820310abc8af6d7849731beb8e372d81564c8703482e"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/board.mjs",
+      "sha256": "7419f5a7d47c59088e049d61e9e5f4c6339bfd2ed945b49084c4c65dbe619507"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/chance-feature.mjs",
+      "sha256": "bcc1bb7e71363d8c4969e338d996f7796721aba1746bbf540d9d07f7052fd5af"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/compact-geometry.mjs",
+      "sha256": "f1e070eb78ca49ed715da6370162a8760c2ce4706f7cc3504b86d2bf8486b42c"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/cpsat-secondary-model.mjs",
+      "sha256": "5972578a5c2e20ab5886a94b3a7a113ddc7cd8b1442bb7a698f4e0cdafca2a49"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/exact-secondary-pool.mjs",
+      "sha256": "1e608e2c387963639103149874b4e52a41a41145451007c1a12842bf80c3caf7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/exact-secondary.worker.mjs",
+      "sha256": "8c2c894461a68c9859622a5c9a6148f2e1e339f1823df7e478c2cc4de5bc1942"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/features.mjs",
+      "sha256": "dbe7459069657f781b323e8736293854409ab49dacbf4d3d5c1a54ba1cc7f22c"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/fifth-feature.mjs",
+      "sha256": "faaa7d84615f6843421432aad274ac1729091c4f3a4ca4c217259b73c91093cf"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/fifth.mjs",
+      "sha256": "0096136d0900c0c26a2471d338fc89ed7831805c0ab7b9471dc9cee56e45c126"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/filter-cover-pool.mjs",
+      "sha256": "8368cc81a94767de9abec9b0f9efa9b09799fa3b7ced5d23c0084828bd20f722"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/filter-cover-task.mjs",
+      "sha256": "3538c05cacfc1d536992f8be12424f1b7b3184a70f37f0dbc3e7e14cc5468ab8"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/filter-cover.worker.mjs",
+      "sha256": "91b2f5b58cccac3b3866d492d1195a27d01e0d42fbcd547c2aff14b473cd3092"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/fourth.mjs",
+      "sha256": "77fa742bf6be9b21e76d4bb690665adbaefed8110e4504be761f04d262f23d9b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/fumen.mjs",
+      "sha256": "9217985c6b4705b44519943e2993fcdc276328f3993fc161661a474eeecb594f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/highs-cardinality.mjs",
+      "sha256": "0b7394d753aa30febf39d4c8c409d0005e59f1c85e5e2770a101a1efa5fe379f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/highs-min-cover.mjs",
+      "sha256": "dbf26bc4453356e5a694cad72f86b43177b61555ca79c3a09a003a5bf62a308d"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/human-ranking.mjs",
+      "sha256": "75aef33643797f5a92e87af7a563e254aa596b6c161ebfef40cd15ea953dde1a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/min-cover-adaptive.mjs",
+      "sha256": "fda92e1fe0abc0b97b7fbdb4185ca0f5e0b4f7457630960b85ce06ad1f3ca118"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/min-cover-components.mjs",
+      "sha256": "bdde6f724fc0f028587832ac7f7f0cdbdc45c4ab1d665a7495186aa8f58343f5"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/min-cover-exact-secondary.mjs",
+      "sha256": "0781e8736d7b9d3b190884bed47e54e98365d72841df3792a92b7b95f13d4f5a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/min-cover-quality-refine.mjs",
+      "sha256": "34ef8d5f80f1cbf48c35e67edb638c954c14326cf73a5d6f5fc64ba29328be4d"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/min-cover-rounded-cuts.mjs",
+      "sha256": "a475dd7fd97333f1e0a28f2c13168e796bb3a95cf033e0d2aa06af492be5ca26"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/min-cover-routing.mjs",
+      "sha256": "3a302676fdf7ff91637ebb8eb6e8a0428fe9a7380c267841a390a8290f70a89d"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/min-cover-secondary-portfolio.mjs",
+      "sha256": "ef29f5e218051bb9019e4a0ecb2f2d77b1ac9114bb035727675e8b06ab064ff7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/min-cover-three-engine.mjs",
+      "sha256": "e250f5ae87b4e803a87d1dcbf03142b82fd942412532b4e813ad376adcafd4b1"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/min-cover.mjs",
+      "sha256": "e8105860ae8496cef529acddb9f818f9c0a7182c7a8f98fafd2a8bc65474dbdf"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/minimal-order.mjs",
+      "sha256": "5d76a5081b99c4e54b917f16c68e0c6898f7a3203a6b65cbec950cc7398c351a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/minimals-compact.mjs",
+      "sha256": "9406dd9aa536badfa37a0d976264f571761f375dc0e916ca9ef80fdeb75d453b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/minimals-feature.mjs",
+      "sha256": "b9f802940d45d6595ed3e880a073dea887bd9479c80fecfd68db7906fde28937"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/minimals-wrapper.mjs",
+      "sha256": "40f5c14d273b97ded666ed95b31d9d67d32add897fecc0ea164b35da6ab25c50"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/numeric-cover-data.mjs",
+      "sha256": "8f219c4b1fa72c992134e66d4bab34ae1df3a8068fbd6115b89fc434b81c5e90"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/ortools-min-cover.mjs",
+      "sha256": "87f0312fe5b112b1e961b789990b6d0ec96b7872da82b19459041a41dbe198c6"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/ortools-primary-worker.mjs",
+      "sha256": "b97b68f340c1b6e6984905f197de6aa5f29ba89184302795e0b2291dda776fd7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/path-core.mjs",
+      "sha256": "043efe65aa411c4cbc8e97b005e7487edb6e6fffb0424544fff39dc76fa3ef52"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/path-engine.mjs",
+      "sha256": "26c9119540a3168f1d6b091b2cc0deefea292921858e619e031c86613439ed0f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/path-feature.mjs",
+      "sha256": "6a19ca88c69080bdf51a89083d74f70431d9957f361b0b72cc0b5fc50bd4696b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pattern-prefix-source.mjs",
+      "sha256": "56f0c99415dd42ae63158334bd5b16c3b38608cc0f49cc0fd72e122d48905efc"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pattern.mjs",
+      "sha256": "ee5de43286f5d3c7a5968fcdad47b0ec89219497752d4e4a4d05019303eeb9d9"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pc-enumeration-engine.mjs",
+      "sha256": "f06c2c6f3277950a53a9f24f558fa0957822c64957eab2f9543cf365f1dcc007"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pc-input.mjs",
+      "sha256": "4b9b49a3d17e4c53579763e4326e04e3cdd536c62bb010f730af93e6cdb16b56"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pc-queue-utils.mjs",
+      "sha256": "187b5171b664a8aaab2299e1d94da0505a8561909a3da1948f2f8dc7e9bea508"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pc-routing-policy.mjs",
+      "sha256": "236b634ae0f9bab35a0bf201beab00be02353c8e3de66f3eef28aafc46a34ee4"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pc-solve.mjs",
+      "sha256": "17cc787867d824ddfdb4ee6d0905486f34d56ecba67db3c91cf2eb264f60ced8"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pc-tail-legal.mjs",
+      "sha256": "04e71fc3df4ba5babb49064f049d1dc8024586993e9badc79f098db520ef8bbc"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pc-wasm-abi.mjs",
+      "sha256": "c643c5de98bd299aac7f93341c58f77ff0b59da707b5d11b9047878f0e76a072"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pc-wasm-compat.mjs",
+      "sha256": "194eb9df0bb48c4422eeb7ea3703df8ee62bea43a53cc55165bb308fceaabaf8"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pc-wasm-cover-matrix.mjs",
+      "sha256": "1541471253cf3ea55e7059af63c8b4463691b1120ab8047b949e83169fb7776b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pc-wasm-enumeration.mjs",
+      "sha256": "4248f1d8ac9eca996cf1b09799d07482c16b87e3069e20b3aa76073d0e00846e"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pc-wasm-min-cover.mjs",
+      "sha256": "39f34b78330bb089373a3bbb4e9af2079e376fd5f7e577d7c16da5192ee2e89b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/pc.worker.mjs",
+      "sha256": "c507c704b497e91d9019c092403a88598fb235452b3b584a1d3ce363c8acc2c6"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/per-save-minimals-core.mjs",
+      "sha256": "a8562d2dde6b94b49bdfed362b76d7c63a3e2036fafbef72d0d5e63f2cd3bcf7"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/per-save-minimals-feature.mjs",
+      "sha256": "ae89d5c7a694365e16c71e332d1b833780c0837b758dbbf80931ec13d2f4365e"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/per-save-minimals.mjs",
+      "sha256": "78d45fd3729f453c30c6c0c6614c761f90c926b83e70528575670e309ddc0bbd"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/piece-order.mjs",
+      "sha256": "421911ffda44c0d7fc7f6729973dce77c5fbdd22789e3a69da55ee7744a12180"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/primary-backend.mjs",
+      "sha256": "666f2157237c02dd284d13a8306230dd785e5875811e434f41ddbf4f6c9924bd"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/promise-utils.mjs",
+      "sha256": "5957269c9621143603064e9bbf4cd9cdf962948b5a59e336beee47446cd86ffb"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/quality-contract.mjs",
+      "sha256": "bb2d4fe599f6a6106d481e5fd297812e8ff4c5dadb4fc6fbf9bef8c4316fda35"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/save-outcome-cache.mjs",
+      "sha256": "d4c4df13fe7c1bac480599f63982aaf8417670a94d3896f67d30cb8dfe1d838a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/save-piece.mjs",
+      "sha256": "74713f60017c31bb04ed1c78710fb5754f7ce8c20d0048214377d5a811d50651"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/saves-feature.mjs",
+      "sha256": "aa5bf4020318286a2b9cb0f84c0cb65ec09a7fc59f5ae49cca02d59dd2a99821"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/saves.mjs",
+      "sha256": "5f39bba21bdcb67d6f150275c9ab0c4050a599897c5ce1a06204b08f556dcf2f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/secondary-engine-runner.mjs",
+      "sha256": "973b9a39769b608791639cf5a0784af245f3cd85ab6e392f3b296dc26c0f9104"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/secondary-engine.worker.mjs",
+      "sha256": "6771b84455280082cb01c0c33805e0570a20931b22c294b5eca843fdd2e6e30c"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/tiling.mjs",
+      "sha256": "10cac5c0c53807a01ac0c8a26a113d03db5d3e2a1c03a1457845a46cf6da458a"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/vendor/highs.mjs",
+      "sha256": "c2eb1c846d3642eb066f48e3473c3c6443bfe0bbb4bb782691cd5864449c230b"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/vendor/ortools/browser/cp-sat.js",
+      "sha256": "49113758e249251cf1087443fbb63b7dadfdeff7f19b14e7d7319554e4758427"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/vendor/ortools/browser/runtime_loader.js",
+      "sha256": "47b3d77fb5f8121ffe0758ea210f0a7f811df15465f6617e93cce01fb643f688"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/vendor/ortools/browser/runtime_loader_core.js",
+      "sha256": "b34148e1548062068d7dead335d12bfc18ea03e95019590cead19d67dce60813"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/vendor/ortools/node/cp-sat.js",
+      "sha256": "8ed1333dd1c902c87a2c561d77df467f28dc66118c29a5107289e7c9bd83a5a0"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/vendor/ortools/node/runtime_loader.js",
+      "sha256": "f1c0c4011528eacc3581741f212aa3e1cb934c16519910a2192bcaed905f77e3"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/vendor/ortools/node-wasm/cp_sat_runtime_node.js",
+      "sha256": "53c1c552604384115049d9ab3e9b41ab230bd3d44aa2937ff099e7347589e6fe"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/vendor/ortools/node-wasm/cp_sat_runtime_node.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/vendor/ortools/wasm/cp_sat_runtime.js",
+      "sha256": "708dd156b9f2da75e93b37177c66ae8e2c83d72cbf0efb18a22210aa633c20e1"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/vendor/ortools/wasm/cp_sat_runtime.wasm",
+      "sha256": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/wasm-backend.mjs",
+      "sha256": "b45648591d411df098b2ef5c7538c0fb31854996734259647940e6ad13af658f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/worker-client.mjs",
+      "sha256": "5dc2143728dcc7ff92d77eb4cbc9207b95e22669461422eaa2500761bfe1cb55"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/src/worker-runtime.mjs",
+      "sha256": "278e97cb15012dc72378d0b4e1a7b671ff336e9bf4f1d7a7a1bd9866b043e273"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/wasm/legal_boards_4.lgb",
+      "sha256": "4cb7cfca0003409908ab179c0b795d0aafa36d1dfb1aadec7a0e52fc2c3a649f"
+    },
+    {
+      "file": ".a0/four/diagnostic-runtime/M2/wasm/pc_wasm.wasm",
+      "sha256": "a4ea097bcc0784d35fd12d0c20edb745273bdad99c9cce0eccba50f9e07ea03c"
+    }
+  ],
+  "actualTimingArms": [
+    "R",
+    "A0",
+    "M1"
+  ],
+  "gate": "Use exact prior Linux measured WASM/runtime bytes; mismatch blocks before actual input calls.",
+  "priorSourceCommit": "f4716e1f2686fa25c4e844e47b51e88835a980da",
+  "baselineGate": {
+    "status": "PASS",
+    "sha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+    "expectedSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+    "actualInputCalls": 0
+  },
+  "controlGate": {
+    "status": "PASS",
+    "originalSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+    "controlSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+    "actualInputCalls": 0,
+    "requirement": "Full byte equality, not just ABI/result parity"
+  }
+}

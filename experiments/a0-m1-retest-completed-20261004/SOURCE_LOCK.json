@@ -1,0 +1,121 @@
+{
+  "sourceCommit": "c6554bce7356fe226693074610e8c7a2177335cb",
+  "files": [
+    {
+      "file": ".github/workflows/a0-m1-retest.yml",
+      "bytes": 3867,
+      "sha256": "de3ef50a41fef1f316e874389e145d35d56723570a2c96b8ecafb7b7b59b1ef0"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/CAMPAIGN.json",
+      "bytes": 1481,
+      "sha256": "5f435195a7128c578a93cbb52e410acfdf5df263b854fb085e4f6fb7e1ee6175"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/FROZEN_BUILD.json",
+      "bytes": 131537,
+      "sha256": "a2f8d213c84fe456232a3ad2416fe8fa1c6dd6fcd70a7514930adab153d24181"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/INPUTS.json",
+      "bytes": 176333,
+      "sha256": "b0be6837920ff2deed80a3d3ee7709a595bfa922906bb0e634819f32f191bd27"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/README_KO.md",
+      "bytes": 4626,
+      "sha256": "3407e528969f6a2344ac7d42a7a92200f04274fa5b0fb91b9b235ae860f38983"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/SCHEDULE.json",
+      "bytes": 25453308,
+      "sha256": "b798a6c89a379e15a9f0f052650fe21affa27ceb4798fea9332e092c6633de6b"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/SCREENING.json",
+      "bytes": 2014811,
+      "sha256": "21117e149a2ad54c6a820efe8ac34e08b11420f5d3823a810460138742a527ac"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/SELECTION.json",
+      "bytes": 51715,
+      "sha256": "106a25de53865b8ddf82ef266964e98294f63a8209ab003d98d9813ca32166c2"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/TESTING_RULES_KO.md",
+      "bytes": 20189,
+      "sha256": "072e4ff0d7832ccc6ae811270045213a92772c809d23a5409d380e58b7dd88cb"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/TESTING_RULES_KO.md.json",
+      "bytes": 122,
+      "sha256": "bbdd363c72493916c1b77b8aa4d413ed90f82461dd6d287488e6eee1a3ef70dd"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/__pycache__/analyze.cpython-314.pyc",
+      "bytes": 14848,
+      "sha256": "625430dd4108ad11db57db6cbf34651a896a6e40ff7f122bf2330730293fcf88"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/__pycache__/test_analysis.cpython-314.pyc",
+      "bytes": 4964,
+      "sha256": "30d42eb52c6a7346a5cd3c76b69d47a1a6a8fa7eb12957a8a9e5695d78e3d156"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/analyze.py",
+      "bytes": 5420,
+      "sha256": "09a0e9e00a03189c527c17b8616d1a035335d1b49bdeb49d70170f22058c1165"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/audit.py",
+      "bytes": 6663,
+      "sha256": "27e96570157700e07c7375aeeaabc2596835daa3b7215039f3202cad32f92305"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/common.mjs",
+      "bytes": 261,
+      "sha256": "cbd423b24a5d4b9a4245966fcd274e440859e59bea132638417bb655bfbed14d"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/launch.json",
+      "bytes": 654,
+      "sha256": "85528fe8bdaa39fe64d8e37b3379471a483090beb55124a72e2372314b998043"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/origin.mjs",
+      "bytes": 927,
+      "sha256": "557068c5794871e642aeed87af76d3a9247597f236a72bbe47ed53d088d61407"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/preflight.mjs",
+      "bytes": 3673,
+      "sha256": "4f5dee9e0fc1761fb839b9954a426f37f6ba04e1f039a67cd41d4b670f465ce4"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/prepare.py",
+      "bytes": 10780,
+      "sha256": "a4d25aa12249256cf1b070bc993f2bad3402ed2a8b7d1ac8e46e2e220733a8d5"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/run.mjs",
+      "bytes": 3280,
+      "sha256": "95d8860b8cbc56821bbc99450b34d58c047fe7d8633dfbf8d800f24c17660232"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/session.mjs",
+      "bytes": 1973,
+      "sha256": "a158abf8ec1e8cba6e70a738535b86cb6f83cc86ac4a1b07739bd2981d370c3b"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/test_analysis.py",
+      "bytes": 2011,
+      "sha256": "6d614e1b2b3c4b397fccbf6033f8bcf6b2068eaca377d4fa10cc3c6b589766b2"
+    },
+    {
+      "file": "experiments/a0-m1-retest-20261004/test_selection.py",
+      "bytes": 4325,
+      "sha256": "46779090d3f88896e06db84135134d3bc82c26c49d6b78f26cbedfdd606320ba"
+    }
+  ],
+  "actualRuntimeLockPending": true
+}

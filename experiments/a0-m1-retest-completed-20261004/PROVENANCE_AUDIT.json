@@ -1,0 +1,16 @@
+{
+  "status": "SAME_FROZEN_BINARY_RUNTIME_SOURCE_AND_SEALED_SCREENING_VERIFIED",
+  "runId": 37138752420,
+  "sourceCommit": "c6554bce7356fe226693074610e8c7a2177335cb",
+  "runtimeFilesVerified": 768,
+  "originalScreeningFilesReverified": 5,
+  "identicalLockOn10Runners": true,
+  "referenceControlByteEqual": true,
+  "noSolverRebuildOrOptimizationChange": true,
+  "inputsSelectionAndPairedScheduleTests": 3,
+  "analysisTests": 5,
+  "workerAndWatchdogTests": 4,
+  "syntheticWorkerNativeCalls": 16,
+  "clockReset": false,
+  "nativeSolverCallsFromThisAudit": 0
+}

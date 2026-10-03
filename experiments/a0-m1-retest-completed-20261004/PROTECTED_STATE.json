@@ -1,0 +1,24 @@
+{
+  "protected": {
+    "devHead": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+    "localMain": "187fbf954ad0749e697b4e7f1252683b318d696e",
+    "remoteMain": "03b637730c5b541f4f2934be613498fbe65327fd"
+  },
+  "oldSeals": [
+    {
+      "directory": "a0-four-arm-execution-20261004",
+      "sealSha256": "f60443ca65b2325c7d306c33c42381b49675bc033e528b6a77adbee4197b7529",
+      "filesReverified": 6952
+    },
+    {
+      "directory": "a0-four-arm-preparation-20261003",
+      "sealSha256": "e2eb86db0b4fd6b6b8e5fdbee9439473a52c018a12a6327b6b855d4d29f00c1e",
+      "filesReverified": 40
+    },
+    {
+      "directory": "a0-proof-retest-completed-20261003",
+      "sealSha256": "0b5a1e40036f6951c2dafa9cc93a76e1c2d400487a5666585ddc87e6d1672830",
+      "filesReverified": 2544
+    }
+  ]
+}

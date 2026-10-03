@@ -1,0 +1,1744 @@
+{
+  "status": "FROZEN_PRE_NATIVE",
+  "selectionSeed": "m1-retest-v1",
+  "comparisons": [
+    "A0/R",
+    "M1/R",
+    "M1/A0"
+  ],
+  "populations": {
+    "development": {
+      "population": 34,
+      "tails": {
+        "A0/R": {
+          "IMPROVEMENT": {
+            "groupSize": 19,
+            "ceil10Percent": 2,
+            "selected": [
+              "board-012--bag--ordinary",
+              "board-090--bag--ordinary"
+            ]
+          },
+          "REGRESSION": {
+            "groupSize": 15,
+            "ceil10Percent": 2,
+            "selected": [
+              "board-068--restricted-split--J",
+              "board-065--restricted-split--ordinary"
+            ]
+          }
+        },
+        "M1/R": {
+          "IMPROVEMENT": {
+            "groupSize": 25,
+            "ceil10Percent": 3,
+            "selected": [
+              "board-012--bag--ordinary",
+              "board-090--bag--ordinary",
+              "board-009--restricted-split--O"
+            ]
+          },
+          "REGRESSION": {
+            "groupSize": 9,
+            "ceil10Percent": 1,
+            "selected": [
+              "board-068--restricted-split--J"
+            ]
+          }
+        },
+        "M1/A0": {
+          "IMPROVEMENT": {
+            "groupSize": 28,
+            "ceil10Percent": 3,
+            "selected": [
+              "board-011--restricted-split--O",
+              "board-017--restricted-split--L",
+              "board-041--restricted-split--L"
+            ]
+          },
+          "REGRESSION": {
+            "groupSize": 6,
+            "ceil10Percent": 1,
+            "selected": [
+              "board-024--restricted-split--I"
+            ]
+          }
+        }
+      },
+      "controls": [],
+      "quartiles": [
+        20.848667500000005,
+        108.221238,
+        180.855631
+      ],
+      "environmentControlId": "board-075--restricted-split--T"
+    },
+    "reserved": {
+      "population": 88,
+      "tails": {
+        "A0/R": {
+          "IMPROVEMENT": {
+            "groupSize": 41,
+            "ceil10Percent": 5,
+            "selected": [
+              "board-106--bag--ordinary",
+              "board-118--restricted-split--O",
+              "board-111--restricted-split--ordinary",
+              "board-116--restricted-split--ordinary",
+              "board-118--restricted-split--J"
+            ]
+          },
+          "REGRESSION": {
+            "groupSize": 47,
+            "ceil10Percent": 5,
+            "selected": [
+              "board-115--bag--ordinary",
+              "board-107--restricted-split--J",
+              "board-107--restricted-split--Z",
+              "board-119--restricted-split--I",
+              "board-119--restricted-split--J"
+            ]
+          }
+        },
+        "M1/R": {
+          "IMPROVEMENT": {
+            "groupSize": 62,
+            "ceil10Percent": 7,
+            "selected": [
+              "board-106--bag--ordinary",
+              "board-118--restricted-split--J",
+              "board-118--restricted-split--O",
+              "board-106--restricted-split--I",
+              "board-111--restricted-split--ordinary",
+              "board-118--restricted-split--I",
+              "board-120--restricted-split--I"
+            ]
+          },
+          "REGRESSION": {
+            "groupSize": 26,
+            "ceil10Percent": 3,
+            "selected": [
+              "board-119--restricted-split--T",
+              "board-107--restricted-split--S",
+              "board-115--restricted-split--O"
+            ]
+          }
+        },
+        "M1/A0": {
+          "IMPROVEMENT": {
+            "groupSize": 68,
+            "ceil10Percent": 7,
+            "selected": [
+              "board-118--restricted-split--I",
+              "board-115--bag--ordinary",
+              "board-113--restricted-split--Z",
+              "board-107--bag--ordinary",
+              "board-118--restricted-split--J",
+              "board-107--restricted-split--J",
+              "board-120--restricted-split--I"
+            ]
+          },
+          "REGRESSION": {
+            "groupSize": 20,
+            "ceil10Percent": 2,
+            "selected": [
+              "board-115--restricted-split--L",
+              "board-119--restricted-split--T"
+            ]
+          }
+        }
+      },
+      "controls": [],
+      "quartiles": [
+        8.50717449999999,
+        15.479857500000001,
+        39.933755
+      ],
+      "environmentControlId": "board-107--restricted-split--I"
+    }
+  },
+  "records": [
+    {
+      "id": "board-008--restricted-split--S",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-009--restricted-split--O",
+      "phase": "development",
+      "reasons": [
+        "M1/R:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-011--restricted-split--O",
+      "phase": "development",
+      "reasons": [
+        "M1/A0:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-011--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-012--bag--ordinary",
+      "phase": "development",
+      "reasons": [
+        "A0/R:IMPROVEMENT_TAIL",
+        "M1/R:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-012--restricted-split--L",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-017--restricted-split--L",
+      "phase": "development",
+      "reasons": [
+        "M1/A0:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-024--restricted-split--I",
+      "phase": "development",
+      "reasons": [
+        "M1/A0:REGRESSION_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-025--restricted-split--J",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-026--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-027--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-028--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-028--restricted-split--ordinary",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "PRIOR_GATE_PROOF_OR_HOTSPOT_SENTINEL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-031--restricted-split--S",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-038--restricted-split--Z",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-040--restricted-split--I",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-041--restricted-split--L",
+      "phase": "development",
+      "reasons": [
+        "M1/A0:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-044--restricted-split--Z",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-049--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-052--restricted-split--Z",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-064--bag--T",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-065--restricted-split--ordinary",
+      "phase": "development",
+      "reasons": [
+        "A0/R:REGRESSION_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-067--restricted-split--L",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-068--restricted-split--J",
+      "phase": "development",
+      "reasons": [
+        "A0/R:REGRESSION_TAIL",
+        "M1/R:REGRESSION_TAIL",
+        "M1/R:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-070--bag--ordinary",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-075--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-080--restricted-split--S",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-081--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-085--restricted-split--S",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-088--restricted-split--ordinary",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-090--bag--ordinary",
+      "phase": "development",
+      "reasons": [
+        "A0/R:IMPROVEMENT_TAIL",
+        "M1/R:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-093--restricted-split--T",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-099--restricted-split--J",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-100--bag--ordinary",
+      "phase": "development",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-105--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--bag--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "A0/R:IMPROVEMENT_TAIL",
+        "M1/R:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "M1/R:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10",
+        "PRIOR_GATE_PROOF_OR_HOTSPOT_SENTINEL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "M1/A0:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-106--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--bag--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "M1/A0:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "M1/R:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "A0/R:REGRESSION_TAIL",
+        "A0/R:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "M1/A0:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "M1/R:REGRESSION_TAIL",
+        "M1/R:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "M1/A0:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-107--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "A0/R:REGRESSION_TAIL",
+        "A0/R:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-108--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-108--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-108--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-108--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-110--bag--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-110--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-110--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-110--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-110--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-110--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-111--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "A0/R:IMPROVEMENT_TAIL",
+        "M1/R:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "EXACT_CAPPED_STATUS_TRANSITION",
+        "PRIOR_GATE_PROOF_OR_HOTSPOT_SENTINEL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-112--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-112--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-112--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-112--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-112--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-112--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "M1/A0:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-113--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "M1/A0:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-114--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--bag--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "A0/R:REGRESSION_TAIL",
+        "A0/R:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "M1/A0:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10",
+        "PRIOR_GATE_PROOF_OR_HOTSPOT_SENTINEL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "A0/R:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "M1/A0:REGRESSION_TAIL",
+        "M1/A0:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "M1/R:REGRESSION_TAIL",
+        "M1/R:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "A0/R:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-115--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-116--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-116--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-116--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "A0/R:IMPROVEMENT_TAIL",
+        "M1/A0:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-117--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-117--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-117--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-117--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-118--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "M1/R:IMPROVEMENT_TAIL",
+        "M1/A0:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-118--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "A0/R:IMPROVEMENT_TAIL",
+        "M1/R:IMPROVEMENT_TAIL",
+        "M1/A0:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-118--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-118--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "A0/R:IMPROVEMENT_TAIL",
+        "M1/R:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-118--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-118--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-118--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "A0/R:REGRESSION_TAIL",
+        "A0/R:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--J",
+      "phase": "reserved",
+      "reasons": [
+        "A0/R:REGRESSION_TAIL",
+        "A0/R:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--L",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10",
+        "PRIOR_GATE_PROOF_OR_HOTSPOT_SENTINEL"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "M1/R:REGRESSION_TAIL",
+        "M1/R:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "M1/A0:REGRESSION_TAIL",
+        "M1/A0:LEGACY_INPUT_ALARM_ABOVE_1_10_NOT_PROMOTION_VETO",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-119--restricted-split--ordinary",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-120--restricted-split--I",
+      "phase": "reserved",
+      "reasons": [
+        "M1/R:IMPROVEMENT_TAIL",
+        "M1/A0:IMPROVEMENT_TAIL",
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-120--restricted-split--O",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-120--restricted-split--S",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-120--restricted-split--T",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    },
+    {
+      "id": "board-120--restricted-split--Z",
+      "phase": "reserved",
+      "reasons": [
+        "R:OVERALL_VARIATION_GE_1_10",
+        "R:WITHIN_HOST_VARIATION_GE_1_10",
+        "A0:OVERALL_VARIATION_GE_1_10",
+        "A0:WITHIN_HOST_VARIATION_GE_1_10",
+        "M1:OVERALL_VARIATION_GE_1_10",
+        "M1:WITHIN_HOST_VARIATION_GE_1_10"
+      ],
+      "isControl": false
+    }
+  ],
+  "excluded": [],
+  "legacyAlarmIsSelectionNotPromotionGate": true,
+  "noEnvironmentSensitiveInputExcluded": true
+}
