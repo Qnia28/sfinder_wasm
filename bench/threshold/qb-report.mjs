@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync, mkdirSync, writeFileSync, appendFileSync } from 'node:fs';
 import { manifest, loadFixture } from './fixtures.mjs';
 import { sha256 } from './engine.mjs';
-const base = 'bench/threshold/results';
+const base = process.env.THRESHOLD_QB_RESULTS || 'bench/threshold/results';
 const initialBytes = readFileSync(`${base}/qb-review/review.json`), initial = JSON.parse(initialBytes);
 const selection = JSON.parse(readFileSync(`${base}/qb-review/selection.json`));
 assert.equal(selection.reviewHash, sha256(initialBytes));
@@ -14,7 +14,14 @@ if (repeated) {
   assert.deepEqual(repeated.wasmHashes, initial.wasmHashes); assert.deepEqual(repeated.sourceDigest, initial.sourceDigest);
   assert.equal(repeated.auditedMatrices, selection.cases.length);
 }
-const resolved = selection.details.map(detail => {
+const details = [...selection.details];
+// Both comparisons are rerun for a selected input. Do not hide a new alert in
+// the comparison that did not originally trigger that input's selection.
+for (const row of repeated?.perCase || []) if (row.recheckReasons.length
+  && !details.some(d => d.caseId === row.caseId && d.comparisonIndex === row.comparisonIndex)) {
+  details.push({ caseId: row.caseId, comparisonIndex: row.comparisonIndex, reasons: row.recheckReasons, firstFlaggedInRepeat: true });
+}
+const resolved = details.map(detail => {
   const before = initial.perCase.find(r => r.caseId === detail.caseId && r.comparisonIndex === detail.comparisonIndex);
   const after = repeated.perCase.find(r => r.caseId === detail.caseId && r.comparisonIndex === detail.comparisonIndex); assert(after);
   return { ...detail, initialRatio: before.pairedSpeedupMedian, repeatRatio: after.pairedSpeedupMedian,

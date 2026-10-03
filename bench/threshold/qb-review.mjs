@@ -45,7 +45,8 @@ export function audit(input, pairs, expectedIds, previous = null) {
   function walk(dir) { return readdirSync(dir, { withFileTypes: true }).flatMap(e => e.isDirectory()
     ? walk(resolve(dir, e.name)) : e.name === 'samples.jsonl' ? [resolve(dir, e.name)] : []); }
   const files = walk(input); assert.equal(files.length, expectedIds.length);
-  const build = JSON.parse(readFileSync(new URL('./build/build.json', import.meta.url)));
+  const build = JSON.parse(readFileSync(process.env.THRESHOLD_BUILD_ROOT
+    ? resolve(process.env.THRESHOLD_BUILD_ROOT, 'build.json') : new URL('./build/build.json', import.meta.url)));
   const snapshotBytes = readFileSync(new URL('./qb-setups.json', import.meta.url));
   const snapshot = JSON.parse(snapshotBytes);
   assert.equal(manifest.snapshotHash, sha256(snapshotBytes)); assert.equal(manifest.databaseHash, snapshot.sourceSha256);
