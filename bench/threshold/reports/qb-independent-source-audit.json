@@ -1,0 +1,29 @@
+{
+  "candidate": "0eb5ff1dcc85b7f9400180a4d89044cb0c0ec0aa",
+  "baseline": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+  "checked": {
+    "originalRust": {
+      "revision": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+      "files": 40,
+      "digest": "c3c6e9414e1b02a962aa1ef4c0ee7195fc65e6f8e06cec2feeed74e4d5770573"
+    },
+    "candidateRust": {
+      "revision": "0eb5ff1dcc85b7f9400180a4d89044cb0c0ec0aa",
+      "files": 41,
+      "digest": "90161cc480b1d597dd96b1468542560388eb50b0e359d766341a74f07277aada"
+    },
+    "candidateJs": {
+      "revision": "0eb5ff1dcc85b7f9400180a4d89044cb0c0ec0aa",
+      "files": 94,
+      "digest": "2da702544ba7422eba1ed8ab6a14f5de5a048a67705e1420a79b03bfd6b778a9"
+    },
+    "harness": {
+      "revision": "0eb5ff1dcc85b7f9400180a4d89044cb0c0ec0aa",
+      "files": 245,
+      "digest": "e8d297eabc8f86a85b51bcbb625747065e24f2e909200c8b7f9791667fa04953"
+    }
+  },
+  "experimentWasmHash": "425888e502363eccf7a240c0fe37b999106da90cf829faa39142052ed59b2adf",
+  "previousRootCampaignEngineUnchanged": true,
+  "audit": "Every source-map file hash matched immutable Git blob bytes at pinned baseline/campaign commits, not current working-tree files. Each map digest recomputed. Experiment WASM and original/candidate Rust/product JS digests match the completed root-screen reference."
+}

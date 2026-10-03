@@ -1,0 +1,2159 @@
+{
+  "runId": "37144800885",
+  "url": "https://github.com/Qnia28/sfinder_wasm/actions/runs/37144800885",
+  "candidate": "0eb5ff1dcc85b7f9400180a4d89044cb0c0ec0aa",
+  "conclusion": "success",
+  "createdAt": "2026-10-03T18:36:01Z",
+  "completedAt": "2026-10-03T18:46:09Z",
+  "workflowMinutes": 10.133333333333333,
+  "maxAllowedShards": 10,
+  "phases": {
+    "capture": {
+      "intervals": [
+        {
+          "phase": "capture",
+          "jobId": 111266843912,
+          "name": "capture (c7-2plus2-qb-row-069)",
+          "runnerName": "GitHub Actions 1000000975",
+          "startedAt": "2026-10-03T18:38:50Z",
+          "completedAt": "2026-10-03T18:38:51Z",
+          "jobStartedAt": "2026-10-03T18:38:39Z",
+          "jobCompletedAt": "2026-10-03T18:38:55Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843914,
+          "name": "capture (c7-2plus2-qb-row-052)",
+          "runnerName": "GitHub Actions 1000000960",
+          "startedAt": "2026-10-03T18:38:28Z",
+          "completedAt": "2026-10-03T18:38:29Z",
+          "jobStartedAt": "2026-10-03T18:38:19Z",
+          "jobCompletedAt": "2026-10-03T18:38:31Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843920,
+          "name": "capture (c7-2plus2-qb-row-271)",
+          "runnerName": "GitHub Actions 1000000959",
+          "startedAt": "2026-10-03T18:38:30Z",
+          "completedAt": "2026-10-03T18:38:31Z",
+          "jobStartedAt": "2026-10-03T18:38:19Z",
+          "jobCompletedAt": "2026-10-03T18:38:35Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843927,
+          "name": "capture (c7-2plus2-qb-row-326)",
+          "runnerName": "GitHub Actions 1000000966",
+          "startedAt": "2026-10-03T18:38:31Z",
+          "completedAt": "2026-10-03T18:38:32Z",
+          "jobStartedAt": "2026-10-03T18:38:20Z",
+          "jobCompletedAt": "2026-10-03T18:38:36Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843928,
+          "name": "capture (c7-2plus2-qb-row-339)",
+          "runnerName": "GitHub Actions 1000000962",
+          "startedAt": "2026-10-03T18:38:32Z",
+          "completedAt": "2026-10-03T18:38:33Z",
+          "jobStartedAt": "2026-10-03T18:38:20Z",
+          "jobCompletedAt": "2026-10-03T18:38:36Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843933,
+          "name": "capture (c7-2plus2-qb-row-087)",
+          "runnerName": "GitHub Actions 1000000961",
+          "startedAt": "2026-10-03T18:38:32Z",
+          "completedAt": "2026-10-03T18:38:33Z",
+          "jobStartedAt": "2026-10-03T18:38:19Z",
+          "jobCompletedAt": "2026-10-03T18:38:36Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843934,
+          "name": "capture (c7-2plus2-qb-row-260)",
+          "runnerName": "GitHub Actions 1000000969",
+          "startedAt": "2026-10-03T18:38:42Z",
+          "completedAt": "2026-10-03T18:38:42Z",
+          "jobStartedAt": "2026-10-03T18:38:33Z",
+          "jobCompletedAt": "2026-10-03T18:38:45Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843939,
+          "name": "capture (c7-2plus2-qb-row-062)",
+          "runnerName": "GitHub Actions 1000000970",
+          "startedAt": "2026-10-03T18:38:45Z",
+          "completedAt": "2026-10-03T18:38:45Z",
+          "jobStartedAt": "2026-10-03T18:38:36Z",
+          "jobCompletedAt": "2026-10-03T18:38:48Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843943,
+          "name": "capture (c7-2plus2-qb-row-184)",
+          "runnerName": "GitHub Actions 1000000976",
+          "startedAt": "2026-10-03T18:38:48Z",
+          "completedAt": "2026-10-03T18:38:48Z",
+          "jobStartedAt": "2026-10-03T18:38:38Z",
+          "jobCompletedAt": "2026-10-03T18:38:51Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843945,
+          "name": "capture (c7-2plus2-qb-row-287)",
+          "runnerName": "GitHub Actions 1000000973",
+          "startedAt": "2026-10-03T18:39:22Z",
+          "completedAt": "2026-10-03T18:39:22Z",
+          "jobStartedAt": "2026-10-03T18:39:13Z",
+          "jobCompletedAt": "2026-10-03T18:39:25Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843946,
+          "name": "capture (c7-2plus2-qb-row-104)",
+          "runnerName": "GitHub Actions 1000000971",
+          "startedAt": "2026-10-03T18:38:45Z",
+          "completedAt": "2026-10-03T18:38:46Z",
+          "jobStartedAt": "2026-10-03T18:38:36Z",
+          "jobCompletedAt": "2026-10-03T18:38:48Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843949,
+          "name": "capture (c7-2plus2-qb-row-134)",
+          "runnerName": "GitHub Actions 1000000963",
+          "startedAt": "2026-10-03T18:38:31Z",
+          "completedAt": "2026-10-03T18:38:31Z",
+          "jobStartedAt": "2026-10-03T18:38:20Z",
+          "jobCompletedAt": "2026-10-03T18:38:35Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843951,
+          "name": "capture (c7-2plus2-qb-row-009)",
+          "runnerName": "GitHub Actions 1000000977",
+          "startedAt": "2026-10-03T18:38:49Z",
+          "completedAt": "2026-10-03T18:38:49Z",
+          "jobStartedAt": "2026-10-03T18:38:38Z",
+          "jobCompletedAt": "2026-10-03T18:38:52Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843954,
+          "name": "capture (c7-2plus2-qb-row-241)",
+          "runnerName": "GitHub Actions 1000000972",
+          "startedAt": "2026-10-03T18:38:49Z",
+          "completedAt": "2026-10-03T18:38:49Z",
+          "jobStartedAt": "2026-10-03T18:38:37Z",
+          "jobCompletedAt": "2026-10-03T18:38:53Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843957,
+          "name": "capture (c7-2plus2-qb-row-039)",
+          "runnerName": "GitHub Actions 1000000967",
+          "startedAt": "2026-10-03T18:38:31Z",
+          "completedAt": "2026-10-03T18:38:31Z",
+          "jobStartedAt": "2026-10-03T18:38:20Z",
+          "jobCompletedAt": "2026-10-03T18:38:35Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843961,
+          "name": "capture (c7-2plus2-qb-row-139)",
+          "runnerName": "GitHub Actions 1000000974",
+          "startedAt": "2026-10-03T18:38:46Z",
+          "completedAt": "2026-10-03T18:38:47Z",
+          "jobStartedAt": "2026-10-03T18:38:37Z",
+          "jobCompletedAt": "2026-10-03T18:38:49Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843964,
+          "name": "capture (c7-2plus2-qb-row-159)",
+          "runnerName": "GitHub Actions 1000000964",
+          "startedAt": "2026-10-03T18:38:32Z",
+          "completedAt": "2026-10-03T18:38:32Z",
+          "jobStartedAt": "2026-10-03T18:38:20Z",
+          "jobCompletedAt": "2026-10-03T18:38:36Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266843995,
+          "name": "capture (c7-2plus2-qb-row-154)",
+          "runnerName": "GitHub Actions 1000000965",
+          "startedAt": "2026-10-03T18:38:32Z",
+          "completedAt": "2026-10-03T18:38:32Z",
+          "jobStartedAt": "2026-10-03T18:38:20Z",
+          "jobCompletedAt": "2026-10-03T18:38:36Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266844054,
+          "name": "capture (c7-2plus2-qb-row-030)",
+          "runnerName": "GitHub Actions 1000000978",
+          "startedAt": "2026-10-03T18:38:49Z",
+          "completedAt": "2026-10-03T18:38:49Z",
+          "jobStartedAt": "2026-10-03T18:38:38Z",
+          "jobCompletedAt": "2026-10-03T18:38:53Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266844286,
+          "name": "capture (c7-2plus2-qb-row-025)",
+          "runnerName": "GitHub Actions 1000000968",
+          "startedAt": "2026-10-03T18:38:32Z",
+          "completedAt": "2026-10-03T18:38:32Z",
+          "jobStartedAt": "2026-10-03T18:38:20Z",
+          "jobCompletedAt": "2026-10-03T18:38:36Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266844647,
+          "name": "capture (c7-2plus2-qb-row-079)",
+          "runnerName": "GitHub Actions 1000000979",
+          "startedAt": "2026-10-03T18:39:00Z",
+          "completedAt": "2026-10-03T18:39:00Z",
+          "jobStartedAt": "2026-10-03T18:38:48Z",
+          "jobCompletedAt": "2026-10-03T18:39:04Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266844680,
+          "name": "capture (c7-2plus2-qb-row-305)",
+          "runnerName": "GitHub Actions 1000000980",
+          "startedAt": "2026-10-03T18:39:01Z",
+          "completedAt": "2026-10-03T18:39:01Z",
+          "jobStartedAt": "2026-10-03T18:38:50Z",
+          "jobCompletedAt": "2026-10-03T18:39:05Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266844695,
+          "name": "capture (c7-2plus2-qb-row-258--mirror)",
+          "runnerName": "GitHub Actions 1000000981",
+          "startedAt": "2026-10-03T18:39:02Z",
+          "completedAt": "2026-10-03T18:39:03Z",
+          "jobStartedAt": "2026-10-03T18:38:50Z",
+          "jobCompletedAt": "2026-10-03T18:39:08Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266844730,
+          "name": "capture (c7-2plus2-qb-row-310)",
+          "runnerName": "GitHub Actions 1000000982",
+          "startedAt": "2026-10-03T18:39:03Z",
+          "completedAt": "2026-10-03T18:39:03Z",
+          "jobStartedAt": "2026-10-03T18:38:51Z",
+          "jobCompletedAt": "2026-10-03T18:39:07Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266844757,
+          "name": "capture (c7-2plus2-qb-row-038)",
+          "runnerName": "GitHub Actions 1000000983",
+          "startedAt": "2026-10-03T18:39:02Z",
+          "completedAt": "2026-10-03T18:39:03Z",
+          "jobStartedAt": "2026-10-03T18:38:53Z",
+          "jobCompletedAt": "2026-10-03T18:39:06Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266844855,
+          "name": "capture (c7-2plus2-qb-row-035)",
+          "runnerName": "GitHub Actions 1000000986",
+          "startedAt": "2026-10-03T18:39:05Z",
+          "completedAt": "2026-10-03T18:39:05Z",
+          "jobStartedAt": "2026-10-03T18:38:55Z",
+          "jobCompletedAt": "2026-10-03T18:39:08Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266844856,
+          "name": "capture (c7-2plus2-qb-row-138)",
+          "runnerName": "GitHub Actions 1000000984",
+          "startedAt": "2026-10-03T18:39:05Z",
+          "completedAt": "2026-10-03T18:39:06Z",
+          "jobStartedAt": "2026-10-03T18:38:54Z",
+          "jobCompletedAt": "2026-10-03T18:39:09Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266844910,
+          "name": "capture (c7-2plus2-qb-row-300)",
+          "runnerName": "GitHub Actions 1000000985",
+          "startedAt": "2026-10-03T18:39:04Z",
+          "completedAt": "2026-10-03T18:39:04Z",
+          "jobStartedAt": "2026-10-03T18:38:54Z",
+          "jobCompletedAt": "2026-10-03T18:39:06Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266844932,
+          "name": "capture (c7-2plus2-qb-row-254)",
+          "runnerName": "GitHub Actions 1000000987",
+          "startedAt": "2026-10-03T18:39:05Z",
+          "completedAt": "2026-10-03T18:39:06Z",
+          "jobStartedAt": "2026-10-03T18:38:56Z",
+          "jobCompletedAt": "2026-10-03T18:39:09Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266845031,
+          "name": "capture (c7-2plus2-qb-row-070)",
+          "runnerName": "GitHub Actions 1000000988",
+          "startedAt": "2026-10-03T18:39:17Z",
+          "completedAt": "2026-10-03T18:39:18Z",
+          "jobStartedAt": "2026-10-03T18:39:06Z",
+          "jobCompletedAt": "2026-10-03T18:39:21Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266845540,
+          "name": "capture (c7-2plus2-qb-row-153)",
+          "runnerName": "GitHub Actions 1000000989",
+          "startedAt": "2026-10-03T18:39:18Z",
+          "completedAt": "2026-10-03T18:39:18Z",
+          "jobStartedAt": "2026-10-03T18:39:07Z",
+          "jobCompletedAt": "2026-10-03T18:39:22Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266845606,
+          "name": "capture (c7-2plus2-qb-row-209)",
+          "runnerName": "GitHub Actions 1000000990",
+          "startedAt": "2026-10-03T18:39:16Z",
+          "completedAt": "2026-10-03T18:39:17Z",
+          "jobStartedAt": "2026-10-03T18:39:08Z",
+          "jobCompletedAt": "2026-10-03T18:39:20Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266845612,
+          "name": "capture (c7-2plus2-qb-row-107)",
+          "runnerName": "GitHub Actions 1000000992",
+          "startedAt": "2026-10-03T18:39:17Z",
+          "completedAt": "2026-10-03T18:39:17Z",
+          "jobStartedAt": "2026-10-03T18:39:08Z",
+          "jobCompletedAt": "2026-10-03T18:39:20Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266845630,
+          "name": "capture (c7-2plus2-qb-row-142)",
+          "runnerName": "GitHub Actions 1000000991",
+          "startedAt": "2026-10-03T18:39:21Z",
+          "completedAt": "2026-10-03T18:39:21Z",
+          "jobStartedAt": "2026-10-03T18:39:10Z",
+          "jobCompletedAt": "2026-10-03T18:39:25Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266845700,
+          "name": "capture (c7-2plus2-qb-row-199)",
+          "runnerName": "GitHub Actions 1000000993",
+          "startedAt": "2026-10-03T18:39:20Z",
+          "completedAt": "2026-10-03T18:39:21Z",
+          "jobStartedAt": "2026-10-03T18:39:09Z",
+          "jobCompletedAt": "2026-10-03T18:39:23Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266845730,
+          "name": "capture (c7-2plus2-qb-row-133)",
+          "runnerName": "GitHub Actions 1000000994",
+          "startedAt": "2026-10-03T18:39:21Z",
+          "completedAt": "2026-10-03T18:39:21Z",
+          "jobStartedAt": "2026-10-03T18:39:10Z",
+          "jobCompletedAt": "2026-10-03T18:39:26Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266845731,
+          "name": "capture (c7-2plus2-qb-row-232)",
+          "runnerName": "GitHub Actions 1000000995",
+          "startedAt": "2026-10-03T18:39:21Z",
+          "completedAt": "2026-10-03T18:39:21Z",
+          "jobStartedAt": "2026-10-03T18:39:10Z",
+          "jobCompletedAt": "2026-10-03T18:39:24Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266845789,
+          "name": "capture (c7-2plus2-qb-row-280)",
+          "runnerName": "GitHub Actions 1000000996",
+          "startedAt": "2026-10-03T18:39:20Z",
+          "completedAt": "2026-10-03T18:39:21Z",
+          "jobStartedAt": "2026-10-03T18:39:11Z",
+          "jobCompletedAt": "2026-10-03T18:39:23Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266845881,
+          "name": "capture (c7-2plus2-qb-row-322)",
+          "runnerName": "GitHub Actions 1000000998",
+          "startedAt": "2026-10-03T18:39:33Z",
+          "completedAt": "2026-10-03T18:39:33Z",
+          "jobStartedAt": "2026-10-03T18:39:22Z",
+          "jobCompletedAt": "2026-10-03T18:39:37Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266845883,
+          "name": "capture (c7-2plus2-qb-row-201)",
+          "runnerName": "GitHub Actions 1000000997",
+          "startedAt": "2026-10-03T18:39:33Z",
+          "completedAt": "2026-10-03T18:39:33Z",
+          "jobStartedAt": "2026-10-03T18:39:21Z",
+          "jobCompletedAt": "2026-10-03T18:39:37Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266846289,
+          "name": "capture (c7-2plus2-qb-row-020)",
+          "runnerName": "GitHub Actions 1000000999",
+          "startedAt": "2026-10-03T18:39:32Z",
+          "completedAt": "2026-10-03T18:39:33Z",
+          "jobStartedAt": "2026-10-03T18:39:23Z",
+          "jobCompletedAt": "2026-10-03T18:39:35Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266846330,
+          "name": "capture (c7-2plus2-qb-row-122)",
+          "runnerName": "GitHub Actions 1000001000",
+          "startedAt": "2026-10-03T18:39:34Z",
+          "completedAt": "2026-10-03T18:39:34Z",
+          "jobStartedAt": "2026-10-03T18:39:24Z",
+          "jobCompletedAt": "2026-10-03T18:39:37Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266846374,
+          "name": "capture (c7-2plus2-qb-row-204)",
+          "runnerName": "GitHub Actions 1000001002",
+          "startedAt": "2026-10-03T18:39:38Z",
+          "completedAt": "2026-10-03T18:39:38Z",
+          "jobStartedAt": "2026-10-03T18:39:26Z",
+          "jobCompletedAt": "2026-10-03T18:39:42Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266846406,
+          "name": "capture (c7-2plus2-qb-row-324)",
+          "runnerName": "GitHub Actions 1000001001",
+          "startedAt": "2026-10-03T18:39:34Z",
+          "completedAt": "2026-10-03T18:39:34Z",
+          "jobStartedAt": "2026-10-03T18:39:25Z",
+          "jobCompletedAt": "2026-10-03T18:39:37Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266846441,
+          "name": "capture (c7-2plus2-qb-row-175)",
+          "runnerName": "GitHub Actions 1000001003",
+          "startedAt": "2026-10-03T18:39:39Z",
+          "completedAt": "2026-10-03T18:39:39Z",
+          "jobStartedAt": "2026-10-03T18:39:27Z",
+          "jobCompletedAt": "2026-10-03T18:39:44Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266846455,
+          "name": "capture (c7-2plus2-qb-row-004)",
+          "runnerName": "GitHub Actions 1000001004",
+          "startedAt": "2026-10-03T18:39:39Z",
+          "completedAt": "2026-10-03T18:39:39Z",
+          "jobStartedAt": "2026-10-03T18:39:27Z",
+          "jobCompletedAt": "2026-10-03T18:39:44Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266846494,
+          "name": "capture (c7-2plus2-qb-row-013)",
+          "runnerName": "GitHub Actions 1000001005",
+          "startedAt": "2026-10-03T18:39:38Z",
+          "completedAt": "2026-10-03T18:39:38Z",
+          "jobStartedAt": "2026-10-03T18:39:27Z",
+          "jobCompletedAt": "2026-10-03T18:39:41Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266846582,
+          "name": "capture (c7-2plus2-qb-row-002)",
+          "runnerName": "GitHub Actions 1000001006",
+          "startedAt": "2026-10-03T18:39:36Z",
+          "completedAt": "2026-10-03T18:39:36Z",
+          "jobStartedAt": "2026-10-03T18:39:27Z",
+          "jobCompletedAt": "2026-10-03T18:39:39Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266846689,
+          "name": "capture (c7-2plus2-qb-row-304)",
+          "runnerName": "GitHub Actions 1000001008",
+          "startedAt": "2026-10-03T18:39:48Z",
+          "completedAt": "2026-10-03T18:39:48Z",
+          "jobStartedAt": "2026-10-03T18:39:38Z",
+          "jobCompletedAt": "2026-10-03T18:39:51Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266846769,
+          "name": "capture (c7-2plus2-qb-row-075)",
+          "runnerName": "GitHub Actions 1000001007",
+          "startedAt": "2026-10-03T18:39:47Z",
+          "completedAt": "2026-10-03T18:39:47Z",
+          "jobStartedAt": "2026-10-03T18:39:37Z",
+          "jobCompletedAt": "2026-10-03T18:39:50Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266847098,
+          "name": "capture (c7-2plus2-qb-row-327)",
+          "runnerName": "GitHub Actions 1000001010",
+          "startedAt": "2026-10-03T18:39:48Z",
+          "completedAt": "2026-10-03T18:39:49Z",
+          "jobStartedAt": "2026-10-03T18:39:39Z",
+          "jobCompletedAt": "2026-10-03T18:39:52Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266847143,
+          "name": "capture (c7-2plus2-qb-row-098)",
+          "runnerName": "GitHub Actions 1000001009",
+          "startedAt": "2026-10-03T18:39:55Z",
+          "completedAt": "2026-10-03T18:39:55Z",
+          "jobStartedAt": "2026-10-03T18:39:40Z",
+          "jobCompletedAt": "2026-10-03T18:39:59Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266847176,
+          "name": "capture (c7-2plus2-qb-row-275)",
+          "runnerName": "GitHub Actions 1000001011",
+          "startedAt": "2026-10-03T18:39:51Z",
+          "completedAt": "2026-10-03T18:39:51Z",
+          "jobStartedAt": "2026-10-03T18:39:40Z",
+          "jobCompletedAt": "2026-10-03T18:39:56Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266847247,
+          "name": "capture (c7-2plus2-qb-row-270)",
+          "runnerName": "GitHub Actions 1000001013",
+          "startedAt": "2026-10-03T18:39:56Z",
+          "completedAt": "2026-10-03T18:39:56Z",
+          "jobStartedAt": "2026-10-03T18:39:43Z",
+          "jobCompletedAt": "2026-10-03T18:40:00Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266847266,
+          "name": "capture (c7-2plus2-qb-row-056)",
+          "runnerName": "GitHub Actions 1000001014",
+          "startedAt": "2026-10-03T18:39:53Z",
+          "completedAt": "2026-10-03T18:39:53Z",
+          "jobStartedAt": "2026-10-03T18:39:44Z",
+          "jobCompletedAt": "2026-10-03T18:39:56Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266847311,
+          "name": "capture (c7-2plus2-qb-row-072)",
+          "runnerName": "GitHub Actions 1000001012",
+          "startedAt": "2026-10-03T18:39:51Z",
+          "completedAt": "2026-10-03T18:39:52Z",
+          "jobStartedAt": "2026-10-03T18:39:41Z",
+          "jobCompletedAt": "2026-10-03T18:39:55Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266847317,
+          "name": "capture (c7-2plus2-qb-row-222)",
+          "runnerName": "GitHub Actions 1000001015",
+          "startedAt": "2026-10-03T18:39:59Z",
+          "completedAt": "2026-10-03T18:40:00Z",
+          "jobStartedAt": "2026-10-03T18:39:45Z",
+          "jobCompletedAt": "2026-10-03T18:40:04Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266847428,
+          "name": "capture (c7-2plus2-qb-row-330)",
+          "runnerName": "GitHub Actions 1000001017",
+          "startedAt": "2026-10-03T18:40:03Z",
+          "completedAt": "2026-10-03T18:40:03Z",
+          "jobStartedAt": "2026-10-03T18:39:52Z",
+          "jobCompletedAt": "2026-10-03T18:40:07Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266847449,
+          "name": "capture (c7-2plus2-qb-row-220)",
+          "runnerName": "GitHub Actions 1000001016",
+          "startedAt": "2026-10-03T18:39:55Z",
+          "completedAt": "2026-10-03T18:39:56Z",
+          "jobStartedAt": "2026-10-03T18:39:45Z",
+          "jobCompletedAt": "2026-10-03T18:39:58Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266847555,
+          "name": "capture (c7-2plus2-qb-row-293)",
+          "runnerName": "GitHub Actions 1000001018",
+          "startedAt": "2026-10-03T18:40:03Z",
+          "completedAt": "2026-10-03T18:40:03Z",
+          "jobStartedAt": "2026-10-03T18:39:53Z",
+          "jobCompletedAt": "2026-10-03T18:40:07Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266847838,
+          "name": "capture (c7-2plus2-qb-row-335)",
+          "runnerName": "GitHub Actions 1000001019",
+          "startedAt": "2026-10-03T18:40:04Z",
+          "completedAt": "2026-10-03T18:40:05Z",
+          "jobStartedAt": "2026-10-03T18:39:54Z",
+          "jobCompletedAt": "2026-10-03T18:40:07Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266847925,
+          "name": "capture (c7-2plus2-qb-row-346)",
+          "runnerName": "GitHub Actions 1000001020",
+          "startedAt": "2026-10-03T18:40:08Z",
+          "completedAt": "2026-10-03T18:40:08Z",
+          "jobStartedAt": "2026-10-03T18:39:57Z",
+          "jobCompletedAt": "2026-10-03T18:40:13Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266848046,
+          "name": "capture (c7-2plus2-qb-row-019)",
+          "runnerName": "GitHub Actions 1000001022",
+          "startedAt": "2026-10-03T18:40:07Z",
+          "completedAt": "2026-10-03T18:40:07Z",
+          "jobStartedAt": "2026-10-03T18:39:57Z",
+          "jobCompletedAt": "2026-10-03T18:40:10Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266848070,
+          "name": "capture (c7-2plus2-qb-row-250)",
+          "runnerName": "GitHub Actions 1000001023",
+          "startedAt": "2026-10-03T18:40:11Z",
+          "completedAt": "2026-10-03T18:40:11Z",
+          "jobStartedAt": "2026-10-03T18:40:00Z",
+          "jobCompletedAt": "2026-10-03T18:40:14Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266848102,
+          "name": "capture (c7-2plus2-qb-row-197)",
+          "runnerName": "GitHub Actions 1000001021",
+          "startedAt": "2026-10-03T18:40:06Z",
+          "completedAt": "2026-10-03T18:40:06Z",
+          "jobStartedAt": "2026-10-03T18:39:57Z",
+          "jobCompletedAt": "2026-10-03T18:40:10Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266848227,
+          "name": "capture (c7-2plus2-qb-row-145)",
+          "runnerName": "GitHub Actions 1000001024",
+          "startedAt": "2026-10-03T18:40:10Z",
+          "completedAt": "2026-10-03T18:40:10Z",
+          "jobStartedAt": "2026-10-03T18:40:01Z",
+          "jobCompletedAt": "2026-10-03T18:40:13Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266848295,
+          "name": "capture (c7-2plus2-qb-row-332)",
+          "runnerName": "GitHub Actions 1000001025",
+          "startedAt": "2026-10-03T18:40:12Z",
+          "completedAt": "2026-10-03T18:40:12Z",
+          "jobStartedAt": "2026-10-03T18:40:02Z",
+          "jobCompletedAt": "2026-10-03T18:40:16Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266848362,
+          "name": "capture (c7-2plus2-qb-row-214)",
+          "runnerName": "GitHub Actions 1000001026",
+          "startedAt": "2026-10-03T18:40:20Z",
+          "completedAt": "2026-10-03T18:40:20Z",
+          "jobStartedAt": "2026-10-03T18:40:07Z",
+          "jobCompletedAt": "2026-10-03T18:40:25Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266848485,
+          "name": "capture (c7-2plus2-qb-row-274--mirror)",
+          "runnerName": "GitHub Actions 1000001027",
+          "startedAt": "2026-10-03T18:40:20Z",
+          "completedAt": "2026-10-03T18:40:21Z",
+          "jobStartedAt": "2026-10-03T18:40:09Z",
+          "jobCompletedAt": "2026-10-03T18:40:24Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266848533,
+          "name": "capture (c7-2plus2-qb-row-273)",
+          "runnerName": "GitHub Actions 1000001028",
+          "startedAt": "2026-10-03T18:40:21Z",
+          "completedAt": "2026-10-03T18:40:21Z",
+          "jobStartedAt": "2026-10-03T18:40:09Z",
+          "jobCompletedAt": "2026-10-03T18:40:26Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266848673,
+          "name": "capture (c7-2plus2-qb-row-313)",
+          "runnerName": "GitHub Actions 1000001029",
+          "startedAt": "2026-10-03T18:40:22Z",
+          "completedAt": "2026-10-03T18:40:22Z",
+          "jobStartedAt": "2026-10-03T18:40:09Z",
+          "jobCompletedAt": "2026-10-03T18:40:27Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266848766,
+          "name": "capture (c7-2plus2-qb-row-167)",
+          "runnerName": "GitHub Actions 1000001030",
+          "startedAt": "2026-10-03T18:40:20Z",
+          "completedAt": "2026-10-03T18:40:21Z",
+          "jobStartedAt": "2026-10-03T18:40:11Z",
+          "jobCompletedAt": "2026-10-03T18:40:23Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266848876,
+          "name": "capture (c7-2plus2-qb-row-012)",
+          "runnerName": "GitHub Actions 1000001031",
+          "startedAt": "2026-10-03T18:40:23Z",
+          "completedAt": "2026-10-03T18:40:23Z",
+          "jobStartedAt": "2026-10-03T18:40:12Z",
+          "jobCompletedAt": "2026-10-03T18:40:26Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266848969,
+          "name": "capture (c7-2plus2-qb-row-306)",
+          "runnerName": "GitHub Actions 1000001032",
+          "startedAt": "2026-10-03T18:40:26Z",
+          "completedAt": "2026-10-03T18:40:27Z",
+          "jobStartedAt": "2026-10-03T18:40:15Z",
+          "jobCompletedAt": "2026-10-03T18:40:30Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266848997,
+          "name": "capture (c7-2plus2-qb-row-084)",
+          "runnerName": "GitHub Actions 1000001034",
+          "startedAt": "2026-10-03T18:40:27Z",
+          "completedAt": "2026-10-03T18:40:28Z",
+          "jobStartedAt": "2026-10-03T18:40:16Z",
+          "jobCompletedAt": "2026-10-03T18:40:32Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266849035,
+          "name": "capture (c7-2plus2-qb-row-284)",
+          "runnerName": "GitHub Actions 1000001033",
+          "startedAt": "2026-10-03T18:40:26Z",
+          "completedAt": "2026-10-03T18:40:27Z",
+          "jobStartedAt": "2026-10-03T18:40:15Z",
+          "jobCompletedAt": "2026-10-03T18:40:31Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266849074,
+          "name": "capture (c7-2plus2-qb-row-328)",
+          "runnerName": "GitHub Actions 1000001035",
+          "startedAt": "2026-10-03T18:40:27Z",
+          "completedAt": "2026-10-03T18:40:28Z",
+          "jobStartedAt": "2026-10-03T18:40:18Z",
+          "jobCompletedAt": "2026-10-03T18:40:30Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266849161,
+          "name": "capture (c7-2plus2-qb-row-174)",
+          "runnerName": "GitHub Actions 1000001036",
+          "startedAt": "2026-10-03T18:40:42Z",
+          "completedAt": "2026-10-03T18:40:43Z",
+          "jobStartedAt": "2026-10-03T18:40:25Z",
+          "jobCompletedAt": "2026-10-03T18:40:46Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266849316,
+          "name": "capture (c7-2plus2-qb-row-018)",
+          "runnerName": "GitHub Actions 1000001037",
+          "startedAt": "2026-10-03T18:40:36Z",
+          "completedAt": "2026-10-03T18:40:37Z",
+          "jobStartedAt": "2026-10-03T18:40:26Z",
+          "jobCompletedAt": "2026-10-03T18:40:40Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266849456,
+          "name": "capture (c7-2plus2-qb-row-272)",
+          "runnerName": "GitHub Actions 1000001038",
+          "startedAt": "2026-10-03T18:40:35Z",
+          "completedAt": "2026-10-03T18:40:35Z",
+          "jobStartedAt": "2026-10-03T18:40:26Z",
+          "jobCompletedAt": "2026-10-03T18:40:37Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266849631,
+          "name": "capture (c7-2plus2-qb-row-080)",
+          "runnerName": "GitHub Actions 1000001039",
+          "startedAt": "2026-10-03T18:40:40Z",
+          "completedAt": "2026-10-03T18:40:40Z",
+          "jobStartedAt": "2026-10-03T18:40:28Z",
+          "jobCompletedAt": "2026-10-03T18:40:44Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266849781,
+          "name": "capture (c7-2plus2-qb-row-100)",
+          "runnerName": "GitHub Actions 1000001040",
+          "startedAt": "2026-10-03T18:40:39Z",
+          "completedAt": "2026-10-03T18:40:40Z",
+          "jobStartedAt": "2026-10-03T18:40:28Z",
+          "jobCompletedAt": "2026-10-03T18:40:42Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266849859,
+          "name": "capture (c7-2plus2-qb-row-047)",
+          "runnerName": "GitHub Actions 1000001043",
+          "startedAt": "2026-10-03T18:40:41Z",
+          "completedAt": "2026-10-03T18:40:42Z",
+          "jobStartedAt": "2026-10-03T18:40:32Z",
+          "jobCompletedAt": "2026-10-03T18:40:44Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266849876,
+          "name": "capture (c7-2plus2-qb-row-120)",
+          "runnerName": "GitHub Actions 1000001041",
+          "startedAt": "2026-10-03T18:40:41Z",
+          "completedAt": "2026-10-03T18:40:42Z",
+          "jobStartedAt": "2026-10-03T18:40:29Z",
+          "jobCompletedAt": "2026-10-03T18:40:45Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266849957,
+          "name": "capture (c7-2plus2-qb-row-329)",
+          "runnerName": "GitHub Actions 1000001042",
+          "startedAt": "2026-10-03T18:40:42Z",
+          "completedAt": "2026-10-03T18:40:42Z",
+          "jobStartedAt": "2026-10-03T18:40:32Z",
+          "jobCompletedAt": "2026-10-03T18:40:45Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266850024,
+          "name": "capture (c7-2plus2-qb-row-228)",
+          "runnerName": "GitHub Actions 1000001044",
+          "startedAt": "2026-10-03T18:40:42Z",
+          "completedAt": "2026-10-03T18:40:42Z",
+          "jobStartedAt": "2026-10-03T18:40:32Z",
+          "jobCompletedAt": "2026-10-03T18:40:46Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266850039,
+          "name": "capture (c7-2plus2-qb-row-181)",
+          "runnerName": "GitHub Actions 1000001045",
+          "startedAt": "2026-10-03T18:40:43Z",
+          "completedAt": "2026-10-03T18:40:43Z",
+          "jobStartedAt": "2026-10-03T18:40:34Z",
+          "jobCompletedAt": "2026-10-03T18:40:46Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266850108,
+          "name": "capture (c7-2plus2-qb-row-164)",
+          "runnerName": "GitHub Actions 1000001046",
+          "startedAt": "2026-10-03T18:40:52Z",
+          "completedAt": "2026-10-03T18:40:52Z",
+          "jobStartedAt": "2026-10-03T18:40:40Z",
+          "jobCompletedAt": "2026-10-03T18:40:57Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266850312,
+          "name": "capture (c7-2plus2-qb-row-121)",
+          "runnerName": "GitHub Actions 1000001047",
+          "startedAt": "2026-10-03T18:40:53Z",
+          "completedAt": "2026-10-03T18:40:53Z",
+          "jobStartedAt": "2026-10-03T18:40:42Z",
+          "jobCompletedAt": "2026-10-03T18:40:57Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266850344,
+          "name": "capture (c7-2plus2-qb-row-292)",
+          "runnerName": "GitHub Actions 1000001048",
+          "startedAt": "2026-10-03T18:40:55Z",
+          "completedAt": "2026-10-03T18:40:56Z",
+          "jobStartedAt": "2026-10-03T18:40:44Z",
+          "jobCompletedAt": "2026-10-03T18:41:00Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266850565,
+          "name": "capture (c7-2plus2-qb-row-196)",
+          "runnerName": "GitHub Actions 1000001049",
+          "startedAt": "2026-10-03T18:40:58Z",
+          "completedAt": "2026-10-03T18:40:58Z",
+          "jobStartedAt": "2026-10-03T18:40:47Z",
+          "jobCompletedAt": "2026-10-03T18:41:02Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266850710,
+          "name": "capture (c7-2plus2-qb-row-112)",
+          "runnerName": "GitHub Actions 1000001050",
+          "startedAt": "2026-10-03T18:40:57Z",
+          "completedAt": "2026-10-03T18:40:57Z",
+          "jobStartedAt": "2026-10-03T18:40:46Z",
+          "jobCompletedAt": "2026-10-03T18:41:00Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266850721,
+          "name": "capture (c7-2plus2-qb-row-289)",
+          "runnerName": "GitHub Actions 1000001051",
+          "startedAt": "2026-10-03T18:40:58Z",
+          "completedAt": "2026-10-03T18:40:59Z",
+          "jobStartedAt": "2026-10-03T18:40:48Z",
+          "jobCompletedAt": "2026-10-03T18:41:02Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266850775,
+          "name": "capture (c7-2plus2-qb-row-125)",
+          "runnerName": "GitHub Actions 1000001053",
+          "startedAt": "2026-10-03T18:41:32Z",
+          "completedAt": "2026-10-03T18:41:32Z",
+          "jobStartedAt": "2026-10-03T18:40:47Z",
+          "jobCompletedAt": "2026-10-03T18:41:35Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266850787,
+          "name": "capture (c7-2plus2-qb-row-007)",
+          "runnerName": "GitHub Actions 1000001052",
+          "startedAt": "2026-10-03T18:40:56Z",
+          "completedAt": "2026-10-03T18:40:57Z",
+          "jobStartedAt": "2026-10-03T18:40:47Z",
+          "jobCompletedAt": "2026-10-03T18:40:59Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266850900,
+          "name": "capture (c7-2plus2-qb-row-249)",
+          "runnerName": "GitHub Actions 1000001054",
+          "startedAt": "2026-10-03T18:40:57Z",
+          "completedAt": "2026-10-03T18:40:57Z",
+          "jobStartedAt": "2026-10-03T18:40:48Z",
+          "jobCompletedAt": "2026-10-03T18:41:00Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266851041,
+          "name": "capture (c7-2plus2-qb-row-336)",
+          "runnerName": "GitHub Actions 1000001055",
+          "startedAt": "2026-10-03T18:41:00Z",
+          "completedAt": "2026-10-03T18:41:00Z",
+          "jobStartedAt": "2026-10-03T18:40:48Z",
+          "jobCompletedAt": "2026-10-03T18:41:04Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266851063,
+          "name": "capture (c7-2plus2-qb-row-343)",
+          "runnerName": "GitHub Actions 1000001057",
+          "startedAt": "2026-10-03T18:41:08Z",
+          "completedAt": "2026-10-03T18:41:09Z",
+          "jobStartedAt": "2026-10-03T18:40:59Z",
+          "jobCompletedAt": "2026-10-03T18:41:11Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266851114,
+          "name": "capture (c7-2plus2-qb-row-141)",
+          "runnerName": "GitHub Actions 1000001056",
+          "startedAt": "2026-10-03T18:41:07Z",
+          "completedAt": "2026-10-03T18:41:07Z",
+          "jobStartedAt": "2026-10-03T18:40:58Z",
+          "jobCompletedAt": "2026-10-03T18:41:09Z"
+        },
+        {
+          "phase": "capture",
+          "jobId": 111266851272,
+          "name": "capture (c7-2plus2-qb-row-162)",
+          "runnerName": "GitHub Actions 1000001058",
+          "startedAt": "2026-10-03T18:41:13Z",
+          "completedAt": "2026-10-03T18:41:13Z",
+          "jobStartedAt": "2026-10-03T18:41:01Z",
+          "jobCompletedAt": "2026-10-03T18:41:17Z"
+        }
+      ],
+      "maxOverlap": 2,
+      "zeroSecondIntervals": 63,
+      "start": "2026-10-03T18:38:28.000Z",
+      "end": "2026-10-03T18:41:32.000Z",
+      "windowMinutes": 3.066666666666667,
+      "longestMinutes": 0.016666666666666666,
+      "shardJobs": {
+        "intervals": 100,
+        "maxOverlap": 10,
+        "zeroSecondIntervals": 0,
+        "start": "2026-10-03T18:38:19.000Z",
+        "end": "2026-10-03T18:41:35.000Z",
+        "windowMinutes": 3.2666666666666666,
+        "longestMinutes": 0.8
+      }
+    },
+    "benchmark": {
+      "intervals": [
+        {
+          "phase": "benchmark",
+          "jobId": 111267532056,
+          "name": "benchmark (c7-2plus2-qb-row-087-J)",
+          "runnerName": "GitHub Actions 1000001062",
+          "startedAt": "2026-10-03T18:42:15Z",
+          "completedAt": "2026-10-03T18:42:17Z",
+          "jobStartedAt": "2026-10-03T18:42:02Z",
+          "jobCompletedAt": "2026-10-03T18:42:21Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532080,
+          "name": "benchmark (c7-2plus2-qb-row-271-T)",
+          "runnerName": "GitHub Actions 1000001060",
+          "startedAt": "2026-10-03T18:42:16Z",
+          "completedAt": "2026-10-03T18:42:18Z",
+          "jobStartedAt": "2026-10-03T18:42:04Z",
+          "jobCompletedAt": "2026-10-03T18:42:22Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532083,
+          "name": "benchmark (c7-2plus2-qb-row-025-T)",
+          "runnerName": "GitHub Actions 1000001061",
+          "startedAt": "2026-10-03T18:42:14Z",
+          "completedAt": "2026-10-03T18:42:16Z",
+          "jobStartedAt": "2026-10-03T18:42:02Z",
+          "jobCompletedAt": "2026-10-03T18:42:20Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532108,
+          "name": "benchmark (c7-2plus2-qb-row-326-L)",
+          "runnerName": "GitHub Actions 1000001063",
+          "startedAt": "2026-10-03T18:42:11Z",
+          "completedAt": "2026-10-03T18:42:13Z",
+          "jobStartedAt": "2026-10-03T18:42:02Z",
+          "jobCompletedAt": "2026-10-03T18:42:15Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532111,
+          "name": "benchmark (c7-2plus2-qb-row-154-S)",
+          "runnerName": "GitHub Actions 1000001066",
+          "startedAt": "2026-10-03T18:42:15Z",
+          "completedAt": "2026-10-03T18:42:17Z",
+          "jobStartedAt": "2026-10-03T18:42:03Z",
+          "jobCompletedAt": "2026-10-03T18:42:21Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532113,
+          "name": "benchmark (c7-2plus2-qb-row-134-J)",
+          "runnerName": "GitHub Actions 1000001064",
+          "startedAt": "2026-10-03T18:42:14Z",
+          "completedAt": "2026-10-03T18:42:16Z",
+          "jobStartedAt": "2026-10-03T18:42:03Z",
+          "jobCompletedAt": "2026-10-03T18:42:20Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532131,
+          "name": "benchmark (c7-2plus2-qb-row-052-T)",
+          "runnerName": "GitHub Actions 1000001065",
+          "startedAt": "2026-10-03T18:42:21Z",
+          "completedAt": "2026-10-03T18:42:22Z",
+          "jobStartedAt": "2026-10-03T18:42:08Z",
+          "jobCompletedAt": "2026-10-03T18:42:25Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532146,
+          "name": "benchmark (c7-2plus2-qb-row-039-O)",
+          "runnerName": "GitHub Actions 1000001068",
+          "startedAt": "2026-10-03T18:42:13Z",
+          "completedAt": "2026-10-03T18:42:15Z",
+          "jobStartedAt": "2026-10-03T18:42:02Z",
+          "jobCompletedAt": "2026-10-03T18:42:18Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532169,
+          "name": "benchmark (c7-2plus2-qb-row-339-T)",
+          "runnerName": "GitHub Actions 1000001067",
+          "startedAt": "2026-10-03T18:42:12Z",
+          "completedAt": "2026-10-03T18:42:13Z",
+          "jobStartedAt": "2026-10-03T18:42:02Z",
+          "jobCompletedAt": "2026-10-03T18:42:16Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532174,
+          "name": "benchmark (c7-2plus2-qb-row-104-S)",
+          "runnerName": "GitHub Actions 1000001072",
+          "startedAt": "2026-10-03T18:42:30Z",
+          "completedAt": "2026-10-03T18:42:31Z",
+          "jobStartedAt": "2026-10-03T18:42:20Z",
+          "jobCompletedAt": "2026-10-03T18:42:34Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532180,
+          "name": "benchmark (c7-2plus2-qb-row-069-S)",
+          "runnerName": "GitHub Actions 1000001076",
+          "startedAt": "2026-10-03T18:42:34Z",
+          "completedAt": "2026-10-03T18:42:35Z",
+          "jobStartedAt": "2026-10-03T18:42:24Z",
+          "jobCompletedAt": "2026-10-03T18:42:38Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532183,
+          "name": "benchmark (c7-2plus2-qb-row-139-Z)",
+          "runnerName": "GitHub Actions 1000001075",
+          "startedAt": "2026-10-03T18:42:35Z",
+          "completedAt": "2026-10-03T18:42:36Z",
+          "jobStartedAt": "2026-10-03T18:42:23Z",
+          "jobCompletedAt": "2026-10-03T18:42:41Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532199,
+          "name": "benchmark (c7-2plus2-qb-row-260-I)",
+          "runnerName": "GitHub Actions 1000001070",
+          "startedAt": "2026-10-03T18:42:26Z",
+          "completedAt": "2026-10-03T18:42:28Z",
+          "jobStartedAt": "2026-10-03T18:42:17Z",
+          "jobCompletedAt": "2026-10-03T18:42:30Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532207,
+          "name": "benchmark (c7-2plus2-qb-row-287-I)",
+          "runnerName": "GitHub Actions 1000001074",
+          "startedAt": "2026-10-03T18:42:31Z",
+          "completedAt": "2026-10-03T18:42:32Z",
+          "jobStartedAt": "2026-10-03T18:42:21Z",
+          "jobCompletedAt": "2026-10-03T18:42:34Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532213,
+          "name": "benchmark (c7-2plus2-qb-row-062-O)",
+          "runnerName": "GitHub Actions 1000001071",
+          "startedAt": "2026-10-03T18:42:30Z",
+          "completedAt": "2026-10-03T18:42:32Z",
+          "jobStartedAt": "2026-10-03T18:42:18Z",
+          "jobCompletedAt": "2026-10-03T18:42:36Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532233,
+          "name": "benchmark (c7-2plus2-qb-row-159-S)",
+          "runnerName": "GitHub Actions 1000001069",
+          "startedAt": "2026-10-03T18:42:15Z",
+          "completedAt": "2026-10-03T18:42:18Z",
+          "jobStartedAt": "2026-10-03T18:42:03Z",
+          "jobCompletedAt": "2026-10-03T18:42:23Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532253,
+          "name": "benchmark (c7-2plus2-qb-row-009-Z)",
+          "runnerName": "GitHub Actions 1000001078",
+          "startedAt": "2026-10-03T18:42:37Z",
+          "completedAt": "2026-10-03T18:42:38Z",
+          "jobStartedAt": "2026-10-03T18:42:25Z",
+          "jobCompletedAt": "2026-10-03T18:42:43Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532261,
+          "name": "benchmark (c7-2plus2-qb-row-030-I)",
+          "runnerName": "GitHub Actions 1000001079",
+          "startedAt": "2026-10-03T18:42:36Z",
+          "completedAt": "2026-10-03T18:42:37Z",
+          "jobStartedAt": "2026-10-03T18:42:27Z",
+          "jobCompletedAt": "2026-10-03T18:42:40Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532262,
+          "name": "benchmark (c7-2plus2-qb-row-241-O)",
+          "runnerName": "GitHub Actions 1000001073",
+          "startedAt": "2026-10-03T18:42:30Z",
+          "completedAt": "2026-10-03T18:42:31Z",
+          "jobStartedAt": "2026-10-03T18:42:21Z",
+          "jobCompletedAt": "2026-10-03T18:42:34Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267532337,
+          "name": "benchmark (c7-2plus2-qb-row-184-J)",
+          "runnerName": "GitHub Actions 1000001077",
+          "startedAt": "2026-10-03T18:42:39Z",
+          "completedAt": "2026-10-03T18:42:40Z",
+          "jobStartedAt": "2026-10-03T18:42:25Z",
+          "jobCompletedAt": "2026-10-03T18:42:44Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533064,
+          "name": "benchmark (c7-2plus2-qb-row-305-J)",
+          "runnerName": "GitHub Actions 1000001081",
+          "startedAt": "2026-10-03T18:42:46Z",
+          "completedAt": "2026-10-03T18:42:47Z",
+          "jobStartedAt": "2026-10-03T18:42:35Z",
+          "jobCompletedAt": "2026-10-03T18:42:51Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533103,
+          "name": "benchmark (c7-2plus2-qb-row-258--mirror-Z)",
+          "runnerName": "GitHub Actions 1000001082",
+          "startedAt": "2026-10-03T18:42:46Z",
+          "completedAt": "2026-10-03T18:42:47Z",
+          "jobStartedAt": "2026-10-03T18:42:36Z",
+          "jobCompletedAt": "2026-10-03T18:42:50Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533106,
+          "name": "benchmark (c7-2plus2-qb-row-079-J)",
+          "runnerName": "GitHub Actions 1000001080",
+          "startedAt": "2026-10-03T18:42:40Z",
+          "completedAt": "2026-10-03T18:42:41Z",
+          "jobStartedAt": "2026-10-03T18:42:31Z",
+          "jobCompletedAt": "2026-10-03T18:42:43Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533129,
+          "name": "benchmark (c7-2plus2-qb-row-310-O)",
+          "runnerName": "GitHub Actions 1000001083",
+          "startedAt": "2026-10-03T18:42:49Z",
+          "completedAt": "2026-10-03T18:42:50Z",
+          "jobStartedAt": "2026-10-03T18:42:36Z",
+          "jobCompletedAt": "2026-10-03T18:42:54Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533182,
+          "name": "benchmark (c7-2plus2-qb-row-038-J)",
+          "runnerName": "GitHub Actions 1000001084",
+          "startedAt": "2026-10-03T18:42:52Z",
+          "completedAt": "2026-10-03T18:42:53Z",
+          "jobStartedAt": "2026-10-03T18:42:38Z",
+          "jobCompletedAt": "2026-10-03T18:42:58Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533201,
+          "name": "benchmark (c7-2plus2-qb-row-300-T)",
+          "runnerName": "GitHub Actions 1000001086",
+          "startedAt": "2026-10-03T18:42:51Z",
+          "completedAt": "2026-10-03T18:42:52Z",
+          "jobStartedAt": "2026-10-03T18:42:41Z",
+          "jobCompletedAt": "2026-10-03T18:42:56Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533203,
+          "name": "benchmark (c7-2plus2-qb-row-138-T)",
+          "runnerName": "GitHub Actions 1000001085",
+          "startedAt": "2026-10-03T18:42:54Z",
+          "completedAt": "2026-10-03T18:42:55Z",
+          "jobStartedAt": "2026-10-03T18:42:41Z",
+          "jobCompletedAt": "2026-10-03T18:43:00Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533247,
+          "name": "benchmark (c7-2plus2-qb-row-035-L)",
+          "runnerName": "GitHub Actions 1000001087",
+          "startedAt": "2026-10-03T18:42:55Z",
+          "completedAt": "2026-10-03T18:42:56Z",
+          "jobStartedAt": "2026-10-03T18:42:42Z",
+          "jobCompletedAt": "2026-10-03T18:43:00Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533322,
+          "name": "benchmark (c7-2plus2-qb-row-254-O)",
+          "runnerName": "GitHub Actions 1000001088",
+          "startedAt": "2026-10-03T18:42:54Z",
+          "completedAt": "2026-10-03T18:42:56Z",
+          "jobStartedAt": "2026-10-03T18:42:44Z",
+          "jobCompletedAt": "2026-10-03T18:42:59Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533535,
+          "name": "benchmark (c7-2plus2-qb-row-070-I)",
+          "runnerName": "GitHub Actions 1000001089",
+          "startedAt": "2026-10-03T18:42:54Z",
+          "completedAt": "2026-10-03T18:42:55Z",
+          "jobStartedAt": "2026-10-03T18:42:45Z",
+          "jobCompletedAt": "2026-10-03T18:42:57Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533872,
+          "name": "benchmark (c7-2plus2-qb-row-142-I)",
+          "runnerName": "GitHub Actions 1000001092",
+          "startedAt": "2026-10-03T18:43:03Z",
+          "completedAt": "2026-10-03T18:43:05Z",
+          "jobStartedAt": "2026-10-03T18:42:53Z",
+          "jobCompletedAt": "2026-10-03T18:43:08Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533903,
+          "name": "benchmark (c7-2plus2-qb-row-209-J)",
+          "runnerName": "GitHub Actions 1000001091",
+          "startedAt": "2026-10-03T18:43:03Z",
+          "completedAt": "2026-10-03T18:43:05Z",
+          "jobStartedAt": "2026-10-03T18:42:53Z",
+          "jobCompletedAt": "2026-10-03T18:43:08Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533928,
+          "name": "benchmark (c7-2plus2-qb-row-153-L)",
+          "runnerName": "GitHub Actions 1000001090",
+          "startedAt": "2026-10-03T18:42:59Z",
+          "completedAt": "2026-10-03T18:43:01Z",
+          "jobStartedAt": "2026-10-03T18:42:46Z",
+          "jobCompletedAt": "2026-10-03T18:43:03Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533945,
+          "name": "benchmark (c7-2plus2-qb-row-232-Z)",
+          "runnerName": "GitHub Actions 1000001096",
+          "startedAt": "2026-10-03T18:43:10Z",
+          "completedAt": "2026-10-03T18:43:11Z",
+          "jobStartedAt": "2026-10-03T18:43:00Z",
+          "jobCompletedAt": "2026-10-03T18:43:15Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533947,
+          "name": "benchmark (c7-2plus2-qb-row-199-O)",
+          "runnerName": "GitHub Actions 1000001094",
+          "startedAt": "2026-10-03T18:43:10Z",
+          "completedAt": "2026-10-03T18:43:11Z",
+          "jobStartedAt": "2026-10-03T18:42:58Z",
+          "jobCompletedAt": "2026-10-03T18:43:15Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533956,
+          "name": "benchmark (c7-2plus2-qb-row-280-S)",
+          "runnerName": "GitHub Actions 1000001097",
+          "startedAt": "2026-10-03T18:43:09Z",
+          "completedAt": "2026-10-03T18:43:11Z",
+          "jobStartedAt": "2026-10-03T18:43:01Z",
+          "jobCompletedAt": "2026-10-03T18:43:14Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533964,
+          "name": "benchmark (c7-2plus2-qb-row-107-I)",
+          "runnerName": "GitHub Actions 1000001093",
+          "startedAt": "2026-10-03T18:43:10Z",
+          "completedAt": "2026-10-03T18:43:12Z",
+          "jobStartedAt": "2026-10-03T18:42:57Z",
+          "jobCompletedAt": "2026-10-03T18:43:16Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267533981,
+          "name": "benchmark (c7-2plus2-qb-row-133-O)",
+          "runnerName": "GitHub Actions 1000001095",
+          "startedAt": "2026-10-03T18:43:14Z",
+          "completedAt": "2026-10-03T18:43:16Z",
+          "jobStartedAt": "2026-10-03T18:42:59Z",
+          "jobCompletedAt": "2026-10-03T18:43:20Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267534089,
+          "name": "benchmark (c7-2plus2-qb-row-201-O)",
+          "runnerName": "GitHub Actions 1000001098",
+          "startedAt": "2026-10-03T18:43:11Z",
+          "completedAt": "2026-10-03T18:43:12Z",
+          "jobStartedAt": "2026-10-03T18:43:01Z",
+          "jobCompletedAt": "2026-10-03T18:43:15Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267534381,
+          "name": "benchmark (c7-2plus2-qb-row-322-T)",
+          "runnerName": "GitHub Actions 1000001099",
+          "startedAt": "2026-10-03T18:43:14Z",
+          "completedAt": "2026-10-03T18:43:16Z",
+          "jobStartedAt": "2026-10-03T18:43:02Z",
+          "jobCompletedAt": "2026-10-03T18:43:21Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267534520,
+          "name": "benchmark (c7-2plus2-qb-row-020-Z)",
+          "runnerName": "GitHub Actions 1000001100",
+          "startedAt": "2026-10-03T18:43:14Z",
+          "completedAt": "2026-10-03T18:43:17Z",
+          "jobStartedAt": "2026-10-03T18:43:05Z",
+          "jobCompletedAt": "2026-10-03T18:43:19Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267534536,
+          "name": "benchmark (c7-2plus2-qb-row-324-Z)",
+          "runnerName": "GitHub Actions 1000001102",
+          "startedAt": "2026-10-03T18:43:24Z",
+          "completedAt": "2026-10-03T18:43:25Z",
+          "jobStartedAt": "2026-10-03T18:43:12Z",
+          "jobCompletedAt": "2026-10-03T18:43:30Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267534540,
+          "name": "benchmark (c7-2plus2-qb-row-122-T)",
+          "runnerName": "GitHub Actions 1000001101",
+          "startedAt": "2026-10-03T18:43:23Z",
+          "completedAt": "2026-10-03T18:43:25Z",
+          "jobStartedAt": "2026-10-03T18:43:10Z",
+          "jobCompletedAt": "2026-10-03T18:43:29Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267534571,
+          "name": "benchmark (c7-2plus2-qb-row-175-L)",
+          "runnerName": "GitHub Actions 1000001104",
+          "startedAt": "2026-10-03T18:43:28Z",
+          "completedAt": "2026-10-03T18:43:30Z",
+          "jobStartedAt": "2026-10-03T18:43:16Z",
+          "jobCompletedAt": "2026-10-03T18:43:33Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267534587,
+          "name": "benchmark (c7-2plus2-qb-row-204-T)",
+          "runnerName": "GitHub Actions 1000001103",
+          "startedAt": "2026-10-03T18:43:24Z",
+          "completedAt": "2026-10-03T18:43:25Z",
+          "jobStartedAt": "2026-10-03T18:43:15Z",
+          "jobCompletedAt": "2026-10-03T18:43:27Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267534635,
+          "name": "benchmark (c7-2plus2-qb-row-002-O)",
+          "runnerName": "GitHub Actions 1000001107",
+          "startedAt": "2026-10-03T18:43:31Z",
+          "completedAt": "2026-10-03T18:43:32Z",
+          "jobStartedAt": "2026-10-03T18:43:18Z",
+          "jobCompletedAt": "2026-10-03T18:43:36Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267534642,
+          "name": "benchmark (c7-2plus2-qb-row-013-J)",
+          "runnerName": "GitHub Actions 1000001106",
+          "startedAt": "2026-10-03T18:43:30Z",
+          "completedAt": "2026-10-03T18:43:32Z",
+          "jobStartedAt": "2026-10-03T18:43:17Z",
+          "jobCompletedAt": "2026-10-03T18:43:35Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267534654,
+          "name": "benchmark (c7-2plus2-qb-row-004-J)",
+          "runnerName": "GitHub Actions 1000001105",
+          "startedAt": "2026-10-03T18:43:25Z",
+          "completedAt": "2026-10-03T18:43:27Z",
+          "jobStartedAt": "2026-10-03T18:43:16Z",
+          "jobCompletedAt": "2026-10-03T18:43:29Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267534843,
+          "name": "benchmark (c7-2plus2-qb-row-075-J)",
+          "runnerName": "GitHub Actions 1000001108",
+          "startedAt": "2026-10-03T18:43:31Z",
+          "completedAt": "2026-10-03T18:43:32Z",
+          "jobStartedAt": "2026-10-03T18:43:21Z",
+          "jobCompletedAt": "2026-10-03T18:43:35Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267535147,
+          "name": "benchmark (c7-2plus2-qb-row-304-T)",
+          "runnerName": "GitHub Actions 1000001109",
+          "startedAt": "2026-10-03T18:43:34Z",
+          "completedAt": "2026-10-03T18:43:35Z",
+          "jobStartedAt": "2026-10-03T18:43:22Z",
+          "jobCompletedAt": "2026-10-03T18:43:40Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267535261,
+          "name": "benchmark (c7-2plus2-qb-row-098-O)",
+          "runnerName": "GitHub Actions 1000001110",
+          "startedAt": "2026-10-03T18:43:31Z",
+          "completedAt": "2026-10-03T18:43:33Z",
+          "jobStartedAt": "2026-10-03T18:43:23Z",
+          "jobCompletedAt": "2026-10-03T18:43:35Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267535314,
+          "name": "benchmark (c7-2plus2-qb-row-275-O)",
+          "runnerName": "GitHub Actions 1000001112",
+          "startedAt": "2026-10-03T18:43:40Z",
+          "completedAt": "2026-10-03T18:43:42Z",
+          "jobStartedAt": "2026-10-03T18:43:31Z",
+          "jobCompletedAt": "2026-10-03T18:43:45Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267535319,
+          "name": "benchmark (c7-2plus2-qb-row-327-O)",
+          "runnerName": "GitHub Actions 1000001111",
+          "startedAt": "2026-10-03T18:43:41Z",
+          "completedAt": "2026-10-03T18:43:42Z",
+          "jobStartedAt": "2026-10-03T18:43:30Z",
+          "jobCompletedAt": "2026-10-03T18:43:46Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267535340,
+          "name": "benchmark (c7-2plus2-qb-row-270-T)",
+          "runnerName": "GitHub Actions 1000001114",
+          "startedAt": "2026-10-03T18:43:42Z",
+          "completedAt": "2026-10-03T18:43:43Z",
+          "jobStartedAt": "2026-10-03T18:43:31Z",
+          "jobCompletedAt": "2026-10-03T18:43:47Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267535370,
+          "name": "benchmark (c7-2plus2-qb-row-072-T)",
+          "runnerName": "GitHub Actions 1000001113",
+          "startedAt": "2026-10-03T18:43:43Z",
+          "completedAt": "2026-10-03T18:43:44Z",
+          "jobStartedAt": "2026-10-03T18:43:31Z",
+          "jobCompletedAt": "2026-10-03T18:43:47Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267535392,
+          "name": "benchmark (c7-2plus2-qb-row-220-I)",
+          "runnerName": "GitHub Actions 1000001117",
+          "startedAt": "2026-10-03T18:43:49Z",
+          "completedAt": "2026-10-03T18:43:50Z",
+          "jobStartedAt": "2026-10-03T18:43:37Z",
+          "jobCompletedAt": "2026-10-03T18:43:54Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267535393,
+          "name": "benchmark (c7-2plus2-qb-row-222-Z)",
+          "runnerName": "GitHub Actions 1000001116",
+          "startedAt": "2026-10-03T18:43:49Z",
+          "completedAt": "2026-10-03T18:43:51Z",
+          "jobStartedAt": "2026-10-03T18:43:37Z",
+          "jobCompletedAt": "2026-10-03T18:43:56Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267535446,
+          "name": "benchmark (c7-2plus2-qb-row-056-O)",
+          "runnerName": "GitHub Actions 1000001115",
+          "startedAt": "2026-10-03T18:43:47Z",
+          "completedAt": "2026-10-03T18:43:48Z",
+          "jobStartedAt": "2026-10-03T18:43:34Z",
+          "jobCompletedAt": "2026-10-03T18:43:52Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267535547,
+          "name": "benchmark (c7-2plus2-qb-row-330-O)",
+          "runnerName": "GitHub Actions 1000001118",
+          "startedAt": "2026-10-03T18:43:51Z",
+          "completedAt": "2026-10-03T18:43:52Z",
+          "jobStartedAt": "2026-10-03T18:43:39Z",
+          "jobCompletedAt": "2026-10-03T18:43:56Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267535855,
+          "name": "benchmark (c7-2plus2-qb-row-293-S)",
+          "runnerName": "GitHub Actions 1000001119",
+          "startedAt": "2026-10-03T18:43:50Z",
+          "completedAt": "2026-10-03T18:43:51Z",
+          "jobStartedAt": "2026-10-03T18:43:38Z",
+          "jobCompletedAt": "2026-10-03T18:43:55Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267535907,
+          "name": "benchmark (c7-2plus2-qb-row-335-T)",
+          "runnerName": "GitHub Actions 1000001120",
+          "startedAt": "2026-10-03T18:43:51Z",
+          "completedAt": "2026-10-03T18:43:53Z",
+          "jobStartedAt": "2026-10-03T18:43:41Z",
+          "jobCompletedAt": "2026-10-03T18:43:56Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267535967,
+          "name": "benchmark (c7-2plus2-qb-row-346-Z)",
+          "runnerName": "GitHub Actions 1000001121",
+          "startedAt": "2026-10-03T18:43:57Z",
+          "completedAt": "2026-10-03T18:43:58Z",
+          "jobStartedAt": "2026-10-03T18:43:46Z",
+          "jobCompletedAt": "2026-10-03T18:44:01Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536021,
+          "name": "benchmark (c7-2plus2-qb-row-197-L)",
+          "runnerName": "GitHub Actions 1000001122",
+          "startedAt": "2026-10-03T18:44:00Z",
+          "completedAt": "2026-10-03T18:44:02Z",
+          "jobStartedAt": "2026-10-03T18:43:48Z",
+          "jobCompletedAt": "2026-10-03T18:44:07Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536103,
+          "name": "benchmark (c7-2plus2-qb-row-019-L)",
+          "runnerName": "GitHub Actions 1000001123",
+          "startedAt": "2026-10-03T18:43:58Z",
+          "completedAt": "2026-10-03T18:43:59Z",
+          "jobStartedAt": "2026-10-03T18:43:49Z",
+          "jobCompletedAt": "2026-10-03T18:44:02Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536115,
+          "name": "benchmark (c7-2plus2-qb-row-250-I)",
+          "runnerName": "GitHub Actions 1000001124",
+          "startedAt": "2026-10-03T18:44:00Z",
+          "completedAt": "2026-10-03T18:44:01Z",
+          "jobStartedAt": "2026-10-03T18:43:49Z",
+          "jobCompletedAt": "2026-10-03T18:44:05Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536127,
+          "name": "benchmark (c7-2plus2-qb-row-145-J)",
+          "runnerName": "GitHub Actions 1000001125",
+          "startedAt": "2026-10-03T18:44:03Z",
+          "completedAt": "2026-10-03T18:44:04Z",
+          "jobStartedAt": "2026-10-03T18:43:53Z",
+          "jobCompletedAt": "2026-10-03T18:44:07Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536212,
+          "name": "benchmark (c7-2plus2-qb-row-332-O)",
+          "runnerName": "GitHub Actions 1000001126",
+          "startedAt": "2026-10-03T18:44:08Z",
+          "completedAt": "2026-10-03T18:44:10Z",
+          "jobStartedAt": "2026-10-03T18:43:56Z",
+          "jobCompletedAt": "2026-10-03T18:44:13Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536252,
+          "name": "benchmark (c7-2plus2-qb-row-214-T)",
+          "runnerName": "GitHub Actions 1000001127",
+          "startedAt": "2026-10-03T18:44:10Z",
+          "completedAt": "2026-10-03T18:44:12Z",
+          "jobStartedAt": "2026-10-03T18:43:58Z",
+          "jobCompletedAt": "2026-10-03T18:44:15Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536255,
+          "name": "benchmark (c7-2plus2-qb-row-274--mirror-J)",
+          "runnerName": "GitHub Actions 1000001128",
+          "startedAt": "2026-10-03T18:44:08Z",
+          "completedAt": "2026-10-03T18:44:10Z",
+          "jobStartedAt": "2026-10-03T18:43:57Z",
+          "jobCompletedAt": "2026-10-03T18:44:13Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536399,
+          "name": "benchmark (c7-2plus2-qb-row-273-L)",
+          "runnerName": "GitHub Actions 1000001129",
+          "startedAt": "2026-10-03T18:44:06Z",
+          "completedAt": "2026-10-03T18:44:08Z",
+          "jobStartedAt": "2026-10-03T18:43:57Z",
+          "jobCompletedAt": "2026-10-03T18:44:10Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536608,
+          "name": "benchmark (c7-2plus2-qb-row-313-T)",
+          "runnerName": "GitHub Actions 1000001130",
+          "startedAt": "2026-10-03T18:44:08Z",
+          "completedAt": "2026-10-03T18:44:09Z",
+          "jobStartedAt": "2026-10-03T18:43:58Z",
+          "jobCompletedAt": "2026-10-03T18:44:12Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536657,
+          "name": "benchmark (c7-2plus2-qb-row-167-T)",
+          "runnerName": "GitHub Actions 1000001131",
+          "startedAt": "2026-10-03T18:44:14Z",
+          "completedAt": "2026-10-03T18:44:15Z",
+          "jobStartedAt": "2026-10-03T18:44:03Z",
+          "jobCompletedAt": "2026-10-03T18:44:19Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536771,
+          "name": "benchmark (c7-2plus2-qb-row-012-L)",
+          "runnerName": "GitHub Actions 1000001132",
+          "startedAt": "2026-10-03T18:44:13Z",
+          "completedAt": "2026-10-03T18:44:15Z",
+          "jobStartedAt": "2026-10-03T18:44:03Z",
+          "jobCompletedAt": "2026-10-03T18:44:18Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536830,
+          "name": "benchmark (c7-2plus2-qb-row-306-O)",
+          "runnerName": "GitHub Actions 1000001133",
+          "startedAt": "2026-10-03T18:44:17Z",
+          "completedAt": "2026-10-03T18:44:18Z",
+          "jobStartedAt": "2026-10-03T18:44:07Z",
+          "jobCompletedAt": "2026-10-03T18:44:21Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536960,
+          "name": "benchmark (c7-2plus2-qb-row-284-Z)",
+          "runnerName": "GitHub Actions 1000001134",
+          "startedAt": "2026-10-03T18:44:21Z",
+          "completedAt": "2026-10-03T18:44:23Z",
+          "jobStartedAt": "2026-10-03T18:44:08Z",
+          "jobCompletedAt": "2026-10-03T18:44:27Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536964,
+          "name": "benchmark (c7-2plus2-qb-row-328-L)",
+          "runnerName": "GitHub Actions 1000001136",
+          "startedAt": "2026-10-03T18:44:22Z",
+          "completedAt": "2026-10-03T18:44:23Z",
+          "jobStartedAt": "2026-10-03T18:44:11Z",
+          "jobCompletedAt": "2026-10-03T18:44:27Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536973,
+          "name": "benchmark (c7-2plus2-qb-row-174-T)",
+          "runnerName": "GitHub Actions 1000001137",
+          "startedAt": "2026-10-03T18:44:23Z",
+          "completedAt": "2026-10-03T18:44:24Z",
+          "jobStartedAt": "2026-10-03T18:44:13Z",
+          "jobCompletedAt": "2026-10-03T18:44:28Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267536976,
+          "name": "benchmark (c7-2plus2-qb-row-018-L)",
+          "runnerName": "GitHub Actions 1000001138",
+          "startedAt": "2026-10-03T18:44:22Z",
+          "completedAt": "2026-10-03T18:44:24Z",
+          "jobStartedAt": "2026-10-03T18:44:15Z",
+          "jobCompletedAt": "2026-10-03T18:44:26Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267537032,
+          "name": "benchmark (c7-2plus2-qb-row-084-L)",
+          "runnerName": "GitHub Actions 1000001135",
+          "startedAt": "2026-10-03T18:44:21Z",
+          "completedAt": "2026-10-03T18:44:22Z",
+          "jobStartedAt": "2026-10-03T18:44:09Z",
+          "jobCompletedAt": "2026-10-03T18:44:27Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267537220,
+          "name": "benchmark (c7-2plus2-qb-row-272-Z)",
+          "runnerName": "GitHub Actions 1000001139",
+          "startedAt": "2026-10-03T18:44:24Z",
+          "completedAt": "2026-10-03T18:44:25Z",
+          "jobStartedAt": "2026-10-03T18:44:15Z",
+          "jobCompletedAt": "2026-10-03T18:44:28Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267537266,
+          "name": "benchmark (c7-2plus2-qb-row-080-S)",
+          "runnerName": "GitHub Actions 1000001140",
+          "startedAt": "2026-10-03T18:44:27Z",
+          "completedAt": "2026-10-03T18:44:29Z",
+          "jobStartedAt": "2026-10-03T18:44:17Z",
+          "jobCompletedAt": "2026-10-03T18:44:32Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267537333,
+          "name": "benchmark (c7-2plus2-qb-row-100-L)",
+          "runnerName": "GitHub Actions 1000001141",
+          "startedAt": "2026-10-03T18:44:28Z",
+          "completedAt": "2026-10-03T18:44:29Z",
+          "jobStartedAt": "2026-10-03T18:44:20Z",
+          "jobCompletedAt": "2026-10-03T18:44:32Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267537495,
+          "name": "benchmark (c7-2plus2-qb-row-120-L)",
+          "runnerName": "GitHub Actions 1000001142",
+          "startedAt": "2026-10-03T18:44:34Z",
+          "completedAt": "2026-10-03T18:44:35Z",
+          "jobStartedAt": "2026-10-03T18:44:21Z",
+          "jobCompletedAt": "2026-10-03T18:44:39Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267537497,
+          "name": "benchmark (c7-2plus2-qb-row-329-J)",
+          "runnerName": "GitHub Actions 1000001143",
+          "startedAt": "2026-10-03T18:44:35Z",
+          "completedAt": "2026-10-03T18:44:37Z",
+          "jobStartedAt": "2026-10-03T18:44:23Z",
+          "jobCompletedAt": "2026-10-03T18:44:41Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267537639,
+          "name": "benchmark (c7-2plus2-qb-row-047-S)",
+          "runnerName": "GitHub Actions 1000001144",
+          "startedAt": "2026-10-03T18:44:37Z",
+          "completedAt": "2026-10-03T18:44:38Z",
+          "jobStartedAt": "2026-10-03T18:44:28Z",
+          "jobCompletedAt": "2026-10-03T18:44:42Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267537643,
+          "name": "benchmark (c7-2plus2-qb-row-228-S)",
+          "runnerName": "GitHub Actions 1000001145",
+          "startedAt": "2026-10-03T18:44:39Z",
+          "completedAt": "2026-10-03T18:44:40Z",
+          "jobStartedAt": "2026-10-03T18:44:28Z",
+          "jobCompletedAt": "2026-10-03T18:44:43Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267537650,
+          "name": "benchmark (c7-2plus2-qb-row-181-I)",
+          "runnerName": "GitHub Actions 1000001146",
+          "startedAt": "2026-10-03T18:44:40Z",
+          "completedAt": "2026-10-03T18:44:42Z",
+          "jobStartedAt": "2026-10-03T18:44:29Z",
+          "jobCompletedAt": "2026-10-03T18:44:45Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267537778,
+          "name": "benchmark (c7-2plus2-qb-row-164-T)",
+          "runnerName": "GitHub Actions 1000001147",
+          "startedAt": "2026-10-03T18:44:38Z",
+          "completedAt": "2026-10-03T18:44:39Z",
+          "jobStartedAt": "2026-10-03T18:44:29Z",
+          "jobCompletedAt": "2026-10-03T18:44:41Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267537814,
+          "name": "benchmark (c7-2plus2-qb-row-121-L)",
+          "runnerName": "GitHub Actions 1000001148",
+          "startedAt": "2026-10-03T18:44:41Z",
+          "completedAt": "2026-10-03T18:44:42Z",
+          "jobStartedAt": "2026-10-03T18:44:29Z",
+          "jobCompletedAt": "2026-10-03T18:44:45Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267538040,
+          "name": "benchmark (c7-2plus2-qb-row-292-J)",
+          "runnerName": "GitHub Actions 1000001149",
+          "startedAt": "2026-10-03T18:44:42Z",
+          "completedAt": "2026-10-03T18:44:44Z",
+          "jobStartedAt": "2026-10-03T18:44:30Z",
+          "jobCompletedAt": "2026-10-03T18:44:48Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267538134,
+          "name": "benchmark (c7-2plus2-qb-row-112-O)",
+          "runnerName": "GitHub Actions 1000001151",
+          "startedAt": "2026-10-03T18:44:48Z",
+          "completedAt": "2026-10-03T18:44:49Z",
+          "jobStartedAt": "2026-10-03T18:44:34Z",
+          "jobCompletedAt": "2026-10-03T18:44:53Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267538137,
+          "name": "benchmark (c7-2plus2-qb-row-196-J)",
+          "runnerName": "GitHub Actions 1000001150",
+          "startedAt": "2026-10-03T18:44:45Z",
+          "completedAt": "2026-10-03T18:44:47Z",
+          "jobStartedAt": "2026-10-03T18:44:33Z",
+          "jobCompletedAt": "2026-10-03T18:44:50Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267538228,
+          "name": "benchmark (c7-2plus2-qb-row-289-L)",
+          "runnerName": "GitHub Actions 1000001152",
+          "startedAt": "2026-10-03T18:44:50Z",
+          "completedAt": "2026-10-03T18:44:52Z",
+          "jobStartedAt": "2026-10-03T18:44:41Z",
+          "jobCompletedAt": "2026-10-03T18:44:54Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267538305,
+          "name": "benchmark (c7-2plus2-qb-row-007-O)",
+          "runnerName": "GitHub Actions 1000001153",
+          "startedAt": "2026-10-03T18:44:53Z",
+          "completedAt": "2026-10-03T18:44:55Z",
+          "jobStartedAt": "2026-10-03T18:44:42Z",
+          "jobCompletedAt": "2026-10-03T18:44:58Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267538426,
+          "name": "benchmark (c7-2plus2-qb-row-249-J)",
+          "runnerName": "GitHub Actions 1000001155",
+          "startedAt": "2026-10-03T18:44:56Z",
+          "completedAt": "2026-10-03T18:44:57Z",
+          "jobStartedAt": "2026-10-03T18:44:44Z",
+          "jobCompletedAt": "2026-10-03T18:45:01Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267538436,
+          "name": "benchmark (c7-2plus2-qb-row-125-O)",
+          "runnerName": "GitHub Actions 1000001154",
+          "startedAt": "2026-10-03T18:44:55Z",
+          "completedAt": "2026-10-03T18:44:57Z",
+          "jobStartedAt": "2026-10-03T18:44:43Z",
+          "jobCompletedAt": "2026-10-03T18:45:01Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267538472,
+          "name": "benchmark (c7-2plus2-qb-row-336-O)",
+          "runnerName": "GitHub Actions 1000001156",
+          "startedAt": "2026-10-03T18:44:53Z",
+          "completedAt": "2026-10-03T18:44:54Z",
+          "jobStartedAt": "2026-10-03T18:44:44Z",
+          "jobCompletedAt": "2026-10-03T18:44:56Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267538585,
+          "name": "benchmark (c7-2plus2-qb-row-141-I)",
+          "runnerName": "GitHub Actions 1000001157",
+          "startedAt": "2026-10-03T18:44:59Z",
+          "completedAt": "2026-10-03T18:45:00Z",
+          "jobStartedAt": "2026-10-03T18:44:47Z",
+          "jobCompletedAt": "2026-10-03T18:45:04Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267538602,
+          "name": "benchmark (c7-2plus2-qb-row-343-O)",
+          "runnerName": "GitHub Actions 1000001158",
+          "startedAt": "2026-10-03T18:44:59Z",
+          "completedAt": "2026-10-03T18:45:00Z",
+          "jobStartedAt": "2026-10-03T18:44:47Z",
+          "jobCompletedAt": "2026-10-03T18:45:04Z"
+        },
+        {
+          "phase": "benchmark",
+          "jobId": 111267538751,
+          "name": "benchmark (c7-2plus2-qb-row-162-S)",
+          "runnerName": "GitHub Actions 1000001159",
+          "startedAt": "2026-10-03T18:44:59Z",
+          "completedAt": "2026-10-03T18:45:00Z",
+          "jobStartedAt": "2026-10-03T18:44:49Z",
+          "jobCompletedAt": "2026-10-03T18:45:04Z"
+        }
+      ],
+      "maxOverlap": 5,
+      "zeroSecondIntervals": 0,
+      "start": "2026-10-03T18:42:11.000Z",
+      "end": "2026-10-03T18:45:00.000Z",
+      "windowMinutes": 2.816666666666667,
+      "longestMinutes": 0.05,
+      "shardJobs": {
+        "intervals": 100,
+        "maxOverlap": 10,
+        "zeroSecondIntervals": 0,
+        "start": "2026-10-03T18:42:02.000Z",
+        "end": "2026-10-03T18:45:04.000Z",
+        "windowMinutes": 3.033333333333333,
+        "longestMinutes": 0.35
+      }
+    },
+    "recheck": {
+      "intervals": [
+        {
+          "phase": "recheck",
+          "jobId": 111268146514,
+          "name": "recheck (c7-2plus2-qb-row-035-L)",
+          "runnerName": "GitHub Actions 1000001161",
+          "startedAt": "2026-10-03T18:45:35Z",
+          "completedAt": "2026-10-03T18:45:39Z",
+          "jobStartedAt": "2026-10-03T18:45:23Z",
+          "jobCompletedAt": "2026-10-03T18:45:43Z"
+        },
+        {
+          "phase": "recheck",
+          "jobId": 111268146545,
+          "name": "recheck (c7-2plus2-qb-row-007-O)",
+          "runnerName": "GitHub Actions 1000001162",
+          "startedAt": "2026-10-03T18:45:35Z",
+          "completedAt": "2026-10-03T18:45:40Z",
+          "jobStartedAt": "2026-10-03T18:45:23Z",
+          "jobCompletedAt": "2026-10-03T18:45:44Z"
+        },
+        {
+          "phase": "recheck",
+          "jobId": 111268146546,
+          "name": "recheck (c7-2plus2-qb-row-107-I)",
+          "runnerName": "GitHub Actions 1000001166",
+          "startedAt": "2026-10-03T18:45:31Z",
+          "completedAt": "2026-10-03T18:45:36Z",
+          "jobStartedAt": "2026-10-03T18:45:23Z",
+          "jobCompletedAt": "2026-10-03T18:45:46Z"
+        },
+        {
+          "phase": "recheck",
+          "jobId": 111268146560,
+          "name": "recheck (c7-2plus2-qb-row-329-J)",
+          "runnerName": "GitHub Actions 1000001164",
+          "startedAt": "2026-10-03T18:45:36Z",
+          "completedAt": "2026-10-03T18:45:41Z",
+          "jobStartedAt": "2026-10-03T18:45:23Z",
+          "jobCompletedAt": "2026-10-03T18:45:45Z"
+        },
+        {
+          "phase": "recheck",
+          "jobId": 111268146563,
+          "name": "recheck (c7-2plus2-qb-row-084-L)",
+          "runnerName": "GitHub Actions 1000001167",
+          "startedAt": "2026-10-03T18:45:36Z",
+          "completedAt": "2026-10-03T18:45:40Z",
+          "jobStartedAt": "2026-10-03T18:45:23Z",
+          "jobCompletedAt": "2026-10-03T18:45:44Z"
+        },
+        {
+          "phase": "recheck",
+          "jobId": 111268146564,
+          "name": "recheck (c7-2plus2-qb-row-175-L)",
+          "runnerName": "GitHub Actions 1000001165",
+          "startedAt": "2026-10-03T18:45:36Z",
+          "completedAt": "2026-10-03T18:45:43Z",
+          "jobStartedAt": "2026-10-03T18:45:23Z",
+          "jobCompletedAt": "2026-10-03T18:45:47Z"
+        },
+        {
+          "phase": "recheck",
+          "jobId": 111268146586,
+          "name": "recheck (c7-2plus2-qb-row-072-T)",
+          "runnerName": "GitHub Actions 1000001163",
+          "startedAt": "2026-10-03T18:45:32Z",
+          "completedAt": "2026-10-03T18:45:38Z",
+          "jobStartedAt": "2026-10-03T18:45:23Z",
+          "jobCompletedAt": "2026-10-03T18:45:41Z"
+        }
+      ],
+      "maxOverlap": 6,
+      "zeroSecondIntervals": 0,
+      "start": "2026-10-03T18:45:31.000Z",
+      "end": "2026-10-03T18:45:43.000Z",
+      "windowMinutes": 0.2,
+      "longestMinutes": 0.11666666666666667,
+      "shardJobs": {
+        "intervals": 7,
+        "maxOverlap": 7,
+        "zeroSecondIntervals": 0,
+        "start": "2026-10-03T18:45:23.000Z",
+        "end": "2026-10-03T18:45:47.000Z",
+        "windowMinutes": 0.4,
+        "longestMinutes": 0.4
+      }
+    },
+    "allPhases": {
+      "intervals": 207,
+      "maxOverlap": 6,
+      "zeroSecondIntervals": 63,
+      "start": "2026-10-03T18:38:28.000Z",
+      "end": "2026-10-03T18:45:43.000Z",
+      "windowMinutes": 7.25,
+      "longestMinutes": 0.11666666666666667
+    },
+    "allShardJobs": {
+      "intervals": 207,
+      "maxOverlap": 10,
+      "zeroSecondIntervals": 0,
+      "start": "2026-10-03T18:38:19.000Z",
+      "end": "2026-10-03T18:45:47.000Z",
+      "windowMinutes": 7.466666666666667,
+      "longestMinutes": 0.8
+    }
+  },
+  "artifactCount": 211,
+  "audit": "GitHub completed job/step timestamps independently checked, inferred max overlap<=10 across capture/initial/recheck, consistent with workflow hard cap10. Timestamps have one-second resolution; zero-second steps excluded from overlap events and explicitly counted. Fresh-VM repeats start after all initial benchmarks. Runner names matched sample environments. All expected raw/fixture/build/final artifacts present."
+}

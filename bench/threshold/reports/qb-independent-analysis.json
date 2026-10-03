@@ -1,0 +1,154 @@
+{
+  "runId": "37144800885",
+  "candidate": "0eb5ff1dcc85b7f9400180a4d89044cb0c0ec0aa",
+  "dataset": "cycle7-2plus2-qb-random100",
+  "evidenceHash": "91a34d2010ba021d4de59bbc8b4148d991fe8e37a2cabd886986bc7787effc14",
+  "manifestHash": "e31081551a1c4e10883495a6176f1b5a2c25b0ce2f9659de5e3485d7bb5a134e",
+  "buildObjectHash": "4181a8c7122a7947ba97da21b7c6ba361800114f4cf2c681d878168a1996cc91",
+  "requestedSetups": 100,
+  "distinctInputCores": 99,
+  "mirrorGroups": 87,
+  "actualExact": 1480,
+  "actualTimeout": 0,
+  "largestObservedNativeMs": 101.76632500000001,
+  "noForced": 48,
+  "comparisons": [
+    {
+      "index": 0,
+      "leftMask": 0,
+      "rightMask": 20,
+      "geomean": 1.016560897496228,
+      "perInputOffMedianMsRange": {
+        "min": 4.712673000000002,
+        "median": 19.76083,
+        "max": 92.31037899999998
+      },
+      "perInputOnMedianMsRange": {
+        "min": 6.221690000000002,
+        "median": 18.693917999999996,
+        "max": 89.77321799999999
+      },
+      "allThreeFaster": 12,
+      "allThreeSlower": 14,
+      "rangeNoisy": 95,
+      "directionChanges": 74,
+      "maxPairedMedianPeakRssRatio": 1.0148541398541397,
+      "maxPairedMedianWasmMemoryRatio": 1.0454545454545454,
+      "forcedStrata": [
+        {
+          "hasForced": false,
+          "cases": 48,
+          "geomean": 1.0098870689446373,
+          "faster": 27,
+          "slower": 21,
+          "perInputPairedDeltaMsRange": {
+            "min": -7.041510000000002,
+            "median": -0.3742395000000087,
+            "max": 7.4243510000000015
+          }
+        },
+        {
+          "hasForced": true,
+          "cases": 52,
+          "geomean": 1.0227604934984658,
+          "faster": 31,
+          "slower": 21,
+          "perInputPairedDeltaMsRange": {
+            "min": -8.940538999999994,
+            "median": -0.6363790000000051,
+            "max": 7.107689999999991
+          }
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "leftMask": 16,
+      "rightMask": 20,
+      "geomean": 1.0065386365470326,
+      "perInputOffMedianMsRange": {
+        "min": 6.8421300000000045,
+        "median": 19.300755000000006,
+        "max": 88.482876
+      },
+      "perInputOnMedianMsRange": {
+        "min": 7.270032999999998,
+        "median": 19.099029499999997,
+        "max": 89.076614
+      },
+      "allThreeFaster": 18,
+      "allThreeSlower": 11,
+      "rangeNoisy": 97,
+      "directionChanges": 71,
+      "maxPairedMedianPeakRssRatio": 1.0205455367458682,
+      "maxPairedMedianWasmMemoryRatio": 1.0454545454545454,
+      "forcedStrata": [
+        {
+          "hasForced": false,
+          "cases": 48,
+          "geomean": 0.9978522765431322,
+          "faster": 25,
+          "slower": 23,
+          "perInputPairedDeltaMsRange": {
+            "min": -6.597932,
+            "median": -0.1392405000000032,
+            "max": 4.500323000000002
+          }
+        },
+        {
+          "hasForced": true,
+          "cases": 52,
+          "geomean": 1.014623914194738,
+          "faster": 24,
+          "slower": 28,
+          "perInputPairedDeltaMsRange": {
+            "min": -9.953676000000002,
+            "median": 0.21754250000000752,
+            "max": 7.029660000000007
+          }
+        }
+      ]
+    }
+  ],
+  "smallConsistentSlowdowns": [
+    {
+      "caseId": "c7-2plus2-qb-row-007-O",
+      "leftMask": 16,
+      "rightMask": 20,
+      "pairedSpeedupMedian": 0.8996742142074932,
+      "pairedDeltaMs": 2.6268175000000014,
+      "fasterPairs": 2,
+      "slowerPairs": 8
+    },
+    {
+      "caseId": "c7-2plus2-qb-row-035-L",
+      "leftMask": 16,
+      "rightMask": 20,
+      "pairedSpeedupMedian": 0.8423348594808906,
+      "pairedDeltaMs": 2.873327499999995,
+      "fasterPairs": 2,
+      "slowerPairs": 8
+    },
+    {
+      "caseId": "c7-2plus2-qb-row-072-T",
+      "leftMask": 16,
+      "rightMask": 20,
+      "pairedSpeedupMedian": 0.9558423290570887,
+      "pairedDeltaMs": 3.108979500000004,
+      "fasterPairs": 2,
+      "slowerPairs": 8
+    }
+  ],
+  "workflowMinutes": 10.133333333333333,
+  "maxShardJobs": 10,
+  "interpretation": {
+    "totalEffect": "0/20 geomean1.01656 is a small descriptive point estimate, not robust evidence of a general wall-time improvement on QB.",
+    "rootIncrement": "16/20 geomean1.00654,49faster/51slower,97range-noisy. Incremental QB benefit not established; no-forced48 controls observed geomean0.99785.",
+    "regression": "Eight initial material alerts across seven inputs were not reproduced at>=10%+>=5ms+>=8/10slower. Three16/20 inputs have>=8/10slower and paired +2.63–3.11ms; retain them rather than labeling all regressions disproved.",
+    "scope": "Small K1–5,840rows, millisecond-scale calls; validates short/no-forced independent behavior, not long/hard QB workloads or all cycles.87mirror groups are not guaranteed independent statistical units.",
+    "currentPropagation": "Retain previous cycle1 A evidence. This campaign does not directly compare0/16, so do not infer a new isolated currentPropagation grade by dividing cross-comparison ratios.",
+    "rootForced": "Retain conditional A within cycle1 only. The QB campaign is supplementary correctness/non-material-regression evidence, not a reason to expand to unconditional A.",
+    "candidate": "Keep mask20 as a conditional product-path validation candidate alongside mask16; QB alone does not justify replacing mask16 with20 as a product default. No integration/routing/default changes authorized or made.",
+    "statistics": "No initial/recheck pooling, timeout substitution, cross-VM absolute-time sum, or significance claim. Forced strata are descriptive post-hoc summaries, not new selection criteria."
+  }
+}

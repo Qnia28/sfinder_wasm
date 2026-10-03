@@ -47,6 +47,7 @@ const coverage = { distinctSetups: manifest.cases.length, mirrorGroups: new Set(
       coveredRows: matrix.rows.filter(row => row.some(([id]) => forced.has(id))).length };
   }) };
 const decisionAlerts = resolved.filter(r => r.repeatedMaterialRegression || r.repeatedCompletionDiscordance || r.repeatedMemoryAlert);
+const smallConsistentSlowdowns = (repeated?.perCase || []).filter(r => r.slowerPairs >= 8 && r.pairedDeltaMs > 0 && r.pairedDeltaMs < 5);
 const fmt = (x, n = 3) => x === null || x === undefined ? '-' : x.toFixed(n);
 const lines = [
   '# Cycle7 QB 독립 데이터 100개 검증', '',
@@ -70,6 +71,11 @@ const lines = [
   '|---|---|---:|---:|---:|---:|---|',
   ...resolved.map(r => `| ${r.caseId} / ${r.comparisonIndex} | ${r.reasons.join(', ')} | ${fmt(r.initialRatio)} | ${fmt(r.repeatRatio)} | ${fmt(r.repeatDeltaMs)} | ${r.repeatCompletePairs}/${r.repeatFasterPairs}/${r.repeatSlowerPairs} | ${r.repeatedMaterialRegression}/${r.repeatedCompletionDiscordance}/${r.repeatedMemoryAlert} |`),
   '', `반복 material 회귀는 ≥10%+≥5ms이며≥8/10쌍 느림. 반복 의사결정 경보 ${decisionAlerts.length}개 비교. 경보가 없더라도3쌍 측정만으로 모든 작은 회귀/경계 변동을 배제하지 않음.`,
+  '', '### 재확인 전체 비교 (선정 이유가 없던 쪽도 포함)', '',
+  '| 입력 | 비교 | 반복 ratio | OFF ms | ON ms | paired Δms | 빠름/느림 |',
+  '|---|---|---:|---:|---:|---:|---:|',
+  ...(repeated?.perCase || []).map(r => `| ${r.caseId} | ${r.left.mask}→${r.right.mask} | ${fmt(r.pairedSpeedupMedian)} | ${fmt(r.leftMedianMs)} | ${fmt(r.rightMedianMs)} | ${fmt(r.pairedDeltaMs)} | ${r.fasterPairs}/${r.slowerPairs} |`),
+  '', `≥8/10쌍 느리지만 paired 증가가5ms 미만인 비교 ${smallConsistentSlowdowns.length}개: ${smallConsistentSlowdowns.map(r => `${r.caseId}(${r.left.mask}→${r.right.mask}, ratio ${fmt(r.pairedSpeedupMedian)}, +${fmt(r.pairedDeltaMs)}ms)`).join('; ') || '없음'}. 이는 material 기준 미달일 뿐, 모든 입력에서 빨라졌다는 뜻이 아님. 재확인7개는 경보에 따른 선택 표본이며 대표표본이 아니므로 전체 speedup에 합치지 않음.`,
   '', '## 구조 및 제한', '',
   `- 생성된 행렬의 mirror 그룹 ${coverage.mirrorGroups}; singleton forced가 없는 입력 ${coverage.noForced}, forced ${coverage.minForced}–${coverage.maxForced}, K ${coverage.minK}–${coverage.maxK}.`,
   `- 후보수 ${coverage.candidates.join('–')}, 행수 ${coverage.rows.join('–')}, quality level ${coverage.qualityLevels.join('–')}. 행렬과 forced coverage 전체값은 JSON에 보존.`,
@@ -84,8 +90,11 @@ const lines = [
   ...initial.generationFailures.map(f => `- ${f.setupId}: enumeration=${f.enumerationStatus}; ${JSON.stringify(f.records)}`),
 ];
 const out = `${base}/qb-final`; mkdirSync(out, { recursive: true });
-writeFileSync(`${out}/report.md`, lines.join('\n') + '\n', { flag: 'wx' });
+const flag = process.argv.includes('--replace') ? 'w' : 'wx';
+writeFileSync(`${out}/report.md`, lines.join('\n') + '\n', { flag });
 writeFileSync(`${out}/resolution.json`, JSON.stringify({ coverage, selection, resolved, decisionAlerts,
-  initialReviewHash: sha256(initialBytes), repeatReviewHash: repeated ? sha256(readFileSync(`${base}/qb-recheck-review/review.json`)) : null }, null, 2) + '\n', { flag: 'wx' });
+  smallConsistentSlowdowns: smallConsistentSlowdowns.map(r => ({ caseId: r.caseId, leftMask: r.left.mask, rightMask: r.right.mask,
+    pairedSpeedupMedian: r.pairedSpeedupMedian, pairedDeltaMs: r.pairedDeltaMs, fasterPairs: r.fasterPairs, slowerPairs: r.slowerPairs })),
+  initialReviewHash: sha256(initialBytes), repeatReviewHash: repeated ? sha256(readFileSync(`${base}/qb-recheck-review/review.json`)) : null }, null, 2) + '\n', { flag });
 if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.slice(0, lines.indexOf('## 전체 입력 결과')).join('\n') + '\n');
 console.log(JSON.stringify({ generated: initial.generatedMatrices, comparisons: initial.comparisons, rechecked: selection.cases.length, decisionAlerts }, null, 2));

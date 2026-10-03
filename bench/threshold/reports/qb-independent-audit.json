@@ -1,0 +1,14 @@
+{
+  "runId": "37144800885",
+  "audit": "All downloaded initial/recheck raw samples and full original-row witnesses independently re-audited locally; compact remote reviews matched record-by-record. Local report also includes any newly flagged comparison in repeats.",
+  "samples": 1480,
+  "additionalCorrectnessReplay": {
+    "calls": 300,
+    "masks": [0, 16, 20],
+    "matrices": 100,
+    "timingEvidence": false,
+    "result": "All completed original-row selected/quality witness hashes matched the measured campaign using the byte-identical downloaded experimental WASM. Existing local build was rejected by the hash gate and was not used for this replay."
+  },
+  "manifestHash": "e31081551a1c4e10883495a6176f1b5a2c25b0ce2f9659de5e3485d7bb5a134e",
+  "wasmHash": "425888e502363eccf7a240c0fe37b999106da90cf829faa39142052ed59b2adf"
+}

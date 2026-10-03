@@ -1,0 +1,5 @@
+# Byte-hashed QB snapshots and compact evidence must remain LF on Windows too.
+bench/threshold/qb-setups.json text eol=lf
+bench/threshold/qb-independent100/manifest.json text eol=lf
+bench/threshold/reports/qb-independent*.json text eol=lf
+bench/threshold/qb-independent100/inputs/*.json.gz -text
