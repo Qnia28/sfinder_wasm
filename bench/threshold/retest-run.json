@@ -5,6 +5,6 @@
   "candidateMask": 16,
   "pairs": 10,
   "timeoutSeconds": 300,
-  "maxParallel": 20,
+  "maxParallel": 16,
   "caseSelection": "retest-selection.json"
 }

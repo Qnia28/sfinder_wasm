@@ -11,7 +11,7 @@ test('frozen screening runs all100, six serial pairs per repeat, with enough dia
   assert.equal(r.status, 0, r.stderr);
   const p = JSON.parse(r.stdout);
   assert.equal(p.matrix.case.length, 100); assert.equal(p.pairs, 1); assert.equal(p.seconds, 300);
-  assert.equal(p.maxParallel, 20); assert.equal(p.jobMinutes, 80);
+  assert.equal(p.maxParallel, 16); assert.equal(p.jobMinutes, 80);
 });
 test('root comparisons preserve baseline16 and independently ablate two refinements', () => {
   assert.deepEqual(settings('root-screen', 4).map(p => [p.left.mask, p.right.mask]),

@@ -36,7 +36,7 @@ if (config.caseSelection) {
   assert(ids.every(id => manifest.cases.some(c => c.id === id)));
 }
 const maxParallel = config.maxParallel ?? 2;
-assert(Number.isInteger(maxParallel) && maxParallel >= 1 && maxParallel <= 20);
+assert(Number.isInteger(maxParallel) && maxParallel >= 1 && maxParallel <= 16);
 const comparisons = settings(profile,mask).length;
 // Worst case: every serial paired side times out. Leave setup/validation/upload
 // margin so a legitimate 5-minute call is not cut short by the job deadline.

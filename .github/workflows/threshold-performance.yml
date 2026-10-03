@@ -115,7 +115,7 @@ jobs:
       - name: Real WASM oracle, bounded and locked-prefix contracts
         run: |
           set -o pipefail
-          node --test --test-concurrency=1 bench/threshold/correctness.test.mjs bench/threshold/harness.test.mjs bench/threshold/db-correctness.test.mjs bench/threshold/expanded.test.mjs bench/threshold/retest.test.mjs bench/threshold/root-forced.test.mjs bench/threshold/timeout-policy.test.mjs 2>&1 | tee bench/threshold/results/correctness/wasm.txt
+          node --test --test-concurrency=1 bench/threshold/correctness.test.mjs bench/threshold/harness.test.mjs bench/threshold/db-correctness.test.mjs bench/threshold/expanded.test.mjs bench/threshold/retest.test.mjs bench/threshold/root-forced.test.mjs bench/threshold/timeout-policy.test.mjs bench/threshold/root-resource.test.mjs 2>&1 | tee bench/threshold/results/correctness/wasm.txt
       - name: Existing secondary / worker / actual CP regression
         run: |
           npm ci
@@ -136,7 +136,8 @@ jobs:
     timeout-minutes: ${{ fromJSON(needs.build.outputs.jobMinutes) }}
     strategy:
       fail-fast: false
-      max-parallel: ${{ fromJSON(needs.build.outputs.maxParallel) }}
+      # Hard cap as well as planner validation: leave runner capacity for other work.
+      max-parallel: ${{ fromJSON(needs.build.outputs.maxParallel) > 16 && 16 || fromJSON(needs.build.outputs.maxParallel) }}
       matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4

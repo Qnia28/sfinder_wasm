@@ -37,6 +37,6 @@ test('retest workflow keeps 66 input jobs, ten serial pairs, 300 second calls an
   assert.equal(r.status, 0, r.stderr);
   const p = JSON.parse(r.stdout);
   assert.deepEqual(p.matrix.case, selection.cases.map(c => c.caseId));
-  assert.equal(p.pairs, 10); assert.equal(p.seconds, 300); assert.equal(p.maxParallel, 20);
+  assert.equal(p.pairs, 10); assert.equal(p.seconds, 300); assert.equal(p.maxParallel, 16);
   assert.equal(p.jobMinutes, 115);
 });

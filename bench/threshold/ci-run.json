@@ -5,5 +5,5 @@
   "candidateMask": 4,
   "pairs": 1,
   "timeoutSeconds": 300,
-  "maxParallel": 20
+  "maxParallel": 16
 }

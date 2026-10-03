@@ -30,7 +30,7 @@ WASM에clockimport를추가하지않는다. 단계별wall time은추정하지않
 
 100입력×6비교×1pair×2=1200호출로 screening(확증아님):
 0→4,16→20,4→36,4→68,4→100,16→116.
-비계측 동일WASM/fresh process/같은VM 직렬ABBA/최대20VM/300초.
+비계측 동일WASM/fresh process/같은VM 직렬ABBA/최대16VM/300초.
 최악job시간60분+별도diagnostic5분+setup여유15분=80분.
 
 선별은 품질·traversal 일치 통과 후 추가효과와작업량을함께본다.
@@ -58,6 +58,24 @@ timeout을시간으로치환하지않는다. mask16 대비추가가치가주판�
 requested/executed/skipped pairs와사유를별도기록한다.10회요청의완전실패군은
 100분대신약20분의solver시간으로종료할수있지만성공관측군의100분deadline은유지한다.
 향후5/10회실행에적용하며이미시작한1pair screening은변경하지않는다.
+
+### 현재 screening 중단 및 자원 상한 변경
+
+사용자요청으로run37113754448을취소했다. 서버확인상completed/cancelled,
+in_progress job0개다. 성공53job(빌드/정확성포함),취소49job,실패1job이며
+취소에따른전체미완료는정상성공campaign으로취급하지않는다.
+완료artifact/부분자료는보존하고새run과혼합하지않는다.
+이screening은6개의서로다른비교를각1회하므로동일비교각2회timeout규칙으로
+긴입력의6비교(최대60분)를차단할수없었다. 후속반복확인은조기종료규칙을적용한다.
+병렬상한은planner validation와workflow strategy에서16으로제한한다.
+과거20VM실행기록은수정하지않는다. 재개계획에서장기입력을다시무제한screening하지않는다.
+
+회수한artifact70개입력의실측816호출(EXACT621/TIMEOUT195)을검산해
+reports/root-screen-interrupted.json에보존했다.58개는12호출모두기록됐고,
+12개는취소에따른부분자료,30개는artifact없음이다.기록없는384호출은
+TIMEOUT으로집계하지않는다.18개는관측된timeout만있으며pcinfo032/Z는
+부분자료에도EXACT9회/TIMEOUT0회다.완료witness621개는원본행/기존최적hash로검산했다.
+성능하위10%는완료한입력의상대비율순위이며timeout입력군과동일하지않다.
 
 ## 최종 등급
 
