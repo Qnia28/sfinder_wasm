@@ -1,0 +1,502 @@
+{
+  "status": "PRESERVED_PARTIAL_OR_TIMEOUT",
+  "runId": 37101047698,
+  "sourceCommit": "952f5aae897bfa924cabdddef529f0fd0430b84b",
+  "attemptedCalls": 5,
+  "verifiedCalls": 4,
+  "untracedCalls": 4,
+  "tracedCalls": 0,
+  "outcomeCounts": {
+    "VERIFIED": 4,
+    "TIMEOUT_STARTUP": 1
+  },
+  "sourceBlobsVerified": 181,
+  "artifactFilesVerified": 10,
+  "rawRecordsVerified": 12,
+  "weightedQualityAndSeedRecalculations": 8,
+  "determinismCounts": {
+    "R": 1,
+    "A": 1
+  },
+  "runtime": {
+    "node": "v24.13.0",
+    "v8": "13.6.233.17-node.37",
+    "cpu": "AMD EPYC 7763 64-Core Processor",
+    "cpus": 4,
+    "allowedCpuList": "0-3",
+    "workerCpu": "0",
+    "runId": "37101047698"
+  },
+  "groups": {
+    "DEFAULT:R": {
+      "completedUntracedCalls": 1,
+      "attemptedCalls": 1,
+      "outcomeStatuses": {
+        "VERIFIED": 1
+      },
+      "apiSamplesMs": [
+        8586.023213
+      ],
+      "medianApiMs": 8586.023213,
+      "initSamplesMs": [
+        10.97585699999999
+      ],
+      "medianInitMs": 10.97585699999999,
+      "threadCpuSamplesMs": [
+        8584.435
+      ]
+    },
+    "DEFAULT:A": {
+      "completedUntracedCalls": 1,
+      "attemptedCalls": 1,
+      "outcomeStatuses": {
+        "VERIFIED": 1
+      },
+      "apiSamplesMs": [
+        7098.514411
+      ],
+      "medianApiMs": 7098.514411,
+      "initSamplesMs": [
+        7.905046999999996
+      ],
+      "medianInitMs": 7.905046999999996,
+      "threadCpuSamplesMs": [
+        7096.387
+      ]
+    },
+    "LIFTOFF_ONLY:R": {
+      "completedUntracedCalls": 1,
+      "attemptedCalls": 1,
+      "outcomeStatuses": {
+        "VERIFIED": 1
+      },
+      "apiSamplesMs": [
+        11892.930581
+      ],
+      "medianApiMs": 11892.930581,
+      "initSamplesMs": [
+        7.071039999999982
+      ],
+      "medianInitMs": 7.071039999999982,
+      "threadCpuSamplesMs": [
+        11891.93
+      ]
+    },
+    "LIFTOFF_ONLY:A": {
+      "completedUntracedCalls": 1,
+      "attemptedCalls": 1,
+      "outcomeStatuses": {
+        "VERIFIED": 1
+      },
+      "apiSamplesMs": [
+        11881.119461
+      ],
+      "medianApiMs": 11881.119461,
+      "initSamplesMs": [
+        6.452029999999979
+      ],
+      "medianInitMs": 6.452029999999979,
+      "threadCpuSamplesMs": [
+        11877.991
+      ]
+    },
+    "OPTIMIZED_FIRST:R": {
+      "completedUntracedCalls": 0,
+      "attemptedCalls": 1,
+      "outcomeStatuses": {
+        "TIMEOUT_STARTUP": 1
+      },
+      "apiSamplesMs": [],
+      "medianApiMs": null,
+      "initSamplesMs": [],
+      "medianInitMs": null,
+      "threadCpuSamplesMs": []
+    },
+    "OPTIMIZED_FIRST:A": {
+      "completedUntracedCalls": 0,
+      "attemptedCalls": 0,
+      "outcomeStatuses": {},
+      "apiSamplesMs": [],
+      "medianApiMs": null,
+      "initSamplesMs": [],
+      "medianInitMs": null,
+      "threadCpuSamplesMs": []
+    }
+  },
+  "contrasts": [
+    {
+      "mode": "DEFAULT",
+      "candidateToBaselineRatio": 0.8267522967154596
+    },
+    {
+      "mode": "LIFTOFF_ONLY",
+      "candidateToBaselineRatio": 0.9990068789252945
+    }
+  ],
+  "traces": [],
+  "stopReason": "TIMEOUT_STARTUP",
+  "notRun": [
+    {
+      "runId": "tier-plain-1-OPTIMIZED_FIRST-A",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-plain",
+      "kind": "untraced",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "OPTIMIZED_FIRST",
+      "trace": false,
+      "engineFlags": [
+        "--no-liftoff",
+        "--no-wasm-lazy-compilation"
+      ],
+      "actualVariant": "A",
+      "label": "A",
+      "repetition": 1,
+      "instrumented": false,
+      "position": 1,
+      "sessionId": "tier-plain-1-OPTIMIZED_FIRST-A"
+    },
+    {
+      "runId": "tier-plain-2-LIFTOFF_ONLY-A",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-plain",
+      "kind": "untraced",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "LIFTOFF_ONLY",
+      "trace": false,
+      "engineFlags": [
+        "--liftoff-only"
+      ],
+      "actualVariant": "A",
+      "label": "A",
+      "repetition": 2,
+      "instrumented": false,
+      "position": 1,
+      "sessionId": "tier-plain-2-LIFTOFF_ONLY-A"
+    },
+    {
+      "runId": "tier-plain-2-LIFTOFF_ONLY-R",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-plain",
+      "kind": "untraced",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "LIFTOFF_ONLY",
+      "trace": false,
+      "engineFlags": [
+        "--liftoff-only"
+      ],
+      "actualVariant": "R",
+      "label": "R",
+      "repetition": 2,
+      "instrumented": false,
+      "position": 1,
+      "sessionId": "tier-plain-2-LIFTOFF_ONLY-R"
+    },
+    {
+      "runId": "tier-plain-2-OPTIMIZED_FIRST-R",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-plain",
+      "kind": "untraced",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "OPTIMIZED_FIRST",
+      "trace": false,
+      "engineFlags": [
+        "--no-liftoff",
+        "--no-wasm-lazy-compilation"
+      ],
+      "actualVariant": "R",
+      "label": "R",
+      "repetition": 2,
+      "instrumented": false,
+      "position": 1,
+      "sessionId": "tier-plain-2-OPTIMIZED_FIRST-R"
+    },
+    {
+      "runId": "tier-plain-2-OPTIMIZED_FIRST-A",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-plain",
+      "kind": "untraced",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "OPTIMIZED_FIRST",
+      "trace": false,
+      "engineFlags": [
+        "--no-liftoff",
+        "--no-wasm-lazy-compilation"
+      ],
+      "actualVariant": "A",
+      "label": "A",
+      "repetition": 2,
+      "instrumented": false,
+      "position": 1,
+      "sessionId": "tier-plain-2-OPTIMIZED_FIRST-A"
+    },
+    {
+      "runId": "tier-plain-2-DEFAULT-A",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-plain",
+      "kind": "untraced",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "DEFAULT",
+      "trace": false,
+      "engineFlags": [],
+      "actualVariant": "A",
+      "label": "A",
+      "repetition": 2,
+      "instrumented": false,
+      "position": 1,
+      "sessionId": "tier-plain-2-DEFAULT-A"
+    },
+    {
+      "runId": "tier-plain-2-DEFAULT-R",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-plain",
+      "kind": "untraced",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "DEFAULT",
+      "trace": false,
+      "engineFlags": [],
+      "actualVariant": "R",
+      "label": "R",
+      "repetition": 2,
+      "instrumented": false,
+      "position": 1,
+      "sessionId": "tier-plain-2-DEFAULT-R"
+    },
+    {
+      "runId": "tier-plain-3-OPTIMIZED_FIRST-R",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-plain",
+      "kind": "untraced",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "OPTIMIZED_FIRST",
+      "trace": false,
+      "engineFlags": [
+        "--no-liftoff",
+        "--no-wasm-lazy-compilation"
+      ],
+      "actualVariant": "R",
+      "label": "R",
+      "repetition": 3,
+      "instrumented": false,
+      "position": 1,
+      "sessionId": "tier-plain-3-OPTIMIZED_FIRST-R"
+    },
+    {
+      "runId": "tier-plain-3-OPTIMIZED_FIRST-A",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-plain",
+      "kind": "untraced",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "OPTIMIZED_FIRST",
+      "trace": false,
+      "engineFlags": [
+        "--no-liftoff",
+        "--no-wasm-lazy-compilation"
+      ],
+      "actualVariant": "A",
+      "label": "A",
+      "repetition": 3,
+      "instrumented": false,
+      "position": 1,
+      "sessionId": "tier-plain-3-OPTIMIZED_FIRST-A"
+    },
+    {
+      "runId": "tier-plain-3-DEFAULT-A",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-plain",
+      "kind": "untraced",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "DEFAULT",
+      "trace": false,
+      "engineFlags": [],
+      "actualVariant": "A",
+      "label": "A",
+      "repetition": 3,
+      "instrumented": false,
+      "position": 1,
+      "sessionId": "tier-plain-3-DEFAULT-A"
+    },
+    {
+      "runId": "tier-plain-3-DEFAULT-R",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-plain",
+      "kind": "untraced",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "DEFAULT",
+      "trace": false,
+      "engineFlags": [],
+      "actualVariant": "R",
+      "label": "R",
+      "repetition": 3,
+      "instrumented": false,
+      "position": 1,
+      "sessionId": "tier-plain-3-DEFAULT-R"
+    },
+    {
+      "runId": "tier-plain-3-LIFTOFF_ONLY-R",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-plain",
+      "kind": "untraced",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "LIFTOFF_ONLY",
+      "trace": false,
+      "engineFlags": [
+        "--liftoff-only"
+      ],
+      "actualVariant": "R",
+      "label": "R",
+      "repetition": 3,
+      "instrumented": false,
+      "position": 1,
+      "sessionId": "tier-plain-3-LIFTOFF_ONLY-R"
+    },
+    {
+      "runId": "tier-plain-3-LIFTOFF_ONLY-A",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-plain",
+      "kind": "untraced",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "LIFTOFF_ONLY",
+      "trace": false,
+      "engineFlags": [
+        "--liftoff-only"
+      ],
+      "actualVariant": "A",
+      "label": "A",
+      "repetition": 3,
+      "instrumented": false,
+      "position": 1,
+      "sessionId": "tier-plain-3-LIFTOFF_ONLY-A"
+    },
+    {
+      "runId": "tier-trace-0-DEFAULT-R",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-trace",
+      "kind": "trace-and-profile",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "DEFAULT",
+      "trace": true,
+      "engineFlags": [
+        "--trace-wasm-compilation-times",
+        "--trace-wasm-lazy-compilation"
+      ],
+      "actualVariant": "R",
+      "label": "R",
+      "repetition": 0,
+      "instrumented": true,
+      "position": 1,
+      "sessionId": "tier-trace-0-DEFAULT-R"
+    },
+    {
+      "runId": "tier-trace-0-DEFAULT-A",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-trace",
+      "kind": "trace-and-profile",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "DEFAULT",
+      "trace": true,
+      "engineFlags": [
+        "--trace-wasm-compilation-times",
+        "--trace-wasm-lazy-compilation"
+      ],
+      "actualVariant": "A",
+      "label": "A",
+      "repetition": 0,
+      "instrumented": true,
+      "position": 1,
+      "sessionId": "tier-trace-0-DEFAULT-A"
+    },
+    {
+      "runId": "tier-trace-0-LIFTOFF_ONLY-A",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-trace",
+      "kind": "trace-and-profile",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "LIFTOFF_ONLY",
+      "trace": true,
+      "engineFlags": [
+        "--liftoff-only",
+        "--trace-wasm-compilation-times",
+        "--trace-wasm-lazy-compilation"
+      ],
+      "actualVariant": "A",
+      "label": "A",
+      "repetition": 0,
+      "instrumented": true,
+      "position": 1,
+      "sessionId": "tier-trace-0-LIFTOFF_ONLY-A"
+    },
+    {
+      "runId": "tier-trace-0-LIFTOFF_ONLY-R",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-trace",
+      "kind": "trace-and-profile",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "LIFTOFF_ONLY",
+      "trace": true,
+      "engineFlags": [
+        "--liftoff-only",
+        "--trace-wasm-compilation-times",
+        "--trace-wasm-lazy-compilation"
+      ],
+      "actualVariant": "R",
+      "label": "R",
+      "repetition": 0,
+      "instrumented": true,
+      "position": 1,
+      "sessionId": "tier-trace-0-LIFTOFF_ONLY-R"
+    },
+    {
+      "runId": "tier-trace-0-OPTIMIZED_FIRST-R",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-trace",
+      "kind": "trace-and-profile",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "OPTIMIZED_FIRST",
+      "trace": true,
+      "engineFlags": [
+        "--no-liftoff",
+        "--no-wasm-lazy-compilation",
+        "--trace-wasm-compilation-times",
+        "--trace-wasm-lazy-compilation"
+      ],
+      "actualVariant": "R",
+      "label": "R",
+      "repetition": 0,
+      "instrumented": true,
+      "position": 1,
+      "sessionId": "tier-trace-0-OPTIMIZED_FIRST-R"
+    },
+    {
+      "runId": "tier-trace-0-OPTIMIZED_FIRST-A",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "stage": "tier-trace",
+      "kind": "trace-and-profile",
+      "mode": "SHARED_PROCESS_FRESH_WORKER",
+      "engineMode": "OPTIMIZED_FIRST",
+      "trace": true,
+      "engineFlags": [
+        "--no-liftoff",
+        "--no-wasm-lazy-compilation",
+        "--trace-wasm-compilation-times",
+        "--trace-wasm-lazy-compilation"
+      ],
+      "actualVariant": "A",
+      "label": "A",
+      "repetition": 0,
+      "instrumented": true,
+      "position": 1,
+      "sessionId": "tier-trace-0-OPTIMIZED_FIRST-A"
+    }
+  ],
+  "campaign": {
+    "originRunId": 37096100399,
+    "originCreated": "2026-10-03T04:18:25Z",
+    "computeMinutes": 160,
+    "cancelMinutes": 175,
+    "overallMinutes": 180
+  },
+  "clockReset": false,
+  "productChanged": false,
+  "performanceConfirmationCalls": 0,
+  "primaryPcThresholdCalls": 0
+}

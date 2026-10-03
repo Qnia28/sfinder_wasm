@@ -13,7 +13,7 @@ process.on('message',async m=>{
     if(m.type==='call'){
       assert(!slot&&!active);active=true;
       const w=new Worker(new URL('./worker.mjs',import.meta.url),{workerData:{entry,variant:m.run.actualVariant,profile:profileArg==='1',engine,trace}});
-      const exited=new Promise(resolve=>w.once('exit',code=>{if(!closing){console.error(`Unexpected Worker exit ${code}`);process.exitCode=1;}resolve();}));
+      const exited=new Promise(resolve=>w.once('exit',code=>{if(!closing){console.error(`Unexpected Worker exit ${code}`);process.exit(1);}resolve();}));
       slot={w,exited};
       w.once('error',e=>{console.error(e.stack);process.exit(1);});
       w.on('message',msg=>{

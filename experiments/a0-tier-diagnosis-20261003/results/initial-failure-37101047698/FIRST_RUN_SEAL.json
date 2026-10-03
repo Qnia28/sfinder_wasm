@@ -1,0 +1,171 @@
+{
+  "schema": "a0-tier-first-failure-seal-v1",
+  "runId": 37101047698,
+  "files": [
+    {
+      "file": "ANALYSIS.json",
+      "bytes": 14063,
+      "sha256": "2d8a90fa8ef4edd28e9f68a600b12823f4bcf4a75a05eeec691553ff61a285e4"
+    },
+    {
+      "file": "FIRST_AUDITOR.py",
+      "bytes": 10586,
+      "sha256": "0ecbc88f2eb22e7a56fb7f4ba41d126224a6bd9fa6b6a1708416758e53ac8a1d"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/preflight-1791006565347/raw/api-hang.jsonl",
+      "bytes": 260,
+      "sha256": "a164b5191a5979ebbdad9ae0283c23af584f288d16a8f3dced968b43863d9ae7"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/preflight-1791006565347/raw/audit-hang.jsonl",
+      "bytes": 661,
+      "sha256": "2e60b9d3cf7c51f91de6d257cd43720f5a2df128db8ed7d0bfd48ee0221935de"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/preflight-1791006565347/raw/duplicate.jsonl",
+      "bytes": 261,
+      "sha256": "bd501b40bb60ac2de4197ab37a4de504198c881bfeebd4d7c61958bf6a90b880"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/preflight-1791006565347/raw/ok-0.jsonl",
+      "bytes": 733,
+      "sha256": "a0a811a78857936268d10ce08e6885148adb95ee6036ed8e4c75d155175bf308"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/preflight-1791006565347/raw/ok-1.jsonl",
+      "bytes": 732,
+      "sha256": "82d202f696ed6ed4183e3571a88c28f1bcd1a488bbbba21f231e0592e765216d"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/preflight-1791006565347/raw/process-watch.jsonl",
+      "bytes": 667,
+      "sha256": "ddc17c94be21e0f4f7366529c9f0ed6e9fd80db8505c31aaf8e03533c8c3b796"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/preflight-1791006565347/runs.jsonl",
+      "bytes": 1216,
+      "sha256": "418f752c284c990baa80a5bd4827f0662d8a3802796d1443a984692d77141d22"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/preflight-1791006565347/starts.jsonl",
+      "bytes": 324,
+      "sha256": "af9c6993330e4b7cc9c0e2004bfb3355b995b1fa17af4fba3a26a25844757b88"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/tier/LOCK.json",
+      "bytes": 82861,
+      "sha256": "d436fd4f4a337771634de7901ab01d186c755ca55bfe32b2f15e6de16d938447"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/tier/preflight.log",
+      "bytes": 662,
+      "sha256": "9ef9999c29e9099601529503719b2a064a0bac8d1586ed6eb30f46e7fcbc1a2a"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/tier/results/failures.jsonl",
+      "bytes": 1421,
+      "sha256": "401608f2538e904c51286a4e6e077df5417a33634d9890f8b846c004fd06a8a7"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/tier/results/FILES.json",
+      "bytes": 1617,
+      "sha256": "14594f05b4dc474995381df01edd2ecf26bfa2652e599bda169631c92916688b"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/tier/results/logs/tier-plain-1-OPTIMIZED_FIRST-R.jsonl",
+      "bytes": 456,
+      "sha256": "cba39c63e439ab0105c1bc93d30cc75d99e3957469c6e360e5074e35c8ba2ba3"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/tier/results/outcomes.jsonl",
+      "bytes": 5317,
+      "sha256": "85b6b6b4b41ddf0efcaa0cee9c556a49f485abf2d0e97426e959ad3b7171e83a"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/tier/results/raw/tier-plain-1-DEFAULT-A.jsonl",
+      "bytes": 18024,
+      "sha256": "045d45544e1501bd6a076de805b29c8c00128a748c8f9cc2508456c369f5a00e"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/tier/results/raw/tier-plain-1-DEFAULT-R.jsonl",
+      "bytes": 18003,
+      "sha256": "5dc131209664c3709a071dfc4eb22c72e45c25a22beb5afeb4be5f1fd83fc2e5"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/tier/results/raw/tier-plain-1-LIFTOFF_ONLY-A.jsonl",
+      "bytes": 18066,
+      "sha256": "c91400907400de2b41d3a1f329bbaf82f2b0e0713d9c761e4dabe39daf76c931"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/tier/results/raw/tier-plain-1-LIFTOFF_ONLY-R.jsonl",
+      "bytes": 18045,
+      "sha256": "620d48d210290bc900a6cfa76d008ab8a35b88dbb1b89c5ad6e8be14c1d4202d"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/tier/results/runs.jsonl",
+      "bytes": 77049,
+      "sha256": "4fe82963937060eaa26683dc0d0b43641bce0236c07cb0db37a15eae1e288299"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/tier/results/starts.jsonl",
+      "bytes": 1964,
+      "sha256": "aeb358a3e7dd7468f3dcf0095e054a755f6012d48c9e6a1c9b92f5872309ee3c"
+    },
+    {
+      "file": "github-run-37101047698/a0-tier-diagnosis/tier/results/SUMMARY.json",
+      "bytes": 124404,
+      "sha256": "b47a0de0c1a9ee45ec46966fcb65ab6bd3e154d4d1c728079aa0b8787c68bf68"
+    },
+    {
+      "file": "github-run-37101047698/actions.log",
+      "bytes": 36941,
+      "sha256": "a0eec12135caa832478d75bb23bcce6333e71cb63ef83ce254b1746467be3cc1"
+    },
+    {
+      "file": "github-run-37101047698/ARTIFACTS.json",
+      "bytes": 747,
+      "sha256": "8449fc2585d36f1d2f5680237e81bf798290e0aed651b1e73297c06d5bf0a890"
+    },
+    {
+      "file": "github-run-37101047698/download.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "github-run-37101047698/INITIAL_RUN.json",
+      "bytes": 11962,
+      "sha256": "6a1a1d841f7a75d63c478c2c964ad6eafb8abe2d0ca08ef46064436b66b2608b"
+    },
+    {
+      "file": "github-run-37101047698/RUN.json",
+      "bytes": 3015,
+      "sha256": "6a9c7bb4a519977a7ff7fb96b280354166e2b9567c1ee960ef7aaeaecf348539"
+    },
+    {
+      "file": "github-run-37101047698/watch.log",
+      "bytes": 6670,
+      "sha256": "5d042766c71f00c21fc04e0b751377a955da4914979b534252d0b4c62b3235e4"
+    },
+    {
+      "file": "github-run-37101047698/WATCH_DECISION.json",
+      "bytes": 242,
+      "sha256": "f7bad7e21a730b9a7502a6d02d7a4037823416063dccc54709b11895fd209fd3"
+    },
+    {
+      "file": "INITIAL_FAILURE.json",
+      "bytes": 3305,
+      "sha256": "e6dd38dfc8350856bf4994ea5c9ea77bf454cf7fdb434215f68a264b181a708e"
+    },
+    {
+      "file": "PLAN_KO.md",
+      "bytes": 5061,
+      "sha256": "ca2ccf1385f51c50e29d4c978aa7712f2024b6f6bfe991502907fe67f82b1ef9"
+    },
+    {
+      "file": "source-initial.bundle",
+      "bytes": 40165901,
+      "sha256": "b3a24caaec18d2399f50de7bc62ea7ad3f4f173a47225ed284294ed7bddc30fa"
+    }
+  ]
+}

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {fork,spawnSync} from 'node:child_process';
 import {HERE,ROOT} from './common.mjs';
-import {schedule,MODES,flags} from './schedule.mjs';
+import {schedule,executionSchedule,resume,MODES,flags} from './schedule.mjs';
 import {exportMap} from './wasm-map.mjs';
 test('24 locked calls: 18 untraced, 6 trace/profile; one matrix, no warmup',()=>{
   assert.equal(schedule.length,24);assert.equal(new Set(schedule.map(r=>r.runId)).size,24);
@@ -32,4 +32,13 @@ test('launcher passes real child flags and preserves IPC ACK/close',async()=>{
     });
     child.on('close',(code,signal)=>{clearTimeout(timer);try{assert.equal(code,0);assert.equal(signal,null);assert.equal(stderr,'');assert(ready&&config&&echo);resolve();}catch(e){reject(e);}});
   });
+});
+test('eager optimized compilation keeps Worker alive without any solver calls',()=>{
+  const r=spawnSync(process.execPath,['--no-liftoff','--no-wasm-lazy-compilation',`${HERE}/bootstrap-fixture.mjs`],{encoding:'utf8',timeout:10000});
+  assert.equal(r.status,0);assert.equal(r.stderr,'');assert(r.stdout.includes('BOOTSTRAP_COMPILE_ONLY_OK'));
+});
+test('continuation reexecutes zero successful native calls; first four preserved',()=>{
+  assert.equal(executionSchedule.length,20);assert.equal(executionSchedule.filter(r=>!r.trace).length,14);assert.equal(executionSchedule.filter(r=>r.trace).length,6);
+  assert.equal(resume.successfulCallsReexecuted,0);const completed=new Set(schedule.slice(0,4).map(r=>r.runId));
+  assert(executionSchedule.every(r=>!completed.has(r.originalRunId)));
 });

@@ -1,0 +1,15 @@
+# 최초 실패 보존과 미실행 일정 계속
+
+run37101047698은4개nativecall을저장·검산한후OPTIMIZED_FIRST-R의Worker초기화에서실패했다. 비동기eagerWASMcompile완료전이벤트루프의referencedhandle이없어unsettledtop-levelawait/exit13이발생했다. 부모session은예전처럼Workerexit를즉시종료로처리하지않아startupwatchdog가45초뒤종료했다.
+
+**실패attempt의phase-start/rawresult가없고nativeintegratedcall은0이다.** 이를solverruntime45초라고해석하지않는다. 성공4개는원호스트EPYC7763의별도cohort로유지한다.
+
+수정은진단wrapper에서asyncimport전에parentPort메시지listener를등록해포트를reference하는것과예상밖Workerexit를부모error로즉시전달하는것뿐이다. 제품/원one-callWorker/native계측boundary/flags/타이머/seed/state예산은불변이다.
+
+첫run원artifact/actionlog/sourcebundle/분석결과/원계획/원auditor를FIRST_RUN_SEAL로보존했다. RESUME.json은성공한첫4개를제외한20개의**미실행nativecall**만열거하며새runID에originalRunId를연결한다. 19개NOT_RUN과1개초기화실패조건의첫nativecall이다. 성공rerun치환없음.
+
+NodeWorker의productWASM비동기compile/instantiate만수행하는fixture를추가했다. solver생성/actual-input/nativecall은0이다. 첫run은partial/harnessfailure그대로남고새run으로PASS대체하지않는다.
+
+새host에서완료될경우에도최초7763결과와새cohort의시간을합쳐단일hostratio로보고하지않는다. default/liftoff최초rep1은oldcohort,rep2/3는newcohort이며optimized3rep는newcohort다. 엔진효과의주해석은newcohort의rep2/3내비교로하고trace는별도다.
+
+예산시계는37096100399의04:18:25Z에서계속흐른다. job20분추가상한은20runner-minutes이며전체64h이하,전체3h초기화없음. 이후partial/timeout은예산을늘려재실행하지않는다.

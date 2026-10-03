@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import os from 'node:os';
 import {ROOT,MATRIX_ID,read,write,seal,sha,jsonSha} from './common.mjs';
-import {schedule,CAMPAIGN} from './schedule.mjs';
+import {executionSchedule as schedule,CAMPAIGN,resume} from './schedule.mjs';
 import {Journal,Session} from '../a0-diagnosis-20261003/supervisor.mjs';
 class TierSession extends Session{
   constructor(run,options){
@@ -42,7 +42,7 @@ finally{
   if(active){sessions.push(await active.close());active=null;}await journal.close();
   const fatal=reason||outcomes.some(o=>o.status!=='VERIFIED');if(fatal)process.exitCode=1;
   write(`${out}/SUMMARY.json`,{status:reason?'PARTIAL':outcomes.length===schedule.length?(fatal?'COMPLETE_WITH_TIMEOUTS':'COMPLETE'):'PARTIAL',stopReason:reason??null,
-    expectedCalls:24,attemptedCalls:outcomes.length,verifiedCalls:rows.length,outcomes,sessions,notRun:schedule.slice(outcomes.length),scheduled:schedule,
+    expectedCalls:schedule.length,attemptedCalls:outcomes.length,verifiedCalls:rows.length,outcomes,sessions,notRun:schedule.slice(outcomes.length),scheduled:schedule,resume,
     lock,lockSha256:jsonSha(lock),runtime:{node:process.version,v8:process.versions.v8,cpu:os.cpus()[0]?.model,cpus:os.cpus().length,allowedCpuList:allowed,workerCpu:process.env.A0_WORKER_CPU,runId:process.env.GITHUB_RUN_ID},
     campaign:CAMPAIGN,clockReset:false,operationalWallMs:performance.now()-start,nativeThresholdCalls:0,actualPrimaryCalls:0,actualPcCalls:0,performanceConfirmationCalls:0});seal(out);
 }

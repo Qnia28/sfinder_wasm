@@ -1,0 +1,83 @@
+{
+  "status": "PRESERVED_HARNESS_STARTUP_FAILURE_BEFORE_NATIVE",
+  "runId": 37101047698,
+  "sourceCommit": "952f5aae897bfa924cabdddef529f0fd0430b84b",
+  "verifiedNativeCalls": 4,
+  "failedStartupAttempts": 1,
+  "failedAttemptNativeCalls": 0,
+  "notRunCalls": 19,
+  "sourceFailure": {
+    "runId": "tier-plain-1-OPTIMIZED_FIRST-R",
+    "matrixId": "board-028--restricted-split--ordinary",
+    "stage": "tier-plain",
+    "kind": "untraced",
+    "mode": "SHARED_PROCESS_FRESH_WORKER",
+    "engineMode": "OPTIMIZED_FIRST",
+    "trace": false,
+    "engineFlags": [
+      "--no-liftoff",
+      "--no-wasm-lazy-compilation"
+    ],
+    "actualVariant": "R",
+    "label": "R",
+    "repetition": 1,
+    "instrumented": false,
+    "position": 1,
+    "sessionId": "tier-plain-1-OPTIMIZED_FIRST-R",
+    "status": "TIMEOUT_STARTUP",
+    "failure": {
+      "message": "Error: TIMEOUT_STARTUP\n    at ChildProcess.<anonymous> (file:///home/runner/work/sfinder_wasm/sfinder_wasm/experiments/a0-diagnosis-20261003/supervisor.mjs:34:57)\n    at ChildProcess.emit (node:events:508:28)\n    at maybeClose (node:internal/child_process:1101:16)\n    at Socket.<anonymous> (node:internal/child_process:457:11)\n    at Socket.emit (node:events:508:28)\n    at Pipe.<anonymous> (node:net:346:12)",
+      "failure": {
+        "status": "TIMEOUT_STARTUP",
+        "code": null,
+        "signal": "SIGKILL",
+        "stderr": "Warning: Detected unsettled top-level await at file:///home/runner/work/sfinder_wasm/sfinder_wasm/experiments/a0-tier-diagnosis-20261003/worker.mjs:19\nawait import('../a0-order-diagnosis-20261003/worker.mjs');\n^\n\n\n\nUnexpected Worker exit 13\n",
+        "resources": {
+          "cgroupPeakBytes": 107057152,
+          "cgroupCurrentBytes": 1843200,
+          "memoryMaxBytes": 3221225472,
+          "swapMaxBytes": 0,
+          "cgroupEvents": {
+            "low": 0,
+            "high": 0,
+            "max": 0,
+            "oom": 0,
+            "oom_kill": 0,
+            "oom_group_kill": 0
+          }
+        },
+        "killToCloseMs": 15.885759999990114,
+        "sessionWallMs": 45133.259984
+      }
+    },
+    "apiMs": null,
+    "initMs": null,
+    "session": {
+      "status": "TIMEOUT_STARTUP",
+      "code": null,
+      "signal": "SIGKILL",
+      "stderr": "Warning: Detected unsettled top-level await at file:///home/runner/work/sfinder_wasm/sfinder_wasm/experiments/a0-tier-diagnosis-20261003/worker.mjs:19\nawait import('../a0-order-diagnosis-20261003/worker.mjs');\n^\n\n\n\nUnexpected Worker exit 13\n",
+      "resources": {
+        "cgroupPeakBytes": 107057152,
+        "cgroupCurrentBytes": 1843200,
+        "memoryMaxBytes": 3221225472,
+        "swapMaxBytes": 0,
+        "cgroupEvents": {
+          "low": 0,
+          "high": 0,
+          "max": 0,
+          "oom": 0,
+          "oom_kill": 0,
+          "oom_group_kill": 0
+        }
+      },
+      "killToCloseMs": 15.885759999990114,
+      "sessionWallMs": 45133.259984,
+      "logBytes": 241,
+      "runId": "tier-plain-1-OPTIMIZED_FIRST-R"
+    }
+  },
+  "correction": "Reference Worker message port before asynchronous eager WASM compilation; do not rerun the four successful calls",
+  "campaignClockReset": false,
+  "productChanged": false
+}
