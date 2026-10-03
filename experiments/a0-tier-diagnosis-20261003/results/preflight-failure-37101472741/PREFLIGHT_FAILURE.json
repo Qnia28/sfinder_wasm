@@ -1,0 +1,10 @@
+{
+  "status": "PRESERVED_PREFLIGHT_FAILURE_ZERO_NATIVE",
+  "runId": 37101472741,
+  "sourceCommit": "0ed6502a9e7eb8e2ea6acbcc51917df4a2ee54fa",
+  "nativeCalls": 0,
+  "bootstrapCompileOnlyTest": "PASS",
+  "failedTest": "Original 150ms fake audit path",
+  "productionDiagnosisDeadlinesChanged": false,
+  "oldResultsReexecuted": false
+}

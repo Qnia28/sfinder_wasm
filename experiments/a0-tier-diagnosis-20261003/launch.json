@@ -8,6 +8,8 @@
   "reason": "Keep Worker port referenced during asynchronous eager compilation; continue only native-unexecuted schedule",
   "previousVerifiedNativeCalls": 4,
   "successfulCallsReexecuted": 0,
+  "preflightFailureRun": 37101472741,
+  "preflightCorrection": "Separate 150ms negative hang deadlines from 3s positive fake persistence path, execute test files serially; production diagnosis deadlines unchanged",
   "campaignOriginRunId": 37096100399,
   "campaignClockReset": false,
   "productChanges": false,

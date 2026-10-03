@@ -35,7 +35,7 @@ jobs:
           echo +memory | sudo tee /sys/fs/cgroup/a0-tier-diagnosis/cgroup.subtree_control
           echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-tier-diagnosis' >> "$GITHUB_ENV"
       - run: node experiments/a0-tier-diagnosis-20261003/lock.mjs
-      - run: node --test experiments/a0-diagnosis-20261003/contracts.test.mjs experiments/a0-tier-diagnosis-20261003/contracts.test.mjs > .a0/tier/preflight.log 2>&1
+      - run: node --test --test-concurrency=1 experiments/a0-tier-diagnosis-20261003/watchdog.test.mjs experiments/a0-tier-diagnosis-20261003/contracts.test.mjs > .a0/tier/preflight.log 2>&1
       - env:
           A0_COMPUTE_DEADLINE_MS: ${{ steps.budget.outputs.compute-deadline }}
         run: node experiments/a0-tier-diagnosis-20261003/run.mjs

@@ -1,0 +1,91 @@
+{
+  "schema": "a0-tier-preflight-failure-seal-v1",
+  "runId": 37101472741,
+  "files": [
+    {
+      "file": "github-run-37101472741/a0-tier-diagnosis/preflight-1791007048752/raw/api-hang.jsonl",
+      "bytes": 260,
+      "sha256": "8144a294d838d28bf02a961c3e5fcf6b19e15327155c07a3ee9ff990b8be890a"
+    },
+    {
+      "file": "github-run-37101472741/a0-tier-diagnosis/preflight-1791007048752/raw/audit-hang.jsonl",
+      "bytes": 661,
+      "sha256": "83e91b20df2643c8a8ef9841d174642808c2c5b75d67bb921ad95e38d5c79b9b"
+    },
+    {
+      "file": "github-run-37101472741/a0-tier-diagnosis/preflight-1791007048752/raw/duplicate.jsonl",
+      "bytes": 262,
+      "sha256": "bf6f9fb189fc89bb527c16ba1f443042e62b4c3b7dd1141218d15ed707d2b1ac"
+    },
+    {
+      "file": "github-run-37101472741/a0-tier-diagnosis/preflight-1791007048752/raw/ok-0.jsonl",
+      "bytes": 732,
+      "sha256": "42d44c25ac780db7044ff9409ca200767828252d059ee3d39a617412524748b6"
+    },
+    {
+      "file": "github-run-37101472741/a0-tier-diagnosis/preflight-1791007048752/raw/process-watch.jsonl",
+      "bytes": 669,
+      "sha256": "95738935a53793f1bc14f567dc76a084195e2299da392415a07ed253d82b2ffe"
+    },
+    {
+      "file": "github-run-37101472741/a0-tier-diagnosis/preflight-1791007048752/starts.jsonl",
+      "bytes": 274,
+      "sha256": "16e5a965cbf0291a408164e5fdd4a8b0cdda8199f1cc2022d47ff395b5cf848e"
+    },
+    {
+      "file": "github-run-37101472741/a0-tier-diagnosis/tier/LOCK.json",
+      "bytes": 96125,
+      "sha256": "c94c89641d1d3ec46cf0b38401ebfa2c95a429a8495deccda7d5657d76bce29b"
+    },
+    {
+      "file": "github-run-37101472741/a0-tier-diagnosis/tier/preflight.log",
+      "bytes": 1743,
+      "sha256": "fd9e878ebcaea62b0d33d4db5011bd7be7ec64ce728e0afa26f4a8995b14da93"
+    },
+    {
+      "file": "github-run-37101472741/actions.log",
+      "bytes": 34841,
+      "sha256": "1cdf345d7969bd53cc2f2dda137ecfc44a13e16dcb27546713574dfa35880d54"
+    },
+    {
+      "file": "github-run-37101472741/ARTIFACTS.json",
+      "bytes": 747,
+      "sha256": "b30fda1b7a315b564f6abf4f0670207bcb76934f0638ddd0b1f0a2417d46b91d"
+    },
+    {
+      "file": "github-run-37101472741/download.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "github-run-37101472741/INITIAL_RUN.json",
+      "bytes": 11962,
+      "sha256": "6a1a1d841f7a75d63c478c2c964ad6eafb8abe2d0ca08ef46064436b66b2608b"
+    },
+    {
+      "file": "github-run-37101472741/RUN.json",
+      "bytes": 3015,
+      "sha256": "026de69b4ce2d7ffd0759ecea5dc29ed7d5e196ece1247cac86723fff41376f2"
+    },
+    {
+      "file": "github-run-37101472741/watch.log",
+      "bytes": 93,
+      "sha256": "6b56b3d5f7d0ee7ddbdfb3c53f7588f6c7c9bf0c2f72e124362ff33a84d32bbb"
+    },
+    {
+      "file": "github-run-37101472741/WATCH_DECISION.json",
+      "bytes": 242,
+      "sha256": "c043d6d873d8cba80b7874ca440a0d44888381c141d771b96e44fc3c222e2221"
+    },
+    {
+      "file": "PREFLIGHT_FAILURE.json",
+      "bytes": 343,
+      "sha256": "c4670d050ed7fa00b0a4cde49b16eca21faf15eb017e916d694f256cb37d045a"
+    },
+    {
+      "file": "source-continuation.bundle",
+      "bytes": 33326499,
+      "sha256": "cc9928ab77dda2d12907d443f3a3622416ba03d490d4e7d31765e93508ff5a56"
+    }
+  ]
+}
