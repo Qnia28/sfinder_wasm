@@ -7,14 +7,33 @@ import { settings } from './profiles.mjs';
 import { auditRepetitionProgress } from './timeout-policy.mjs';
 const [runId, label] = process.argv.slice(2);
 assert(/^\d+$/.test(runId) && /^root-[a-z0-9-]+$/.test(label), 'supply run ID and root-* label');
-const bytes = readFileSync(`bench/threshold/results/remote-${label}-summary/threshold-summary-${runId}-1/results.json`);
-const aggregate = JSON.parse(bytes); assert.equal(aggregate.invalid, false);
+const retained = label === 'root-retained';
+const artifactLabel = retained ? 'root-screen-interrupted' : label;
+const selection = ['root-retained', 'root-resumed'].includes(label)
+  ? JSON.parse(readFileSync(new URL('./root-resume-selection.json', import.meta.url))) : null;
+const bytes = readFileSync(`bench/threshold/results/remote-${artifactLabel}-summary/threshold-summary-${runId}-1/results.json`);
+const aggregate = JSON.parse(bytes);
+if (retained) {
+  assert.equal(runId, selection.sourceRunId); assert.equal(aggregate.invalid, true);
+  assert.equal(selection.sourceReportHash, sha256(readFileSync(new URL('./reports/root-screen-interrupted.json', import.meta.url))));
+  assert.deepEqual(aggregate.reports.length, selection.reuseCompleteCases.length);
+  assert.deepEqual([...new Set(aggregate.rows.map(r => r.caseId))].sort(), [...selection.reuseCompleteCases].sort());
+  assert.deepEqual([...aggregate.missing].sort(), selection.cases.map(c => c.caseId).sort());
+} else assert.equal(aggregate.invalid, false);
 const manifestBytes = readFileSync(new URL('./cycle1-100/manifest.json', import.meta.url));
 const manifest = JSON.parse(manifestBytes);
 const initial = JSON.parse(readFileSync(new URL('./reports/expanded100.json', import.meta.url)));
 const reference = aggregate.reports[0].environment;
 assert(['root-screen', 'root-confirm'].includes(reference.profile));
 const expectedComparisons = settings(reference.profile, reference.mask);
+if (selection) {
+  assert.equal(reference.profile, selection.profile); assert.equal(reference.pairs, selection.pairs);
+  assert.equal(reference.mask, selection.mask); assert.equal(reference.build.hashes.experiment, selection.wasmHash);
+  for (const key of ['originalRust', 'candidateRust', 'candidateJs']) {
+    assert.equal(reference.build.sourceDigest[key], selection.sourceDigest[key]);
+  }
+  if (!retained) assert.deepEqual([...new Set(aggregate.rows.map(r => r.caseId))].sort(), selection.cases.map(c => c.caseId).sort());
+}
 assert.equal(reference.timeoutSeconds, 300);
 assert.equal(reference.manifestHash, sha256(manifestBytes));
 assert.equal(reference.runId, runId); assert.equal(reference.runAttempt, '1');
@@ -23,8 +42,10 @@ function walk(dir, name) {
   return readdirSync(dir, { withFileTypes: true }).flatMap(e => e.isDirectory()
     ? walk(resolve(dir, e.name), name) : e.name === name ? [resolve(dir, e.name)] : []);
 }
-const root = resolve(`bench/threshold/results/remote-${label}-raw`);
-const files = walk(root, 'samples.jsonl'); assert.equal(files.length, aggregate.reports.length);
+const root = resolve(`bench/threshold/results/remote-${artifactLabel}-raw`);
+const files = walk(root, 'samples.jsonl').filter(file => !retained || selection.reuseCompleteCases
+  .includes(JSON.parse(readFileSync(file, 'utf8').split('\n')[0]).caseId));
+assert.equal(files.length, aggregate.reports.length);
 const matrices = new Map(), witnesses = new Map(), cases = new Set(), seen = new Set(), samples = [], diagnostics = [];
 for (const file of files) {
   const local = JSON.parse(readFileSync(resolve(dirname(file), 'summary.json')));
