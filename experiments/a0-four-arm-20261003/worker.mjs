@@ -4,11 +4,11 @@ import {pathToFileURL} from 'node:url';
 import {parentPort,workerData,threadId} from 'node:worker_threads';
 import {ROOT,HERE,read,matrix,context,verify,jsonSha,ARMS} from './common.mjs';
 parentPort.on('message',()=>{});
-const {arm,entry,fixture}=workerData;assert(ARMS.includes(arm));assert.deepEqual(process.execArgv,[]);
+const {arm,entry,fixture,diagnostic=false}=workerData;assert(ARMS.includes(arm));assert.deepEqual(process.execArgv,[]);
 const synthetic=!!fixture;
 if(synthetic)assert.equal(process.env.FOUR_SYNTHETIC_FIXTURE,'1');else assert.equal(process.platform,'linux');
-const build=read(`${ROOT}/.a0/four/BUILD.json`);if(!synthetic)assert(build.benchmarkEligible);
-assert.equal(build.outputs[arm].diagnostics,false);
+const build=read(`${ROOT}/.a0/four/${diagnostic?'DIAGNOSTIC_BUILD':'BUILD'}.json`);if(!synthetic&&!diagnostic)assert(build.benchmarkEligible);
+assert.equal(build.outputs[arm].diagnostics,diagnostic);
 const root=`${ROOT}/${build.outputs[arm].runtime}`;
 const decode=performance.now();
 const m=synthetic?{keys:['000','001','002'],rows:[[[0,1],[1,1]],[[0,2],[1,2]],[[2,3]],[[2,3]]],K:2,seedKeys:['001','002'],
@@ -19,7 +19,7 @@ const {createWasmSolver}=await import(pathToFileURL(`${root}/src/wasm-backend.mj
 const {createNumericCoverage}=await import(pathToFileURL(`${root}/src/numeric-cover-data.mjs`));
 const {solveExactSecondary}=await import(pathToFileURL(`${root}/src/min-cover-exact-secondary.mjs`));
 const importMs=performance.now()-imports,init=performance.now(),solver=await createWasmSolver(4,{legal:false}),initMs=performance.now()-init;
-assert(!Object.keys(solver.e).some(k=>k.includes('four_arm_diag')));
+assert.equal(Object.keys(solver.e).some(k=>k.includes('four_arm_diag')),diagnostic);
 const prep=performance.now(),{coverage}=createNumericCoverage(m.keys,new Map(m.rows.map((r,i)=>[i,r])),m.cases),coverageMs=performance.now()-prep;
 const osTid=synthetic?'SYNTHETIC':fs.readlinkSync('/proc/thread-self').split('/').at(-1);
 const allowed=synthetic?'SYNTHETIC':fs.readFileSync(`/proc/self/task/${osTid}/status`,'utf8').match(/^Cpus_allowed_list:\s*(.+)$/m)[1].trim();
@@ -31,11 +31,13 @@ solver.minimumCoverAtCount=function(c,k,o){
  assert.equal(++current.calls,1);
  if(synthetic)o={...o,stateBudget:fixture.budget};
  current.options={...o};delete current.options.qualityFor;
+ if(diagnostic)solver.e.solver_four_arm_diag_reset();
  parentPort.postMessage({type:'phase-start',runId:current.run.runId});
  const pcpu=process.cpuUsage(),tcpu=process.threadCpuUsage(),start=performance.now();
  const probe=original.call(this,c,k,o);current.apiMs=performance.now()-start;current.cpu=process.cpuUsage(pcpu);current.threadCpu=process.threadCpuUsage(tcpu);current.probe=probe;
+ if(diagnostic){const names=build.counterNames;current.counters=Object.fromEntries(names.map((name,i)=>[name,solver.e.solver_four_arm_diag_get(i)]));assert(Object.values(current.counters).every(Number.isSafeInteger));}
  parentPort.postMessage({type:'phase-result',runId:current.run.runId,raw:probe,options:current.options,apiMs:current.apiMs,cpu:current.cpu,threadCpu:current.threadCpu,
-  profile:null,worker:{pid:process.pid,threadId,osTid,cpu:'UNPINNED',allowed,callCount},wasmBytes:solver.e.memory.buffer.byteLength,wasmSha256:build.outputs[arm].wasmSha256});
+   profile:null,diagnostic,timingEvidence:!diagnostic,counters:current.counters??null,worker:{pid:process.pid,threadId,osTid,cpu:'UNPINNED',allowed,callCount},wasmBytes:solver.e.memory.buffer.byteLength,wasmSha256:build.outputs[arm].wasmSha256});
  return probe;
 };
 async function call(run){
@@ -53,7 +55,7 @@ async function call(run){
  }
  if(!synthetic){const expected=read(`${HERE}/REFERENCES.json`).references[entry.id][arm==='R'?'R':'A0'];assert.deepEqual(current.probe,expected,`${arm} state/quality/stable-ID/completion mismatch`);}
  const row={...run,status:current.probe.completed?'PROBE_EXACT':'PROBE_CAPPED',probe:current.probe,options:current.options,apiMs:current.apiMs,cpu:current.cpu,threadCpu:current.threadCpu,
-  profile:null,witness,contract,worker:{pid:process.pid,threadId,osTid,cpu:'UNPINNED',allowed,callCount},wasmSha256:build.outputs[arm].wasmSha256,
+   profile:null,diagnostic,timingEvidence:!diagnostic,counters:current.counters??null,witness,contract,worker:{pid:process.pid,threadId,osTid,cpu:'UNPINNED',allowed,callCount},wasmSha256:build.outputs[arm].wasmSha256,
   decodeMs,importMs,initMs,coverageMs,routeBoundaryWithIpcMs,ackWaitMs,verificationMs:performance.now()-audit,
   primaryProofSha256:jsonSha(m.primary),seedKeysSha256:jsonSha(m.seedKeys),actualPrimaryCalls:0,actualPcCalls:0,nativeThresholdCalls:0,
   synthetic,processPeakRssBytes:process.resourceUsage().maxRSS*1024,wasmBytes:solver.e.memory.buffer.byteLength};

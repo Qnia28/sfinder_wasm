@@ -1,0 +1,183 @@
+{
+  "status": "PRE_REGISTERED_WORK_COUNTS_ONLY",
+  "inputs": [
+    "board-106--restricted-split--J",
+    "board-119--restricted-split--L",
+    "board-115--bag--ordinary",
+    "board-111--restricted-split--ordinary",
+    "board-028--restricted-split--ordinary"
+  ],
+  "nativeCalls": 20,
+  "stateBudget": 100000,
+  "apiMs": 30000,
+  "processMs": 45000,
+  "startupMs": 30000,
+  "auditMs": 30000,
+  "durableAckMs": 10000,
+  "reapMs": 2000,
+  "timingEvidence": false,
+  "measuredBenchmarkCallsAdded": 0,
+  "order": "After benchmark jobs on a separate standard runner; no measured calls share instrumentation",
+  "runs": [
+    {
+      "runId": "work-0-R",
+      "matrixId": "board-106--restricted-split--J",
+      "arm": "R",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-0"
+    },
+    {
+      "runId": "work-0-A0",
+      "matrixId": "board-106--restricted-split--J",
+      "arm": "A0",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-0"
+    },
+    {
+      "runId": "work-0-M1",
+      "matrixId": "board-106--restricted-split--J",
+      "arm": "M1",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-0"
+    },
+    {
+      "runId": "work-0-M2",
+      "matrixId": "board-106--restricted-split--J",
+      "arm": "M2",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-0"
+    },
+    {
+      "runId": "work-1-R",
+      "matrixId": "board-119--restricted-split--L",
+      "arm": "R",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-1"
+    },
+    {
+      "runId": "work-1-A0",
+      "matrixId": "board-119--restricted-split--L",
+      "arm": "A0",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-1"
+    },
+    {
+      "runId": "work-1-M1",
+      "matrixId": "board-119--restricted-split--L",
+      "arm": "M1",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-1"
+    },
+    {
+      "runId": "work-1-M2",
+      "matrixId": "board-119--restricted-split--L",
+      "arm": "M2",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-1"
+    },
+    {
+      "runId": "work-2-R",
+      "matrixId": "board-115--bag--ordinary",
+      "arm": "R",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-2"
+    },
+    {
+      "runId": "work-2-A0",
+      "matrixId": "board-115--bag--ordinary",
+      "arm": "A0",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-2"
+    },
+    {
+      "runId": "work-2-M1",
+      "matrixId": "board-115--bag--ordinary",
+      "arm": "M1",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-2"
+    },
+    {
+      "runId": "work-2-M2",
+      "matrixId": "board-115--bag--ordinary",
+      "arm": "M2",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-2"
+    },
+    {
+      "runId": "work-3-R",
+      "matrixId": "board-111--restricted-split--ordinary",
+      "arm": "R",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-3"
+    },
+    {
+      "runId": "work-3-A0",
+      "matrixId": "board-111--restricted-split--ordinary",
+      "arm": "A0",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-3"
+    },
+    {
+      "runId": "work-3-M1",
+      "matrixId": "board-111--restricted-split--ordinary",
+      "arm": "M1",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-3"
+    },
+    {
+      "runId": "work-3-M2",
+      "matrixId": "board-111--restricted-split--ordinary",
+      "arm": "M2",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-3"
+    },
+    {
+      "runId": "work-4-R",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "arm": "R",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-4"
+    },
+    {
+      "runId": "work-4-A0",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "arm": "A0",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-4"
+    },
+    {
+      "runId": "work-4-M1",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "arm": "M1",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-4"
+    },
+    {
+      "runId": "work-4-M2",
+      "matrixId": "board-028--restricted-split--ordinary",
+      "arm": "M2",
+      "kind": "WORK_DIAGNOSTIC",
+      "host": "WORK_ONLY",
+      "blockId": "work-4"
+    }
+  ]
+}

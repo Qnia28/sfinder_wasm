@@ -45,7 +45,7 @@ def audit(download):
         assert len(rr)==s['verifiedCalls'] and len(oo)==s['attemptedCalls']
         assert [o['runId'] for o in oo]==[r['runId'] for r in schedule if r['host']==s['host']][:len(oo)]
         for r in rr:
-            assert all(r[k]==v for k,v in expected[r['runId']].items());assert not r['synthetic'] and r['profile'] is None
+            assert all(r[k]==v for k,v in expected[r['runId']].items());assert not r['synthetic'] and r['profile'] is None and not r['diagnostic'] and r['timingEvidence']
             raw=[json.loads(l) for l in (folder/r['rawFile']).read_text().splitlines()]
             assert [v['type'] for v in raw]==['phase-start','phase-result','audit-result'];raw_count+=3
             assert raw[1]['raw']==r['probe'] and raw[1]['options']==r['options'] and raw[1]['apiMs']==r['apiMs']

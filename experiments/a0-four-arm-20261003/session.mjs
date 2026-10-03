@@ -11,7 +11,9 @@ process.on('message',async m=>{
    assert(!slot&&!active);active=true;
    const entry=synthetic?null:read(`${HERE}/INPUTS.json`).entries.find(e=>e.id===m.run.matrixId);
    if(synthetic)assert.equal(m.run.matrixId,'SYNTHETIC_FOUR_ARM');else assert(entry);
-   const w=new Worker(new URL('./worker.mjs',import.meta.url),{workerData:{entry,arm:m.run.arm,fixture:synthetic?{budget:Number(process.env.FOUR_FIXTURE_BUDGET)}:null}});
+   const diagnostic=m.run.kind==='WORK_DIAGNOSTIC';
+   if(diagnostic&&!synthetic)assert(read(`${HERE}/DIAGNOSTIC_SCHEDULE.json`).runs.some(r=>r.runId===m.run.runId&&r.matrixId===m.run.matrixId&&r.arm===m.run.arm));
+   const w=new Worker(new URL('./worker.mjs',import.meta.url),{workerData:{entry,arm:m.run.arm,diagnostic,fixture:synthetic?{budget:Number(process.env.FOUR_FIXTURE_BUDGET)}:null}});
    const exited=new Promise(resolve=>w.once('exit',code=>{if(!closing){console.error(`Unexpected Worker exit ${code}`);process.exit(1);}resolve();}));slot={w,exited};
    w.on('error',e=>{console.error(e.stack);process.exit(1);});
    w.on('message',msg=>{if(msg.type==='ready'){process.send({...msg,type:'worker-ready'});w.postMessage(m);return;}

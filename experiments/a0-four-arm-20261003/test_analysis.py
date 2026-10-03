@@ -28,5 +28,8 @@ class AnalysisContracts(unittest.TestCase):
         rr=[r for r in self.rows({'R':10,'A0':15,'M1':10,'M2':13}) if r['kind']!='ENVIRONMENT_CONTROL']
         r=self.result(rr);self.assertEqual(r['verdicts']['M1']['classification'],'ENVIRONMENT_UNCHECKED')
         self.assertFalse(r['verdicts']['M1']['directionalImprovementVsA0'])
+    def test_instrumented_row_cannot_enter_timing_analysis(self):
+        rr=self.rows({'R':10,'A0':15,'M1':10,'M2':13});rr[0]['diagnostic']=True
+        with self.assertRaises(AssertionError):self.result(rr)
 
 if __name__=='__main__':unittest.main()

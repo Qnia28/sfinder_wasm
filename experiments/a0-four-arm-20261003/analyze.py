@@ -5,6 +5,7 @@ import statistics
 COMPARISONS=[('A0','R'),('M1','A0'),('M2','A0'),('M1','R'),('M2','R'),('M1','M2')]
 
 def analyze(records, rows):
+    assert all(not r.get('diagnostic',False) and r.get('timingEvidence',True) for r in rows),'Instrumented diagnostic rows must not enter timing analysis'
     blocks=collections.defaultdict(list)
     for row in rows:blocks[row['blockId']].append(row)
     environment=[];alarms=set();checked_controls=set();complete=[]

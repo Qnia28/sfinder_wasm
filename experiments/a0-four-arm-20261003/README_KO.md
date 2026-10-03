@@ -1,6 +1,15 @@
 # R / A0 / M1 / M2 — 4군 비교 준비
 
-**PREPARED_NOT_LAUNCHED. GitHub push·Actions 실행·실제 입력 native 호출 없음. 제품 적용 아님.**
+**사용자 승인으로 두 보완을 완료하고 Linux 사전 gate부터 실행한다. 제품 적용 아님.** 원 준비 증거는별도봉인으로유지한다.
+
+## 보완된 실행 계약
+
+1. feature-off control은Linux원본과 **full-byte 일치가필수**다. 다른경우 `BLOCKED_CONTROL_BINARY_DRIFT`로벤치마크및실제입력진단0calls. 원본 `min_cover.rs`와모듈선언은그대로두고수정은별도 `min_cover_four_arm.rs` overlay를격리빌드tree에만적용한다. 로컬Windowscontrol도원본aac18952…와byte일치했다. M1/M2의feature는overlay빌드에서만활성화한다. 원제품모듈을수정해feature-off 코드배치를흔들지않는다.
+2. 비계측4군4,960calls가끝난뒤별도standardrunner에서 **작업량진단20calls**: 새악화3개(board106J/119L/115bag), board111ordinary, board028ordinary ×R/A0/M1/M2. 원K/seed/100K·3GiB/swap0유지. 계측API30s/process45s는시간성능의확대예산이아니라사전고정work-count진단계약이며시간통계에넣지않는다. per-call deadline·rawfsync-before-ACK 유지, 실제primary/PC/threshold0.
+3. 전체실제native4,980calls. build30분+bench5×60분+work30분으로runner-hours상한6≤64. 원캠페인시계는reset하지않고새최초workfloworigin을사용한다. build실패/정확성불일치/계측timeout은고정예산에서정지하며자동확대재시도없음.
+4. `DIAGNOSTIC_SCHEDULE.json`과 `audit-diagnostics.py`로하한호출/후보/word/cutoff/prune/trail기록·생략을분리검산한다. M1은A0와states/prune동일및검사word감소, M2는A0와하한검사동일및trail감소를확인한다. 진단행을성능분석기에넣으면assertion으로거부한다.
+
+아래최초준비설명중 **미승인/진단0/상한5.5/합성호출4,159**는준비당시상태다. 현재승인계약은이보완과CAMPAIGN/DIAGNOSTIC_SCHEDULE/launch.json이우선하며Linuxgate통과는실제완료뒤에만주장한다. 보완후합성예정WASMcalls4,167=oracle4,148+Worker16+workfixture3이다.
 
 ## 1. 가설과 독립 후보
 

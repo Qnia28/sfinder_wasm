@@ -4,7 +4,6 @@ version = "0.2.0"
 edition = "2024"
 license = "Apache-2.0"
 [features]
-default = []
 a0-diagnostics = ["pc-core/a0-diagnostics"]
 [lib]
 crate-type = ["cdylib"]
