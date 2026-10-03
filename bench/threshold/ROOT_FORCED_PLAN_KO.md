@@ -49,6 +49,16 @@ F/covered비율의R7 삼분위9셀마다서로다른mirror그룹에서lexical2�
 F 경계22/29,covered비율경계0.7372093023/0.8479099343이며timing/완료자료는읽지않았다.
 timeout을시간으로치환하지않는다. mask16 대비추가가치가주판단이다.
 
+### 사용자 추가 조건: timeout 조기종료
+
+입력/비교조합별로양측2회씩solver TIMEOUT이며관측된EXACT가전혀없으면
+2paired repeats(4실제호출)후남은반복을생략한다. 어느쪽이든EXACT가1번이라도
+관측되면끝까지반복한다. ERROR/setup/validation timeout은조기종료근거가아니다.
+같은입력의다른비교조합에는전파하지않는다. 미실행호출은TIMEOUT으로위조하지않고
+requested/executed/skipped pairs와사유를별도기록한다.10회요청의완전실패군은
+100분대신약20분의solver시간으로종료할수있지만성공관측군의100분deadline은유지한다.
+향후5/10회실행에적용하며이미시작한1pair screening은변경하지않는다.
+
 ## 최종 등급
 
 A: 추가개선이반복재현되고회귀/비용수용가능.

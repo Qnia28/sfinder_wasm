@@ -4,6 +4,7 @@ import { resolve, dirname } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import { sha256, validateWitness } from './engine.mjs';
 import { settings } from './profiles.mjs';
+import { auditRepetitionProgress } from './timeout-policy.mjs';
 const [runId, label] = process.argv.slice(2);
 assert(/^\d+$/.test(runId) && /^root-[a-z0-9-]+$/.test(label), 'supply run ID and root-* label');
 const bytes = readFileSync(`bench/threshold/results/remote-${label}-summary/threshold-summary-${runId}-1/results.json`);
@@ -30,12 +31,11 @@ for (const file of files) {
   assert.equal(local.invalid, false);
   const environment = local.environment;
   assert.deepEqual(local.comparisons, expectedComparisons);
-  for (const k of ['candidate', 'profile', 'mask', 'pairs', 'timeoutSeconds', 'manifestHash', 'runId', 'runAttempt', 'dirty']) {
+  for (const k of ['candidate', 'profile', 'mask', 'pairs', 'timeoutSeconds', 'manifestHash', 'runId', 'runAttempt', 'dirty', 'earlyTimeoutPolicy']) {
     assert.deepEqual(environment[k], reference[k]);
   }
   assert.deepEqual(environment.build, reference.build);
   const raw = readFileSync(file, 'utf8').trim().split('\n').map(line => JSON.parse(line));
-  assert.equal(raw.length, local.comparisons.length * reference.pairs * 2);
   const caseId = raw[0].caseId; assert(!cases.has(caseId)); cases.add(caseId);
   const entry = manifest.cases.find(c => c.id === caseId); assert(entry);
   const gzip = readFileSync(new URL(`./cycle1-100/${entry.file}`, import.meta.url));
@@ -44,6 +44,12 @@ for (const file of files) {
   const matrix = JSON.parse(inputBytes); matrices.set(caseId, matrix);
   const matches = aggregate.rows.filter(r => r.caseId === caseId);
   assert.equal(matches.length, local.comparisons.length);
+  for (const row of matches) {
+    const records = raw.filter(r => r.comparisonIndex === row.comparisonIndex);
+    auditRepetitionProgress(records, row, reference.pairs);
+    const localRow = local.rows.find(r => r.caseId === caseId && r.comparisonIndex === row.comparisonIndex);
+    assert(localRow); auditRepetitionProgress(records, localRow, reference.pairs);
+  }
   const report = aggregate.reports.find(r => r.file === matches[0].report); assert(report);
   assert.deepEqual(report.environment, environment);
   for (const r of raw) {
@@ -99,7 +105,8 @@ const median = xs => {
 const spread = xs => xs.length < 2 ? null : (Math.max(...xs) - Math.min(...xs)) / median(xs);
 const perCase = aggregate.rows.map(row => {
   const raw = samples.filter(s => s.caseId === row.caseId && s.comparisonIndex === row.comparisonIndex);
-  const paired = Array.from({ length: reference.pairs }, (_, pair) => {
+  const progress = auditRepetitionProgress(raw, row, reference.pairs);
+  const paired = Array.from({ length: progress.executedPairs }, (_, pair) => {
     const off = raw.find(s => s.pair === pair && s.side === 'left');
     const on = raw.find(s => s.pair === pair && s.side === 'right'); assert(off && on);
     return { pair, offStatus: off.status, onStatus: on.status, offMs: off.nativeMs, onMs: on.nativeMs,
@@ -114,7 +121,7 @@ const perCase = aggregate.rows.map(row => {
   }
   const { report, candidate, ...rest } = row;
   const pairedDeltaMs = median(done.map(p => p.onMs - p.offMs));
-  return { ...rest, paired, pairedDeltaMs,
+  return { ...rest, ...progress, paired, pairedDeltaMs,
     offSpread: spread(raw.filter(s => s.side === 'left' && s.status === 'EXACT').map(s => s.nativeMs)),
     onSpread: spread(raw.filter(s => s.side === 'right' && s.status === 'EXACT').map(s => s.nativeMs)),
     ratioSpread: spread(ratios), fasterPairs: ratios.filter(r => r > 1).length,
@@ -138,6 +145,8 @@ const comparisons = [...new Set(perCase.map(r => r.comparisonIndex))].map(index 
     pairedRegressions: rows.filter(r => r.pairedRegression).map(r => r.caseId),
     exactToTimeout: rows.filter(r => r.leftOnlyExact > 0).map(r => r.caseId),
     onOnlyPairs: rows.reduce((s, r) => s + r.rightOnlyExact, 0),
+    earlyStopped: rows.filter(r => r.earlyStop).map(r => r.caseId),
+    skippedPairs: rows.reduce((s, r) => s + r.skippedPairs, 0),
     memoryAlerts: rows.filter(r => r.memoryReview).map(r => r.caseId) };
 });
 writeFileSync(new URL(`./reports/${label}.json`, import.meta.url), JSON.stringify({
@@ -146,6 +155,8 @@ writeFileSync(new URL(`./reports/${label}.json`, import.meta.url), JSON.stringif
   manifestHash: reference.manifestHash, wasmHashes: reference.build.hashes, sourceDigest: reference.build.sourceDigest,
   aggregateSha256: sha256(bytes), cases: cases.size, exact: samples.filter(s => s.status === 'EXACT').length,
   timeout: samples.filter(s => s.status === 'TIMEOUT').length, comparisons, perCase, diagnostics,
+  requestedSamples: cases.size * expectedComparisons.length * reference.pairs * 2,
+  skippedSamples: perCase.reduce((s, r) => s + r.skippedPairs * 2, 0),
   witnessHashes: Object.fromEntries(witnesses), samples,
   audit: 'Unique samples/settings, same-VM environments, input/build/source hashes, and all completed original-row witnesses checked. Existing completed optima matched expanded100 hashes. Budgeted traces are not timing data.',
 }, null, 2) + '\n', { flag: 'wx' });

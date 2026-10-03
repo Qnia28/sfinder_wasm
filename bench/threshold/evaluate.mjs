@@ -26,6 +26,8 @@ const comparisons = [...groups].map(([comparison, local]) => {
     regressionReview: local.filter(r => r.regressionReview).map(r => r.caseId),
     exactToTimeout: local.filter(r => r.exactToTimeout).map(r => r.caseId),
     rightOnlyExactPairs: local.reduce((n, r) => n + r.rightOnlyExact, 0),
+    earlyStoppedComparisons: local.filter(r => r.earlyStop).map(r => r.caseId),
+    skippedPairs: local.reduce((n, r) => n + (r.skippedPairs ?? 0), 0),
     memoryReview: local.filter(r => r.memoryReview).map(r => r.caseId) };
 });
 const evaluation = { source: path, comparisons, rows,

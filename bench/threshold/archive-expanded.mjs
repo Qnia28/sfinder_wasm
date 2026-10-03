@@ -3,6 +3,7 @@ import { readFileSync, readdirSync, mkdirSync, writeFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import { sha256, validateWitness } from './engine.mjs';
+import { auditRepetitionProgress } from './timeout-policy.mjs';
 
 const retest = process.argv[2] === '--retest';
 const runId = retest ? process.argv[3] : '37097238109';
@@ -47,11 +48,13 @@ for (const file of files) {
   const localSummary = JSON.parse(readFileSync(resolve(dirname(file), 'summary.json')));
   assert.equal(localSummary.invalid, false);
   const rows = readFileSync(file, 'utf8').trim().split('\n').map(line => JSON.parse(line));
-  assert.equal(rows.length, pairs * 2); assert.equal(new Set(rows.map(r => r.caseId)).size, 1);
+  assert.equal(new Set(rows.map(r => r.caseId)).size, 1);
   const caseId = rows[0].caseId;
   assert(!perCaseSamples.has(caseId)); perCaseSamples.set(caseId, rows);
   const entry = manifest.cases.find(c => c.id === caseId); assert(entry);
   const caseSummary = aggregate.rows.find(r => r.caseId === caseId); assert(caseSummary);
+  auditRepetitionProgress(rows, caseSummary, pairs);
+  auditRepetitionProgress(rows, localSummary.rows[0], pairs);
   const matching = aggregate.reports.find(r => r.file === caseSummary.report); assert(matching);
   assert.deepEqual(localSummary.environment, matching.environment);
   for (const r of rows) {
@@ -82,7 +85,8 @@ for (const file of files) {
       searchedStates, processPeakRssKiB, wasmMemoryBytes, witnessHash });
   }
 }
-assert.equal(samples.length, expectedCases * pairs * 2);
+const skippedSamples = aggregate.rows.reduce((n, r) => n + (r.skippedPairs ?? 0) * 2, 0);
+assert.equal(samples.length + skippedSamples, expectedCases * pairs * 2);
 const median = xs => {
   const a = [...xs].sort((x, y) => x - y), at = Math.floor(a.length / 2);
   return a.length % 2 ? a[at] : (a[at - 1] + a[at]) / 2;
@@ -90,7 +94,8 @@ const median = xs => {
 const spread = xs => xs.length < 2 ? null : (Math.max(...xs) - Math.min(...xs)) / median(xs);
 const perCase = evaluation.rows.map(row => {
   const raw = perCaseSamples.get(row.caseId); assert(raw);
-  const paired = Array.from({ length: pairs }, (_, pair) => {
+  const progress = auditRepetitionProgress(raw, row, pairs);
+  const paired = Array.from({ length: progress.executedPairs }, (_, pair) => {
     const off = raw.find(r => r.pair === pair && r.side === 'left');
     const on = raw.find(r => r.pair === pair && r.side === 'right'); assert(off && on);
     return { pair, offStatus: off.status, onStatus: on.status,
@@ -105,7 +110,7 @@ const perCase = evaluation.rows.map(row => {
   const { report, candidate, ...rest } = row;
   const offTimes = raw.filter(r => r.side === 'left' && r.status === 'EXACT').map(r => r.nativeMs);
   const onTimes = raw.filter(r => r.side === 'right' && r.status === 'EXACT').map(r => r.nativeMs);
-  return { ...rest, paired, offSpread: spread(offTimes), onSpread: spread(onTimes), ratioSpread: spread(ratios),
+  return { ...rest, ...progress, paired, offSpread: spread(offTimes), onSpread: spread(onTimes), ratioSpread: spread(ratios),
     pairedDeltaMedianMs: ratios.length ? median(paired.filter(p => p.speedup !== null).map(p => p.onMs - p.offMs)) : null,
     fasterPairs: paired.filter(p => p.speedup !== null && p.speedup > 1).length,
     slowerPairs: paired.filter(p => p.speedup !== null && p.speedup < 1).length,
@@ -114,6 +119,8 @@ const perCase = evaluation.rows.map(row => {
 });
 const complete = perCase.filter(r => r.pairedComplete > 0);
 const stats = { matrices: expectedCases, samples: samples.length,
+  requestedSamples: expectedCases * pairs * 2, skippedSamples,
+  earlyStoppedMatrices: perCase.filter(r => r.earlyStop).map(r => r.caseId),
   exact: samples.filter(r => r.status === 'EXACT').length, timeout: samples.filter(r => r.status === 'TIMEOUT').length,
   offExact: samples.filter(r => r.side === 'left' && r.status === 'EXACT').length,
   onExact: samples.filter(r => r.side === 'right' && r.status === 'EXACT').length,

@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { settings, defaults, caseIds } from './profiles.mjs';
 import { manifest, manifestPath, loadFixture } from './fixtures.mjs';
 import { sha256, validateWitness } from './engine.mjs';
+import { TIMEOUT_POLICY, timeoutStopReason, repetitionProgress } from './timeout-policy.mjs';
 
 const args = process.argv.slice(2);
 const option = (name, fallback) => { const at = args.indexOf(`--${name}`); return at < 0 ? fallback : args[at + 1]; };
@@ -29,6 +30,7 @@ writeFileSync(rawFile,'', { flag: 'wx' }); // Never accidentally overwrite an ol
 const rev = spawnSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).stdout.trim();
 const dirty = spawnSync('git',['status','--porcelain'],{encoding:'utf8'}).stdout.trim();
 const environment = { profile, suite, mask, pairs, timeoutSeconds, candidate: rev, dirty,
+  earlyTimeoutPolicy: TIMEOUT_POLICY,
   baseline: manifest.baseline, node: process.version, platform: platform(), arch: arch(),
   cpu: cpus()[0]?.model, cpuCount: cpus().length, runId: process.env.GITHUB_RUN_ID ?? null,
   runAttempt: process.env.GITHUB_RUN_ATTEMPT ?? null, runner: process.env.RUNNER_NAME ?? null,
@@ -79,10 +81,12 @@ const rows = [], knownWitness = new Map();
 let invalid = false;
 for (const caseId of ids) {
   const { entry, matrix } = loadFixture(caseId);
+  const histories = comparisons.map(() => []), stopped = new Set();
   for (let pair = 0; pair < pairs; pair++) {
     // Rotate comparison order, and alternate AB/BA independently of settings.
     const order = comparisons.map((_, i) => (i + pair) % comparisons.length);
     for (const comparisonIndex of order) {
+      if (stopped.has(comparisonIndex)) continue;
       const comparison = comparisons[comparisonIndex];
       for (const side of (pair + comparisonIndex) % 2 ? ['right','left'] : ['left','right']) {
         const run = await sample(comparison[side], caseId);
@@ -108,10 +112,17 @@ for (const caseId of ids) {
           delete record.result;
         }
         rows.push(record); appendFileSync(rawFile,JSON.stringify(record)+'\n');
+        histories[comparisonIndex].push(record);
         console.log(`${caseId} pair=${pair} ${side} ${record.engine}/${record.mask} ${record.status} ${record.solverMs?.toFixed(3) ?? '-'}ms`);
         if (!['EXACT','TIMEOUT'].includes(record.status)) invalid = true;
       }
+      const reason = timeoutStopReason(histories[comparisonIndex], pairs);
+      if (reason) {
+        stopped.add(comparisonIndex);
+        console.log(`${caseId} comparison=${comparisonIndex} early timeout stop after ${pair + 1} pairs; ${pairs - pair - 1} pairs NOT RUN`);
+      }
     }
+    if (stopped.size === comparisons.length) break;
   }
 }
 const median = values => {
@@ -125,6 +136,7 @@ for (const caseId of ids) for (let comparisonIndex=0; comparisonIndex<comparison
   const paired = Array.from({length:pairs},(_,pair)=>local.filter(r=>r.pair===pair));
   const complete = paired.filter(p=>p.length===2 && p.every(r=>r.status==='EXACT'));
   summary.push({ caseId, suite: manifest.cases.find(x=>x.id===caseId).suite, comparisonIndex,
+    ...repetitionProgress(local, pairs),
     ...comparisons[comparisonIndex], leftExact: local.filter(r=>r.side==='left'&&r.status==='EXACT').length,
     rightExact: local.filter(r=>r.side==='right'&&r.status==='EXACT').length,
     pairedComplete: complete.length,
@@ -144,9 +156,10 @@ writeFileSync(resolve(out,'summary.json'),JSON.stringify({environment,comparison
 const markdown = [
   `# Threshold ${profile}: ${rev}`,
   'Sequential paired fresh processes on the SAME runner. Primary metric nativeMs includes the Rust ABI conversion, normalization/preparation/search; solverMs also includes JS validation/packing/copy/getters. Fixture IO and returned-witness checking are outside both. TIMEOUTs are censored, not times. Diagnostic runs are not performance evidence.',
-  '| Case | Left engine/mask | Right engine/mask | Exact L/R | Complete pairs | Median paired speedup |',
-  '|---|---|---|---|---|---|',
-  ...summary.map(r=>`| ${r.caseId} | ${r.left.engine}/${r.left.mask} | ${r.right.engine}/${r.right.mask} | ${r.leftExact}/${r.rightExact} | ${r.pairedComplete} | ${r.pairedSpeedupMedian?.toFixed(3) ?? '-'} |`),
+  'Early stop: two solver TIMEOUTs on each side with no observed EXACT on either side. Any observed EXACT disables stopping. Unrun pairs are not samples or timeouts.',
+  '| Case | Left engine/mask | Right engine/mask | Exact L/R | Complete pairs | Median paired speedup | Executed / requested pairs | Unrun pairs |',
+  '|---|---|---|---|---|---|---|---|',
+  ...summary.map(r=>`| ${r.caseId} | ${r.left.engine}/${r.left.mask} | ${r.right.engine}/${r.right.mask} | ${r.leftExact}/${r.rightExact} | ${r.pairedComplete} | ${r.pairedSpeedupMedian?.toFixed(3) ?? '-'} | ${r.executedPairs}/${r.requestedPairs} | ${r.skippedPairs} |`),
   `\nInvalid run: ${invalid}. A right-only completion has a checked witness but no baseline optimum cross-check in that pair.`,
 ].join('\n');
 writeFileSync(resolve(out,'summary.md'),markdown+'\n');

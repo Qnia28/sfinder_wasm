@@ -12,7 +12,7 @@ function collect(dir) {
 const reports = collect(input).map(file=>({file,...JSON.parse(readFileSync(file))}));
 if (!reports.length) throw new Error('no benchmark summaries; jobs may have failed before recording results');
 const reference = reports[0].environment;
-for (const report of reports) for (const key of ['profile','mask','pairs','timeoutSeconds','candidate','baseline','manifestHash']) {
+for (const report of reports) for (const key of ['profile','mask','pairs','timeoutSeconds','candidate','baseline','manifestHash','earlyTimeoutPolicy']) {
   assert.deepEqual(report.environment[key],reference[key],`mixed runs: ${key}`);
 }
 for (const report of reports) assert.deepEqual(report.environment.build.hashes,reference.build.hashes,'mixed WASM builds');
@@ -23,11 +23,13 @@ const expected = process.env.EXPECTED_MATRIX ? JSON.parse(process.env.EXPECTED_M
 const observed = new Set(rows.map(r=>r.caseId));
 const missing = expected.filter(id=>!observed.has(id));
 const result = { invalid: invalid || missing.length > 0, missing, reports:reports.map(r=>({file:r.file,environment:r.environment})), rows,
+  earlyStoppedComparisons: rows.filter(r => r.earlyStop).length,
+  skippedPairs: rows.reduce((sum, r) => sum + (r.skippedPairs ?? 0), 0),
   note:'Only within-job paired ratios are valid. Absolute times are not pooled across runners. No censored timeout is converted to a completed time.' };
 writeFileSync(resolve(output,'results.json'),JSON.stringify(result,null,2));
 const markdown = ['# Threshold paired results', result.note,
-  '| Case | Comparison | Exact L/R | Paired speedup | Left-only / right-only |',
-  '|---|---|---|---|---|',...rows.map(r=>`| ${r.caseId} | ${r.left.engine}/${r.left.mask} → ${r.right.engine}/${r.right.mask} | ${r.leftExact}/${r.rightExact} | ${r.pairedSpeedupMedian?.toFixed(3) ?? '-'} | ${r.leftOnlyExact}/${r.rightOnlyExact} |`),
+  '| Case | Comparison | Exact L/R | Paired speedup | Left-only / right-only | Executed / requested pairs | Unrun pairs |',
+  '|---|---|---|---|---|---|---|',...rows.map(r=>`| ${r.caseId} | ${r.left.engine}/${r.left.mask} → ${r.right.engine}/${r.right.mask} | ${r.leftExact}/${r.rightExact} | ${r.pairedSpeedupMedian?.toFixed(3) ?? '-'} | ${r.leftOnlyExact}/${r.rightOnlyExact} | ${r.executedPairs ?? r.pairs ?? reference.pairs}/${reference.pairs} | ${r.skippedPairs ?? 0} |`),
   `\nReports=${reports.length}; invalid=${result.invalid}; missing=${missing.join(',') || 'none'}. Check failed jobs before making conclusions.`,
 ].join('\n');
 writeFileSync(resolve(output,'summary.md'),markdown+'\n');
