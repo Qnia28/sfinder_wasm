@@ -1,5 +1,19 @@
 # Actions 실행 기록
 
+## rootForced 보완 screening 재개 완료
+
+- 초기run [37113754448](https://github.com/Qnia28/sfinder_wasm/actions/runs/37113754448),
+  c7303b5: 사용자요청으로취소.12호출이모두기록된58개만재사용했다.
+- 재실행run [37118105522](https://github.com/Qnia28/sfinder_wasm/actions/runs/37118105522),
+  d482836: 미완료42개 모두job성공.동일6비교/1pair/300초이며실제병렬최대12VM.
+- 동일Rust/제품JS/experimentalWASM/입력hash와모든완료witness검산통과.
+  old58+new42의1,200호출은EXACT964/TIMEOUT236.과거부분120호출은중복합산하지않았다.
+- rootForced 단독1.078배,mask16에추가1.036배.보완단독효과는0.983/1.007/0.979배,
+  두보완포함mask16추가효과1.030배였다.모두완료군의1pair기술통계다.
+- rootForced B유지,추가보완C보류.통합/5회확인/10회재테스트는아직하지않았다.
+- [종합 보고서](ROOT_FORCED_SCREEN_REPORT_KO.md),장기검산자료reports/root-screen.json.
+- 최종보호확인: 로컬dev clean,c0cb2a0;원격main 03b6377 유지.
+
 ## 확대·재테스트 완료
 
 | 단계 | Commit | Run | 결과 |

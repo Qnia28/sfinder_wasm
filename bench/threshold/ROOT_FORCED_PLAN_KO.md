@@ -88,6 +88,13 @@ root-resume-selection.json에입력합집합/재사용58개/재실행42개를동
 중복합산하거나더빠른결과를고르지않는다.입력별ON/OFF는반드시한run/한VM에속한다.
 두run의환경/출처를남기며서로다른VM의절대시간을비율로만들지않는다.
 
+재개run37118105522은성공완료했다.실제동시측정최대12VM,측정구간120.5분,
+workflow126.0분.42개504호출은EXACT352/TIMEOUT152이고보존58개696호출은
+EXACT612/TIMEOUT84다.종합100개1200호출은EXACT964/TIMEOUT236이며모든
+완료witness와바이너리/소스/입력identity검산통과했다.
+종합보고서는ROOT_FORCED_SCREEN_REPORT_KO.md다.1회screening이라rootForced는
+B유지,보완32/64는C보류다.후속5/10회확인은아직실행하지않았다.
+
 ## 최종 등급
 
 A: 추가개선이반복재현되고회귀/비용수용가능.

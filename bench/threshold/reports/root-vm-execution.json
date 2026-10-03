@@ -1,0 +1,31 @@
+{
+  "note": "Actual overlap of benchmark-step intervals from GitHub job timestamps, not a global cap across other repository workflows.",
+  "runs": [
+    {
+      "runId": "37113754448",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "startedAt": "2026-10-03T09:38:55Z",
+      "updatedAt": "2026-10-03T10:44:51Z",
+      "candidate": "c7303b564d9c80915ce5f5e72542fb030ca1b5a1",
+      "jobs": 100,
+      "successfulJobs": 51,
+      "maxSimultaneousBenchmarkSteps": 20,
+      "benchmarkWindowMinutes": 60.31666666666667,
+      "workflowMinutes": 65.93333333333334
+    },
+    {
+      "runId": "37118105522",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-03T10:57:52Z",
+      "updatedAt": "2026-10-03T13:03:51Z",
+      "candidate": "d482836c478160d14e0eaff52dbb9664b5b69738",
+      "jobs": 42,
+      "successfulJobs": 42,
+      "maxSimultaneousBenchmarkSteps": 12,
+      "benchmarkWindowMinutes": 120.53333333333333,
+      "workflowMinutes": 125.98333333333333
+    }
+  ]
+}

@@ -1,6 +1,10 @@
 # Threshold 엔진 on/off 실험 — 2026-10-03
 
-**최신:** [100개 확대 + 선정66개 10회 재테스트 종합 보고서](EXPANDED_FINAL_REPORT_KO.md).
+**rootForced 후속:** [보완 screening 100개 종합 보고서](ROOT_FORCED_SCREEN_REPORT_KO.md).
+중단 run의 완전한58개+최대12VM로 재실행한42개를 결합했다.1회screening이며
+rootForced는B 유지,보완32/64는C 보류다.후속5/10회확인은아직실행하지않았다.
+
+**mask16 최종 검증:** [100개 확대 + 선정66개 10회 재테스트 종합 보고서](EXPANDED_FINAL_REPORT_KO.md).
 최초/재측정의raw축약자료와입력별요약은reports/에저장했다. 제품통합은하지않았다.
 
 후속 [확대 3회차](THIRD_RUN_KO.md)는 100행렬, 호출당300초, 최대20VM 병렬이며
