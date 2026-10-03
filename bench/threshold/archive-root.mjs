@@ -26,6 +26,14 @@ const initial = JSON.parse(readFileSync(new URL('./reports/expanded100.json', im
 const reference = aggregate.reports[0].environment;
 assert(['root-screen', 'root-confirm'].includes(reference.profile));
 const expectedComparisons = settings(reference.profile, reference.mask);
+if (reference.profile === 'root-confirm') {
+  const screen = JSON.parse(readFileSync(new URL('./reports/root-screen.json', import.meta.url)));
+  assert.equal(reference.build.hashes.experiment, screen.wasmHashes.experiment);
+  assert.equal(reference.manifestHash, screen.manifestHash);
+  for (const key of ['originalRust', 'candidateRust', 'candidateJs']) {
+    assert.equal(reference.build.sourceDigest[key], screen.sourceDigest[key]);
+  }
+}
 if (selection) {
   assert.equal(reference.profile, selection.profile); assert.equal(reference.pairs, selection.pairs);
   assert.equal(reference.mask, selection.mask); assert.equal(reference.build.hashes.experiment, selection.wasmHash);
