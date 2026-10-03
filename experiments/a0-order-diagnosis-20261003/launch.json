@@ -1,0 +1,12 @@
+{
+  "goal": "single-input cause discrimination, not performance benchmark",
+  "matrixId": "board-028--restricted-split--ordinary",
+  "freshSessions": 16,
+  "baseCalls": 24,
+  "conditionalProfileCallsMaximum": 4,
+  "nativeThresholdCalls": 0,
+  "actualPrimaryCalls": 0,
+  "actualPcCalls": 0,
+  "productChanged": false,
+  "confirmationCalls": 0
+}
