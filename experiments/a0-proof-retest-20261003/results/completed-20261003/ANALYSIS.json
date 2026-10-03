@@ -1,0 +1,4804 @@
+{
+  "status": "DESCRIPTIVE_SELECTED_SET_ONLY",
+  "runId": 37116378831,
+  "inputs": 121,
+  "pairs": 1210,
+  "complete": true,
+  "groups": {
+    "IMPROVEMENT_TAIL": {
+      "inputs": 10,
+      "directionReplicated": 8,
+      "regressionThresholdReplicated": 0,
+      "hostDirectionMixed": 3,
+      "retimingMedianRatio": 0.7871937268866611,
+      "records": [
+        {
+          "matrixId": "board-009--restricted-split--O",
+          "originalPairMedianRatio": 0.7429798865380506,
+          "originalRatioOfMedians": 0.7466503494015019,
+          "newMedianPairRatio": 0.7246304084268449,
+          "hostRatios": [
+            0.7452721998187113,
+            0.70180081410608,
+            0.7429643921303999,
+            0.724752537239552,
+            0.7268830387269289
+          ],
+          "baselineMedianMs": 164.157556,
+          "candidateMedianMs": 120.3236035,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-012--bag--ordinary",
+          "originalPairMedianRatio": 0.4979939807606222,
+          "originalRatioOfMedians": 0.5013280678736067,
+          "newMedianPairRatio": 0.4958728511548967,
+          "hostRatios": [
+            0.5237567677913435,
+            0.5328570574872205,
+            0.481991588341415,
+            0.47823471773527604,
+            0.5117233010369745
+          ],
+          "baselineMedianMs": 185.28259049999997,
+          "candidateMedianMs": 91.577717,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-064--bag--T",
+          "originalPairMedianRatio": 0.8100734339957987,
+          "originalRatioOfMedians": 0.8254114414323972,
+          "newMedianPairRatio": 0.8464792031327919,
+          "hostRatios": [
+            0.9126898907964637,
+            0.7247058762713187,
+            0.8308753123450285,
+            0.7461152061679432,
+            0.92782931665884
+          ],
+          "baselineMedianMs": 60.767562,
+          "candidateMedianMs": 51.507458499999984,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-090--bag--ordinary",
+          "originalPairMedianRatio": 0.5088581283511651,
+          "originalRatioOfMedians": 0.5030946651514138,
+          "newMedianPairRatio": 0.5509862203612303,
+          "hostRatios": [
+            0.5672844375824717,
+            0.6084944860432481,
+            0.5480788708443564,
+            0.5421376711390464,
+            0.5608322235239322
+          ],
+          "baselineMedianMs": 191.3469715,
+          "candidateMedianMs": 107.97724399999998,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-106--bag--ordinary",
+          "originalPairMedianRatio": 0.32773714214943933,
+          "originalRatioOfMedians": 0.32570754693015364,
+          "newMedianPairRatio": 0.3396516682181583,
+          "hostRatios": [
+            0.32755100583337704,
+            0.36087055977637494,
+            0.3396516682181583,
+            0.33538017104981044,
+            0.3254658303132141
+          ],
+          "baselineMedianMs": 331.94336749999997,
+          "candidateMedianMs": 109.0975525,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-107--restricted-split--T",
+          "originalPairMedianRatio": 0.8172193771255283,
+          "originalRatioOfMedians": 0.817227928883187,
+          "newMedianPairRatio": 1.0317113843243373,
+          "hostRatios": [
+            0.9907473968708546,
+            1.6149757706864207,
+            1.1278707453052772,
+            1.0714332396867312,
+            0.8696658690212951
+          ],
+          "baselineMedianMs": 9.021147499999998,
+          "candidateMedianMs": 9.532518500000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-108--restricted-split--J",
+          "originalPairMedianRatio": 0.7816212934208993,
+          "originalRatioOfMedians": 0.7802449552104513,
+          "newMedianPairRatio": 0.8666809511381917,
+          "hostRatios": [
+            1.2588674489760203,
+            1.0150277381302513,
+            1.10760241816771,
+            0.8617013842336266,
+            0.7239048689910141
+          ],
+          "baselineMedianMs": 8.064114500000002,
+          "candidateMedianMs": 7.6144239999999925,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-111--restricted-split--ordinary",
+          "originalPairMedianRatio": 0.7499706147949563,
+          "originalRatioOfMedians": 0.7482180904812975,
+          "newMedianPairRatio": 0.7701175591738776,
+          "hostRatios": [
+            0.7961233273655399,
+            0.7671048717202841,
+            0.8262758821945737,
+            0.8149615558876037,
+            0.7570062252405227
+          ],
+          "baselineMedianMs": 163.6386875,
+          "candidateMedianMs": 129.490029,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-112--restricted-split--Z",
+          "originalPairMedianRatio": 0.8028376391347947,
+          "originalRatioOfMedians": 0.8501705290915982,
+          "newMedianPairRatio": 0.9294671734136143,
+          "hostRatios": [
+            0.7689254150058722,
+            0.9377581357947802,
+            1.1395532971733013,
+            0.9865283279360869,
+            0.9111085031012786
+          ],
+          "baselineMedianMs": 6.3165835,
+          "candidateMedianMs": 6.0919740000000004,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-118--restricted-split--O",
+          "originalPairMedianRatio": 0.8104234919774249,
+          "originalRatioOfMedians": 0.8103017068885269,
+          "newMedianPairRatio": 0.8042698945994446,
+          "hostRatios": [
+            0.8011062474002955,
+            0.8107164470080139,
+            0.8373993376126732,
+            0.7554026389575985,
+            0.8585287165368745
+          ],
+          "baselineMedianMs": 84.1906725,
+          "candidateMedianMs": 66.632137,
+          "classification": "DIRECTION_REPLICATED"
+        }
+      ]
+    },
+    "REGRESSION_TAIL": {
+      "inputs": 9,
+      "directionReplicated": 1,
+      "regressionThresholdReplicated": 0,
+      "hostDirectionMixed": 9,
+      "retimingMedianRatio": 0.9402038121183556,
+      "records": [
+        {
+          "matrixId": "board-024--restricted-split--I",
+          "originalPairMedianRatio": 1.1783969328783037,
+          "originalRatioOfMedians": 1.1252579607434905,
+          "newMedianPairRatio": 0.8597403634766464,
+          "hostRatios": [
+            0.9520676799025622,
+            0.7663116323105881,
+            0.958170039797922,
+            1.0554802113861224,
+            0.8981942297465421
+          ],
+          "baselineMedianMs": 8.962233500000004,
+          "candidateMedianMs": 8.638781999999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-044--restricted-split--Z",
+          "originalPairMedianRatio": 1.115830228013385,
+          "originalRatioOfMedians": 1.1061254578582411,
+          "newMedianPairRatio": 0.9504673914951205,
+          "hostRatios": [
+            0.8586736997626565,
+            1.546037820437199,
+            1.113711426200585,
+            0.8835467798666745,
+            1.1001063657583727
+          ],
+          "baselineMedianMs": 6.171276999999996,
+          "candidateMedianMs": 6.122496000000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-049--restricted-split--T",
+          "originalPairMedianRatio": 1.1783407589591035,
+          "originalRatioOfMedians": 1.1785217728174644,
+          "newMedianPairRatio": 1.0215578873004842,
+          "hostRatios": [
+            0.7697107348059858,
+            1.1590832138095053,
+            1.108862076850083,
+            0.82359128551427,
+            1.1605193165218692
+          ],
+          "baselineMedianMs": 8.537469000000002,
+          "candidateMedianMs": 8.068968000000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-105--restricted-split--ordinary",
+          "originalPairMedianRatio": 1.1046553713399656,
+          "originalRatioOfMedians": 1.1965971014436951,
+          "newMedianPairRatio": 0.9402038121183556,
+          "hostRatios": [
+            0.9376916350847797,
+            0.9632716201905865,
+            1.0880958524769104,
+            0.7135762921623339,
+            1.0269673506033938
+          ],
+          "baselineMedianMs": 11.119136500000003,
+          "candidateMedianMs": 9.152548499999995,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--O",
+          "originalPairMedianRatio": 1.2992641412329062,
+          "originalRatioOfMedians": 1.3476464759020663,
+          "newMedianPairRatio": 1.0249813374775276,
+          "hostRatios": [
+            1.3791271317293874,
+            1.229977552590833,
+            0.9725408096659889,
+            1.0245548810232863,
+            1.2113606685689517
+          ],
+          "baselineMedianMs": 6.100668499999998,
+          "candidateMedianMs": 6.495795000000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-108--restricted-split--I",
+          "originalPairMedianRatio": 1.3166489609719512,
+          "originalRatioOfMedians": 1.313349919630311,
+          "newMedianPairRatio": 0.9263372596072326,
+          "hostRatios": [
+            1.108697440739326,
+            0.6314771911495849,
+            0.9423553114465626,
+            1.1614595936456367,
+            0.7308431820670328
+          ],
+          "baselineMedianMs": 5.745779999999996,
+          "candidateMedianMs": 5.375320000000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--J",
+          "originalPairMedianRatio": 1.301220733873834,
+          "originalRatioOfMedians": 1.260693810704602,
+          "newMedianPairRatio": 0.9198942867052835,
+          "hostRatios": [
+            0.8116483823479892,
+            1.110269037419937,
+            0.962229189693427,
+            0.9493572289862027,
+            0.9258254486901736
+          ],
+          "baselineMedianMs": 15.705533500000001,
+          "candidateMedianMs": 14.451937999999998,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--S",
+          "originalPairMedianRatio": 1.2579066237234389,
+          "originalRatioOfMedians": 1.2844616370769197,
+          "newMedianPairRatio": 0.9083442585353887,
+          "hostRatios": [
+            1.054305302126783,
+            0.9411943594295381,
+            0.8492761782785796,
+            0.8822283822272946,
+            0.9988461094332496
+          ],
+          "baselineMedianMs": 15.506639999999997,
+          "candidateMedianMs": 13.882674999999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-114--restricted-split--T",
+          "originalPairMedianRatio": 1.1526855842250616,
+          "originalRatioOfMedians": 1.1043695780959326,
+          "newMedianPairRatio": 0.9994348191879718,
+          "hostRatios": [
+            1.0524611698213941,
+            1.1962637970499912,
+            0.936947820802108,
+            0.9293507949684101,
+            1.1035433306671316
+          ],
+          "baselineMedianMs": 10.132938999999993,
+          "candidateMedianMs": 10.137210999999994,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        }
+      ]
+    },
+    "INPUT_SLOWDOWN_GATE_1_10": {
+      "inputs": 10,
+      "directionReplicated": 1,
+      "regressionThresholdReplicated": 0,
+      "hostDirectionMixed": 10,
+      "retimingMedianRatio": 0.9444444837664634,
+      "records": [
+        {
+          "matrixId": "board-024--restricted-split--I",
+          "originalPairMedianRatio": 1.1783969328783037,
+          "originalRatioOfMedians": 1.1252579607434905,
+          "newMedianPairRatio": 0.8597403634766464,
+          "hostRatios": [
+            0.9520676799025622,
+            0.7663116323105881,
+            0.958170039797922,
+            1.0554802113861224,
+            0.8981942297465421
+          ],
+          "baselineMedianMs": 8.962233500000004,
+          "candidateMedianMs": 8.638781999999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-044--restricted-split--Z",
+          "originalPairMedianRatio": 1.115830228013385,
+          "originalRatioOfMedians": 1.1061254578582411,
+          "newMedianPairRatio": 0.9504673914951205,
+          "hostRatios": [
+            0.8586736997626565,
+            1.546037820437199,
+            1.113711426200585,
+            0.8835467798666745,
+            1.1001063657583727
+          ],
+          "baselineMedianMs": 6.171276999999996,
+          "candidateMedianMs": 6.122496000000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-049--restricted-split--T",
+          "originalPairMedianRatio": 1.1783407589591035,
+          "originalRatioOfMedians": 1.1785217728174644,
+          "newMedianPairRatio": 1.0215578873004842,
+          "hostRatios": [
+            0.7697107348059858,
+            1.1590832138095053,
+            1.108862076850083,
+            0.82359128551427,
+            1.1605193165218692
+          ],
+          "baselineMedianMs": 8.537469000000002,
+          "candidateMedianMs": 8.068968000000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-105--restricted-split--ordinary",
+          "originalPairMedianRatio": 1.1046553713399656,
+          "originalRatioOfMedians": 1.1965971014436951,
+          "newMedianPairRatio": 0.9402038121183556,
+          "hostRatios": [
+            0.9376916350847797,
+            0.9632716201905865,
+            1.0880958524769104,
+            0.7135762921623339,
+            1.0269673506033938
+          ],
+          "baselineMedianMs": 11.119136500000003,
+          "candidateMedianMs": 9.152548499999995,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--O",
+          "originalPairMedianRatio": 1.2992641412329062,
+          "originalRatioOfMedians": 1.3476464759020663,
+          "newMedianPairRatio": 1.0249813374775276,
+          "hostRatios": [
+            1.3791271317293874,
+            1.229977552590833,
+            0.9725408096659889,
+            1.0245548810232863,
+            1.2113606685689517
+          ],
+          "baselineMedianMs": 6.100668499999998,
+          "candidateMedianMs": 6.495795000000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--Z",
+          "originalPairMedianRatio": 1.1003179526637668,
+          "originalRatioOfMedians": 1.2293948841987306,
+          "newMedianPairRatio": 0.9486851554145712,
+          "hostRatios": [
+            0.9976679219694591,
+            0.9329488118177245,
+            0.8288350225482854,
+            0.9486851554145712,
+            1.1993555132148117
+          ],
+          "baselineMedianMs": 15.649935,
+          "candidateMedianMs": 14.842611000000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-108--restricted-split--I",
+          "originalPairMedianRatio": 1.3166489609719512,
+          "originalRatioOfMedians": 1.313349919630311,
+          "newMedianPairRatio": 0.9263372596072326,
+          "hostRatios": [
+            1.108697440739326,
+            0.6314771911495849,
+            0.9423553114465626,
+            1.1614595936456367,
+            0.7308431820670328
+          ],
+          "baselineMedianMs": 5.745779999999996,
+          "candidateMedianMs": 5.375320000000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--J",
+          "originalPairMedianRatio": 1.301220733873834,
+          "originalRatioOfMedians": 1.260693810704602,
+          "newMedianPairRatio": 0.9198942867052835,
+          "hostRatios": [
+            0.8116483823479892,
+            1.110269037419937,
+            0.962229189693427,
+            0.9493572289862027,
+            0.9258254486901736
+          ],
+          "baselineMedianMs": 15.705533500000001,
+          "candidateMedianMs": 14.451937999999998,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--S",
+          "originalPairMedianRatio": 1.2579066237234389,
+          "originalRatioOfMedians": 1.2844616370769197,
+          "newMedianPairRatio": 0.9083442585353887,
+          "hostRatios": [
+            1.054305302126783,
+            0.9411943594295381,
+            0.8492761782785796,
+            0.8822283822272946,
+            0.9988461094332496
+          ],
+          "baselineMedianMs": 15.506639999999997,
+          "candidateMedianMs": 13.882674999999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-114--restricted-split--T",
+          "originalPairMedianRatio": 1.1526855842250616,
+          "originalRatioOfMedians": 1.1043695780959326,
+          "newMedianPairRatio": 0.9994348191879718,
+          "hostRatios": [
+            1.0524611698213941,
+            1.1962637970499912,
+            0.936947820802108,
+            0.9293507949684101,
+            1.1035433306671316
+          ],
+          "baselineMedianMs": 10.132938999999993,
+          "candidateMedianMs": 10.137210999999994,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        }
+      ]
+    },
+    "VARIATION_10_PERCENT_R": {
+      "inputs": 89,
+      "directionReplicated": 29,
+      "regressionThresholdReplicated": 2,
+      "hostDirectionMixed": 76,
+      "retimingMedianRatio": 0.9974261372197197,
+      "records": [
+        {
+          "matrixId": "board-008--restricted-split--S",
+          "originalPairMedianRatio": 0.9723612590439359,
+          "originalRatioOfMedians": 0.971944890502935,
+          "newMedianPairRatio": 0.9915461122640586,
+          "hostRatios": [
+            0.9318085087023043,
+            0.9485251051584281,
+            1.0216457250492232,
+            0.9915461122640586,
+            1.0463847896624314
+          ],
+          "baselineMedianMs": 129.808311,
+          "candidateMedianMs": 133.21398799999997,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-009--restricted-split--O",
+          "originalPairMedianRatio": 0.7429798865380506,
+          "originalRatioOfMedians": 0.7466503494015019,
+          "newMedianPairRatio": 0.7246304084268449,
+          "hostRatios": [
+            0.7452721998187113,
+            0.70180081410608,
+            0.7429643921303999,
+            0.724752537239552,
+            0.7268830387269289
+          ],
+          "baselineMedianMs": 164.157556,
+          "candidateMedianMs": 120.3236035,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-011--restricted-split--O",
+          "originalPairMedianRatio": 0.9628173449592399,
+          "originalRatioOfMedians": 0.971052390342835,
+          "newMedianPairRatio": 1.0081181580166083,
+          "hostRatios": [
+            0.9514392279249064,
+            1.0050144736287456,
+            1.0167256764207337,
+            1.0234956086166522,
+            0.9987762672187488
+          ],
+          "baselineMedianMs": 349.393505,
+          "candidateMedianMs": 348.5162885,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-012--bag--ordinary",
+          "originalPairMedianRatio": 0.4979939807606222,
+          "originalRatioOfMedians": 0.5013280678736067,
+          "newMedianPairRatio": 0.4958728511548967,
+          "hostRatios": [
+            0.5237567677913435,
+            0.5328570574872205,
+            0.481991588341415,
+            0.47823471773527604,
+            0.5117233010369745
+          ],
+          "baselineMedianMs": 185.28259049999997,
+          "candidateMedianMs": 91.577717,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-012--restricted-split--L",
+          "originalPairMedianRatio": 0.9602860501280639,
+          "originalRatioOfMedians": 0.953443874759262,
+          "newMedianPairRatio": 0.9662844983186547,
+          "hostRatios": [
+            0.9493208367542421,
+            0.9355734381670657,
+            0.9837938151202167,
+            0.9521782360829062,
+            0.9754043460294692
+          ],
+          "baselineMedianMs": 252.9731595,
+          "candidateMedianMs": 248.87660600000004,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-024--restricted-split--I",
+          "originalPairMedianRatio": 1.1783969328783037,
+          "originalRatioOfMedians": 1.1252579607434905,
+          "newMedianPairRatio": 0.8597403634766464,
+          "hostRatios": [
+            0.9520676799025622,
+            0.7663116323105881,
+            0.958170039797922,
+            1.0554802113861224,
+            0.8981942297465421
+          ],
+          "baselineMedianMs": 8.962233500000004,
+          "candidateMedianMs": 8.638781999999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-026--restricted-split--T",
+          "originalPairMedianRatio": 1.007948908205197,
+          "originalRatioOfMedians": 1.034538655767921,
+          "newMedianPairRatio": 0.9997134539839332,
+          "hostRatios": [
+            0.9736212820540311,
+            1.0112854147933343,
+            0.9781443021521109,
+            1.0407488288549196,
+            1.0104306042278481
+          ],
+          "baselineMedianMs": 5.372890499999997,
+          "candidateMedianMs": 5.514989,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-027--restricted-split--T",
+          "originalPairMedianRatio": 1.0469953575197586,
+          "originalRatioOfMedians": 1.0270356799937552,
+          "newMedianPairRatio": 1.04228137269005,
+          "hostRatios": [
+            1.04228137269005,
+            1.022245995033614,
+            1.0350385325227451,
+            1.0923359074964725,
+            0.9766018404364922
+          ],
+          "baselineMedianMs": 131.7495925,
+          "candidateMedianMs": 136.5106705,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-028--restricted-split--T",
+          "originalPairMedianRatio": 0.9934636608442876,
+          "originalRatioOfMedians": 0.9628238131897032,
+          "newMedianPairRatio": 1.0218418033076124,
+          "hostRatios": [
+            1.0044964235392688,
+            1.0035801135116107,
+            1.0343520248130986,
+            1.0094613217271249,
+            1.0392981564700299
+          ],
+          "baselineMedianMs": 124.672345,
+          "candidateMedianMs": 124.72688849999999,
+          "classification": "NOT_REPLICATED_OR_UNCERTAIN"
+        },
+        {
+          "matrixId": "board-031--restricted-split--S",
+          "originalPairMedianRatio": 0.9732531744874116,
+          "originalRatioOfMedians": 0.966684415385685,
+          "newMedianPairRatio": 1.0236597643917777,
+          "hostRatios": [
+            1.021743411716837,
+            0.9183300260818658,
+            1.0679419929052822,
+            1.0298832889864693,
+            0.9331101824192025
+          ],
+          "baselineMedianMs": 38.1712335,
+          "candidateMedianMs": 38.6057585,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-038--restricted-split--Z",
+          "originalPairMedianRatio": 1.065683795691889,
+          "originalRatioOfMedians": 1.0634622940839982,
+          "newMedianPairRatio": 1.0081393787646138,
+          "hostRatios": [
+            1.087016580251755,
+            0.9554281936759846,
+            1.0747768163832485,
+            1.0361755825141024,
+            1.023319040820626
+          ],
+          "baselineMedianMs": 116.2980465,
+          "candidateMedianMs": 123.588204,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-040--restricted-split--I",
+          "originalPairMedianRatio": 0.9898060755324707,
+          "originalRatioOfMedians": 0.9003430319695416,
+          "newMedianPairRatio": 0.9788219888753046,
+          "hostRatios": [
+            0.8903393961766219,
+            1.0823009457812711,
+            1.1644234334134418,
+            0.8612645990459415,
+            1.126592879905945
+          ],
+          "baselineMedianMs": 7.651014500000002,
+          "candidateMedianMs": 8.180974000000006,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-049--restricted-split--T",
+          "originalPairMedianRatio": 1.1783407589591035,
+          "originalRatioOfMedians": 1.1785217728174644,
+          "newMedianPairRatio": 1.0215578873004842,
+          "hostRatios": [
+            0.7697107348059858,
+            1.1590832138095053,
+            1.108862076850083,
+            0.82359128551427,
+            1.1605193165218692
+          ],
+          "baselineMedianMs": 8.537469000000002,
+          "candidateMedianMs": 8.068968000000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-052--restricted-split--Z",
+          "originalPairMedianRatio": 0.995350939038881,
+          "originalRatioOfMedians": 0.9855703376553795,
+          "newMedianPairRatio": 0.984695731711412,
+          "hostRatios": [
+            1.1162503797606211,
+            1.0177219093096121,
+            1.043252252834981,
+            0.8213339293021992,
+            0.9895937361853169
+          ],
+          "baselineMedianMs": 25.061186,
+          "candidateMedianMs": 23.700586,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-064--bag--T",
+          "originalPairMedianRatio": 0.8100734339957987,
+          "originalRatioOfMedians": 0.8254114414323972,
+          "newMedianPairRatio": 0.8464792031327919,
+          "hostRatios": [
+            0.9126898907964637,
+            0.7247058762713187,
+            0.8308753123450285,
+            0.7461152061679432,
+            0.92782931665884
+          ],
+          "baselineMedianMs": 60.767562,
+          "candidateMedianMs": 51.507458499999984,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-067--restricted-split--L",
+          "originalPairMedianRatio": 0.9611811473186557,
+          "originalRatioOfMedians": 1.0272331937190946,
+          "newMedianPairRatio": 1.0242164542775203,
+          "hostRatios": [
+            0.921899611739986,
+            0.9298132798480612,
+            0.8897055085735125,
+            1.099744464662619,
+            1.1317172066719037
+          ],
+          "baselineMedianMs": 21.339079999999996,
+          "candidateMedianMs": 21.4617315,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-068--restricted-split--J",
+          "originalPairMedianRatio": 1.0040952199265523,
+          "originalRatioOfMedians": 0.9680960372306731,
+          "newMedianPairRatio": 1.0119175316704994,
+          "hostRatios": [
+            1.2705338396144383,
+            0.9443657250552893,
+            0.9642625401271913,
+            0.8503641669482811,
+            1.0724948970521186
+          ],
+          "baselineMedianMs": 17.04684300000001,
+          "candidateMedianMs": 16.641810999999997,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-080--restricted-split--S",
+          "originalPairMedianRatio": 0.9728083682598478,
+          "originalRatioOfMedians": 0.9678746816951979,
+          "newMedianPairRatio": 1.0215115673930537,
+          "hostRatios": [
+            1.0746655123496325,
+            1.042652223610318,
+            1.0572059358454737,
+            0.9691507549519589,
+            1.0215115673930537
+          ],
+          "baselineMedianMs": 144.6167315,
+          "candidateMedianMs": 143.89030100000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-085--restricted-split--S",
+          "originalPairMedianRatio": 0.911936295898647,
+          "originalRatioOfMedians": 0.9130240828287314,
+          "newMedianPairRatio": 1.0274501074813598,
+          "hostRatios": [
+            1.0274501074813598,
+            1.010486115625083,
+            1.1580889326104211,
+            1.0102746066341364,
+            0.9524875022972812
+          ],
+          "baselineMedianMs": 91.512474,
+          "candidateMedianMs": 92.2939835,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-093--restricted-split--T",
+          "originalPairMedianRatio": 1.0567042372089295,
+          "originalRatioOfMedians": 1.078824509509836,
+          "newMedianPairRatio": 1.0046064749625871,
+          "hostRatios": [
+            0.9779039373149141,
+            1.0490402250677557,
+            1.0041727798404443,
+            1.007032947907835,
+            0.9710941411527253
+          ],
+          "baselineMedianMs": 154.372504,
+          "candidateMedianMs": 153.348499,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-099--restricted-split--J",
+          "originalPairMedianRatio": 0.8579704921241567,
+          "originalRatioOfMedians": 0.9066382284298842,
+          "newMedianPairRatio": 1.0437996714713451,
+          "hostRatios": [
+            0.996689328053125,
+            0.9830991500244572,
+            1.0676921542034647,
+            0.9548008734057369,
+            1.0363936275578198
+          ],
+          "baselineMedianMs": 17.757505000000002,
+          "candidateMedianMs": 16.722977500000006,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-105--restricted-split--ordinary",
+          "originalPairMedianRatio": 1.1046553713399656,
+          "originalRatioOfMedians": 1.1965971014436951,
+          "newMedianPairRatio": 0.9402038121183556,
+          "hostRatios": [
+            0.9376916350847797,
+            0.9632716201905865,
+            1.0880958524769104,
+            0.7135762921623339,
+            1.0269673506033938
+          ],
+          "baselineMedianMs": 11.119136500000003,
+          "candidateMedianMs": 9.152548499999995,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-106--restricted-split--I",
+          "originalPairMedianRatio": 0.8291151218167123,
+          "originalRatioOfMedians": 0.8113966122824204,
+          "newMedianPairRatio": 0.9561021877875693,
+          "hostRatios": [
+            0.9781626706374972,
+            1.0750466435626604,
+            0.848848844375651,
+            0.9561021877875693,
+            0.9286291972743954
+          ],
+          "baselineMedianMs": 38.16514900000001,
+          "candidateMedianMs": 35.1846195,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-106--restricted-split--J",
+          "originalPairMedianRatio": 1.0419200132486304,
+          "originalRatioOfMedians": 0.9396521496539664,
+          "newMedianPairRatio": 1.163274900556938,
+          "hostRatios": [
+            1.3416987276309023,
+            1.1974858684398884,
+            1.1926973064703996,
+            1.1246331496685573,
+            0.9048773378809232
+          ],
+          "baselineMedianMs": 8.553792499999993,
+          "candidateMedianMs": 9.040853499999997,
+          "classification": "REGRESSION_THRESHOLD_REPLICATED"
+        },
+        {
+          "matrixId": "board-106--restricted-split--L",
+          "originalPairMedianRatio": 0.8717196688902193,
+          "originalRatioOfMedians": 0.7675261325663374,
+          "newMedianPairRatio": 1.0138909255142745,
+          "hostRatios": [
+            1.0947432062325464,
+            0.9117726752098723,
+            1.042865750374507,
+            0.8858075422837145,
+            1.2360446817828605
+          ],
+          "baselineMedianMs": 9.817152000000007,
+          "candidateMedianMs": 9.592780499999996,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-106--restricted-split--O",
+          "originalPairMedianRatio": 0.9496966741530946,
+          "originalRatioOfMedians": 1.0381588753152076,
+          "newMedianPairRatio": 0.9038264871863164,
+          "hostRatios": [
+            0.819155098051839,
+            0.8450916316545684,
+            0.984022098003323,
+            0.9856346114781167,
+            1.0301502584234887
+          ],
+          "baselineMedianMs": 12.285474499999992,
+          "candidateMedianMs": 12.420442000000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-106--restricted-split--S",
+          "originalPairMedianRatio": 0.9498121757906253,
+          "originalRatioOfMedians": 0.9599323162842861,
+          "newMedianPairRatio": 0.9961597587623776,
+          "hostRatios": [
+            1.084499055484621,
+            0.8907958737338111,
+            0.972437535039591,
+            1.2167624454051662,
+            1.002497815924514
+          ],
+          "baselineMedianMs": 13.626777999999995,
+          "candidateMedianMs": 14.065796500000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-106--restricted-split--T",
+          "originalPairMedianRatio": 1.0006418768940093,
+          "originalRatioOfMedians": 0.9960313582691322,
+          "newMedianPairRatio": 1.0221069733255708,
+          "hostRatios": [
+            1.00943417332003,
+            0.9054656535807084,
+            0.9444121010354455,
+            1.156859572405184,
+            0.8983547880634009
+          ],
+          "baselineMedianMs": 6.616839500000005,
+          "candidateMedianMs": 6.430729499999998,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-106--restricted-split--Z",
+          "originalPairMedianRatio": 1.0142195540375023,
+          "originalRatioOfMedians": 0.9516005762469409,
+          "newMedianPairRatio": 0.8941790683085419,
+          "hostRatios": [
+            0.9642474929743632,
+            0.7349394270364966,
+            0.9672825644785936,
+            0.8222906700834833,
+            1.232007722515481
+          ],
+          "baselineMedianMs": 22.13705550000001,
+          "candidateMedianMs": 21.7881195,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--bag--ordinary",
+          "originalPairMedianRatio": 0.9796268336250971,
+          "originalRatioOfMedians": 0.9978392907263528,
+          "newMedianPairRatio": 1.1277213341937689,
+          "hostRatios": [
+            0.8859753679782757,
+            1.2535224746984976,
+            1.2058214076803824,
+            1.05258613839947,
+            0.9798856600866449
+          ],
+          "baselineMedianMs": 12.307255499999997,
+          "candidateMedianMs": 12.805568000000008,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--I",
+          "originalPairMedianRatio": 1.0972758893079615,
+          "originalRatioOfMedians": 1.0625244975008863,
+          "newMedianPairRatio": 1.0582703574565429,
+          "hostRatios": [
+            1.0971688230698469,
+            1.1121153400754862,
+            1.361506478672279,
+            1.0361433457673903,
+            0.9027098937329061
+          ],
+          "baselineMedianMs": 16.94080199999999,
+          "candidateMedianMs": 18.65581300000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--J",
+          "originalPairMedianRatio": 0.8348557765192253,
+          "originalRatioOfMedians": 0.8331604188930856,
+          "newMedianPairRatio": 1.057377993899181,
+          "hostRatios": [
+            1.0062282886289058,
+            0.8801836155090219,
+            1.2067513253860387,
+            1.1639648322047869,
+            1.1880831542082935
+          ],
+          "baselineMedianMs": 17.845227,
+          "candidateMedianMs": 19.382714500000006,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--L",
+          "originalPairMedianRatio": 1.070415953601717,
+          "originalRatioOfMedians": 1.1718227800659162,
+          "newMedianPairRatio": 1.0166042354219624,
+          "hostRatios": [
+            1.4892066897592557,
+            0.8328588773998007,
+            0.9913572052611012,
+            1.182117507372961,
+            0.9148851286637846
+          ],
+          "baselineMedianMs": 9.148352000000003,
+          "candidateMedianMs": 10.385374499999998,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--O",
+          "originalPairMedianRatio": 1.2992641412329062,
+          "originalRatioOfMedians": 1.3476464759020663,
+          "newMedianPairRatio": 1.0249813374775276,
+          "hostRatios": [
+            1.3791271317293874,
+            1.229977552590833,
+            0.9725408096659889,
+            1.0245548810232863,
+            1.2113606685689517
+          ],
+          "baselineMedianMs": 6.100668499999998,
+          "candidateMedianMs": 6.495795000000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--S",
+          "originalPairMedianRatio": 0.8550884807953893,
+          "originalRatioOfMedians": 0.8903782252765676,
+          "newMedianPairRatio": 1.0848011254651309,
+          "hostRatios": [
+            1.0143675461077575,
+            0.9748807201841524,
+            0.9847867240540966,
+            1.044296974349809,
+            1.311564570209322
+          ],
+          "baselineMedianMs": 7.9758349999999965,
+          "candidateMedianMs": 8.237599999999993,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--T",
+          "originalPairMedianRatio": 0.8172193771255283,
+          "originalRatioOfMedians": 0.817227928883187,
+          "newMedianPairRatio": 1.0317113843243373,
+          "hostRatios": [
+            0.9907473968708546,
+            1.6149757706864207,
+            1.1278707453052772,
+            1.0714332396867312,
+            0.8696658690212951
+          ],
+          "baselineMedianMs": 9.021147499999998,
+          "candidateMedianMs": 9.532518500000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--Z",
+          "originalPairMedianRatio": 1.1003179526637668,
+          "originalRatioOfMedians": 1.2293948841987306,
+          "newMedianPairRatio": 0.9486851554145712,
+          "hostRatios": [
+            0.9976679219694591,
+            0.9329488118177245,
+            0.8288350225482854,
+            0.9486851554145712,
+            1.1993555132148117
+          ],
+          "baselineMedianMs": 15.649935,
+          "candidateMedianMs": 14.842611000000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-108--restricted-split--J",
+          "originalPairMedianRatio": 0.7816212934208993,
+          "originalRatioOfMedians": 0.7802449552104513,
+          "newMedianPairRatio": 0.8666809511381917,
+          "hostRatios": [
+            1.2588674489760203,
+            1.0150277381302513,
+            1.10760241816771,
+            0.8617013842336266,
+            0.7239048689910141
+          ],
+          "baselineMedianMs": 8.064114500000002,
+          "candidateMedianMs": 7.6144239999999925,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-108--restricted-split--ordinary",
+          "originalPairMedianRatio": 0.9071314507408037,
+          "originalRatioOfMedians": 0.9664069175219719,
+          "newMedianPairRatio": 0.9274050761401633,
+          "hostRatios": [
+            0.9444442897604686,
+            0.8608870661488766,
+            0.9554584370641959,
+            0.9128244391910297,
+            1.0031482965655083
+          ],
+          "baselineMedianMs": 32.16482700000002,
+          "candidateMedianMs": 30.832323000000017,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-110--bag--ordinary",
+          "originalPairMedianRatio": 0.9884492462855126,
+          "originalRatioOfMedians": 0.970636794909756,
+          "newMedianPairRatio": 0.880258577032417,
+          "hostRatios": [
+            0.880258577032417,
+            1.0085132967978605,
+            0.9249322411538758,
+            0.9028502737575336,
+            0.9718746948387766
+          ],
+          "baselineMedianMs": 20.155007500000004,
+          "candidateMedianMs": 19.440593000000007,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-110--restricted-split--I",
+          "originalPairMedianRatio": 0.9543820890920963,
+          "originalRatioOfMedians": 0.9424223711236182,
+          "newMedianPairRatio": 0.9630509565870389,
+          "hostRatios": [
+            1.0387173973439663,
+            0.9375130278716512,
+            0.9792091738317446,
+            0.9570593629051177,
+            0.9790448136779402
+          ],
+          "baselineMedianMs": 163.32252,
+          "candidateMedianMs": 164.170143,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-110--restricted-split--O",
+          "originalPairMedianRatio": 1.0372232740627911,
+          "originalRatioOfMedians": 1.0286516275746553,
+          "newMedianPairRatio": 1.028649883894985,
+          "hostRatios": [
+            1.101837402240446,
+            1.0174216569377663,
+            1.0492519823547675,
+            1.0008041648620458,
+            1.00838379796275
+          ],
+          "baselineMedianMs": 125.268366,
+          "candidateMedianMs": 127.88694049999998,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-110--restricted-split--S",
+          "originalPairMedianRatio": 1.0000817029505513,
+          "originalRatioOfMedians": 0.9759237858760336,
+          "newMedianPairRatio": 0.9784397294730268,
+          "hostRatios": [
+            0.9517285568669898,
+            0.9051995384314117,
+            0.978581447491613,
+            1.0124503034738699,
+            0.9898199728610034
+          ],
+          "baselineMedianMs": 128.902468,
+          "candidateMedianMs": 126.168444,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-111--restricted-split--J",
+          "originalPairMedianRatio": 0.9499430685311506,
+          "originalRatioOfMedians": 1.197846065695026,
+          "newMedianPairRatio": 0.9454141122534614,
+          "hostRatios": [
+            1.2644707868462912,
+            0.8805039155864723,
+            0.7689907373254881,
+            0.8687219229377016,
+            0.9259578800230392
+          ],
+          "baselineMedianMs": 6.560773000000005,
+          "candidateMedianMs": 6.512629500000003,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-111--restricted-split--L",
+          "originalPairMedianRatio": 1.0916833695793606,
+          "originalRatioOfMedians": 1.1028383178742336,
+          "newMedianPairRatio": 1.0347263991068951,
+          "hostRatios": [
+            0.8968398609779775,
+            1.3181925429336272,
+            1.1513330569409275,
+            0.8312544520953006,
+            1.1476033577156133
+          ],
+          "baselineMedianMs": 6.913397500000002,
+          "candidateMedianMs": 6.655051999999998,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-111--restricted-split--S",
+          "originalPairMedianRatio": 0.8525031440605597,
+          "originalRatioOfMedians": 0.8520332220635911,
+          "newMedianPairRatio": 0.889400624263702,
+          "hostRatios": [
+            0.9703022771967079,
+            0.8000291086131492,
+            0.9083306201066967,
+            0.8007879254526864,
+            0.9249383636988062
+          ],
+          "baselineMedianMs": 27.652395000000006,
+          "candidateMedianMs": 23.588985499999993,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-111--restricted-split--Z",
+          "originalPairMedianRatio": 0.9742823097204604,
+          "originalRatioOfMedians": 0.9832084269371573,
+          "newMedianPairRatio": 1.0796304961661707,
+          "hostRatios": [
+            0.988015810640238,
+            0.8313392421541542,
+            1.50478260865379,
+            1.1948407313983105,
+            0.985318867673828
+          ],
+          "baselineMedianMs": 7.674657999999994,
+          "candidateMedianMs": 9.356718,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-112--restricted-split--L",
+          "originalPairMedianRatio": 1.0041296910898936,
+          "originalRatioOfMedians": 1.004209288548462,
+          "newMedianPairRatio": 0.8966257339932484,
+          "hostRatios": [
+            0.6899252581106268,
+            0.8589943757404338,
+            0.9089884557943554,
+            1.2776222185333954,
+            0.8966257339932484
+          ],
+          "baselineMedianMs": 7.4567644999999985,
+          "candidateMedianMs": 6.1805319999999995,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-112--restricted-split--S",
+          "originalPairMedianRatio": 0.9839705165347241,
+          "originalRatioOfMedians": 0.9641721734338449,
+          "newMedianPairRatio": 1.0184342913980706,
+          "hostRatios": [
+            0.9748074581859921,
+            1.1241313089946465,
+            1.1116591232418176,
+            1.0012617287898,
+            0.9799684523744978
+          ],
+          "baselineMedianMs": 4.134048999999997,
+          "candidateMedianMs": 4.468509999999995,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-112--restricted-split--Z",
+          "originalPairMedianRatio": 0.8028376391347947,
+          "originalRatioOfMedians": 0.8501705290915982,
+          "newMedianPairRatio": 0.9294671734136143,
+          "hostRatios": [
+            0.7689254150058722,
+            0.9377581357947802,
+            1.1395532971733013,
+            0.9865283279360869,
+            0.9111085031012786
+          ],
+          "baselineMedianMs": 6.3165835,
+          "candidateMedianMs": 6.0919740000000004,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-112--restricted-split--ordinary",
+          "originalPairMedianRatio": 0.9419005201901881,
+          "originalRatioOfMedians": 1.0137365371634566,
+          "newMedianPairRatio": 0.9834431400693979,
+          "hostRatios": [
+            1.0297062594771282,
+            0.9183396333766431,
+            1.0288705253298067,
+            0.9761855400759452,
+            0.9648217398381522
+          ],
+          "baselineMedianMs": 31.658201000000005,
+          "candidateMedianMs": 32.296645,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--I",
+          "originalPairMedianRatio": 0.9770825233307948,
+          "originalRatioOfMedians": 1.002699004133881,
+          "newMedianPairRatio": 0.9483163802712502,
+          "hostRatios": [
+            1.1936611356831501,
+            0.9654393867606437,
+            1.02674349255222,
+            1.2088204914593503,
+            0.7977483604953877
+          ],
+          "baselineMedianMs": 6.920758499999991,
+          "candidateMedianMs": 7.262224499999995,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--J",
+          "originalPairMedianRatio": 1.301220733873834,
+          "originalRatioOfMedians": 1.260693810704602,
+          "newMedianPairRatio": 0.9198942867052835,
+          "hostRatios": [
+            0.8116483823479892,
+            1.110269037419937,
+            0.962229189693427,
+            0.9493572289862027,
+            0.9258254486901736
+          ],
+          "baselineMedianMs": 15.705533500000001,
+          "candidateMedianMs": 14.451937999999998,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--L",
+          "originalPairMedianRatio": 1.0816316985950825,
+          "originalRatioOfMedians": 1.0816215474969006,
+          "newMedianPairRatio": 1.0574840748266903,
+          "hostRatios": [
+            0.8580553637360213,
+            0.9385282912872972,
+            1.119461087524797,
+            1.077134510526407,
+            1.2369019701147437
+          ],
+          "baselineMedianMs": 9.506798999999994,
+          "candidateMedianMs": 9.355027500000006,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--O",
+          "originalPairMedianRatio": 1.0860471992160101,
+          "originalRatioOfMedians": 1.0990982781020002,
+          "newMedianPairRatio": 0.934665735228828,
+          "hostRatios": [
+            0.808502191466498,
+            0.9250717439294687,
+            0.9271976878683872,
+            0.9256359890184758,
+            0.9625228080954127
+          ],
+          "baselineMedianMs": 13.354874000000002,
+          "candidateMedianMs": 12.695351000000002,
+          "classification": "NOT_REPLICATED_OR_UNCERTAIN"
+        },
+        {
+          "matrixId": "board-113--restricted-split--S",
+          "originalPairMedianRatio": 1.2579066237234389,
+          "originalRatioOfMedians": 1.2844616370769197,
+          "newMedianPairRatio": 0.9083442585353887,
+          "hostRatios": [
+            1.054305302126783,
+            0.9411943594295381,
+            0.8492761782785796,
+            0.8822283822272946,
+            0.9988461094332496
+          ],
+          "baselineMedianMs": 15.506639999999997,
+          "candidateMedianMs": 13.882674999999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--T",
+          "originalPairMedianRatio": 1.0605433693634239,
+          "originalRatioOfMedians": 1.0306453715133148,
+          "newMedianPairRatio": 0.9867792035410856,
+          "hostRatios": [
+            0.7641996487870254,
+            1.462652120986848,
+            1.0929396478128937,
+            0.8594157123580712,
+            0.8743563891649109
+          ],
+          "baselineMedianMs": 9.831767000000006,
+          "candidateMedianMs": 8.997407500000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--Z",
+          "originalPairMedianRatio": 1.0107411446683434,
+          "originalRatioOfMedians": 1.1394483900655819,
+          "newMedianPairRatio": 1.0971437899508185,
+          "hostRatios": [
+            1.0227089790464416,
+            0.7347983985271518,
+            1.2225730900100176,
+            1.2159588673261335,
+            0.9965140628396345
+          ],
+          "baselineMedianMs": 7.2105155,
+          "candidateMedianMs": 7.626516499999994,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--ordinary",
+          "originalPairMedianRatio": 0.8232459785203818,
+          "originalRatioOfMedians": 0.8086953073270198,
+          "newMedianPairRatio": 0.8411265534437504,
+          "hostRatios": [
+            0.8250805734558601,
+            0.7851203861246623,
+            0.798527968023284,
+            0.8688732629174263,
+            0.8411265534437504
+          ],
+          "baselineMedianMs": 71.58208850000001,
+          "candidateMedianMs": 58.875788,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-114--restricted-split--I",
+          "originalPairMedianRatio": 1.0586448014558174,
+          "originalRatioOfMedians": 1.1185289700679144,
+          "newMedianPairRatio": 1.052543527986943,
+          "hostRatios": [
+            0.9685259497818345,
+            1.1655396705758347,
+            1.1255101011987805,
+            1.1536948723409592,
+            1.065272869291244
+          ],
+          "baselineMedianMs": 20.714097999999993,
+          "candidateMedianMs": 24.199282500000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-114--restricted-split--J",
+          "originalPairMedianRatio": 0.8987702895324321,
+          "originalRatioOfMedians": 0.9252256110329151,
+          "newMedianPairRatio": 0.9862084495302947,
+          "hostRatios": [
+            1.2674429994788752,
+            1.3120934781388582,
+            0.8603474456235158,
+            1.1497273823144813,
+            0.9862084495302947
+          ],
+          "baselineMedianMs": 8.230692000000005,
+          "candidateMedianMs": 8.531944500000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-114--restricted-split--L",
+          "originalPairMedianRatio": 1.022375760465701,
+          "originalRatioOfMedians": 1.0223373907077087,
+          "newMedianPairRatio": 1.0139536489704135,
+          "hostRatios": [
+            1.0957606823763593,
+            0.951203474117077,
+            0.8843288708256156,
+            0.8884321812367817,
+            0.988754348747892
+          ],
+          "baselineMedianMs": 16.575234999999992,
+          "candidateMedianMs": 16.4202595,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-114--restricted-split--O",
+          "originalPairMedianRatio": 1.056529711338829,
+          "originalRatioOfMedians": 1.0689354513462612,
+          "newMedianPairRatio": 1.0269961740343425,
+          "hostRatios": [
+            1.0623168134341383,
+            1.0657478461668644,
+            0.9251410673308478,
+            1.0400878546170587,
+            1.0521604111288303
+          ],
+          "baselineMedianMs": 10.208609500000009,
+          "candidateMedianMs": 10.358796499999997,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-114--restricted-split--T",
+          "originalPairMedianRatio": 1.1526855842250616,
+          "originalRatioOfMedians": 1.1043695780959326,
+          "newMedianPairRatio": 0.9994348191879718,
+          "hostRatios": [
+            1.0524611698213941,
+            1.1962637970499912,
+            0.936947820802108,
+            0.9293507949684101,
+            1.1035433306671316
+          ],
+          "baselineMedianMs": 10.132938999999993,
+          "candidateMedianMs": 10.137210999999994,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-114--restricted-split--ordinary",
+          "originalPairMedianRatio": 1.099971845220408,
+          "originalRatioOfMedians": 1.0530503325424554,
+          "newMedianPairRatio": 1.028868906031866,
+          "hostRatios": [
+            1.0108244414935834,
+            0.9439467765072265,
+            0.9888229773932451,
+            1.1436572397514344,
+            1.0672595896716572
+          ],
+          "baselineMedianMs": 32.81658899999999,
+          "candidateMedianMs": 34.200905500000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-115--bag--ordinary",
+          "originalPairMedianRatio": 0.8973990192472825,
+          "originalRatioOfMedians": 0.9096010759575203,
+          "newMedianPairRatio": 1.251408725162992,
+          "hostRatios": [
+            1.1647110725844505,
+            1.286439051081727,
+            1.443291661215722,
+            0.7809937618175653,
+            1.255754122453531
+          ],
+          "baselineMedianMs": 18.243237500000006,
+          "candidateMedianMs": 19.114961000000008,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-115--restricted-split--L",
+          "originalPairMedianRatio": 1.064958507030941,
+          "originalRatioOfMedians": 1.066137551262949,
+          "newMedianPairRatio": 1.0944832907068345,
+          "hostRatios": [
+            1.1747576594077414,
+            0.9789227902944309,
+            0.9543958770655693,
+            1.1762336572035252,
+            1.1937548985267474
+          ],
+          "baselineMedianMs": 16.951769,
+          "candidateMedianMs": 17.6853815,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-115--restricted-split--O",
+          "originalPairMedianRatio": 0.8287765776360811,
+          "originalRatioOfMedians": 0.818998184017338,
+          "newMedianPairRatio": 0.8816477082007157,
+          "hostRatios": [
+            1.0530125140480646,
+            1.243650955393655,
+            0.8220274565652441,
+            0.81408718203361,
+            0.8112252190834026
+          ],
+          "baselineMedianMs": 18.940455999999998,
+          "candidateMedianMs": 15.47090200000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-115--restricted-split--S",
+          "originalPairMedianRatio": 0.9847704558346259,
+          "originalRatioOfMedians": 0.988134935401231,
+          "newMedianPairRatio": 0.9691129602771211,
+          "hostRatios": [
+            0.9036521728993392,
+            0.888290664110831,
+            0.9730025436456793,
+            1.2134379107710687,
+            1.0312024405055928
+          ],
+          "baselineMedianMs": 35.1584775,
+          "candidateMedianMs": 37.85377400000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-115--restricted-split--T",
+          "originalPairMedianRatio": 1.0478521577022655,
+          "originalRatioOfMedians": 0.9964307125038165,
+          "newMedianPairRatio": 1.1384269023721239,
+          "hostRatios": [
+            1.1384269023721239,
+            1.184446959105358,
+            1.0311818051565886,
+            1.1848174377321892,
+            0.920480159423833
+          ],
+          "baselineMedianMs": 20.736357500000004,
+          "candidateMedianMs": 24.123459999999994,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-115--restricted-split--Z",
+          "originalPairMedianRatio": 0.9798857439529535,
+          "originalRatioOfMedians": 0.9572947081049646,
+          "newMedianPairRatio": 0.9697350245961103,
+          "hostRatios": [
+            1.0364605837015723,
+            0.9227929064258977,
+            1.1580870510863157,
+            0.8828360395880951,
+            0.9958114069105062
+          ],
+          "baselineMedianMs": 39.38115700000001,
+          "candidateMedianMs": 38.05515200000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-116--restricted-split--L",
+          "originalPairMedianRatio": 0.9675791684822748,
+          "originalRatioOfMedians": 0.9800712343713502,
+          "newMedianPairRatio": 0.969635852271189,
+          "hostRatios": [
+            0.9003511585081332,
+            1.289478493114577,
+            1.0654906052994562,
+            0.6327864561854254,
+            0.8452902585539139
+          ],
+          "baselineMedianMs": 6.160485999999999,
+          "candidateMedianMs": 5.428262500000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-116--restricted-split--Z",
+          "originalPairMedianRatio": 0.9573098012182921,
+          "originalRatioOfMedians": 0.9474932342375046,
+          "newMedianPairRatio": 1.0140830493209108,
+          "hostRatios": [
+            1.182670118671314,
+            1.0181594951584314,
+            0.7800820208146362,
+            1.007666700822065,
+            1.1005759673131457
+          ],
+          "baselineMedianMs": 6.372587500000002,
+          "candidateMedianMs": 6.457194999999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-116--restricted-split--ordinary",
+          "originalPairMedianRatio": 1.0510152502678927,
+          "originalRatioOfMedians": 1.1075523762522457,
+          "newMedianPairRatio": 1.0550197711622458,
+          "hostRatios": [
+            1.0400076065076542,
+            1.0831497165851949,
+            0.9953934783867743,
+            1.1674602238372431,
+            1.052252089196488
+          ],
+          "baselineMedianMs": 12.942742499999994,
+          "candidateMedianMs": 13.976832999999992,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-118--restricted-split--J",
+          "originalPairMedianRatio": 0.8399110295140705,
+          "originalRatioOfMedians": 0.8262944058876434,
+          "newMedianPairRatio": 0.8805204932524103,
+          "hostRatios": [
+            0.9149147213265891,
+            0.9066914625817657,
+            0.8687951490885245,
+            0.8835385192839202,
+            0.8452749094509848
+          ],
+          "baselineMedianMs": 77.4252705,
+          "candidateMedianMs": 67.26084649999999,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-118--restricted-split--L",
+          "originalPairMedianRatio": 1.0071903891085037,
+          "originalRatioOfMedians": 1.0082437269650102,
+          "newMedianPairRatio": 1.0008541907429955,
+          "hostRatios": [
+            1.0627530507222704,
+            1.0286259607408237,
+            0.9755041764772379,
+            0.9923243655419678,
+            0.9702751382629318
+          ],
+          "baselineMedianMs": 33.576776,
+          "candidateMedianMs": 34.744960000000006,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-118--restricted-split--O",
+          "originalPairMedianRatio": 0.8104234919774249,
+          "originalRatioOfMedians": 0.8103017068885269,
+          "newMedianPairRatio": 0.8042698945994446,
+          "hostRatios": [
+            0.8011062474002955,
+            0.8107164470080139,
+            0.8373993376126732,
+            0.7554026389575985,
+            0.8585287165368745
+          ],
+          "baselineMedianMs": 84.1906725,
+          "candidateMedianMs": 66.632137,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-118--restricted-split--S",
+          "originalPairMedianRatio": 1.0305674627678982,
+          "originalRatioOfMedians": 1.0142677268100613,
+          "newMedianPairRatio": 0.9417753290330548,
+          "hostRatios": [
+            0.9131445034181335,
+            0.9746224769694524,
+            0.9298995495224865,
+            0.968726114752313,
+            0.9281362323217757
+          ],
+          "baselineMedianMs": 129.038231,
+          "candidateMedianMs": 123.13221200000001,
+          "classification": "NOT_REPLICATED_OR_UNCERTAIN"
+        },
+        {
+          "matrixId": "board-118--restricted-split--T",
+          "originalPairMedianRatio": 0.9443374832483096,
+          "originalRatioOfMedians": 1.0157423298148005,
+          "newMedianPairRatio": 0.9868887717114236,
+          "hostRatios": [
+            0.8686940777103054,
+            1.1016320078855777,
+            0.915501285778961,
+            0.980929118161992,
+            1.043701500982296
+          ],
+          "baselineMedianMs": 55.76561549999999,
+          "candidateMedianMs": 50.31033749999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-118--restricted-split--Z",
+          "originalPairMedianRatio": 0.945460670720983,
+          "originalRatioOfMedians": 0.9567107162599625,
+          "newMedianPairRatio": 0.9712893949315492,
+          "hostRatios": [
+            0.8870017143501709,
+            1.0592325794955648,
+            0.9902787138412456,
+            0.9515256541575698,
+            0.9788032154393194
+          ],
+          "baselineMedianMs": 128.37746950000002,
+          "candidateMedianMs": 126.82247699999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-119--restricted-split--I",
+          "originalPairMedianRatio": 0.9185833734240396,
+          "originalRatioOfMedians": 0.9321858798779838,
+          "newMedianPairRatio": 0.9249291614498456,
+          "hostRatios": [
+            1.0995062601998664,
+            0.6804122556533444,
+            0.8326986580563545,
+            0.9866882690970339,
+            0.9938785416034486
+          ],
+          "baselineMedianMs": 21.558470999999997,
+          "candidateMedianMs": 18.474013999999997,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-119--restricted-split--J",
+          "originalPairMedianRatio": 0.9752908589842706,
+          "originalRatioOfMedians": 1.030668377785189,
+          "newMedianPairRatio": 0.9877633618748305,
+          "hostRatios": [
+            0.9556245966367836,
+            0.8162223842505627,
+            0.9812735970868471,
+            1.0040956147357465,
+            1.031312469867105
+          ],
+          "baselineMedianMs": 12.973927999999994,
+          "candidateMedianMs": 12.920359000000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-119--restricted-split--L",
+          "originalPairMedianRatio": 1.0025257099916784,
+          "originalRatioOfMedians": 0.9972057790629468,
+          "newMedianPairRatio": 1.2029073641987464,
+          "hostRatios": [
+            1.1400287216206437,
+            1.0813038801737958,
+            1.2330205202753244,
+            1.4580681149271921,
+            1.13349004408786
+          ],
+          "baselineMedianMs": 4.8374995,
+          "candidateMedianMs": 6.413817999999999,
+          "classification": "REGRESSION_THRESHOLD_REPLICATED"
+        },
+        {
+          "matrixId": "board-119--restricted-split--T",
+          "originalPairMedianRatio": 0.8664326573119584,
+          "originalRatioOfMedians": 0.8681245585565185,
+          "newMedianPairRatio": 0.9850397400202027,
+          "hostRatios": [
+            0.8930212661370859,
+            0.908692975132914,
+            1.0510376880881673,
+            1.1119200967545306,
+            1.0164594878487627
+          ],
+          "baselineMedianMs": 6.473460999999993,
+          "candidateMedianMs": 6.936211499999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-119--restricted-split--Z",
+          "originalPairMedianRatio": 1.0174026700827041,
+          "originalRatioOfMedians": 1.1201991172476653,
+          "newMedianPairRatio": 1.0117533104485898,
+          "hostRatios": [
+            0.992618107682982,
+            0.9906348653154091,
+            0.9857235400777149,
+            1.1132150835473793,
+            0.9284565605008934
+          ],
+          "baselineMedianMs": 4.9025694999999985,
+          "candidateMedianMs": 5.015654499999997,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-119--restricted-split--ordinary",
+          "originalPairMedianRatio": 0.9929743957095929,
+          "originalRatioOfMedians": 0.9767560754734925,
+          "newMedianPairRatio": 0.9407432903804258,
+          "hostRatios": [
+            0.9212485663858838,
+            1.0229248473567976,
+            1.0969060386193368,
+            0.8693250324388995,
+            0.9407432903804258
+          ],
+          "baselineMedianMs": 24.111371000000005,
+          "candidateMedianMs": 23.581039000000004,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-120--restricted-split--O",
+          "originalPairMedianRatio": 0.9775370084427109,
+          "originalRatioOfMedians": 0.9744292492307749,
+          "newMedianPairRatio": 1.0323468922023666,
+          "hostRatios": [
+            1.1076568510244253,
+            0.9674033998908995,
+            1.0000714564385587,
+            1.0715010813862609,
+            1.113677597294489
+          ],
+          "baselineMedianMs": 29.52664900000002,
+          "candidateMedianMs": 31.280741500000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-120--restricted-split--S",
+          "originalPairMedianRatio": 1.0144832850680132,
+          "originalRatioOfMedians": 1.0155045856754468,
+          "newMedianPairRatio": 1.0319012440081374,
+          "hostRatios": [
+            1.0319012440081374,
+            1.0166434963700255,
+            1.1062873947552723,
+            1.1135080840970686,
+            0.9311339139020163
+          ],
+          "baselineMedianMs": 118.15104849999999,
+          "candidateMedianMs": 123.823579,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-120--restricted-split--T",
+          "originalPairMedianRatio": 0.9945968189293071,
+          "originalRatioOfMedians": 1.0033532079716883,
+          "newMedianPairRatio": 0.9974261372197197,
+          "hostRatios": [
+            1.111699779142581,
+            1.0193436525323678,
+            1.0312480291889625,
+            0.9906864962430153,
+            1.0292991325409901
+          ],
+          "baselineMedianMs": 100.89415,
+          "candidateMedianMs": 100.90624199999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        }
+      ]
+    },
+    "VARIATION_10_PERCENT_A": {
+      "inputs": 94,
+      "directionReplicated": 32,
+      "regressionThresholdReplicated": 2,
+      "hostDirectionMixed": 81,
+      "retimingMedianRatio": 0.9938529355132182,
+      "records": [
+        {
+          "matrixId": "board-008--restricted-split--S",
+          "originalPairMedianRatio": 0.9723612590439359,
+          "originalRatioOfMedians": 0.971944890502935,
+          "newMedianPairRatio": 0.9915461122640586,
+          "hostRatios": [
+            0.9318085087023043,
+            0.9485251051584281,
+            1.0216457250492232,
+            0.9915461122640586,
+            1.0463847896624314
+          ],
+          "baselineMedianMs": 129.808311,
+          "candidateMedianMs": 133.21398799999997,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-009--restricted-split--O",
+          "originalPairMedianRatio": 0.7429798865380506,
+          "originalRatioOfMedians": 0.7466503494015019,
+          "newMedianPairRatio": 0.7246304084268449,
+          "hostRatios": [
+            0.7452721998187113,
+            0.70180081410608,
+            0.7429643921303999,
+            0.724752537239552,
+            0.7268830387269289
+          ],
+          "baselineMedianMs": 164.157556,
+          "candidateMedianMs": 120.3236035,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-012--bag--ordinary",
+          "originalPairMedianRatio": 0.4979939807606222,
+          "originalRatioOfMedians": 0.5013280678736067,
+          "newMedianPairRatio": 0.4958728511548967,
+          "hostRatios": [
+            0.5237567677913435,
+            0.5328570574872205,
+            0.481991588341415,
+            0.47823471773527604,
+            0.5117233010369745
+          ],
+          "baselineMedianMs": 185.28259049999997,
+          "candidateMedianMs": 91.577717,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-017--restricted-split--L",
+          "originalPairMedianRatio": 1.0316175838880688,
+          "originalRatioOfMedians": 1.0185187310691983,
+          "newMedianPairRatio": 1.021009709265543,
+          "hostRatios": [
+            0.9994343465688689,
+            1.0307765956352288,
+            1.0355131674032003,
+            0.996307004895217,
+            1.080279907681562
+          ],
+          "baselineMedianMs": 161.29111799999998,
+          "candidateMedianMs": 169.31730149999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-024--restricted-split--I",
+          "originalPairMedianRatio": 1.1783969328783037,
+          "originalRatioOfMedians": 1.1252579607434905,
+          "newMedianPairRatio": 0.8597403634766464,
+          "hostRatios": [
+            0.9520676799025622,
+            0.7663116323105881,
+            0.958170039797922,
+            1.0554802113861224,
+            0.8981942297465421
+          ],
+          "baselineMedianMs": 8.962233500000004,
+          "candidateMedianMs": 8.638781999999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-026--restricted-split--T",
+          "originalPairMedianRatio": 1.007948908205197,
+          "originalRatioOfMedians": 1.034538655767921,
+          "newMedianPairRatio": 0.9997134539839332,
+          "hostRatios": [
+            0.9736212820540311,
+            1.0112854147933343,
+            0.9781443021521109,
+            1.0407488288549196,
+            1.0104306042278481
+          ],
+          "baselineMedianMs": 5.372890499999997,
+          "candidateMedianMs": 5.514989,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-027--restricted-split--T",
+          "originalPairMedianRatio": 1.0469953575197586,
+          "originalRatioOfMedians": 1.0270356799937552,
+          "newMedianPairRatio": 1.04228137269005,
+          "hostRatios": [
+            1.04228137269005,
+            1.022245995033614,
+            1.0350385325227451,
+            1.0923359074964725,
+            0.9766018404364922
+          ],
+          "baselineMedianMs": 131.7495925,
+          "candidateMedianMs": 136.5106705,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-031--restricted-split--S",
+          "originalPairMedianRatio": 0.9732531744874116,
+          "originalRatioOfMedians": 0.966684415385685,
+          "newMedianPairRatio": 1.0236597643917777,
+          "hostRatios": [
+            1.021743411716837,
+            0.9183300260818658,
+            1.0679419929052822,
+            1.0298832889864693,
+            0.9331101824192025
+          ],
+          "baselineMedianMs": 38.1712335,
+          "candidateMedianMs": 38.6057585,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-038--restricted-split--Z",
+          "originalPairMedianRatio": 1.065683795691889,
+          "originalRatioOfMedians": 1.0634622940839982,
+          "newMedianPairRatio": 1.0081393787646138,
+          "hostRatios": [
+            1.087016580251755,
+            0.9554281936759846,
+            1.0747768163832485,
+            1.0361755825141024,
+            1.023319040820626
+          ],
+          "baselineMedianMs": 116.2980465,
+          "candidateMedianMs": 123.588204,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-040--restricted-split--I",
+          "originalPairMedianRatio": 0.9898060755324707,
+          "originalRatioOfMedians": 0.9003430319695416,
+          "newMedianPairRatio": 0.9788219888753046,
+          "hostRatios": [
+            0.8903393961766219,
+            1.0823009457812711,
+            1.1644234334134418,
+            0.8612645990459415,
+            1.126592879905945
+          ],
+          "baselineMedianMs": 7.651014500000002,
+          "candidateMedianMs": 8.180974000000006,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-044--restricted-split--Z",
+          "originalPairMedianRatio": 1.115830228013385,
+          "originalRatioOfMedians": 1.1061254578582411,
+          "newMedianPairRatio": 0.9504673914951205,
+          "hostRatios": [
+            0.8586736997626565,
+            1.546037820437199,
+            1.113711426200585,
+            0.8835467798666745,
+            1.1001063657583727
+          ],
+          "baselineMedianMs": 6.171276999999996,
+          "candidateMedianMs": 6.122496000000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-049--restricted-split--T",
+          "originalPairMedianRatio": 1.1783407589591035,
+          "originalRatioOfMedians": 1.1785217728174644,
+          "newMedianPairRatio": 1.0215578873004842,
+          "hostRatios": [
+            0.7697107348059858,
+            1.1590832138095053,
+            1.108862076850083,
+            0.82359128551427,
+            1.1605193165218692
+          ],
+          "baselineMedianMs": 8.537469000000002,
+          "candidateMedianMs": 8.068968000000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-052--restricted-split--Z",
+          "originalPairMedianRatio": 0.995350939038881,
+          "originalRatioOfMedians": 0.9855703376553795,
+          "newMedianPairRatio": 0.984695731711412,
+          "hostRatios": [
+            1.1162503797606211,
+            1.0177219093096121,
+            1.043252252834981,
+            0.8213339293021992,
+            0.9895937361853169
+          ],
+          "baselineMedianMs": 25.061186,
+          "candidateMedianMs": 23.700586,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-064--bag--T",
+          "originalPairMedianRatio": 0.8100734339957987,
+          "originalRatioOfMedians": 0.8254114414323972,
+          "newMedianPairRatio": 0.8464792031327919,
+          "hostRatios": [
+            0.9126898907964637,
+            0.7247058762713187,
+            0.8308753123450285,
+            0.7461152061679432,
+            0.92782931665884
+          ],
+          "baselineMedianMs": 60.767562,
+          "candidateMedianMs": 51.507458499999984,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-065--restricted-split--ordinary",
+          "originalPairMedianRatio": 1.0580804991658708,
+          "originalRatioOfMedians": 1.037860410782374,
+          "newMedianPairRatio": 0.8772843648311983,
+          "hostRatios": [
+            0.8222765318836114,
+            0.818329203120041,
+            0.8772843648311983,
+            1.071882891795678,
+            0.9028743982159073
+          ],
+          "baselineMedianMs": 33.414041999999995,
+          "candidateMedianMs": 32.605633,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-067--restricted-split--L",
+          "originalPairMedianRatio": 0.9611811473186557,
+          "originalRatioOfMedians": 1.0272331937190946,
+          "newMedianPairRatio": 1.0242164542775203,
+          "hostRatios": [
+            0.921899611739986,
+            0.9298132798480612,
+            0.8897055085735125,
+            1.099744464662619,
+            1.1317172066719037
+          ],
+          "baselineMedianMs": 21.339079999999996,
+          "candidateMedianMs": 21.4617315,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-068--restricted-split--J",
+          "originalPairMedianRatio": 1.0040952199265523,
+          "originalRatioOfMedians": 0.9680960372306731,
+          "newMedianPairRatio": 1.0119175316704994,
+          "hostRatios": [
+            1.2705338396144383,
+            0.9443657250552893,
+            0.9642625401271913,
+            0.8503641669482811,
+            1.0724948970521186
+          ],
+          "baselineMedianMs": 17.04684300000001,
+          "candidateMedianMs": 16.641810999999997,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-070--bag--ordinary",
+          "originalPairMedianRatio": 1.0465802473187997,
+          "originalRatioOfMedians": 1.0740335659072602,
+          "newMedianPairRatio": 0.9846487803593452,
+          "hostRatios": [
+            0.9424636159617497,
+            1.0221875647435206,
+            0.9352696207470463,
+            0.9229974392043262,
+            1.0839197072861704
+          ],
+          "baselineMedianMs": 37.67729100000001,
+          "candidateMedianMs": 34.7120175,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-075--restricted-split--T",
+          "originalPairMedianRatio": 1.0593698876749724,
+          "originalRatioOfMedians": 1.0559871151564701,
+          "newMedianPairRatio": 1.0399929360997109,
+          "hostRatios": [
+            1.0768067085763633,
+            0.9854022570281291,
+            0.8965077508157808,
+            1.0021083264122121,
+            1.0485822625633996
+          ],
+          "baselineMedianMs": 107.442972,
+          "candidateMedianMs": 105.22069300000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-081--restricted-split--T",
+          "originalPairMedianRatio": 1.0133228228995776,
+          "originalRatioOfMedians": 1.0299612815507604,
+          "newMedianPairRatio": 0.890073289502505,
+          "hostRatios": [
+            1.0499388654413042,
+            0.890073289502505,
+            0.7460112374641454,
+            0.9290554727790731,
+            0.9052033424821787
+          ],
+          "baselineMedianMs": 16.452261500000006,
+          "candidateMedianMs": 14.080138500000004,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-085--restricted-split--S",
+          "originalPairMedianRatio": 0.911936295898647,
+          "originalRatioOfMedians": 0.9130240828287314,
+          "newMedianPairRatio": 1.0274501074813598,
+          "hostRatios": [
+            1.0274501074813598,
+            1.010486115625083,
+            1.1580889326104211,
+            1.0102746066341364,
+            0.9524875022972812
+          ],
+          "baselineMedianMs": 91.512474,
+          "candidateMedianMs": 92.2939835,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-090--bag--ordinary",
+          "originalPairMedianRatio": 0.5088581283511651,
+          "originalRatioOfMedians": 0.5030946651514138,
+          "newMedianPairRatio": 0.5509862203612303,
+          "hostRatios": [
+            0.5672844375824717,
+            0.6084944860432481,
+            0.5480788708443564,
+            0.5421376711390464,
+            0.5608322235239322
+          ],
+          "baselineMedianMs": 191.3469715,
+          "candidateMedianMs": 107.97724399999998,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-093--restricted-split--T",
+          "originalPairMedianRatio": 1.0567042372089295,
+          "originalRatioOfMedians": 1.078824509509836,
+          "newMedianPairRatio": 1.0046064749625871,
+          "hostRatios": [
+            0.9779039373149141,
+            1.0490402250677557,
+            1.0041727798404443,
+            1.007032947907835,
+            0.9710941411527253
+          ],
+          "baselineMedianMs": 154.372504,
+          "candidateMedianMs": 153.348499,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-099--restricted-split--J",
+          "originalPairMedianRatio": 0.8579704921241567,
+          "originalRatioOfMedians": 0.9066382284298842,
+          "newMedianPairRatio": 1.0437996714713451,
+          "hostRatios": [
+            0.996689328053125,
+            0.9830991500244572,
+            1.0676921542034647,
+            0.9548008734057369,
+            1.0363936275578198
+          ],
+          "baselineMedianMs": 17.757505000000002,
+          "candidateMedianMs": 16.722977500000006,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-100--bag--ordinary",
+          "originalPairMedianRatio": 0.9626559187430522,
+          "originalRatioOfMedians": 0.9866243518275446,
+          "newMedianPairRatio": 0.9716261354724525,
+          "hostRatios": [
+            0.929328116264097,
+            0.997743328087562,
+            1.0255412587902448,
+            0.8934049625261085,
+            1.0238943871843649
+          ],
+          "baselineMedianMs": 36.26618400000001,
+          "candidateMedianMs": 34.215289,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-105--restricted-split--ordinary",
+          "originalPairMedianRatio": 1.1046553713399656,
+          "originalRatioOfMedians": 1.1965971014436951,
+          "newMedianPairRatio": 0.9402038121183556,
+          "hostRatios": [
+            0.9376916350847797,
+            0.9632716201905865,
+            1.0880958524769104,
+            0.7135762921623339,
+            1.0269673506033938
+          ],
+          "baselineMedianMs": 11.119136500000003,
+          "candidateMedianMs": 9.152548499999995,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-106--restricted-split--I",
+          "originalPairMedianRatio": 0.8291151218167123,
+          "originalRatioOfMedians": 0.8113966122824204,
+          "newMedianPairRatio": 0.9561021877875693,
+          "hostRatios": [
+            0.9781626706374972,
+            1.0750466435626604,
+            0.848848844375651,
+            0.9561021877875693,
+            0.9286291972743954
+          ],
+          "baselineMedianMs": 38.16514900000001,
+          "candidateMedianMs": 35.1846195,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-106--restricted-split--J",
+          "originalPairMedianRatio": 1.0419200132486304,
+          "originalRatioOfMedians": 0.9396521496539664,
+          "newMedianPairRatio": 1.163274900556938,
+          "hostRatios": [
+            1.3416987276309023,
+            1.1974858684398884,
+            1.1926973064703996,
+            1.1246331496685573,
+            0.9048773378809232
+          ],
+          "baselineMedianMs": 8.553792499999993,
+          "candidateMedianMs": 9.040853499999997,
+          "classification": "REGRESSION_THRESHOLD_REPLICATED"
+        },
+        {
+          "matrixId": "board-106--restricted-split--L",
+          "originalPairMedianRatio": 0.8717196688902193,
+          "originalRatioOfMedians": 0.7675261325663374,
+          "newMedianPairRatio": 1.0138909255142745,
+          "hostRatios": [
+            1.0947432062325464,
+            0.9117726752098723,
+            1.042865750374507,
+            0.8858075422837145,
+            1.2360446817828605
+          ],
+          "baselineMedianMs": 9.817152000000007,
+          "candidateMedianMs": 9.592780499999996,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-106--restricted-split--O",
+          "originalPairMedianRatio": 0.9496966741530946,
+          "originalRatioOfMedians": 1.0381588753152076,
+          "newMedianPairRatio": 0.9038264871863164,
+          "hostRatios": [
+            0.819155098051839,
+            0.8450916316545684,
+            0.984022098003323,
+            0.9856346114781167,
+            1.0301502584234887
+          ],
+          "baselineMedianMs": 12.285474499999992,
+          "candidateMedianMs": 12.420442000000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-106--restricted-split--S",
+          "originalPairMedianRatio": 0.9498121757906253,
+          "originalRatioOfMedians": 0.9599323162842861,
+          "newMedianPairRatio": 0.9961597587623776,
+          "hostRatios": [
+            1.084499055484621,
+            0.8907958737338111,
+            0.972437535039591,
+            1.2167624454051662,
+            1.002497815924514
+          ],
+          "baselineMedianMs": 13.626777999999995,
+          "candidateMedianMs": 14.065796500000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-106--restricted-split--T",
+          "originalPairMedianRatio": 1.0006418768940093,
+          "originalRatioOfMedians": 0.9960313582691322,
+          "newMedianPairRatio": 1.0221069733255708,
+          "hostRatios": [
+            1.00943417332003,
+            0.9054656535807084,
+            0.9444121010354455,
+            1.156859572405184,
+            0.8983547880634009
+          ],
+          "baselineMedianMs": 6.616839500000005,
+          "candidateMedianMs": 6.430729499999998,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-106--restricted-split--Z",
+          "originalPairMedianRatio": 1.0142195540375023,
+          "originalRatioOfMedians": 0.9516005762469409,
+          "newMedianPairRatio": 0.8941790683085419,
+          "hostRatios": [
+            0.9642474929743632,
+            0.7349394270364966,
+            0.9672825644785936,
+            0.8222906700834833,
+            1.232007722515481
+          ],
+          "baselineMedianMs": 22.13705550000001,
+          "candidateMedianMs": 21.7881195,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--bag--ordinary",
+          "originalPairMedianRatio": 0.9796268336250971,
+          "originalRatioOfMedians": 0.9978392907263528,
+          "newMedianPairRatio": 1.1277213341937689,
+          "hostRatios": [
+            0.8859753679782757,
+            1.2535224746984976,
+            1.2058214076803824,
+            1.05258613839947,
+            0.9798856600866449
+          ],
+          "baselineMedianMs": 12.307255499999997,
+          "candidateMedianMs": 12.805568000000008,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--I",
+          "originalPairMedianRatio": 1.0972758893079615,
+          "originalRatioOfMedians": 1.0625244975008863,
+          "newMedianPairRatio": 1.0582703574565429,
+          "hostRatios": [
+            1.0971688230698469,
+            1.1121153400754862,
+            1.361506478672279,
+            1.0361433457673903,
+            0.9027098937329061
+          ],
+          "baselineMedianMs": 16.94080199999999,
+          "candidateMedianMs": 18.65581300000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--L",
+          "originalPairMedianRatio": 1.070415953601717,
+          "originalRatioOfMedians": 1.1718227800659162,
+          "newMedianPairRatio": 1.0166042354219624,
+          "hostRatios": [
+            1.4892066897592557,
+            0.8328588773998007,
+            0.9913572052611012,
+            1.182117507372961,
+            0.9148851286637846
+          ],
+          "baselineMedianMs": 9.148352000000003,
+          "candidateMedianMs": 10.385374499999998,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--O",
+          "originalPairMedianRatio": 1.2992641412329062,
+          "originalRatioOfMedians": 1.3476464759020663,
+          "newMedianPairRatio": 1.0249813374775276,
+          "hostRatios": [
+            1.3791271317293874,
+            1.229977552590833,
+            0.9725408096659889,
+            1.0245548810232863,
+            1.2113606685689517
+          ],
+          "baselineMedianMs": 6.100668499999998,
+          "candidateMedianMs": 6.495795000000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--S",
+          "originalPairMedianRatio": 0.8550884807953893,
+          "originalRatioOfMedians": 0.8903782252765676,
+          "newMedianPairRatio": 1.0848011254651309,
+          "hostRatios": [
+            1.0143675461077575,
+            0.9748807201841524,
+            0.9847867240540966,
+            1.044296974349809,
+            1.311564570209322
+          ],
+          "baselineMedianMs": 7.9758349999999965,
+          "candidateMedianMs": 8.237599999999993,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--T",
+          "originalPairMedianRatio": 0.8172193771255283,
+          "originalRatioOfMedians": 0.817227928883187,
+          "newMedianPairRatio": 1.0317113843243373,
+          "hostRatios": [
+            0.9907473968708546,
+            1.6149757706864207,
+            1.1278707453052772,
+            1.0714332396867312,
+            0.8696658690212951
+          ],
+          "baselineMedianMs": 9.021147499999998,
+          "candidateMedianMs": 9.532518500000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-107--restricted-split--Z",
+          "originalPairMedianRatio": 1.1003179526637668,
+          "originalRatioOfMedians": 1.2293948841987306,
+          "newMedianPairRatio": 0.9486851554145712,
+          "hostRatios": [
+            0.9976679219694591,
+            0.9329488118177245,
+            0.8288350225482854,
+            0.9486851554145712,
+            1.1993555132148117
+          ],
+          "baselineMedianMs": 15.649935,
+          "candidateMedianMs": 14.842611000000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-108--restricted-split--I",
+          "originalPairMedianRatio": 1.3166489609719512,
+          "originalRatioOfMedians": 1.313349919630311,
+          "newMedianPairRatio": 0.9263372596072326,
+          "hostRatios": [
+            1.108697440739326,
+            0.6314771911495849,
+            0.9423553114465626,
+            1.1614595936456367,
+            0.7308431820670328
+          ],
+          "baselineMedianMs": 5.745779999999996,
+          "candidateMedianMs": 5.375320000000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-108--restricted-split--J",
+          "originalPairMedianRatio": 0.7816212934208993,
+          "originalRatioOfMedians": 0.7802449552104513,
+          "newMedianPairRatio": 0.8666809511381917,
+          "hostRatios": [
+            1.2588674489760203,
+            1.0150277381302513,
+            1.10760241816771,
+            0.8617013842336266,
+            0.7239048689910141
+          ],
+          "baselineMedianMs": 8.064114500000002,
+          "candidateMedianMs": 7.6144239999999925,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-108--restricted-split--L",
+          "originalPairMedianRatio": 1.0346502864801117,
+          "originalRatioOfMedians": 1.0498655066669014,
+          "newMedianPairRatio": 1.0275091145257989,
+          "hostRatios": [
+            1.1006316880991882,
+            1.1251847241048318,
+            0.9514927095435327,
+            1.0485891431396266,
+            0.9784075823064704
+          ],
+          "baselineMedianMs": 6.522536500000001,
+          "candidateMedianMs": 6.349449499999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-108--restricted-split--ordinary",
+          "originalPairMedianRatio": 0.9071314507408037,
+          "originalRatioOfMedians": 0.9664069175219719,
+          "newMedianPairRatio": 0.9274050761401633,
+          "hostRatios": [
+            0.9444442897604686,
+            0.8608870661488766,
+            0.9554584370641959,
+            0.9128244391910297,
+            1.0031482965655083
+          ],
+          "baselineMedianMs": 32.16482700000002,
+          "candidateMedianMs": 30.832323000000017,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-110--bag--ordinary",
+          "originalPairMedianRatio": 0.9884492462855126,
+          "originalRatioOfMedians": 0.970636794909756,
+          "newMedianPairRatio": 0.880258577032417,
+          "hostRatios": [
+            0.880258577032417,
+            1.0085132967978605,
+            0.9249322411538758,
+            0.9028502737575336,
+            0.9718746948387766
+          ],
+          "baselineMedianMs": 20.155007500000004,
+          "candidateMedianMs": 19.440593000000007,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-110--restricted-split--L",
+          "originalPairMedianRatio": 1.0764373792232251,
+          "originalRatioOfMedians": 1.0518234886151323,
+          "newMedianPairRatio": 1.0113750279704874,
+          "hostRatios": [
+            1.0621184877300154,
+            0.9982274384456449,
+            1.0087955956307624,
+            1.0113750279704874,
+            0.9631874242651695
+          ],
+          "baselineMedianMs": 153.2520975,
+          "candidateMedianMs": 152.41097499999998,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-110--restricted-split--T",
+          "originalPairMedianRatio": 0.9151411881238251,
+          "originalRatioOfMedians": 0.912201744031898,
+          "newMedianPairRatio": 1.038594857991037,
+          "hostRatios": [
+            1.0787362835070795,
+            1.0642898512257082,
+            1.02515634854309,
+            1.0012485152606634,
+            0.9573631972513943
+          ],
+          "baselineMedianMs": 26.814922000000003,
+          "candidateMedianMs": 26.866598500000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-111--restricted-split--I",
+          "originalPairMedianRatio": 0.9390766493509236,
+          "originalRatioOfMedians": 0.9551346712142085,
+          "newMedianPairRatio": 0.884276604400682,
+          "hostRatios": [
+            0.8089409254710618,
+            0.7958041596744039,
+            0.9982738866292311,
+            1.0139877568572273,
+            0.9324093377128431
+          ],
+          "baselineMedianMs": 26.064656499999998,
+          "candidateMedianMs": 26.864189499999995,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-111--restricted-split--J",
+          "originalPairMedianRatio": 0.9499430685311506,
+          "originalRatioOfMedians": 1.197846065695026,
+          "newMedianPairRatio": 0.9454141122534614,
+          "hostRatios": [
+            1.2644707868462912,
+            0.8805039155864723,
+            0.7689907373254881,
+            0.8687219229377016,
+            0.9259578800230392
+          ],
+          "baselineMedianMs": 6.560773000000005,
+          "candidateMedianMs": 6.512629500000003,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-111--restricted-split--O",
+          "originalPairMedianRatio": 1.0048124776292706,
+          "originalRatioOfMedians": 0.9945207515250357,
+          "newMedianPairRatio": 1.0580706488918077,
+          "hostRatios": [
+            1.0211042208358665,
+            1.2461023105280922,
+            1.0300335672500638,
+            1.1500707639948327,
+            0.8501258914685369
+          ],
+          "baselineMedianMs": 13.334768000000004,
+          "candidateMedianMs": 13.171772499999989,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-111--restricted-split--S",
+          "originalPairMedianRatio": 0.8525031440605597,
+          "originalRatioOfMedians": 0.8520332220635911,
+          "newMedianPairRatio": 0.889400624263702,
+          "hostRatios": [
+            0.9703022771967079,
+            0.8000291086131492,
+            0.9083306201066967,
+            0.8007879254526864,
+            0.9249383636988062
+          ],
+          "baselineMedianMs": 27.652395000000006,
+          "candidateMedianMs": 23.588985499999993,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-111--restricted-split--Z",
+          "originalPairMedianRatio": 0.9742823097204604,
+          "originalRatioOfMedians": 0.9832084269371573,
+          "newMedianPairRatio": 1.0796304961661707,
+          "hostRatios": [
+            0.988015810640238,
+            0.8313392421541542,
+            1.50478260865379,
+            1.1948407313983105,
+            0.985318867673828
+          ],
+          "baselineMedianMs": 7.674657999999994,
+          "candidateMedianMs": 9.356718,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-112--restricted-split--J",
+          "originalPairMedianRatio": 1.0292935484151822,
+          "originalRatioOfMedians": 1.0450610128959004,
+          "newMedianPairRatio": 1.0829988984401488,
+          "hostRatios": [
+            1.05277126606344,
+            1.671264807717097,
+            1.147946961740974,
+            1.0508624431019251,
+            1.0829988984401488
+          ],
+          "baselineMedianMs": 5.53088249999999,
+          "candidateMedianMs": 6.035066499999999,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-112--restricted-split--O",
+          "originalPairMedianRatio": 1.0538979408397045,
+          "originalRatioOfMedians": 1.0660486170479107,
+          "newMedianPairRatio": 0.9201036531045417,
+          "hostRatios": [
+            0.7985892444007094,
+            1.0312386304616843,
+            0.9868971000441588,
+            1.0745996531780064,
+            0.8933214163002584
+          ],
+          "baselineMedianMs": 5.295014000000002,
+          "candidateMedianMs": 5.263069500000007,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-112--restricted-split--S",
+          "originalPairMedianRatio": 0.9839705165347241,
+          "originalRatioOfMedians": 0.9641721734338449,
+          "newMedianPairRatio": 1.0184342913980706,
+          "hostRatios": [
+            0.9748074581859921,
+            1.1241313089946465,
+            1.1116591232418176,
+            1.0012617287898,
+            0.9799684523744978
+          ],
+          "baselineMedianMs": 4.134048999999997,
+          "candidateMedianMs": 4.468509999999995,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-112--restricted-split--Z",
+          "originalPairMedianRatio": 0.8028376391347947,
+          "originalRatioOfMedians": 0.8501705290915982,
+          "newMedianPairRatio": 0.9294671734136143,
+          "hostRatios": [
+            0.7689254150058722,
+            0.9377581357947802,
+            1.1395532971733013,
+            0.9865283279360869,
+            0.9111085031012786
+          ],
+          "baselineMedianMs": 6.3165835,
+          "candidateMedianMs": 6.0919740000000004,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-112--restricted-split--ordinary",
+          "originalPairMedianRatio": 0.9419005201901881,
+          "originalRatioOfMedians": 1.0137365371634566,
+          "newMedianPairRatio": 0.9834431400693979,
+          "hostRatios": [
+            1.0297062594771282,
+            0.9183396333766431,
+            1.0288705253298067,
+            0.9761855400759452,
+            0.9648217398381522
+          ],
+          "baselineMedianMs": 31.658201000000005,
+          "candidateMedianMs": 32.296645,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--J",
+          "originalPairMedianRatio": 1.301220733873834,
+          "originalRatioOfMedians": 1.260693810704602,
+          "newMedianPairRatio": 0.9198942867052835,
+          "hostRatios": [
+            0.8116483823479892,
+            1.110269037419937,
+            0.962229189693427,
+            0.9493572289862027,
+            0.9258254486901736
+          ],
+          "baselineMedianMs": 15.705533500000001,
+          "candidateMedianMs": 14.451937999999998,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--L",
+          "originalPairMedianRatio": 1.0816316985950825,
+          "originalRatioOfMedians": 1.0816215474969006,
+          "newMedianPairRatio": 1.0574840748266903,
+          "hostRatios": [
+            0.8580553637360213,
+            0.9385282912872972,
+            1.119461087524797,
+            1.077134510526407,
+            1.2369019701147437
+          ],
+          "baselineMedianMs": 9.506798999999994,
+          "candidateMedianMs": 9.355027500000006,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--O",
+          "originalPairMedianRatio": 1.0860471992160101,
+          "originalRatioOfMedians": 1.0990982781020002,
+          "newMedianPairRatio": 0.934665735228828,
+          "hostRatios": [
+            0.808502191466498,
+            0.9250717439294687,
+            0.9271976878683872,
+            0.9256359890184758,
+            0.9625228080954127
+          ],
+          "baselineMedianMs": 13.354874000000002,
+          "candidateMedianMs": 12.695351000000002,
+          "classification": "NOT_REPLICATED_OR_UNCERTAIN"
+        },
+        {
+          "matrixId": "board-113--restricted-split--S",
+          "originalPairMedianRatio": 1.2579066237234389,
+          "originalRatioOfMedians": 1.2844616370769197,
+          "newMedianPairRatio": 0.9083442585353887,
+          "hostRatios": [
+            1.054305302126783,
+            0.9411943594295381,
+            0.8492761782785796,
+            0.8822283822272946,
+            0.9988461094332496
+          ],
+          "baselineMedianMs": 15.506639999999997,
+          "candidateMedianMs": 13.882674999999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--T",
+          "originalPairMedianRatio": 1.0605433693634239,
+          "originalRatioOfMedians": 1.0306453715133148,
+          "newMedianPairRatio": 0.9867792035410856,
+          "hostRatios": [
+            0.7641996487870254,
+            1.462652120986848,
+            1.0929396478128937,
+            0.8594157123580712,
+            0.8743563891649109
+          ],
+          "baselineMedianMs": 9.831767000000006,
+          "candidateMedianMs": 8.997407500000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--Z",
+          "originalPairMedianRatio": 1.0107411446683434,
+          "originalRatioOfMedians": 1.1394483900655819,
+          "newMedianPairRatio": 1.0971437899508185,
+          "hostRatios": [
+            1.0227089790464416,
+            0.7347983985271518,
+            1.2225730900100176,
+            1.2159588673261335,
+            0.9965140628396345
+          ],
+          "baselineMedianMs": 7.2105155,
+          "candidateMedianMs": 7.626516499999994,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-113--restricted-split--ordinary",
+          "originalPairMedianRatio": 0.8232459785203818,
+          "originalRatioOfMedians": 0.8086953073270198,
+          "newMedianPairRatio": 0.8411265534437504,
+          "hostRatios": [
+            0.8250805734558601,
+            0.7851203861246623,
+            0.798527968023284,
+            0.8688732629174263,
+            0.8411265534437504
+          ],
+          "baselineMedianMs": 71.58208850000001,
+          "candidateMedianMs": 58.875788,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-114--restricted-split--I",
+          "originalPairMedianRatio": 1.0586448014558174,
+          "originalRatioOfMedians": 1.1185289700679144,
+          "newMedianPairRatio": 1.052543527986943,
+          "hostRatios": [
+            0.9685259497818345,
+            1.1655396705758347,
+            1.1255101011987805,
+            1.1536948723409592,
+            1.065272869291244
+          ],
+          "baselineMedianMs": 20.714097999999993,
+          "candidateMedianMs": 24.199282500000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-114--restricted-split--J",
+          "originalPairMedianRatio": 0.8987702895324321,
+          "originalRatioOfMedians": 0.9252256110329151,
+          "newMedianPairRatio": 0.9862084495302947,
+          "hostRatios": [
+            1.2674429994788752,
+            1.3120934781388582,
+            0.8603474456235158,
+            1.1497273823144813,
+            0.9862084495302947
+          ],
+          "baselineMedianMs": 8.230692000000005,
+          "candidateMedianMs": 8.531944500000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-114--restricted-split--S",
+          "originalPairMedianRatio": 0.9972961119253649,
+          "originalRatioOfMedians": 1.0018018833595792,
+          "newMedianPairRatio": 1.0810505742211514,
+          "hostRatios": [
+            1.0032101316098125,
+            1.0122395848437447,
+            1.1366496586248283,
+            1.0377563432552561,
+            1.0179729907667028
+          ],
+          "baselineMedianMs": 5.866092000000002,
+          "candidateMedianMs": 6.311866500000001,
+          "classification": "NOT_REPLICATED_OR_UNCERTAIN"
+        },
+        {
+          "matrixId": "board-114--restricted-split--T",
+          "originalPairMedianRatio": 1.1526855842250616,
+          "originalRatioOfMedians": 1.1043695780959326,
+          "newMedianPairRatio": 0.9994348191879718,
+          "hostRatios": [
+            1.0524611698213941,
+            1.1962637970499912,
+            0.936947820802108,
+            0.9293507949684101,
+            1.1035433306671316
+          ],
+          "baselineMedianMs": 10.132938999999993,
+          "candidateMedianMs": 10.137210999999994,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-114--restricted-split--ordinary",
+          "originalPairMedianRatio": 1.099971845220408,
+          "originalRatioOfMedians": 1.0530503325424554,
+          "newMedianPairRatio": 1.028868906031866,
+          "hostRatios": [
+            1.0108244414935834,
+            0.9439467765072265,
+            0.9888229773932451,
+            1.1436572397514344,
+            1.0672595896716572
+          ],
+          "baselineMedianMs": 32.81658899999999,
+          "candidateMedianMs": 34.200905500000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-115--bag--ordinary",
+          "originalPairMedianRatio": 0.8973990192472825,
+          "originalRatioOfMedians": 0.9096010759575203,
+          "newMedianPairRatio": 1.251408725162992,
+          "hostRatios": [
+            1.1647110725844505,
+            1.286439051081727,
+            1.443291661215722,
+            0.7809937618175653,
+            1.255754122453531
+          ],
+          "baselineMedianMs": 18.243237500000006,
+          "candidateMedianMs": 19.114961000000008,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-115--restricted-split--J",
+          "originalPairMedianRatio": 0.8757662328748519,
+          "originalRatioOfMedians": 0.8757634667771379,
+          "newMedianPairRatio": 1.0059536440596317,
+          "hostRatios": [
+            1.330720721516243,
+            0.9414573490709703,
+            1.0439259775866234,
+            0.8527133952789994,
+            1.078522886141955
+          ],
+          "baselineMedianMs": 15.8287045,
+          "candidateMedianMs": 15.997166500000013,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-115--restricted-split--O",
+          "originalPairMedianRatio": 0.8287765776360811,
+          "originalRatioOfMedians": 0.818998184017338,
+          "newMedianPairRatio": 0.8816477082007157,
+          "hostRatios": [
+            1.0530125140480646,
+            1.243650955393655,
+            0.8220274565652441,
+            0.81408718203361,
+            0.8112252190834026
+          ],
+          "baselineMedianMs": 18.940455999999998,
+          "candidateMedianMs": 15.47090200000001,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-115--restricted-split--T",
+          "originalPairMedianRatio": 1.0478521577022655,
+          "originalRatioOfMedians": 0.9964307125038165,
+          "newMedianPairRatio": 1.1384269023721239,
+          "hostRatios": [
+            1.1384269023721239,
+            1.184446959105358,
+            1.0311818051565886,
+            1.1848174377321892,
+            0.920480159423833
+          ],
+          "baselineMedianMs": 20.736357500000004,
+          "candidateMedianMs": 24.123459999999994,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-116--restricted-split--L",
+          "originalPairMedianRatio": 0.9675791684822748,
+          "originalRatioOfMedians": 0.9800712343713502,
+          "newMedianPairRatio": 0.969635852271189,
+          "hostRatios": [
+            0.9003511585081332,
+            1.289478493114577,
+            1.0654906052994562,
+            0.6327864561854254,
+            0.8452902585539139
+          ],
+          "baselineMedianMs": 6.160485999999999,
+          "candidateMedianMs": 5.428262500000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-116--restricted-split--Z",
+          "originalPairMedianRatio": 0.9573098012182921,
+          "originalRatioOfMedians": 0.9474932342375046,
+          "newMedianPairRatio": 1.0140830493209108,
+          "hostRatios": [
+            1.182670118671314,
+            1.0181594951584314,
+            0.7800820208146362,
+            1.007666700822065,
+            1.1005759673131457
+          ],
+          "baselineMedianMs": 6.372587500000002,
+          "candidateMedianMs": 6.457194999999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-116--restricted-split--ordinary",
+          "originalPairMedianRatio": 1.0510152502678927,
+          "originalRatioOfMedians": 1.1075523762522457,
+          "newMedianPairRatio": 1.0550197711622458,
+          "hostRatios": [
+            1.0400076065076542,
+            1.0831497165851949,
+            0.9953934783867743,
+            1.1674602238372431,
+            1.052252089196488
+          ],
+          "baselineMedianMs": 12.942742499999994,
+          "candidateMedianMs": 13.976832999999992,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-117--restricted-split--O",
+          "originalPairMedianRatio": 1.032649713566217,
+          "originalRatioOfMedians": 1.0224877135512906,
+          "newMedianPairRatio": 1.0313387842151127,
+          "hostRatios": [
+            1.058203624188823,
+            1.1116086564798313,
+            1.0554917579164367,
+            1.0320452018970878,
+            1.001674586532618
+          ],
+          "baselineMedianMs": 149.0418465,
+          "candidateMedianMs": 154.7517365,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-117--restricted-split--S",
+          "originalPairMedianRatio": 1.035446477183636,
+          "originalRatioOfMedians": 1.0217148555784776,
+          "newMedianPairRatio": 1.0043095723837694,
+          "hostRatios": [
+            0.9441575473192914,
+            1.0011027894291948,
+            0.9766222471199802,
+            1.042484440697028,
+            1.015653412094082
+          ],
+          "baselineMedianMs": 139.83931650000002,
+          "candidateMedianMs": 138.64268899999996,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-117--restricted-split--T",
+          "originalPairMedianRatio": 0.9999576937967325,
+          "originalRatioOfMedians": 1.0063785054946717,
+          "newMedianPairRatio": 0.9675848604876305,
+          "hostRatios": [
+            0.9138135435630135,
+            0.940290746365356,
+            1.0009911414851131,
+            0.9763329428958777,
+            0.9907263336180365
+          ],
+          "baselineMedianMs": 164.14193,
+          "candidateMedianMs": 161.84299599999997,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-118--restricted-split--I",
+          "originalPairMedianRatio": 1.0103879438678263,
+          "originalRatioOfMedians": 0.9806727014253169,
+          "newMedianPairRatio": 0.9766971865982785,
+          "hostRatios": [
+            1.0032683018684072,
+            0.755071181066526,
+            0.9766971865982785,
+            1.027029958441265,
+            0.8862954843894888
+          ],
+          "baselineMedianMs": 224.10430250000002,
+          "candidateMedianMs": 218.864656,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-118--restricted-split--O",
+          "originalPairMedianRatio": 0.8104234919774249,
+          "originalRatioOfMedians": 0.8103017068885269,
+          "newMedianPairRatio": 0.8042698945994446,
+          "hostRatios": [
+            0.8011062474002955,
+            0.8107164470080139,
+            0.8373993376126732,
+            0.7554026389575985,
+            0.8585287165368745
+          ],
+          "baselineMedianMs": 84.1906725,
+          "candidateMedianMs": 66.632137,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-118--restricted-split--S",
+          "originalPairMedianRatio": 1.0305674627678982,
+          "originalRatioOfMedians": 1.0142677268100613,
+          "newMedianPairRatio": 0.9417753290330548,
+          "hostRatios": [
+            0.9131445034181335,
+            0.9746224769694524,
+            0.9298995495224865,
+            0.968726114752313,
+            0.9281362323217757
+          ],
+          "baselineMedianMs": 129.038231,
+          "candidateMedianMs": 123.13221200000001,
+          "classification": "NOT_REPLICATED_OR_UNCERTAIN"
+        },
+        {
+          "matrixId": "board-118--restricted-split--T",
+          "originalPairMedianRatio": 0.9443374832483096,
+          "originalRatioOfMedians": 1.0157423298148005,
+          "newMedianPairRatio": 0.9868887717114236,
+          "hostRatios": [
+            0.8686940777103054,
+            1.1016320078855777,
+            0.915501285778961,
+            0.980929118161992,
+            1.043701500982296
+          ],
+          "baselineMedianMs": 55.76561549999999,
+          "candidateMedianMs": 50.31033749999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-118--restricted-split--Z",
+          "originalPairMedianRatio": 0.945460670720983,
+          "originalRatioOfMedians": 0.9567107162599625,
+          "newMedianPairRatio": 0.9712893949315492,
+          "hostRatios": [
+            0.8870017143501709,
+            1.0592325794955648,
+            0.9902787138412456,
+            0.9515256541575698,
+            0.9788032154393194
+          ],
+          "baselineMedianMs": 128.37746950000002,
+          "candidateMedianMs": 126.82247699999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-119--restricted-split--I",
+          "originalPairMedianRatio": 0.9185833734240396,
+          "originalRatioOfMedians": 0.9321858798779838,
+          "newMedianPairRatio": 0.9249291614498456,
+          "hostRatios": [
+            1.0995062601998664,
+            0.6804122556533444,
+            0.8326986580563545,
+            0.9866882690970339,
+            0.9938785416034486
+          ],
+          "baselineMedianMs": 21.558470999999997,
+          "candidateMedianMs": 18.474013999999997,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-119--restricted-split--J",
+          "originalPairMedianRatio": 0.9752908589842706,
+          "originalRatioOfMedians": 1.030668377785189,
+          "newMedianPairRatio": 0.9877633618748305,
+          "hostRatios": [
+            0.9556245966367836,
+            0.8162223842505627,
+            0.9812735970868471,
+            1.0040956147357465,
+            1.031312469867105
+          ],
+          "baselineMedianMs": 12.973927999999994,
+          "candidateMedianMs": 12.920359000000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-119--restricted-split--L",
+          "originalPairMedianRatio": 1.0025257099916784,
+          "originalRatioOfMedians": 0.9972057790629468,
+          "newMedianPairRatio": 1.2029073641987464,
+          "hostRatios": [
+            1.1400287216206437,
+            1.0813038801737958,
+            1.2330205202753244,
+            1.4580681149271921,
+            1.13349004408786
+          ],
+          "baselineMedianMs": 4.8374995,
+          "candidateMedianMs": 6.413817999999999,
+          "classification": "REGRESSION_THRESHOLD_REPLICATED"
+        },
+        {
+          "matrixId": "board-119--restricted-split--S",
+          "originalPairMedianRatio": 1.049289855234563,
+          "originalRatioOfMedians": 1.0629814161253774,
+          "newMedianPairRatio": 1.041291656263105,
+          "hostRatios": [
+            1.2863775615556685,
+            1.0881445460105708,
+            1.0702485718377437,
+            1.041291656263105,
+            0.9879951670943814
+          ],
+          "baselineMedianMs": 10.742848000000002,
+          "candidateMedianMs": 11.126029999999993,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-119--restricted-split--T",
+          "originalPairMedianRatio": 0.8664326573119584,
+          "originalRatioOfMedians": 0.8681245585565185,
+          "newMedianPairRatio": 0.9850397400202027,
+          "hostRatios": [
+            0.8930212661370859,
+            0.908692975132914,
+            1.0510376880881673,
+            1.1119200967545306,
+            1.0164594878487627
+          ],
+          "baselineMedianMs": 6.473460999999993,
+          "candidateMedianMs": 6.936211499999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-119--restricted-split--Z",
+          "originalPairMedianRatio": 1.0174026700827041,
+          "originalRatioOfMedians": 1.1201991172476653,
+          "newMedianPairRatio": 1.0117533104485898,
+          "hostRatios": [
+            0.992618107682982,
+            0.9906348653154091,
+            0.9857235400777149,
+            1.1132150835473793,
+            0.9284565605008934
+          ],
+          "baselineMedianMs": 4.9025694999999985,
+          "candidateMedianMs": 5.015654499999997,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-119--restricted-split--ordinary",
+          "originalPairMedianRatio": 0.9929743957095929,
+          "originalRatioOfMedians": 0.9767560754734925,
+          "newMedianPairRatio": 0.9407432903804258,
+          "hostRatios": [
+            0.9212485663858838,
+            1.0229248473567976,
+            1.0969060386193368,
+            0.8693250324388995,
+            0.9407432903804258
+          ],
+          "baselineMedianMs": 24.111371000000005,
+          "candidateMedianMs": 23.581039000000004,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-120--restricted-split--I",
+          "originalPairMedianRatio": 0.9973865443040855,
+          "originalRatioOfMedians": 0.9736939359737508,
+          "newMedianPairRatio": 0.9695415688707066,
+          "hostRatios": [
+            1.0721110897179853,
+            0.9697964098194629,
+            0.9296362879546672,
+            0.967358350638609,
+            0.987060819222771
+          ],
+          "baselineMedianMs": 184.95857949999998,
+          "candidateMedianMs": 173.41529200000002,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-120--restricted-split--S",
+          "originalPairMedianRatio": 1.0144832850680132,
+          "originalRatioOfMedians": 1.0155045856754468,
+          "newMedianPairRatio": 1.0319012440081374,
+          "hostRatios": [
+            1.0319012440081374,
+            1.0166434963700255,
+            1.1062873947552723,
+            1.1135080840970686,
+            0.9311339139020163
+          ],
+          "baselineMedianMs": 118.15104849999999,
+          "candidateMedianMs": 123.823579,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-120--restricted-split--T",
+          "originalPairMedianRatio": 0.9945968189293071,
+          "originalRatioOfMedians": 1.0033532079716883,
+          "newMedianPairRatio": 0.9974261372197197,
+          "hostRatios": [
+            1.111699779142581,
+            1.0193436525323678,
+            1.0312480291889625,
+            0.9906864962430153,
+            1.0292991325409901
+          ],
+          "baselineMedianMs": 100.89415,
+          "candidateMedianMs": 100.90624199999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        }
+      ]
+    },
+    "EXACT_STATUS_TRANSITION": {
+      "inputs": 1,
+      "directionReplicated": 1,
+      "regressionThresholdReplicated": 0,
+      "hostDirectionMixed": 0,
+      "retimingMedianRatio": 0.7701175591738776,
+      "records": [
+        {
+          "matrixId": "board-111--restricted-split--ordinary",
+          "originalPairMedianRatio": 0.7499706147949563,
+          "originalRatioOfMedians": 0.7482180904812975,
+          "newMedianPairRatio": 0.7701175591738776,
+          "hostRatios": [
+            0.7961233273655399,
+            0.7671048717202841,
+            0.8262758821945737,
+            0.8149615558876037,
+            0.7570062252405227
+          ],
+          "baselineMedianMs": 163.6386875,
+          "candidateMedianMs": 129.490029,
+          "classification": "DIRECTION_REPLICATED"
+        }
+      ]
+    },
+    "HASH_STRATIFIED_UNSELECTED_CONTROL": {
+      "inputs": 6,
+      "directionReplicated": 3,
+      "regressionThresholdReplicated": 0,
+      "hostDirectionMixed": 5,
+      "retimingMedianRatio": 0.9933857709846882,
+      "records": [
+        {
+          "matrixId": "board-011--restricted-split--T",
+          "originalPairMedianRatio": 0.94120082900834,
+          "originalRatioOfMedians": 0.9464951423915856,
+          "newMedianPairRatio": 0.9435599867386686,
+          "hostRatios": [
+            0.9887422926234233,
+            0.9290938749904516,
+            0.902080572235833,
+            0.9565484138442657,
+            0.9289807598753669
+          ],
+          "baselineMedianMs": 229.323482,
+          "candidateMedianMs": 206.241094,
+          "classification": "DIRECTION_REPLICATED"
+        },
+        {
+          "matrixId": "board-025--restricted-split--J",
+          "originalPairMedianRatio": 0.9857987654290526,
+          "originalRatioOfMedians": 0.9857988005433383,
+          "newMedianPairRatio": 0.9878437746223139,
+          "hostRatios": [
+            0.9862580872826202,
+            1.0073350337798541,
+            0.9966251857870434,
+            1.012973650074158,
+            0.9818214684738431
+          ],
+          "baselineMedianMs": 822.8066180000001,
+          "candidateMedianMs": 817.2095745,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-041--restricted-split--L",
+          "originalPairMedianRatio": 0.9961743760288504,
+          "originalRatioOfMedians": 0.9697911548835311,
+          "newMedianPairRatio": 0.9691687044687274,
+          "hostRatios": [
+            1.0284838402118912,
+            0.9759357790546339,
+            0.9508272689251325,
+            0.9903296621266129,
+            0.9394123817470652
+          ],
+          "baselineMedianMs": 205.43970000000002,
+          "candidateMedianMs": 195.30500849999999,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-088--restricted-split--ordinary",
+          "originalPairMedianRatio": 1.0044036150919449,
+          "originalRatioOfMedians": 1.00365992545605,
+          "newMedianPairRatio": 0.9989277673470625,
+          "hostRatios": [
+            1.1051795428083309,
+            0.9752028254187227,
+            1.0091714451778895,
+            0.9970396370321126,
+            0.9969190304903341
+          ],
+          "baselineMedianMs": 2538.5786435,
+          "candidateMedianMs": 2548.2140795000005,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-117--restricted-split--Z",
+          "originalPairMedianRatio": 0.9906917327915339,
+          "originalRatioOfMedians": 1.0053332569740454,
+          "newMedianPairRatio": 1.0131180155235873,
+          "hostRatios": [
+            0.9829749524916398,
+            0.9682772362867677,
+            0.9928607741837971,
+            1.0119004717807392,
+            1.022590170039034
+          ],
+          "baselineMedianMs": 155.301404,
+          "candidateMedianMs": 158.242042,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        },
+        {
+          "matrixId": "board-120--restricted-split--Z",
+          "originalPairMedianRatio": 1.0225301174171753,
+          "originalRatioOfMedians": 1.0225366221180887,
+          "newMedianPairRatio": 1.0171217329705777,
+          "hostRatios": [
+            1.0036650119389627,
+            1.012428312550124,
+            1.0428286165497898,
+            0.9992341569669635,
+            1.0660817997827763
+          ],
+          "baselineMedianMs": 118.16446600000002,
+          "candidateMedianMs": 117.45444299999998,
+          "classification": "ENVIRONMENT_SENSITIVE"
+        }
+      ]
+    }
+  },
+  "globalVariantVariationInputs": {
+    "R": 121,
+    "A": 121
+  },
+  "withinHostVariantVariationInputs": {
+    "R": 102,
+    "A": 102
+  },
+  "hostsDirectionMixedInputs": 101,
+  "sameVariantControlAlarms": 0,
+  "environmentMaxToMinRange": [
+    1.00131086862404,
+    1.0983109124889396
+  ],
+  "allHostCandidateSlowerInputs": 6,
+  "allHostCandidateFasterInputs": 14,
+  "directionReplicated": 42,
+  "regressionThresholdReplicated": 2,
+  "retimingAbsoluteDeltaMedianMs": {
+    "board-008--restricted-split--S": -1.0153965000000014,
+    "board-009--restricted-split--O": -40.08748,
+    "board-011--restricted-split--O": 2.4215770000000134,
+    "board-011--restricted-split--T": -8.648593999999989,
+    "board-012--bag--ordinary": -92.54907749999998,
+    "board-012--restricted-split--L": -7.996108000000014,
+    "board-017--restricted-split--L": 3.428614499999995,
+    "board-024--restricted-split--I": -1.1394994999999994,
+    "board-025--restricted-split--J": -7.37706600000007,
+    "board-026--restricted-split--T": -0.0015879999999981464,
+    "board-027--restricted-split--T": 3.751270000000005,
+    "board-028--restricted-split--T": 1.7132469999999884,
+    "board-031--restricted-split--S": 0.98432549999999,
+    "board-038--restricted-split--Z": 0.6384939999999943,
+    "board-040--restricted-split--I": -0.16323399999998855,
+    "board-041--restricted-split--L": -6.494917999999991,
+    "board-044--restricted-split--Z": -0.27036349999999487,
+    "board-049--restricted-split--T": 0.06719900000000223,
+    "board-052--restricted-split--Z": -0.3985025000000064,
+    "board-064--bag--T": -7.177856500000004,
+    "board-065--restricted-split--ordinary": -4.698296000000013,
+    "board-067--restricted-split--L": 0.3606124999999878,
+    "board-068--restricted-split--J": 0.0073170000000075675,
+    "board-070--bag--ordinary": -0.4438079999999971,
+    "board-075--restricted-split--T": 3.1695515000000114,
+    "board-080--restricted-split--S": 3.1533175000000284,
+    "board-081--restricted-split--T": -0.9939659999999932,
+    "board-085--restricted-split--S": 1.7346695000000025,
+    "board-088--restricted-split--ordinary": -3.1395280000003822,
+    "board-090--bag--ordinary": -81.87321449999999,
+    "board-093--restricted-split--T": 0.20058200000001847,
+    "board-099--restricted-split--J": 0.8059630000000055,
+    "board-100--bag--ordinary": -0.7316084999999859,
+    "board-105--restricted-split--ordinary": -0.48544349999998815,
+    "board-106--bag--ordinary": -218.35732549999997,
+    "board-106--restricted-split--I": -1.6809690000000046,
+    "board-106--restricted-split--J": 1.0477679999999978,
+    "board-106--restricted-split--L": 0.06987349999999992,
+    "board-106--restricted-split--O": -1.0483400000000032,
+    "board-106--restricted-split--S": 0.06174299999999988,
+    "board-106--restricted-split--T": 0.15309649999999664,
+    "board-106--restricted-split--Z": -2.5512330000000105,
+    "board-107--bag--ordinary": 1.410954000000011,
+    "board-107--restricted-split--I": 1.1076414999999997,
+    "board-107--restricted-split--J": 1.052812000000003,
+    "board-107--restricted-split--L": 0.18199699999999552,
+    "board-107--restricted-split--O": 0.15819549999999793,
+    "board-107--restricted-split--S": 0.5134384999999924,
+    "board-107--restricted-split--T": 0.32590700000000083,
+    "board-107--restricted-split--Z": -0.8073239999999942,
+    "board-108--restricted-split--I": -0.3957369999999969,
+    "board-108--restricted-split--J": -0.914415500000004,
+    "board-108--restricted-split--L": 0.11926199999999909,
+    "board-108--restricted-split--ordinary": -2.234713499999998,
+    "board-110--bag--ordinary": -2.042181500000005,
+    "board-110--restricted-split--I": -5.466880500000009,
+    "board-110--restricted-split--L": 1.9182734999999838,
+    "board-110--restricted-split--O": 2.446072000000015,
+    "board-110--restricted-split--S": -2.2788719999999927,
+    "board-110--restricted-split--T": 0.8534345000000059,
+    "board-111--restricted-split--I": -2.783554499999994,
+    "board-111--restricted-split--J": -0.30123500000000547,
+    "board-111--restricted-split--L": 0.23561749999999648,
+    "board-111--restricted-split--O": 0.6083089999999984,
+    "board-111--restricted-split--S": -2.729587500000008,
+    "board-111--restricted-split--Z": 0.48100000000000165,
+    "board-111--restricted-split--ordinary": -23.42680999999999,
+    "board-112--restricted-split--J": 0.49124100000000226,
+    "board-112--restricted-split--L": -0.7091169999999991,
+    "board-112--restricted-split--O": -0.4468710000000016,
+    "board-112--restricted-split--S": 0.07437299999999425,
+    "board-112--restricted-split--Z": -0.45459100000000774,
+    "board-112--restricted-split--ordinary": -0.5223979999999884,
+    "board-113--restricted-split--I": -0.3671989999999923,
+    "board-113--restricted-split--J": -0.9762089999999972,
+    "board-113--restricted-split--L": 0.4529770000000042,
+    "board-113--restricted-split--O": -0.9973324999999988,
+    "board-113--restricted-split--S": -1.451803499999997,
+    "board-113--restricted-split--T": -0.13430450000001315,
+    "board-113--restricted-split--Z": 0.7006224999999944,
+    "board-113--restricted-split--ordinary": -10.347896000000006,
+    "board-114--restricted-split--I": 1.2211704999999924,
+    "board-114--restricted-split--J": -0.13724700000000922,
+    "board-114--restricted-split--L": 0.18024799999999885,
+    "board-114--restricted-split--O": 0.2801899999999975,
+    "board-114--restricted-split--S": 0.4276449999999947,
+    "board-114--restricted-split--T": 0.009870000000006485,
+    "board-114--restricted-split--ordinary": 0.7531035000000088,
+    "board-115--bag--ordinary": 4.590788500000009,
+    "board-115--restricted-split--J": 0.2919895000000068,
+    "board-115--restricted-split--L": 1.4180670000000006,
+    "board-115--restricted-split--O": -2.407016999999989,
+    "board-115--restricted-split--S": -0.9637079999999827,
+    "board-115--restricted-split--T": 2.3268389999999783,
+    "board-115--restricted-split--Z": -0.8173954999999964,
+    "board-116--restricted-split--L": -0.1396115000000009,
+    "board-116--restricted-split--Z": 0.06338099999999969,
+    "board-116--restricted-split--ordinary": 0.7183325000000167,
+    "board-117--restricted-split--O": 4.469599000000031,
+    "board-117--restricted-split--S": 0.39350349999998,
+    "board-117--restricted-split--T": -3.5575034999999957,
+    "board-117--restricted-split--Z": 1.865715999999992,
+    "board-118--restricted-split--I": -5.2396465000000205,
+    "board-118--restricted-split--J": -8.3089735,
+    "board-118--restricted-split--L": -0.037811999999995294,
+    "board-118--restricted-split--O": -14.325045999999993,
+    "board-118--restricted-split--S": -7.207398499999989,
+    "board-118--restricted-split--T": -1.047187000000001,
+    "board-118--restricted-split--Z": -3.7206600000000094,
+    "board-119--restricted-split--I": -1.574661500000012,
+    "board-119--restricted-split--J": -0.2215709999999973,
+    "board-119--restricted-split--L": 0.9954724999999982,
+    "board-119--restricted-split--S": 0.44155249999999313,
+    "board-119--restricted-split--T": -0.0930334999999971,
+    "board-119--restricted-split--Z": 0.02122600000000574,
+    "board-119--restricted-split--ordinary": -1.3750829999999965,
+    "board-120--restricted-split--I": -5.050565000000006,
+    "board-120--restricted-split--O": 0.919999500000003,
+    "board-120--restricted-split--S": 2.0909850000000034,
+    "board-120--restricted-split--T": -0.17446700000000703,
+    "board-120--restricted-split--Z": 1.6305084999999977
+  },
+  "slowestBaselineInputs": [
+    {
+      "matrixId": "board-088--restricted-split--ordinary",
+      "phase": "development",
+      "selectionReasons": [
+        "HASH_STRATIFIED_UNSELECTED_CONTROL"
+      ],
+      "isControl": true,
+      "originalPairMedianRatio": 1.0044036150919449,
+      "legacyOriginalRatioOfMedians": 1.00365992545605,
+      "complete10Pairs": true,
+      "pairRatios": [
+        1.157396145371105,
+        1.052962940245557,
+        0.9704004355362693,
+        0.9800052153011761,
+        1.0123504705433533,
+        1.005992419812426,
+        0.9971282185909375,
+        0.9969510554732877,
+        0.9931107448774809,
+        1.0007273161031873
+      ],
+      "medianRatio": 0.9989277673470625,
+      "hostResults": [
+        {
+          "host": 0,
+          "pairs": 2,
+          "ratio": 1.1051795428083309,
+          "absoluteDeltaMedianMs": 174.31987900000001,
+          "environmentAlarm": false
+        },
+        {
+          "host": 1,
+          "pairs": 2,
+          "ratio": 0.9752028254187227,
+          "absoluteDeltaMedianMs": -32.74625900000012,
+          "environmentAlarm": false
+        },
+        {
+          "host": 2,
+          "pairs": 2,
+          "ratio": 1.0091714451778895,
+          "absoluteDeltaMedianMs": 23.29243650000012,
+          "environmentAlarm": false
+        },
+        {
+          "host": 3,
+          "pairs": 2,
+          "ratio": 0.9970396370321126,
+          "absoluteDeltaMedianMs": -8.431769000000031,
+          "environmentAlarm": false
+        },
+        {
+          "host": 4,
+          "pairs": 2,
+          "ratio": 0.9969190304903341,
+          "absoluteDeltaMedianMs": -7.903204500000129,
+          "environmentAlarm": false
+        }
+      ],
+      "hostsSameDirectionAsScreening": 2,
+      "hostsSlowdownAbove1_10": 1,
+      "directionReplicated": false,
+      "regressionThresholdReplicated": false,
+      "environmentSensitive": true,
+      "classification": "ENVIRONMENT_SENSITIVE",
+      "variantVariation": {
+        "R": 2.186376691726872,
+        "A": 2.2241826027521996
+      },
+      "withinHostVariantVariation": {
+        "R": [
+          1.001793027924812,
+          1.013918326615215,
+          1.002481733975432,
+          1.011096500625353,
+          1.0056682797545156
+        ],
+        "A": [
+          1.1011511845891078,
+          1.003981173144303,
+          1.0088175965484645,
+          1.0109168557161468,
+          1.0019898489571386
+        ]
+      },
+      "betweenHostMedianVariantVariation": {
+        "R": 2.15935197309576,
+        "A": 2.207778393716325
+      },
+      "baselineMedianMs": 2538.5786435,
+      "candidateMedianMs": 2548.2140795000005
+    },
+    {
+      "matrixId": "board-025--restricted-split--J",
+      "phase": "development",
+      "selectionReasons": [
+        "HASH_STRATIFIED_UNSELECTED_CONTROL"
+      ],
+      "isControl": true,
+      "originalPairMedianRatio": 0.9857987654290526,
+      "legacyOriginalRatioOfMedians": 0.9857988005433383,
+      "complete10Pairs": true,
+      "pairRatios": [
+        0.9822298580616562,
+        0.9902863165035842,
+        1.0292688348186647,
+        0.9854012327410434,
+        1.0083383874138534,
+        0.9849119841602333,
+        1.035295592581933,
+        0.990651707566383,
+        0.9783397970862538,
+        0.9853031398614323
+      ],
+      "medianRatio": 0.9878437746223139,
+      "hostResults": [
+        {
+          "host": 0,
+          "pairs": 2,
+          "ratio": 0.9862580872826202,
+          "absoluteDeltaMedianMs": -7.844996999999921,
+          "environmentAlarm": false
+        },
+        {
+          "host": 1,
+          "pairs": 2,
+          "ratio": 1.0073350337798541,
+          "absoluteDeltaMedianMs": 3.2125555000000077,
+          "environmentAlarm": false
+        },
+        {
+          "host": 2,
+          "pairs": 2,
+          "ratio": 0.9966251857870434,
+          "absoluteDeltaMedianMs": -2.851459000000034,
+          "environmentAlarm": false
+        },
+        {
+          "host": 3,
+          "pairs": 2,
+          "ratio": 1.012973650074158,
+          "absoluteDeltaMedianMs": 11.54803650000008,
+          "environmentAlarm": false
+        },
+        {
+          "host": 4,
+          "pairs": 2,
+          "ratio": 0.9818214684738431,
+          "absoluteDeltaMedianMs": -15.24339900000001,
+          "environmentAlarm": false
+        }
+      ],
+      "hostsSameDirectionAsScreening": 3,
+      "hostsSlowdownAbove1_10": 0,
+      "directionReplicated": false,
+      "regressionThresholdReplicated": false,
+      "environmentSensitive": true,
+      "classification": "ENVIRONMENT_SENSITIVE",
+      "variantVariation": {
+        "R": 2.0230146228825223,
+        "A": 2.1166350387967157
+      },
+      "withinHostVariantVariation": {
+        "R": [
+          1.1412609084025713,
+          1.00416320732807,
+          1.0156099676946349,
+          1.0012507736611744,
+          1.0079399574096122
+        ],
+        "A": [
+          1.131976198590155,
+          1.0401869886453676,
+          1.0080496533493697,
+          1.0463723073643447,
+          1.015113979606343
+        ]
+      },
+      "betweenHostMedianVariantVariation": {
+        "R": 2.0175512944727245,
+        "A": 2.028964368866012
+      },
+      "baselineMedianMs": 822.8066180000001,
+      "candidateMedianMs": 817.2095745
+    },
+    {
+      "matrixId": "board-011--restricted-split--O",
+      "phase": "development",
+      "selectionReasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false,
+      "originalPairMedianRatio": 0.9628173449592399,
+      "legacyOriginalRatioOfMedians": 0.971052390342835,
+      "complete10Pairs": true,
+      "pairRatios": [
+        0.9322288030707429,
+        0.9706496527790699,
+        0.9988412041211943,
+        1.0111877431362968,
+        1.0085044462913508,
+        1.0249469065501167,
+        1.0077318697418656,
+        1.039259347491439,
+        1.0247212186952879,
+        0.9728313157422097
+      ],
+      "medianRatio": 1.0081181580166083,
+      "hostResults": [
+        {
+          "host": 0,
+          "pairs": 2,
+          "ratio": 0.9514392279249064,
+          "absoluteDeltaMedianMs": -12.846692000000033,
+          "environmentAlarm": false
+        },
+        {
+          "host": 1,
+          "pairs": 2,
+          "ratio": 1.0050144736287456,
+          "absoluteDeltaMedianMs": 0.8389135000000039,
+          "environmentAlarm": false
+        },
+        {
+          "host": 2,
+          "pairs": 2,
+          "ratio": 1.0167256764207337,
+          "absoluteDeltaMedianMs": 5.9184905000000185,
+          "environmentAlarm": false
+        },
+        {
+          "host": 3,
+          "pairs": 2,
+          "ratio": 1.0234956086166522,
+          "absoluteDeltaMedianMs": 8.98980499999999,
+          "environmentAlarm": false
+        },
+        {
+          "host": 4,
+          "pairs": 2,
+          "ratio": 0.9987762672187488,
+          "absoluteDeltaMedianMs": -0.4930890000000545,
+          "environmentAlarm": false
+        }
+      ],
+      "hostsSameDirectionAsScreening": 2,
+      "hostsSlowdownAbove1_10": 0,
+      "directionReplicated": false,
+      "regressionThresholdReplicated": false,
+      "environmentSensitive": true,
+      "classification": "ENVIRONMENT_SENSITIVE",
+      "variantVariation": {
+        "R": 2.322149970260515,
+        "A": 2.4014481458793924
+      },
+      "withinHostVariantVariation": {
+        "R": [
+          1.0475476631019771,
+          1.0091494671571468,
+          1.0147924927082208,
+          1.00610785708753,
+          1.0139847959942556
+        ],
+        "A": [
+          1.006082989199177,
+          1.021623425196641,
+          1.031337472052247,
+          1.0250248762517078,
+          1.0388114881557577
+        ]
+      },
+      "betweenHostMedianVariantVariation": {
+        "R": 2.3045586005824386,
+        "A": 2.3467612551100214
+      },
+      "baselineMedianMs": 349.393505,
+      "candidateMedianMs": 348.5162885
+    },
+    {
+      "matrixId": "board-106--bag--ordinary",
+      "phase": "reserved",
+      "selectionReasons": [
+        "IMPROVEMENT_TAIL"
+      ],
+      "isControl": false,
+      "originalPairMedianRatio": 0.32773714214943933,
+      "legacyOriginalRatioOfMedians": 0.32570754693015364,
+      "complete10Pairs": true,
+      "pairRatios": [
+        0.3227054847841062,
+        0.3323965268826479,
+        0.3513731730355514,
+        0.37036794651719857,
+        0.3397340136772301,
+        0.3395693227590865,
+        0.3435491191601591,
+        0.3272112229394617,
+        0.34478652329761256,
+        0.30614513732881565
+      ],
+      "medianRatio": 0.3396516682181583,
+      "hostResults": [
+        {
+          "host": 0,
+          "pairs": 2,
+          "ratio": 0.32755100583337704,
+          "absoluteDeltaMedianMs": -173.860374,
+          "environmentAlarm": false
+        },
+        {
+          "host": 1,
+          "pairs": 2,
+          "ratio": 0.36087055977637494,
+          "absoluteDeltaMedianMs": -122.2341615,
+          "environmentAlarm": false
+        },
+        {
+          "host": 2,
+          "pairs": 2,
+          "ratio": 0.3396516682181583,
+          "absoluteDeltaMedianMs": -223.445035,
+          "environmentAlarm": false
+        },
+        {
+          "host": 3,
+          "pairs": 2,
+          "ratio": 0.33538017104981044,
+          "absoluteDeltaMedianMs": -225.38801250000003,
+          "environmentAlarm": false
+        },
+        {
+          "host": 4,
+          "pairs": 2,
+          "ratio": 0.3254658303132141,
+          "absoluteDeltaMedianMs": -232.86661099999998,
+          "environmentAlarm": false
+        }
+      ],
+      "hostsSameDirectionAsScreening": 5,
+      "hostsSlowdownAbove1_10": 0,
+      "directionReplicated": true,
+      "regressionThresholdReplicated": false,
+      "environmentSensitive": false,
+      "classification": "DIRECTION_REPLICATED",
+      "variantVariation": {
+        "R": 1.8875269971851185,
+        "A": 1.7472030316974676
+      },
+      "withinHostVariantVariation": {
+        "R": [
+          1.0022610067284692,
+          1.022492271548569,
+          1.0443018012048617,
+          1.0378945270641387,
+          1.0723271370201048
+        ],
+        "A": [
+          1.027706956232017,
+          1.0308720363579016,
+          1.0448082869529323,
+          1.0897173616199725,
+          1.050257084660879
+        ]
+      },
+      "betweenHostMedianVariantVariation": {
+        "R": 1.8035879236453725,
+        "A": 1.6660134281285535
+      },
+      "baselineMedianMs": 331.94336749999997,
+      "candidateMedianMs": 109.0975525
+    },
+    {
+      "matrixId": "board-012--restricted-split--L",
+      "phase": "development",
+      "selectionReasons": [
+        "VARIATION_10_PERCENT_R"
+      ],
+      "isControl": false,
+      "originalPairMedianRatio": 0.9602860501280639,
+      "legacyOriginalRatioOfMedians": 0.953443874759262,
+      "complete10Pairs": true,
+      "pairRatios": [
+        0.9864665956142427,
+        0.9121750778942415,
+        0.9319309185222676,
+        0.9392159578118638,
+        0.9896929840564687,
+        0.9778946461839647,
+        0.9420708421785278,
+        0.9622856299872846,
+        0.9805253254089138,
+        0.9702833666500248
+      ],
+      "medianRatio": 0.9662844983186547,
+      "hostResults": [
+        {
+          "host": 0,
+          "pairs": 2,
+          "ratio": 0.9493208367542421,
+          "absoluteDeltaMedianMs": -8.898934999999994,
+          "environmentAlarm": false
+        },
+        {
+          "host": 1,
+          "pairs": 2,
+          "ratio": 0.9355734381670657,
+          "absoluteDeltaMedianMs": -8.836950999999992,
+          "environmentAlarm": false
+        },
+        {
+          "host": 2,
+          "pairs": 2,
+          "ratio": 0.9837938151202167,
+          "absoluteDeltaMedianMs": -4.096553499999985,
+          "environmentAlarm": false
+        },
+        {
+          "host": 3,
+          "pairs": 2,
+          "ratio": 0.9521782360829062,
+          "absoluteDeltaMedianMs": -13.547134999999997,
+          "environmentAlarm": false
+        },
+        {
+          "host": 4,
+          "pairs": 2,
+          "ratio": 0.9754043460294692,
+          "absoluteDeltaMedianMs": -6.490087000000045,
+          "environmentAlarm": false
+        }
+      ],
+      "hostsSameDirectionAsScreening": 5,
+      "hostsSlowdownAbove1_10": 0,
+      "directionReplicated": true,
+      "regressionThresholdReplicated": false,
+      "environmentSensitive": false,
+      "classification": "DIRECTION_REPLICATED",
+      "variantVariation": {
+        "R": 2.126528663117879,
+        "A": 2.1787619314325046
+      },
+      "withinHostVariantVariation": {
+        "R": [
+          1.0322943787270376,
+          1.0531654481304449,
+          1.0042658987702124,
+          1.0025042223279725,
+          1.0134052443647448
+        ],
+        "A": [
+          1.047612371819067,
+          1.044996558319469,
+          1.0163824068559881,
+          1.0240157788101572,
+          1.0028198423869867
+        ]
+      },
+      "betweenHostMedianVariantVariation": {
+        "R": 2.068876296339741,
+        "A": 2.1058354975752014
+      },
+      "baselineMedianMs": 252.9731595,
+      "candidateMedianMs": 248.87660600000004
+    },
+    {
+      "matrixId": "board-011--restricted-split--T",
+      "phase": "development",
+      "selectionReasons": [
+        "HASH_STRATIFIED_UNSELECTED_CONTROL"
+      ],
+      "isControl": true,
+      "originalPairMedianRatio": 0.94120082900834,
+      "legacyOriginalRatioOfMedians": 0.9464951423915856,
+      "complete10Pairs": true,
+      "pairRatios": [
+        0.9537330388559758,
+        1.0237515463908708,
+        0.9030722358688446,
+        0.9551155141120586,
+        0.9208494855779481,
+        0.883311658893718,
+        0.9333869346213615,
+        0.9797098930671698,
+        0.9746969862252733,
+        0.8832645335254604
+      ],
+      "medianRatio": 0.9435599867386686,
+      "hostResults": [
+        {
+          "host": 0,
+          "pairs": 2,
+          "ratio": 0.9887422926234233,
+          "absoluteDeltaMedianMs": -1.5182154999999824,
+          "environmentAlarm": false
+        },
+        {
+          "host": 1,
+          "pairs": 2,
+          "ratio": 0.9290938749904516,
+          "absoluteDeltaMedianMs": -7.973652999999985,
+          "environmentAlarm": false
+        },
+        {
+          "host": 2,
+          "pairs": 2,
+          "ratio": 0.902080572235833,
+          "absoluteDeltaMedianMs": -22.74117750000002,
+          "environmentAlarm": false
+        },
+        {
+          "host": 3,
+          "pairs": 2,
+          "ratio": 0.9565484138442657,
+          "absoluteDeltaMedianMs": -10.186626000000018,
+          "environmentAlarm": false
+        },
+        {
+          "host": 4,
+          "pairs": 2,
+          "ratio": 0.9289807598753669,
+          "absoluteDeltaMedianMs": -16.686358499999997,
+          "environmentAlarm": false
+        }
+      ],
+      "hostsSameDirectionAsScreening": 5,
+      "hostsSlowdownAbove1_10": 0,
+      "directionReplicated": true,
+      "regressionThresholdReplicated": false,
+      "environmentSensitive": false,
+      "classification": "DIRECTION_REPLICATED",
+      "variantVariation": {
+        "R": 2.1998458345528555,
+        "A": 2.243995969818585
+      },
+      "withinHostVariantVariation": {
+        "R": [
+          1.0101544646406104,
+          1.067694864918642,
+          1.0182401020125358,
+          1.003872208553307,
+          1.0365540355675413
+        ],
+        "A": [
+          1.0626248198596644,
+          1.009517251726514,
+          1.061511941671202,
+          1.053693272976692,
+          1.0646010354492064
+        ]
+      },
+      "betweenHostMedianVariantVariation": {
+        "R": 2.1119596675902375,
+        "A": 2.1764650959631076
+      },
+      "baselineMedianMs": 229.323482,
+      "candidateMedianMs": 206.241094
+    },
+    {
+      "matrixId": "board-118--restricted-split--I",
+      "phase": "reserved",
+      "selectionReasons": [
+        "VARIATION_10_PERCENT_A"
+      ],
+      "isControl": false,
+      "originalPairMedianRatio": 1.0103879438678263,
+      "legacyOriginalRatioOfMedians": 0.9806727014253169,
+      "complete10Pairs": true,
+      "pairRatios": [
+        0.9883644004275302,
+        1.0181722033092844,
+        0.8807716641198534,
+        0.6293706980131986,
+        0.9724589822512207,
+        0.9809353909453364,
+        0.9921969761453941,
+        1.0618629407371358,
+        0.9320754724619009,
+        0.8405154963170766
+      ],
+      "medianRatio": 0.9766971865982785,
+      "hostResults": [
+        {
+          "host": 0,
+          "pairs": 2,
+          "ratio": 1.0032683018684072,
+          "absoluteDeltaMedianMs": 0.45212400000001196,
+          "environmentAlarm": false
+        },
+        {
+          "host": 1,
+          "pairs": 2,
+          "ratio": 0.755071181066526,
+          "absoluteDeltaMedianMs": -39.76131699999999,
+          "environmentAlarm": false
+        },
+        {
+          "host": 2,
+          "pairs": 2,
+          "ratio": 0.9766971865982785,
+          "absoluteDeltaMedianMs": -5.2396465000000205,
+          "environmentAlarm": false
+        },
+        {
+          "host": 3,
+          "pairs": 2,
+          "ratio": 1.027029958441265,
+          "absoluteDeltaMedianMs": 6.187788000000012,
+          "environmentAlarm": false
+        },
+        {
+          "host": 4,
+          "pairs": 2,
+          "ratio": 0.8862954843894888,
+          "absoluteDeltaMedianMs": -30.194573000000034,
+          "environmentAlarm": false
+        }
+      ],
+      "hostsSameDirectionAsScreening": 2,
+      "hostsSlowdownAbove1_10": 0,
+      "directionReplicated": false,
+      "regressionThresholdReplicated": false,
+      "environmentSensitive": true,
+      "classification": "ENVIRONMENT_SENSITIVE",
+      "variantVariation": {
+        "R": 2.1908810951666573,
+        "A": 2.2330346619646337
+      },
+      "withinHostVariantVariation": {
+        "R": [
+          1.0101007473020087,
+          1.3974252704211916,
+          1.037291921750347,
+          1.0574710206782139,
+          1.1069115001463583
+        ],
+        "A": [
+          1.019857395804769,
+          1.0014475820342188,
+          1.0283285278866723,
+          1.0120502822025526,
+          1.0018263616496461
+        ]
+      },
+      "betweenHostMedianVariantVariation": {
+        "R": 1.8380820916962934,
+        "A": 2.2181350450889252
+      },
+      "baselineMedianMs": 224.10430250000002,
+      "candidateMedianMs": 218.864656
+    },
+    {
+      "matrixId": "board-041--restricted-split--L",
+      "phase": "development",
+      "selectionReasons": [
+        "HASH_STRATIFIED_UNSELECTED_CONTROL"
+      ],
+      "isControl": true,
+      "originalPairMedianRatio": 0.9961743760288504,
+      "legacyOriginalRatioOfMedians": 0.9697911548835311,
+      "complete10Pairs": true,
+      "pairRatios": [
+        0.9217003346819744,
+        1.1352673457418079,
+        1.010557779972584,
+        0.9413137781366837,
+        0.9739517244861604,
+        0.9277028133641047,
+        0.9683617903507575,
+        1.0122975339024682,
+        0.9088491449074333,
+        0.9699756185866972
+      ],
+      "medianRatio": 0.9691687044687274,
+      "hostResults": [
+        {
+          "host": 0,
+          "pairs": 2,
+          "ratio": 1.0284838402118912,
+          "absoluteDeltaMedianMs": 3.360466499999987,
+          "environmentAlarm": false
+        },
+        {
+          "host": 1,
+          "pairs": 2,
+          "ratio": 0.9759357790546339,
+          "absoluteDeltaMedianMs": -2.694490000000002,
+          "environmentAlarm": false
+        },
+        {
+          "host": 2,
+          "pairs": 2,
+          "ratio": 0.9508272689251325,
+          "absoluteDeltaMedianMs": -10.134691500000002,
+          "environmentAlarm": false
+        },
+        {
+          "host": 3,
+          "pairs": 2,
+          "ratio": 0.9903296621266129,
+          "absoluteDeltaMedianMs": -2.0895684999999844,
+          "environmentAlarm": false
+        },
+        {
+          "host": 4,
+          "pairs": 2,
+          "ratio": 0.9394123817470652,
+          "absoluteDeltaMedianMs": -13.252493000000015,
+          "environmentAlarm": false
+        }
+      ],
+      "hostsSameDirectionAsScreening": 4,
+      "hostsSlowdownAbove1_10": 0,
+      "directionReplicated": true,
+      "regressionThresholdReplicated": false,
+      "environmentSensitive": true,
+      "classification": "ENVIRONMENT_SENSITIVE",
+      "variantVariation": {
+        "R": 2.0005656652986827,
+        "A": 2.0685762875864255
+      },
+      "withinHostVariantVariation": {
+        "R": [
+          1.1124377507844816,
+          1.014400550774156,
+          1.0138449493770263,
+          1.0039012442827584,
+          1.0264720200936914
+        ],
+        "A": [
+          1.1072168405863012,
+          1.0583206203582858,
+          1.0355164806399444,
+          1.041308807289945,
+          1.0397331700466665
+        ]
+      },
+      "betweenHostMedianVariantVariation": {
+        "R": 1.9606518136638045,
+        "A": 1.970097341055051
+      },
+      "baselineMedianMs": 205.43970000000002,
+      "candidateMedianMs": 195.30500849999999
+    },
+    {
+      "matrixId": "board-090--bag--ordinary",
+      "phase": "development",
+      "selectionReasons": [
+        "VARIATION_10_PERCENT_A",
+        "IMPROVEMENT_TAIL"
+      ],
+      "isControl": false,
+      "originalPairMedianRatio": 0.5088581283511651,
+      "legacyOriginalRatioOfMedians": 0.5030946651514138,
+      "complete10Pairs": true,
+      "pairRatios": [
+        0.5259413204202465,
+        0.6086275547446969,
+        0.6293438172126724,
+        0.5876451548738237,
+        0.5372305759791649,
+        0.5589271657095478,
+        0.54123006726518,
+        0.543045275012913,
+        0.5356166182536728,
+        0.5860478287941917
+      ],
+      "medianRatio": 0.5509862203612303,
+      "hostResults": [
+        {
+          "host": 0,
+          "pairs": 2,
+          "ratio": 0.5672844375824717,
+          "absoluteDeltaMedianMs": -55.2715915,
+          "environmentAlarm": false
+        },
+        {
+          "host": 1,
+          "pairs": 2,
+          "ratio": 0.6084944860432481,
+          "absoluteDeltaMedianMs": -36.7017885,
+          "environmentAlarm": false
+        },
+        {
+          "host": 2,
+          "pairs": 2,
+          "ratio": 0.5480788708443564,
+          "absoluteDeltaMedianMs": -89.35355549999998,
+          "environmentAlarm": false
+        },
+        {
+          "host": 3,
+          "pairs": 2,
+          "ratio": 0.5421376711390464,
+          "absoluteDeltaMedianMs": -94.526467,
+          "environmentAlarm": false
+        },
+        {
+          "host": 4,
+          "pairs": 2,
+          "ratio": 0.5608322235239322,
+          "absoluteDeltaMedianMs": -87.1418615,
+          "environmentAlarm": false
+        }
+      ],
+      "hostsSameDirectionAsScreening": 5,
+      "hostsSlowdownAbove1_10": 0,
+      "directionReplicated": true,
+      "regressionThresholdReplicated": false,
+      "environmentSensitive": false,
+      "classification": "DIRECTION_REPLICATED",
+      "variantVariation": {
+        "R": 2.251017819546712,
+        "A": 2.0207961621204222
+      },
+      "withinHostVariantVariation": {
+        "R": [
+          1.0281776843341206,
+          1.015302154969142,
+          1.01203498674388,
+          1.0009640853784372,
+          1.124337690624916
+        ],
+        "A": [
+          1.1255016719752997,
+          1.0548179271784413,
+          1.0280138588119776,
+          1.002387468970167,
+          1.0275849888681137
+        ]
+      },
+      "betweenHostMedianVariantVariation": {
+        "R": 2.20315132722025,
+        "A": 1.9634051213858235
+      },
+      "baselineMedianMs": 191.3469715,
+      "candidateMedianMs": 107.97724399999998
+    },
+    {
+      "matrixId": "board-012--bag--ordinary",
+      "phase": "development",
+      "selectionReasons": [
+        "VARIATION_10_PERCENT_R",
+        "VARIATION_10_PERCENT_A",
+        "IMPROVEMENT_TAIL"
+      ],
+      "isControl": false,
+      "originalPairMedianRatio": 0.4979939807606222,
+      "legacyOriginalRatioOfMedians": 0.5013280678736067,
+      "complete10Pairs": true,
+      "pairRatios": [
+        0.5532013357530687,
+        0.49431219982961816,
+        0.5775946342852484,
+        0.4881194806891924,
+        0.48988482820295415,
+        0.4740983484798758,
+        0.45903593299037687,
+        0.49743350248017526,
+        0.5139926327172858,
+        0.5094539693566632
+      ],
+      "medianRatio": 0.4958728511548967,
+      "hostResults": [
+        {
+          "host": 0,
+          "pairs": 2,
+          "ratio": 0.5237567677913435,
+          "absoluteDeltaMedianMs": -59.783514000000004,
+          "environmentAlarm": false
+        },
+        {
+          "host": 1,
+          "pairs": 2,
+          "ratio": 0.5328570574872205,
+          "absoluteDeltaMedianMs": -49.336887999999995,
+          "environmentAlarm": false
+        },
+        {
+          "host": 2,
+          "pairs": 2,
+          "ratio": 0.481991588341415,
+          "absoluteDeltaMedianMs": -98.603768,
+          "environmentAlarm": false
+        },
+        {
+          "host": 3,
+          "pairs": 2,
+          "ratio": 0.47823471773527604,
+          "absoluteDeltaMedianMs": -103.64293599999996,
+          "environmentAlarm": false
+        },
+        {
+          "host": 4,
+          "pairs": 2,
+          "ratio": 0.5117233010369745,
+          "absoluteDeltaMedianMs": -92.54907749999998,
+          "environmentAlarm": false
+        }
+      ],
+      "hostsSameDirectionAsScreening": 5,
+      "hostsSlowdownAbove1_10": 0,
+      "directionReplicated": true,
+      "regressionThresholdReplicated": false,
+      "environmentSensitive": false,
+      "classification": "DIRECTION_REPLICATED",
+      "variantVariation": {
+        "R": 2.0967830670247074,
+        "A": 1.791518830141022
+      },
+      "withinHostVariantVariation": {
+        "R": [
+          1.0829509259246555,
+          1.1601191845046757,
+          1.0779624640351644,
+          1.0531761132325896,
+          1.0223201131236912
+        ],
+        "A": [
+          1.033411080769112,
+          1.0199864464328094,
+          1.0432252531622435,
+          1.0289335975590295,
+          1.0314278384911495
+        ]
+      },
+      "betweenHostMedianVariantVariation": {
+        "R": 1.8923479292883563,
+        "A": 1.7467689866694298
+      },
+      "baselineMedianMs": 185.28259049999997,
+      "candidateMedianMs": 91.577717
+    }
+  ],
+  "largestAbsolutePairSlowdowns": [
+    {
+      "matrixId": "board-115--bag--ordinary",
+      "medianRatio": 1.251408725162992,
+      "medianPairDeltaMs": 4.590788500000009,
+      "baselineMedianMs": 18.243237500000006,
+      "candidateMedianMs": 19.114961000000008,
+      "hostRatios": [
+        1.1647110725844505,
+        1.286439051081727,
+        1.443291661215722,
+        0.7809937618175653,
+        1.255754122453531
+      ]
+    },
+    {
+      "matrixId": "board-117--restricted-split--O",
+      "medianRatio": 1.0313387842151127,
+      "medianPairDeltaMs": 4.469599000000031,
+      "baselineMedianMs": 149.0418465,
+      "candidateMedianMs": 154.7517365,
+      "hostRatios": [
+        1.058203624188823,
+        1.1116086564798313,
+        1.0554917579164367,
+        1.0320452018970878,
+        1.001674586532618
+      ]
+    },
+    {
+      "matrixId": "board-027--restricted-split--T",
+      "medianRatio": 1.04228137269005,
+      "medianPairDeltaMs": 3.751270000000005,
+      "baselineMedianMs": 131.7495925,
+      "candidateMedianMs": 136.5106705,
+      "hostRatios": [
+        1.04228137269005,
+        1.022245995033614,
+        1.0350385325227451,
+        1.0923359074964725,
+        0.9766018404364922
+      ]
+    },
+    {
+      "matrixId": "board-017--restricted-split--L",
+      "medianRatio": 1.021009709265543,
+      "medianPairDeltaMs": 3.428614499999995,
+      "baselineMedianMs": 161.29111799999998,
+      "candidateMedianMs": 169.31730149999999,
+      "hostRatios": [
+        0.9994343465688689,
+        1.0307765956352288,
+        1.0355131674032003,
+        0.996307004895217,
+        1.080279907681562
+      ]
+    },
+    {
+      "matrixId": "board-075--restricted-split--T",
+      "medianRatio": 1.0399929360997109,
+      "medianPairDeltaMs": 3.1695515000000114,
+      "baselineMedianMs": 107.442972,
+      "candidateMedianMs": 105.22069300000001,
+      "hostRatios": [
+        1.0768067085763633,
+        0.9854022570281291,
+        0.8965077508157808,
+        1.0021083264122121,
+        1.0485822625633996
+      ]
+    },
+    {
+      "matrixId": "board-080--restricted-split--S",
+      "medianRatio": 1.0215115673930537,
+      "medianPairDeltaMs": 3.1533175000000284,
+      "baselineMedianMs": 144.6167315,
+      "candidateMedianMs": 143.89030100000002,
+      "hostRatios": [
+        1.0746655123496325,
+        1.042652223610318,
+        1.0572059358454737,
+        0.9691507549519589,
+        1.0215115673930537
+      ]
+    },
+    {
+      "matrixId": "board-110--restricted-split--O",
+      "medianRatio": 1.028649883894985,
+      "medianPairDeltaMs": 2.446072000000015,
+      "baselineMedianMs": 125.268366,
+      "candidateMedianMs": 127.88694049999998,
+      "hostRatios": [
+        1.101837402240446,
+        1.0174216569377663,
+        1.0492519823547675,
+        1.0008041648620458,
+        1.00838379796275
+      ]
+    },
+    {
+      "matrixId": "board-011--restricted-split--O",
+      "medianRatio": 1.0081181580166083,
+      "medianPairDeltaMs": 2.4215770000000134,
+      "baselineMedianMs": 349.393505,
+      "candidateMedianMs": 348.5162885,
+      "hostRatios": [
+        0.9514392279249064,
+        1.0050144736287456,
+        1.0167256764207337,
+        1.0234956086166522,
+        0.9987762672187488
+      ]
+    },
+    {
+      "matrixId": "board-115--restricted-split--T",
+      "medianRatio": 1.1384269023721239,
+      "medianPairDeltaMs": 2.3268389999999783,
+      "baselineMedianMs": 20.736357500000004,
+      "candidateMedianMs": 24.123459999999994,
+      "hostRatios": [
+        1.1384269023721239,
+        1.184446959105358,
+        1.0311818051565886,
+        1.1848174377321892,
+        0.920480159423833
+      ]
+    },
+    {
+      "matrixId": "board-120--restricted-split--S",
+      "medianRatio": 1.0319012440081374,
+      "medianPairDeltaMs": 2.0909850000000034,
+      "baselineMedianMs": 118.15104849999999,
+      "candidateMedianMs": 123.823579,
+      "hostRatios": [
+        1.0319012440081374,
+        1.0166434963700255,
+        1.1062873947552723,
+        1.1135080840970686,
+        0.9311339139020163
+      ]
+    }
+  ],
+  "priorRunnerHours": 0.011666666666666667,
+  "retestJobSeconds": 766.0,
+  "retestRunnerHours": 0.2127777777777778,
+  "totalRunnerHours": 0.22444444444444445,
+  "lastJobCompletedAt": "2026-10-03T10:47:18Z",
+  "originUnchanged": true,
+  "budgetExpired": false,
+  "originalGateRecomputed": false,
+  "promotionAllowed": false,
+  "interpretation": "Timing varied and mixed directions were common; algorithm-causal/CPU-model/JIT assertions are not established. Short-ms inputs can exceed relative alarms. Exact proof gap closed, original reserved p95 gate remains failed. Selected-set retiming is not population confirmation."
+}
