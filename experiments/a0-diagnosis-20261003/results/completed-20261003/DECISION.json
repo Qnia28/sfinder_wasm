@@ -1,0 +1,954 @@
+{
+  "status": "DIAGNOSIS_COMPLETE_RESPONSE_KEEP_PRODUCT_UNCHANGED",
+  "progressionStatus": "STOP_MEASUREMENT_UNRELIABLE_NO_CONFIRMATION",
+  "runId": 37096100399,
+  "runConclusion": "success",
+  "sourceCommit": "9455ece132a3a82833e966790a827d173314ca68",
+  "diagnosticCalls": 2560,
+  "diagnosticMatrices": 32,
+  "missingTimeoutOomErrors": 0,
+  "aaAlarms": [
+    {
+      "stage": "aa-control",
+      "host": 0,
+      "mode": "COLD",
+      "group": "ALL",
+      "matrices": 8,
+      "sumRatio": 1.0741019595789694,
+      "medianDeltaMs": 0.09984499999999841,
+      "p95Ratio": 1.1595996419791674,
+      "maxDeltaMs": 3.198350000000012,
+      "candidateSlowerMatrices": 6,
+      "bidirectionalP95": 1.1595996419791674,
+      "environmentAlarm": true
+    },
+    {
+      "stage": "aa-control",
+      "host": 1,
+      "mode": "COLD",
+      "group": "ALL",
+      "matrices": 8,
+      "sumRatio": 0.976797814271391,
+      "medianDeltaMs": -0.20170774999998642,
+      "p95Ratio": 1.2293292341749673,
+      "maxDeltaMs": 2.7151694999999876,
+      "candidateSlowerMatrices": 3,
+      "bidirectionalP95": 1.2293292341749673,
+      "environmentAlarm": true
+    }
+  ],
+  "F14ModeObservations": [
+    {
+      "host": 0,
+      "mode": "COLD",
+      "F14Matrices": 14,
+      "medianBaselineApiMs": 10.367507749999998,
+      "medianCandidateApiMs": 10.045962750000005,
+      "candidateSlowerMatrices": 5,
+      "candidateOver10PercentMatrices": 3,
+      "medianDeltaMs": -0.10552224999999282
+    },
+    {
+      "host": 0,
+      "mode": "COMPILED",
+      "F14Matrices": 14,
+      "medianBaselineApiMs": 3.116069749999994,
+      "medianCandidateApiMs": 2.956020749999979,
+      "candidateSlowerMatrices": 7,
+      "candidateOver10PercentMatrices": 1,
+      "medianDeltaMs": -0.041788500000009776
+    },
+    {
+      "host": 0,
+      "mode": "WARM",
+      "F14Matrices": 14,
+      "medianBaselineApiMs": 1.3195352500000297,
+      "medianCandidateApiMs": 1.3050512499999911,
+      "candidateSlowerMatrices": 6,
+      "candidateOver10PercentMatrices": 1,
+      "medianDeltaMs": -0.013848000000024285
+    },
+    {
+      "host": 1,
+      "mode": "COLD",
+      "F14Matrices": 14,
+      "medianBaselineApiMs": 9.035094,
+      "medianCandidateApiMs": 8.820892250000004,
+      "candidateSlowerMatrices": 5,
+      "candidateOver10PercentMatrices": 0,
+      "medianDeltaMs": -0.27592650000000063
+    },
+    {
+      "host": 1,
+      "mode": "COMPILED",
+      "F14Matrices": 14,
+      "medianBaselineApiMs": 2.6347762500000087,
+      "medianCandidateApiMs": 2.9534009999999995,
+      "candidateSlowerMatrices": 7,
+      "candidateOver10PercentMatrices": 2,
+      "medianDeltaMs": -0.01344824999998906
+    },
+    {
+      "host": 1,
+      "mode": "WARM",
+      "F14Matrices": 14,
+      "medianBaselineApiMs": 1.2539085000000014,
+      "medianCandidateApiMs": 1.220210999999992,
+      "candidateSlowerMatrices": 8,
+      "candidateOver10PercentMatrices": 0,
+      "medianDeltaMs": 0.005853250000015464
+    }
+  ],
+  "F14BetweenHostCoherence": {
+    "COLD": {
+      "slowerBothHosts": 2,
+      "over10PercentBothHosts": 0
+    },
+    "WARM": {
+      "slowerBothHosts": 4,
+      "over10PercentBothHosts": 0
+    }
+  },
+  "specificColdCpuAnomaly": {
+    "matrixId": "board-028--restricted-split--ordinary",
+    "modeComparisons": [
+      {
+        "stage": "diagnostic",
+        "host": 0,
+        "mode": "COLD",
+        "kind": "measured",
+        "matrixId": "board-028--restricted-split--ordinary",
+        "group": "C4",
+        "baselineMs": 3818.5307885,
+        "candidateMs": 5731.589653999999,
+        "deltaMs": 1913.0588654999992,
+        "ratio": 1.5009934373873386,
+        "baselineStates": 100000,
+        "candidateStates": 100000,
+        "baselineSamplesMs": [
+          3826.031343,
+          3811.0302340000003,
+          3810.664331,
+          3849.020673
+        ],
+        "candidateSamplesMs": [
+          5733.276043,
+          5729.903265,
+          5643.818481,
+          5768.241198
+        ]
+      },
+      {
+        "stage": "diagnostic",
+        "host": 0,
+        "mode": "COMPILED",
+        "kind": "measured",
+        "matrixId": "board-028--restricted-split--ordinary",
+        "group": "C4",
+        "baselineMs": 5536.4598905,
+        "candidateMs": 5541.736444999999,
+        "deltaMs": 5.276554499998383,
+        "ratio": 1.0009530556717394,
+        "baselineStates": 100000,
+        "candidateStates": 100000,
+        "baselineSamplesMs": [
+          5532.880217999999,
+          5442.723109000002,
+          5540.039563000002,
+          5729.767702999998
+        ],
+        "candidateSamplesMs": [
+          5512.706799,
+          5477.104756000001,
+          5573.958629000004,
+          5570.766090999998
+        ]
+      },
+      {
+        "stage": "diagnostic",
+        "host": 0,
+        "mode": "WARM",
+        "kind": "measured",
+        "matrixId": "board-028--restricted-split--ordinary",
+        "group": "C4",
+        "baselineMs": 3774.9122874999994,
+        "candidateMs": 3785.4922140000017,
+        "deltaMs": 10.57992650000233,
+        "ratio": 1.0028026946573132,
+        "baselineStates": 100000,
+        "candidateStates": 100000,
+        "baselineSamplesMs": [
+          3802.276219999996,
+          3791.9439070000008,
+          3753.8522159999993,
+          3757.880667999998
+        ],
+        "candidateSamplesMs": [
+          3831.911211999999,
+          3785.280181000002,
+          3769.6390820000015,
+          3785.7042470000015
+        ]
+      },
+      {
+        "stage": "diagnostic",
+        "host": 1,
+        "mode": "COLD",
+        "kind": "measured",
+        "matrixId": "board-028--restricted-split--ordinary",
+        "group": "C4",
+        "baselineMs": 5984.067649999999,
+        "candidateMs": 5996.690239,
+        "deltaMs": 12.622589000000517,
+        "ratio": 1.0021093660263016,
+        "baselineStates": 100000,
+        "candidateStates": 100000,
+        "baselineSamplesMs": [
+          5984.270358,
+          5986.104748,
+          5983.864941999999,
+          5978.453466999999
+        ],
+        "candidateSamplesMs": [
+          5989.5517279999995,
+          5997.318327999999,
+          5998.580676,
+          5996.06215
+        ]
+      },
+      {
+        "stage": "diagnostic",
+        "host": 1,
+        "mode": "COMPILED",
+        "kind": "measured",
+        "matrixId": "board-028--restricted-split--ordinary",
+        "group": "C4",
+        "baselineMs": 5936.412846500001,
+        "candidateMs": 5950.524074000001,
+        "deltaMs": 14.111227499999586,
+        "ratio": 1.0023770630286133,
+        "baselineStates": 100000,
+        "candidateStates": 100000,
+        "baselineSamplesMs": [
+          5999.5816079999995,
+          5936.376930000002,
+          5936.448763,
+          5936.371181999995
+        ],
+        "candidateSamplesMs": [
+          5951.414829,
+          5946.684439999999,
+          5963.398830000002,
+          5949.6333190000005
+        ]
+      },
+      {
+        "stage": "diagnostic",
+        "host": 1,
+        "mode": "WARM",
+        "kind": "measured",
+        "matrixId": "board-028--restricted-split--ordinary",
+        "group": "C4",
+        "baselineMs": 5931.695938499997,
+        "candidateMs": 5932.3058759999985,
+        "deltaMs": 0.6099375000012515,
+        "ratio": 1.0001028268317063,
+        "baselineStates": 100000,
+        "candidateStates": 100000,
+        "baselineSamplesMs": [
+          5928.619618000004,
+          5934.081358000003,
+          5929.3105189999915,
+          5935.622761000006
+        ],
+        "candidateSamplesMs": [
+          5957.982601999996,
+          5926.860960000005,
+          5933.334948999996,
+          5931.276803000001
+        ]
+      }
+    ],
+    "cpuSamples": [
+      {
+        "hostBlock": 0,
+        "mode": "COMPILED",
+        "label": "A",
+        "repetition": 1,
+        "apiMs": 5512.706799,
+        "cpu": {
+          "user": 5596032,
+          "system": 8239
+        },
+        "initMs": 0.4879579999999919,
+        "coverageMs": 73.16032099999998
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COMPILED",
+        "label": "R",
+        "repetition": 1,
+        "apiMs": 5532.880217999999,
+        "cpu": {
+          "user": 5583309,
+          "system": 6999
+        },
+        "initMs": 0.24324799999976676,
+        "coverageMs": 48.64572700000008
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COMPILED",
+        "label": "R",
+        "repetition": 2,
+        "apiMs": 5442.723109000002,
+        "cpu": {
+          "user": 5489024,
+          "system": 4974
+        },
+        "initMs": 0.26444900000024063,
+        "coverageMs": 37.613078000000314
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COMPILED",
+        "label": "A",
+        "repetition": 2,
+        "apiMs": 5477.104756000001,
+        "cpu": {
+          "user": 5526307,
+          "system": 2996
+        },
+        "initMs": 0.27363400000103866,
+        "coverageMs": 39.051110999997036
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COMPILED",
+        "label": "R",
+        "repetition": 3,
+        "apiMs": 5540.039563000002,
+        "cpu": {
+          "user": 5585613,
+          "system": 4994
+        },
+        "initMs": 0.24504999999771826,
+        "coverageMs": 40.47309099999984
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COMPILED",
+        "label": "A",
+        "repetition": 3,
+        "apiMs": 5573.958629000004,
+        "cpu": {
+          "user": 5618802,
+          "system": 5986
+        },
+        "initMs": 0.26008400000137044,
+        "coverageMs": 39.51232499999969
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COMPILED",
+        "label": "A",
+        "repetition": 4,
+        "apiMs": 5570.766090999998,
+        "cpu": {
+          "user": 5615022,
+          "system": 4998
+        },
+        "initMs": 0.2575390000056359,
+        "coverageMs": 37.42525100000057
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COMPILED",
+        "label": "R",
+        "repetition": 4,
+        "apiMs": 5729.767702999998,
+        "cpu": {
+          "user": 5774610,
+          "system": 8976
+        },
+        "initMs": 0.25596699999732664,
+        "coverageMs": 36.79589699999633
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COLD",
+        "label": "A",
+        "repetition": 1,
+        "apiMs": 5733.276043,
+        "cpu": {
+          "user": 5767238,
+          "system": 5091
+        },
+        "initMs": 4.031111999999979,
+        "coverageMs": 67.55661699999999
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COLD",
+        "label": "R",
+        "repetition": 1,
+        "apiMs": 3826.031343,
+        "cpu": {
+          "user": 3857425,
+          "system": 6153
+        },
+        "initMs": 4.259254999999996,
+        "coverageMs": 68.390199
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COLD",
+        "label": "R",
+        "repetition": 2,
+        "apiMs": 3811.0302340000003,
+        "cpu": {
+          "user": 3843473,
+          "system": 4778
+        },
+        "initMs": 4.044822000000011,
+        "coverageMs": 62.708529
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COLD",
+        "label": "A",
+        "repetition": 2,
+        "apiMs": 5729.903265,
+        "cpu": {
+          "user": 5762329,
+          "system": 5343
+        },
+        "initMs": 4.400299999999987,
+        "coverageMs": 73.805296
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COLD",
+        "label": "R",
+        "repetition": 3,
+        "apiMs": 3810.664331,
+        "cpu": {
+          "user": 3838934,
+          "system": 9967
+        },
+        "initMs": 4.134779000000009,
+        "coverageMs": 68.01014700000002
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COLD",
+        "label": "A",
+        "repetition": 3,
+        "apiMs": 5643.818481,
+        "cpu": {
+          "user": 5675623,
+          "system": 5589
+        },
+        "initMs": 4.230322000000001,
+        "coverageMs": 66.78045500000002
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COLD",
+        "label": "A",
+        "repetition": 4,
+        "apiMs": 5768.241198,
+        "cpu": {
+          "user": 5795189,
+          "system": 10283
+        },
+        "initMs": 4.042930000000013,
+        "coverageMs": 68.52382399999999
+      },
+      {
+        "hostBlock": 0,
+        "mode": "COLD",
+        "label": "R",
+        "repetition": 4,
+        "apiMs": 3849.020673,
+        "cpu": {
+          "user": 3881199,
+          "system": 5671
+        },
+        "initMs": 4.153637000000003,
+        "coverageMs": 68.741152
+      },
+      {
+        "hostBlock": 0,
+        "mode": "WARM",
+        "label": "R",
+        "repetition": 1,
+        "apiMs": 3802.276219999996,
+        "cpu": {
+          "user": 3801929,
+          "system": 7
+        },
+        "initMs": 4.2506930000000125,
+        "coverageMs": 71.619594
+      },
+      {
+        "hostBlock": 0,
+        "mode": "WARM",
+        "label": "A",
+        "repetition": 1,
+        "apiMs": 3831.911211999999,
+        "cpu": {
+          "user": 3830600,
+          "system": 1004
+        },
+        "initMs": 3.039093000000321,
+        "coverageMs": 58.183029999999235
+      },
+      {
+        "hostBlock": 0,
+        "mode": "WARM",
+        "label": "A",
+        "repetition": 2,
+        "apiMs": 3785.280181000002,
+        "cpu": {
+          "user": 3787022,
+          "system": 1005
+        },
+        "initMs": 3.039093000000321,
+        "coverageMs": 58.183029999999235
+      },
+      {
+        "hostBlock": 0,
+        "mode": "WARM",
+        "label": "R",
+        "repetition": 2,
+        "apiMs": 3791.9439070000008,
+        "cpu": {
+          "user": 3791443,
+          "system": 3
+        },
+        "initMs": 4.2506930000000125,
+        "coverageMs": 71.619594
+      },
+      {
+        "hostBlock": 0,
+        "mode": "WARM",
+        "label": "A",
+        "repetition": 3,
+        "apiMs": 3769.6390820000015,
+        "cpu": {
+          "user": 3769295,
+          "system": 2
+        },
+        "initMs": 3.039093000000321,
+        "coverageMs": 58.183029999999235
+      },
+      {
+        "hostBlock": 0,
+        "mode": "WARM",
+        "label": "R",
+        "repetition": 3,
+        "apiMs": 3753.8522159999993,
+        "cpu": {
+          "user": 3753408,
+          "system": 4
+        },
+        "initMs": 4.2506930000000125,
+        "coverageMs": 71.619594
+      },
+      {
+        "hostBlock": 0,
+        "mode": "WARM",
+        "label": "R",
+        "repetition": 4,
+        "apiMs": 3757.880667999998,
+        "cpu": {
+          "user": 3761387,
+          "system": 1
+        },
+        "initMs": 4.2506930000000125,
+        "coverageMs": 71.619594
+      },
+      {
+        "hostBlock": 0,
+        "mode": "WARM",
+        "label": "A",
+        "repetition": 4,
+        "apiMs": 3785.7042470000015,
+        "cpu": {
+          "user": 3783184,
+          "system": 2151
+        },
+        "initMs": 3.039093000000321,
+        "coverageMs": 58.183029999999235
+      },
+      {
+        "hostBlock": 1,
+        "mode": "WARM",
+        "label": "A",
+        "repetition": 1,
+        "apiMs": 5957.982601999996,
+        "cpu": {
+          "user": 5957640,
+          "system": 0
+        },
+        "initMs": 5.142695000000003,
+        "coverageMs": 80.45967899999997
+      },
+      {
+        "hostBlock": 1,
+        "mode": "WARM",
+        "label": "R",
+        "repetition": 1,
+        "apiMs": 5928.619618000004,
+        "cpu": {
+          "user": 5927959,
+          "system": 0
+        },
+        "initMs": 3.599822000000131,
+        "coverageMs": 63.23950499999955
+      },
+      {
+        "hostBlock": 1,
+        "mode": "WARM",
+        "label": "R",
+        "repetition": 2,
+        "apiMs": 5934.081358000003,
+        "cpu": {
+          "user": 5932479,
+          "system": 991
+        },
+        "initMs": 3.599822000000131,
+        "coverageMs": 63.23950499999955
+      },
+      {
+        "hostBlock": 1,
+        "mode": "WARM",
+        "label": "A",
+        "repetition": 2,
+        "apiMs": 5926.860960000005,
+        "cpu": {
+          "user": 5929457,
+          "system": 0
+        },
+        "initMs": 5.142695000000003,
+        "coverageMs": 80.45967899999997
+      },
+      {
+        "hostBlock": 1,
+        "mode": "WARM",
+        "label": "R",
+        "repetition": 3,
+        "apiMs": 5929.3105189999915,
+        "cpu": {
+          "user": 5932039,
+          "system": 0
+        },
+        "initMs": 3.599822000000131,
+        "coverageMs": 63.23950499999955
+      },
+      {
+        "hostBlock": 1,
+        "mode": "WARM",
+        "label": "A",
+        "repetition": 3,
+        "apiMs": 5933.334948999996,
+        "cpu": {
+          "user": 5932715,
+          "system": 0
+        },
+        "initMs": 5.142695000000003,
+        "coverageMs": 80.45967899999997
+      },
+      {
+        "hostBlock": 1,
+        "mode": "WARM",
+        "label": "A",
+        "repetition": 4,
+        "apiMs": 5931.276803000001,
+        "cpu": {
+          "user": 5929517,
+          "system": 998
+        },
+        "initMs": 5.142695000000003,
+        "coverageMs": 80.45967899999997
+      },
+      {
+        "hostBlock": 1,
+        "mode": "WARM",
+        "label": "R",
+        "repetition": 4,
+        "apiMs": 5935.622761000006,
+        "cpu": {
+          "user": 5934898,
+          "system": 0
+        },
+        "initMs": 3.599822000000131,
+        "coverageMs": 63.23950499999955
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COLD",
+        "label": "R",
+        "repetition": 1,
+        "apiMs": 5984.270358,
+        "cpu": {
+          "user": 6024962,
+          "system": 8962
+        },
+        "initMs": 4.832975000000005,
+        "coverageMs": 82.465983
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COLD",
+        "label": "A",
+        "repetition": 1,
+        "apiMs": 5989.5517279999995,
+        "cpu": {
+          "user": 6026316,
+          "system": 6889
+        },
+        "initMs": 4.591417999999976,
+        "coverageMs": 78.17155400000001
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COLD",
+        "label": "A",
+        "repetition": 2,
+        "apiMs": 5997.318327999999,
+        "cpu": {
+          "user": 6027460,
+          "system": 13599
+        },
+        "initMs": 5.679719999999975,
+        "coverageMs": 77.24598900000001
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COLD",
+        "label": "R",
+        "repetition": 2,
+        "apiMs": 5986.104748,
+        "cpu": {
+          "user": 6022895,
+          "system": 6395
+        },
+        "initMs": 4.744641999999999,
+        "coverageMs": 78.252565
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COLD",
+        "label": "A",
+        "repetition": 3,
+        "apiMs": 5998.580676,
+        "cpu": {
+          "user": 6036482,
+          "system": 6643
+        },
+        "initMs": 4.592950000000002,
+        "coverageMs": 83.51292299999997
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COLD",
+        "label": "R",
+        "repetition": 3,
+        "apiMs": 5983.864941999999,
+        "cpu": {
+          "user": 6019915,
+          "system": 9367
+        },
+        "initMs": 4.781823999999972,
+        "coverageMs": 80.46590599999999
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COLD",
+        "label": "R",
+        "repetition": 4,
+        "apiMs": 5978.453466999999,
+        "cpu": {
+          "user": 6008630,
+          "system": 12835
+        },
+        "initMs": 4.862414000000001,
+        "coverageMs": 84.32491299999998
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COLD",
+        "label": "A",
+        "repetition": 4,
+        "apiMs": 5996.06215,
+        "cpu": {
+          "user": 6030448,
+          "system": 10594
+        },
+        "initMs": 4.57909699999999,
+        "coverageMs": 72.63073399999999
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COMPILED",
+        "label": "R",
+        "repetition": 1,
+        "apiMs": 5999.5816079999995,
+        "cpu": {
+          "user": 6102096,
+          "system": 7552
+        },
+        "initMs": 0.4549949999999967,
+        "coverageMs": 78.71090699999999
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COMPILED",
+        "label": "A",
+        "repetition": 1,
+        "apiMs": 5951.414829,
+        "cpu": {
+          "user": 6021059,
+          "system": 1047
+        },
+        "initMs": 0.26179400000000896,
+        "coverageMs": 49.11607700000059
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COMPILED",
+        "label": "A",
+        "repetition": 2,
+        "apiMs": 5946.684439999999,
+        "cpu": {
+          "user": 5991375,
+          "system": 5986
+        },
+        "initMs": 0.24860500000067987,
+        "coverageMs": 48.85554599999887
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COMPILED",
+        "label": "R",
+        "repetition": 2,
+        "apiMs": 5936.376930000002,
+        "cpu": {
+          "user": 5987822,
+          "system": 7993
+        },
+        "initMs": 0.24576000000161002,
+        "coverageMs": 44.75053800000023
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COMPILED",
+        "label": "A",
+        "repetition": 3,
+        "apiMs": 5963.398830000002,
+        "cpu": {
+          "user": 6018750,
+          "system": 5009
+        },
+        "initMs": 0.2566370000022289,
+        "coverageMs": 43.564932999997836
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COMPILED",
+        "label": "R",
+        "repetition": 3,
+        "apiMs": 5936.448763,
+        "cpu": {
+          "user": 5993103,
+          "system": 4998
+        },
+        "initMs": 0.24358700000084355,
+        "coverageMs": 43.365483000001404
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COMPILED",
+        "label": "R",
+        "repetition": 4,
+        "apiMs": 5936.371181999995,
+        "cpu": {
+          "user": 5995823,
+          "system": 4994
+        },
+        "initMs": 0.23555499999929452,
+        "coverageMs": 45.393795999996655
+      },
+      {
+        "hostBlock": 1,
+        "mode": "COMPILED",
+        "label": "A",
+        "repetition": 4,
+        "apiMs": 5949.6333190000005,
+        "cpu": {
+          "user": 6007432,
+          "system": 4001
+        },
+        "initMs": 0.264128000002529,
+        "coverageMs": 44.41916599999968
+      }
+    ],
+    "dismissedAsRandomWallNoise": false,
+    "exactRuntimeMechanismProven": false
+  },
+  "findings": [
+    {
+      "finding": "Identical baseline comparisons exceed the old 10 percent tail tolerance",
+      "confidence": "DIRECTLY_OBSERVED",
+      "meaning": "Current cold 4-repeat protocol lacks precision to attribute these small tail differences to A0"
+    },
+    {
+      "finding": "First-call versus warm lifecycle effect is large in both variants; old F14 positive direction is not stable across hosts",
+      "confidence": "DIRECTLY_OBSERVED",
+      "meaning": "Prior tail is not evidence of a uniform persistent millisecond-scale sibling-management cost"
+    },
+    {
+      "finding": "Runtime first-execution/code-tier/code-layout/cache and host variability are plausible contributors",
+      "confidence": "SUPPORTED_CLASS_NOT_SPECIFIC_MECHANISM",
+      "meaning": "No V8 trace or controlled tier/CPU intervention yet; do not claim JIT alone proved"
+    },
+    {
+      "finding": "One long bounded cold case shows repeatable host0 50 percent CPU-time difference, absent in warm and host1",
+      "confidence": "DIRECTLY_OBSERVED_UNRESOLVED_MECHANISM",
+      "meaning": "A real runtime-dependent cold cost remains; cannot declare regression-free"
+    }
+  ],
+  "response": {
+    "modifyA0SiblingSearchNow": false,
+    "addWarmupToProductNow": false,
+    "addIdOrSizeDispatchExceptions": false,
+    "changePerformanceGate": false,
+    "repeat232ConfirmationCampaign": false,
+    "promoteCandidate": false,
+    "productCandidate": "e5f2f3d1a9885085e11cde7457aad2b338ca8130",
+    "nextProposal": "Single-input engine-tier/first-call/CPU-affinity diagnosis for board-028; do not run a new broad performance campaign"
+  },
+  "independentExactProofStillPending": "board-111--restricted-split--ordinary",
+  "pastFailedRunsUnchanged": [
+    37034641097,
+    37039906398,
+    37041073063
+  ],
+  "nativeThresholdCalls": 0,
+  "actualPrimaryCalls": 0,
+  "actualPcCalls": 0,
+  "confirmationCalls": 0,
+  "productChanged": false,
+  "devApplied": false,
+  "mainMerged": false,
+  "deployed": false,
+  "devHead": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+  "localMain": "187fbf954ad0749e697b4e7f1252683b318d696e",
+  "remoteMain": "03b637730c5b541f4f2934be613498fbe65327fd",
+  "defaultBranch": "main",
+  "wallMinutes": 8.1,
+  "observedRunnerHours": 0.3458333333333333,
+  "artifactCompressedBytes": 5175216
+}

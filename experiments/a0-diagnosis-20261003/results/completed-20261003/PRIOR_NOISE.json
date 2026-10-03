@@ -1,0 +1,429 @@
+{
+  "status": "OLD_EVIDENCE_ONLY_NOT_NEW_MEASUREMENT",
+  "F14": [
+    {
+      "matrixId": "board-105--restricted-split--ordinary",
+      "oldMedianDeltaMs": 1.5319489999999973,
+      "oldMedianRatio": 1.1965971014436951,
+      "baselineStates": 27,
+      "candidateStates": 27,
+      "R": {
+        "samplesMs": [
+          6.510035000000002,
+          9.538977000000003,
+          8.039183000000008,
+          7.545472000000004
+        ],
+        "rangeMs": 3.0289420000000007,
+        "coefficientOfVariation": 0.1593277212731922,
+        "medianMs": 7.792327500000006
+      },
+      "A": {
+        "samplesMs": [
+          9.179670999999999,
+          9.839163,
+          9.468882000000008,
+          7.0489080000000115
+        ],
+        "rangeMs": 2.7902549999999877,
+        "coefficientOfVariation": 0.14102831550857511,
+        "medianMs": 9.324276500000003
+      },
+      "withinVariantRangeExceedsMedianDelta": true
+    },
+    {
+      "matrixId": "board-107--restricted-split--L",
+      "oldMedianDeltaMs": 1.4771180000000044,
+      "oldMedianRatio": 1.1718227800659162,
+      "baselineStates": 107,
+      "candidateStates": 107,
+      "R": {
+        "samplesMs": [
+          16.585746999999984,
+          8.452847999999989,
+          8.740657999999996,
+          8.349625000000003
+        ],
+        "rangeMs": 8.23612199999998,
+        "coefficientOfVariation": 0.38349708603975063,
+        "medianMs": 8.596752999999993
+      },
+      "A": {
+        "samplesMs": [
+          10.943032000000002,
+          10.646829999999994,
+          8.766417000000004,
+          9.500912
+        ],
+        "rangeMs": 2.176614999999998,
+        "coefficientOfVariation": 0.10157885783323711,
+        "medianMs": 10.073870999999997
+      },
+      "withinVariantRangeExceedsMedianDelta": true
+    },
+    {
+      "matrixId": "board-107--restricted-split--O",
+      "oldMedianDeltaMs": 2.2436409999999967,
+      "oldMedianRatio": 1.3476464759020663,
+      "baselineStates": 41,
+      "candidateStates": 41,
+      "R": {
+        "samplesMs": [
+          6.976013999999992,
+          6.483732000000003,
+          6.224936,
+          6.4238690000000105
+        ],
+        "rangeMs": 0.7510779999999926,
+        "coefficientOfVariation": 0.04887938252688247,
+        "medianMs": 6.453800500000007
+      },
+      "A": {
+        "samplesMs": [
+          8.872849000000002,
+          6.42410000000001,
+          9.372440999999995,
+          8.522034000000005
+        ],
+        "rangeMs": 2.948340999999985,
+        "coefficientOfVariation": 0.15630450986354796,
+        "medianMs": 8.697441500000004
+      },
+      "withinVariantRangeExceedsMedianDelta": true
+    },
+    {
+      "matrixId": "board-107--restricted-split--Z",
+      "oldMedianDeltaMs": 3.564282999999996,
+      "oldMedianRatio": 1.2293948841987306,
+      "baselineStates": 209,
+      "candidateStates": 209,
+      "R": {
+        "samplesMs": [
+          19.250501,
+          13.274036999999993,
+          14.669747000000001,
+          16.405776000000003
+        ],
+        "rangeMs": 5.976464000000007,
+        "coefficientOfVariation": 0.16194544081973217,
+        "medianMs": 15.537761500000002
+      },
+      "A": {
+        "samplesMs": [
+          19.81650900000001,
+          13.97073499999999,
+          19.367795,
+          18.836293999999995
+        ],
+        "rangeMs": 5.84577400000002,
+        "coefficientOfVariation": 0.15082160497173808,
+        "medianMs": 19.102044499999998
+      },
+      "withinVariantRangeExceedsMedianDelta": true
+    },
+    {
+      "matrixId": "board-108--restricted-split--I",
+      "oldMedianDeltaMs": 1.3301925000000026,
+      "oldMedianRatio": 1.313349919630311,
+      "baselineStates": 29,
+      "candidateStates": 29,
+      "R": {
+        "samplesMs": [
+          4.108470999999994,
+          4.435809000000006,
+          4.38167,
+          4.075051000000002
+        ],
+        "rangeMs": 0.36075800000000413,
+        "coefficientOfVariation": 0.043489597814438445,
+        "medianMs": 4.245070499999997
+      },
+      "A": {
+        "samplesMs": [
+          6.958289000000008,
+          5.160581000000008,
+          3.4237700000000046,
+          5.989944999999992
+        ],
+        "rangeMs": 3.534519000000003,
+        "coefficientOfVariation": 0.2783990376677478,
+        "medianMs": 5.575263
+      },
+      "withinVariantRangeExceedsMedianDelta": true
+    },
+    {
+      "matrixId": "board-111--restricted-split--J",
+      "oldMedianDeltaMs": 1.0155030000000025,
+      "oldMedianRatio": 1.197846065695026,
+      "baselineStates": 75,
+      "candidateStates": 71,
+      "R": {
+        "samplesMs": [
+          4.9165220000000005,
+          5.320252999999994,
+          7.871148999999988,
+          4.945334000000003
+        ],
+        "rangeMs": 2.954626999999988,
+        "coefficientOfVariation": 0.24590122614890741,
+        "medianMs": 5.132793499999998
+      },
+      "A": {
+        "samplesMs": [
+          9.464926000000006,
+          5.542995000000005,
+          6.753597999999997,
+          4.223399000000001
+        ],
+        "rangeMs": 5.241527000000005,
+        "coefficientOfVariation": 0.34367977133375494,
+        "medianMs": 6.148296500000001
+      },
+      "withinVariantRangeExceedsMedianDelta": true
+    },
+    {
+      "matrixId": "board-111--restricted-split--L",
+      "oldMedianDeltaMs": 0.5116049999999959,
+      "oldMedianRatio": 1.1028383178742336,
+      "baselineStates": 50,
+      "candidateStates": 50,
+      "R": {
+        "samplesMs": [
+          5.264833999999993,
+          4.594665000000006,
+          4.821506999999997,
+          5.128189000000006
+        ],
+        "rangeMs": 0.6701689999999871,
+        "coefficientOfVariation": 0.060983123539292465,
+        "medianMs": 4.9748480000000015
+      },
+      "A": {
+        "samplesMs": [
+          5.568961000000002,
+          5.110641999999999,
+          5.480268999999993,
+          5.492637000000002
+        ],
+        "rangeMs": 0.45831900000000303,
+        "coefficientOfVariation": 0.03795136217893602,
+        "medianMs": 5.486452999999997
+      },
+      "withinVariantRangeExceedsMedianDelta": true
+    },
+    {
+      "matrixId": "board-113--restricted-split--J",
+      "oldMedianDeltaMs": 4.027792500000004,
+      "oldMedianRatio": 1.260693810704602,
+      "baselineStates": 218,
+      "candidateStates": 218,
+      "R": {
+        "samplesMs": [
+          17.951246999999995,
+          15.392223000000001,
+          14.425779999999989,
+          15.508337999999995
+        ],
+        "rangeMs": 3.525467000000006,
+        "coefficientOfVariation": 0.0949339345786843,
+        "medianMs": 15.450280499999998
+      },
+      "A": {
+        "samplesMs": [
+          17.267305000000007,
+          19.233538999999993,
+          19.72260700000001,
+          20.98090999999998
+        ],
+        "rangeMs": 3.7136049999999727,
+        "coefficientOfVariation": 0.07993118633230438,
+        "medianMs": 19.478073000000002
+      },
+      "withinVariantRangeExceedsMedianDelta": false
+    },
+    {
+      "matrixId": "board-113--restricted-split--S",
+      "oldMedianDeltaMs": 3.1193150000000003,
+      "oldMedianRatio": 1.2844616370769197,
+      "baselineStates": 402,
+      "candidateStates": 402,
+      "R": {
+        "samplesMs": [
+          10.397609000000003,
+          13.415060999999994,
+          10.07424300000001,
+          11.533749
+        ],
+        "rangeMs": 3.3408179999999845,
+        "coefficientOfVariation": 0.13290560669039286,
+        "medianMs": 10.965679000000002
+      },
+      "A": {
+        "samplesMs": [
+          12.124594000000002,
+          16.354565000000008,
+          13.063206000000008,
+          15.106781999999995
+        ],
+        "rangeMs": 4.229971000000006,
+        "coefficientOfVariation": 0.13556596585149086,
+        "medianMs": 14.084994000000002
+      },
+      "withinVariantRangeExceedsMedianDelta": true
+    },
+    {
+      "matrixId": "board-113--restricted-split--Z",
+      "oldMedianDeltaMs": 0.9104835000000051,
+      "oldMedianRatio": 1.1394483900655819,
+      "baselineStates": 64,
+      "candidateStates": 64,
+      "R": {
+        "samplesMs": [
+          6.714521000000005,
+          6.3438369999999935,
+          8.01071499999999,
+          5.732524999999995
+        ],
+        "rangeMs": 2.278189999999995,
+        "coefficientOfVariation": 0.14369531355232884,
+        "medianMs": 6.529178999999999
+      },
+      "A": {
+        "samplesMs": [
+          6.546810000000008,
+          8.332515,
+          8.382890000000003,
+          5.226329000000007
+        ],
+        "rangeMs": 3.1565609999999964,
+        "coefficientOfVariation": 0.21416300125668392,
+        "medianMs": 7.439662500000004
+      },
+      "withinVariantRangeExceedsMedianDelta": true
+    },
+    {
+      "matrixId": "board-114--restricted-split--I",
+      "oldMedianDeltaMs": 2.610484999999997,
+      "oldMedianRatio": 1.1185289700679144,
+      "baselineStates": 2158,
+      "candidateStates": 2158,
+      "R": {
+        "samplesMs": [
+          23.23433399999999,
+          27.005061999999995,
+          19.45653999999999,
+          20.813716
+        ],
+        "rangeMs": 7.5485220000000055,
+        "coefficientOfVariation": 0.14630008907862235,
+        "medianMs": 22.024024999999995
+      },
+      "A": {
+        "samplesMs": [
+          25.721312999999995,
+          23.54770699999999,
+          19.655981999999995,
+          26.185678999999993
+        ],
+        "rangeMs": 6.529696999999999,
+        "coefficientOfVariation": 0.12527179473293307,
+        "medianMs": 24.63450999999999
+      },
+      "withinVariantRangeExceedsMedianDelta": true
+    },
+    {
+      "matrixId": "board-114--restricted-split--T",
+      "oldMedianDeltaMs": 0.9539990000000103,
+      "oldMedianRatio": 1.1043695780959326,
+      "baselineStates": 275,
+      "candidateStates": 275,
+      "R": {
+        "samplesMs": [
+          8.447045000000003,
+          9.874503000000004,
+          8.830663999999999,
+          9.45050599999999
+        ],
+        "rangeMs": 1.4274580000000014,
+        "coefficientOfVariation": 0.06944114507584867,
+        "medianMs": 9.140584999999994
+      },
+      "A": {
+        "samplesMs": [
+          9.482962,
+          9.409368999999998,
+          10.706206000000009,
+          11.177440000000004
+        ],
+        "rangeMs": 1.7680710000000062,
+        "coefficientOfVariation": 0.08683531201650255,
+        "medianMs": 10.094584000000005
+      },
+      "withinVariantRangeExceedsMedianDelta": true
+    },
+    {
+      "matrixId": "board-116--restricted-split--ordinary",
+      "oldMedianDeltaMs": 1.7372424999999936,
+      "oldMedianRatio": 1.1075523762522457,
+      "baselineStates": 61,
+      "candidateStates": 61,
+      "R": {
+        "samplesMs": [
+          16.18737900000002,
+          14.986401,
+          17.796424000000002,
+          16.117672
+        ],
+        "rangeMs": 2.810023000000001,
+        "coefficientOfVariation": 0.07103003901291219,
+        "medianMs": 16.15252550000001
+      },
+      "A": {
+        "samplesMs": [
+          16.389037000000002,
+          30.18818299999998,
+          19.390499000000005,
+          13.562684000000004
+        ],
+        "rangeMs": 16.625498999999976,
+        "coefficientOfVariation": 0.36568648241506035,
+        "medianMs": 17.889768000000004
+      },
+      "withinVariantRangeExceedsMedianDelta": true
+    },
+    {
+      "matrixId": "board-119--restricted-split--Z",
+      "oldMedianDeltaMs": 0.6046500000000066,
+      "oldMedianRatio": 1.1201991172476653,
+      "baselineStates": 36,
+      "candidateStates": 36,
+      "R": {
+        "samplesMs": [
+          4.122052999999994,
+          4.410643999999991,
+          5.650161999999995,
+          5.6991060000000004
+        ],
+        "rangeMs": 1.5770530000000065,
+        "coefficientOfVariation": 0.1653375032306133,
+        "medianMs": 5.030402999999993
+      },
+      "A": {
+        "samplesMs": [
+          5.697434999999999,
+          4.555706000000001,
+          5.572671,
+          5.710026999999997
+        ],
+        "rangeMs": 1.154320999999996,
+        "coefficientOfVariation": 0.10320259355854074,
+        "medianMs": 5.635052999999999
+      },
+      "withinVariantRangeExceedsMedianDelta": true
+    }
+  ],
+  "matricesWithWithinVariantRangeLargerThanObservedDelta": 13,
+  "medianOldPositiveDeltaMs": 1.5045335000000009,
+  "nativeCalls": 0,
+  "limitation": "Four repetitions and outcome-selected F14; variability does not prove the A0 effect is absent"
+}
