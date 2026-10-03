@@ -19,3 +19,12 @@
 보고내용: exact/timeout/미실행분리,완료군paired-median/절대ms/방향일관성,
 기존회귀재현여부,새회귀,범위기반편차,메모리,1000-state trace와시간근거구분,
 rootForced의B유지/조건부A/C판정과제품전체로일반화할수없는한계.
+
+## 완료 결과
+
+run37133721660/commit304b9a7은success.실제동시측정최대8shard,측정구간99.4분,
+workflow104.9분,가장긴job40.7분이었다.실제880호출(EXACT800/TIMEOUT80),
+20입력조기종료에따른120호출은미실행으로기록했다.완료80에서65향상/15악화,
+1.056배.기존회귀4개미재현,새material회귀/완료차이/메모리경보없음이라추가10회없음.
+cycle1기준조건부A로평가하지만독립데이터검증/제품통합은하지않았다.
+ROOT_FORCED_REPEAT_REPORT_KO.md와reports/root-repeat-review.json참고.

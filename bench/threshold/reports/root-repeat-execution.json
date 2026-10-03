@@ -1,0 +1,14 @@
+{
+  "runId": "37133721660",
+  "status": "completed",
+  "conclusion": "success",
+  "candidate": "304b9a73ab7f5550f43169def58790b071c9219c",
+  "startedAt": "2026-10-03T15:34:29Z",
+  "updatedAt": "2026-10-03T17:19:25Z",
+  "benchmarkJobs": 100,
+  "maxSimultaneousBenchmarkSteps": 8,
+  "benchmarkWindowMinutes": 99.43333333333334,
+  "workflowMinutes": 104.93333333333334,
+  "longestJobMinutes": 40.7,
+  "note": "Actual benchmark-step timestamp overlaps, not a count of distinct VM identities or a cap on unrelated repository workflows."
+}

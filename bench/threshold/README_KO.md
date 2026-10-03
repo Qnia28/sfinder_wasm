@@ -1,8 +1,10 @@
 # Threshold 엔진 on/off 실험 — 2026-10-03
 
-**rootForced 후속:** [보완 screening 100개 종합 보고서](ROOT_FORCED_SCREEN_REPORT_KO.md).
-중단 run의 완전한58개+최대12VM로 재실행한42개를 결합했다.1회screening이며
-rootForced는B 유지,보완32/64는C 보류다.후속5/10회확인은아직실행하지않았다.
+**rootForced 최신:** [5회 반복 확인 보고서](ROOT_FORCED_REPEAT_REPORT_KO.md).
+mask16→20을기존100입력에서5쌍반복,실제동시8shard로확인했다.
+완료80개에서65개향상/15개악화,1.056배;기존회귀4개는동일경보기준으로재현되지않았다.
+cycle1 기준A(조건부통합가치),제품전체기본ON승인/통합은보류한다.보완32/64는C유지다.
+이전 [보완 screening 100개 종합 보고서](ROOT_FORCED_SCREEN_REPORT_KO.md)는별도보존한다.
 
 **mask16 최종 검증:** [100개 확대 + 선정66개 10회 재테스트 종합 보고서](EXPANDED_FINAL_REPORT_KO.md).
 최초/재측정의raw축약자료와입력별요약은reports/에저장했다. 제품통합은하지않았다.

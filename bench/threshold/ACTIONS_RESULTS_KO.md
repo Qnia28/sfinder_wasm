@@ -1,5 +1,20 @@
 # Actions 실행 기록
 
+## rootForced 5회 반복 확인 완료
+
+- [37133721660](https://github.com/Qnia28/sfinder_wasm/actions/runs/37133721660),commit304b9a7:
+  100입력mask16→20/5pairs/300초,모든job성공.실제측정step동시최대8shard.
+- 요청1000호출중실제880:EXACT800/TIMEOUT80.20개는양측2회씩timeout후
+  조기종료하여120호출미실행.미실행은timeout으로집계하지않았다.
+- 양측5회완료80개에서65개향상/15개악화,paired-median비율기하평균1.056배.
+  15개는1.10배이상이고4/5회이상빨랐다.기존회귀4개는동일경보기준으로재현안됨.
+- 새material회귀/완료discordance/메모리경보없음으로추가10회는하지않았다.
+  범위편차57개/방향변화23개와작은악화6개를숨기지않는다.
+- pcinfo032/Z는screening완료에서이번양측timeout으로변동하여한계로기록했다.
+- cycle1기준A(조건부통합가치)로평가하되독립데이터/실제품경로검증/통합승인은아직없다.
+- [최신보고서](ROOT_FORCED_REPEAT_REPORT_KO.md);정답/hash검산과장기자료reports/root-confirm.json,
+  root-repeat-review.json,root-repeat-execution.json.로컬dev/main/제품기본값변경없음.
+
 ## rootForced 보완 screening 재개 완료
 
 - 초기run [37113754448](https://github.com/Qnia28/sfinder_wasm/actions/runs/37113754448),
