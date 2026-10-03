@@ -1,0 +1,222 @@
+{
+  "status": "TIER_DIAGNOSIS_COMPLETE_KEEP_PRODUCT_UNCHANGED",
+  "finalRunId": 37101642194,
+  "sourceCommit": "1de0f5201e6edfbf8d86c0ca99b1bdc2a8227781",
+  "verifiedNativeIntegratedCalls": 24,
+  "untracedCalls": 18,
+  "tracedCalls": 6,
+  "successfulCallsReexecuted": 0,
+  "originalFailureRun": 37101047698,
+  "preflightFailureRun": 37101472741,
+  "failuresPreserved": true,
+  "failureTypes": "Worker exit before native entry; synthetic watchdog preflight failure",
+  "cohortsKeptSeparate": true,
+  "matchedContinuationRuntime": {
+    "node": "v24.13.0",
+    "v8": "13.6.233.17-node.37",
+    "cpu": "AMD EPYC 9V74 80-Core Processor",
+    "cpus": 4,
+    "allowedCpuList": "0-3",
+    "workerCpu": "0",
+    "runId": "37101642194"
+  },
+  "matchedContinuationGroups": {
+    "DEFAULT:R": {
+      "count": 2,
+      "apiSamplesMs": [
+        6001.419471,
+        6024.756337999999
+      ],
+      "medianApiMs": 6013.0879045,
+      "medianInitMs": 5.137135999999998,
+      "medianInitPlusApiMs": 6018.2250404999995
+    },
+    "DEFAULT:A": {
+      "count": 2,
+      "apiSamplesMs": [
+        6001.940297,
+        6014.918108
+      ],
+      "medianApiMs": 6008.4292024999995,
+      "medianInitMs": 4.940715499999996,
+      "medianInitPlusApiMs": 6013.369918
+    },
+    "LIFTOFF_ONLY:R": {
+      "count": 2,
+      "apiSamplesMs": [
+        10062.249052,
+        10069.474607
+      ],
+      "medianApiMs": 10065.8618295,
+      "medianInitMs": 6.849507000000003,
+      "medianInitPlusApiMs": 10072.7113365
+    },
+    "LIFTOFF_ONLY:A": {
+      "count": 2,
+      "apiSamplesMs": [
+        10290.922708999999,
+        10068.685474000002
+      ],
+      "medianApiMs": 10179.8040915,
+      "medianInitMs": 5.148662999999999,
+      "medianInitPlusApiMs": 10184.9527545
+    },
+    "OPTIMIZED_FIRST:R": {
+      "count": 2,
+      "apiSamplesMs": [
+        5933.742256,
+        5931.793965
+      ],
+      "medianApiMs": 5932.7681105,
+      "medianInitMs": 241.17878050000002,
+      "medianInitPlusApiMs": 6173.946891
+    },
+    "OPTIMIZED_FIRST:A": {
+      "count": 2,
+      "apiSamplesMs": [
+        5950.061919,
+        5946.399810999999
+      ],
+      "medianApiMs": 5948.2308649999995,
+      "medianInitMs": 240.38494400000002,
+      "medianInitPlusApiMs": 6188.615808999999
+    }
+  },
+  "matchedContinuationContrasts": [
+    {
+      "variant": "R",
+      "liftoffOnlyToDefault": 1.673992130061334,
+      "optimizedFirstToDefault": 0.9866425046040169,
+      "liftoffOnlyToOptimizedFirst": 1.6966551940038108
+    },
+    {
+      "variant": "A",
+      "liftoffOnlyToDefault": 1.6942538138361298,
+      "optimizedFirstToDefault": 0.9899810190864939,
+      "liftoffOnlyToOptimizedFirst": 1.711400300785064
+    },
+    {
+      "mode": "DEFAULT",
+      "candidateToBaselineRatio": 0.9992252396648793
+    },
+    {
+      "mode": "LIFTOFF_ONLY",
+      "candidateToBaselineRatio": 1.0113196727642406
+    },
+    {
+      "mode": "OPTIMIZED_FIRST",
+      "candidateToBaselineRatio": 1.0026063305040749
+    }
+  ],
+  "initPlusApiComparisons": [
+    {
+      "variant": "R",
+      "optimizedFirstToDefaultRatio": 1.0258750461227457,
+      "increaseMs": 155.72185050000007,
+      "boundary": "init+API only, not full product route"
+    },
+    {
+      "variant": "A",
+      "optimizedFirstToDefaultRatio": 1.0291427092278873,
+      "increaseMs": 175.24589099999866,
+      "boundary": "init+API only, not full product route"
+    }
+  ],
+  "findings": [
+    {
+      "claim": "Compiler/optimization policy causally changes this input cost under the tested same-host intervention",
+      "confidence": "SUPPORTED_BY_DIRECT_INTERVENTION_AND_COMPILER_TRACE",
+      "scope": "9V74, same WASM/input/seed/100K; Liftoff-only versus default/optimized-first"
+    },
+    {
+      "claim": "The seconds-scale tier contrast is inside the core export, not predominantly JS packing/readback",
+      "confidence": "SUPPORTED_BY_SEPARATE_PROFILE_RUNS",
+      "limits": "Core includes Rust preprocessing/search/runtime; does not isolate DFS alone"
+    },
+    {
+      "claim": "Fixed-tier A/R costs are close in this cohort; no large persistent A-specific 50 percent cost observed",
+      "confidence": "SMALL_SAMPLE_DIAGNOSIS_ONLY",
+      "absenceOfAllNativeOverheadProven": false
+    },
+    {
+      "claim": "Eager optimized-first saves about 1 percent API time but init+API increases about 2.6-2.9 percent",
+      "confidence": "DIRECT_OBSERVATION_TWO_MATCHED_REPETITIONS",
+      "productRecommendation": "Do not adopt eager initialization on this evidence"
+    },
+    {
+      "claim": "The old 9V45 Cold discrepancy and exposed reserved p95 failure are not retrospectively explained or cleared",
+      "confidence": "MECHANISM_STILL_UNRESOLVED",
+      "originalFailuresInvalidated": false
+    }
+  ],
+  "response": {
+    "modifySiblingTrailNow": false,
+    "addProductWarmup": false,
+    "addEagerCompilation": false,
+    "addIdOrCpuExceptions": false,
+    "relaxPerformanceGates": false,
+    "runBroadBenchmark": false,
+    "promoteA0": false,
+    "autoFurtherNativeCalls": 0,
+    "existingTraceCallgraphAnalysis": "COMPLETE_ZERO_ADDITIONAL_SOLVER_CALLS",
+    "nextIfMoreCauseWorkIsNeeded": "Targeted browser lifecycle/function CPU diagnosis only under separately defined scope, not engine-flag product adoption or broad benchmarking."
+  },
+  "staticCallgraphPaths": {
+    "R": "export114 -> shared112 -> shared113 -> self-recursive363",
+    "A": "export116 -> shared112 -> shared113 -> self-recursive380"
+  },
+  "independentExactProofStillPending": "board-111--restricted-split--ordinary",
+  "oldReservedP95FailureStillValid": true,
+  "nativeThresholdCalls": 0,
+  "actualPrimaryCalls": 0,
+  "actualPcCalls": 0,
+  "performanceConfirmationCalls": 0,
+  "productChanged": false,
+  "devApplied": false,
+  "mainMerged": false,
+  "deployed": false,
+  "devHead": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+  "localMain": "187fbf954ad0749e697b4e7f1252683b318d696e",
+  "remoteMain": "03b637730c5b541f4f2934be613498fbe65327fd",
+  "defaultBranch": "main",
+  "campaign": {
+    "originRunId": 37096100399,
+    "originCreated": "2026-10-03T04:18:25Z",
+    "computeMinutes": 160,
+    "cancelMinutes": 175,
+    "overallMinutes": 180
+  },
+  "clockReset": false,
+  "campaignElapsedMinutes": 105.25,
+  "tierRuns": [
+    {
+      "runId": 37101047698,
+      "conclusion": "failure",
+      "createdAt": "2026-10-03T05:49:10Z",
+      "wallMinutes": 1.7666666666666666,
+      "runnerHours": 0.02861111111111111,
+      "artifactCompressedBytes": 49653
+    },
+    {
+      "runId": 37101472741,
+      "conclusion": "failure",
+      "createdAt": "2026-10-03T05:57:12Z",
+      "wallMinutes": 0.36666666666666664,
+      "runnerHours": 0.005277777777777778,
+      "artifactCompressedBytes": 19304
+    },
+    {
+      "runId": 37101642194,
+      "conclusion": "success",
+      "createdAt": "2026-10-03T06:00:36Z",
+      "wallMinutes": 3.066666666666667,
+      "runnerHours": 0.05,
+      "artifactCompressedBytes": 150177
+    }
+  ],
+  "tierObservedRunnerHours": 0.08388888888888889,
+  "totalDiagnosisObservedRunnerHoursIncludingPrior": 0.47805555555555557,
+  "compilerTracePolicyConfirmed": true,
+  "compilerCountsAreParsedNotExhaustive": true,
+  "individualExecutionFrameTierClaimed": false
+}

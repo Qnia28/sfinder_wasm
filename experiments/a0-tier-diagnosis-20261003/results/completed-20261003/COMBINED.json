@@ -1,0 +1,129 @@
+{
+  "status": "COMPLETE_NATIVE_SCHEDULE_WITH_PRESERVED_HARNESS_FAILURES",
+  "firstRunId": 37101047698,
+  "continuationRunId": 37101642194,
+  "preflightFailureRunId": 37101472741,
+  "originalSlots": 24,
+  "verifiedNativeCalls": 24,
+  "successfulNativeCallsReexecuted": 0,
+  "missingOriginalSlots": [],
+  "combinedDeterminismCounts": {
+    "R": 1,
+    "A": 1
+  },
+  "cohortsKeptSeparate": true,
+  "firstCohortRuntime": {
+    "node": "v24.13.0",
+    "v8": "13.6.233.17-node.37",
+    "cpu": "AMD EPYC 7763 64-Core Processor",
+    "cpus": 4,
+    "allowedCpuList": "0-3",
+    "workerCpu": "0",
+    "runId": "37101047698"
+  },
+  "continuationRuntime": {
+    "node": "v24.13.0",
+    "v8": "13.6.233.17-node.37",
+    "cpu": "AMD EPYC 9V74 80-Core Processor",
+    "cpus": 4,
+    "allowedCpuList": "0-3",
+    "workerCpu": "0",
+    "runId": "37101642194"
+  },
+  "matchedContinuationGroups": {
+    "DEFAULT:R": {
+      "count": 2,
+      "apiSamplesMs": [
+        6001.419471,
+        6024.756337999999
+      ],
+      "medianApiMs": 6013.0879045,
+      "medianInitMs": 5.137135999999998,
+      "medianInitPlusApiMs": 6018.2250404999995
+    },
+    "DEFAULT:A": {
+      "count": 2,
+      "apiSamplesMs": [
+        6001.940297,
+        6014.918108
+      ],
+      "medianApiMs": 6008.4292024999995,
+      "medianInitMs": 4.940715499999996,
+      "medianInitPlusApiMs": 6013.369918
+    },
+    "LIFTOFF_ONLY:R": {
+      "count": 2,
+      "apiSamplesMs": [
+        10062.249052,
+        10069.474607
+      ],
+      "medianApiMs": 10065.8618295,
+      "medianInitMs": 6.849507000000003,
+      "medianInitPlusApiMs": 10072.7113365
+    },
+    "LIFTOFF_ONLY:A": {
+      "count": 2,
+      "apiSamplesMs": [
+        10290.922708999999,
+        10068.685474000002
+      ],
+      "medianApiMs": 10179.8040915,
+      "medianInitMs": 5.148662999999999,
+      "medianInitPlusApiMs": 10184.9527545
+    },
+    "OPTIMIZED_FIRST:R": {
+      "count": 2,
+      "apiSamplesMs": [
+        5933.742256,
+        5931.793965
+      ],
+      "medianApiMs": 5932.7681105,
+      "medianInitMs": 241.17878050000002,
+      "medianInitPlusApiMs": 6173.946891
+    },
+    "OPTIMIZED_FIRST:A": {
+      "count": 2,
+      "apiSamplesMs": [
+        5950.061919,
+        5946.399810999999
+      ],
+      "medianApiMs": 5948.2308649999995,
+      "medianInitMs": 240.38494400000002,
+      "medianInitPlusApiMs": 6188.615808999999
+    }
+  },
+  "matchedContinuationContrasts": [
+    {
+      "variant": "R",
+      "liftoffOnlyToDefault": 1.673992130061334,
+      "optimizedFirstToDefault": 0.9866425046040169,
+      "liftoffOnlyToOptimizedFirst": 1.6966551940038108
+    },
+    {
+      "variant": "A",
+      "liftoffOnlyToDefault": 1.6942538138361298,
+      "optimizedFirstToDefault": 0.9899810190864939,
+      "liftoffOnlyToOptimizedFirst": 1.711400300785064
+    },
+    {
+      "mode": "DEFAULT",
+      "candidateToBaselineRatio": 0.9992252396648793
+    },
+    {
+      "mode": "LIFTOFF_ONLY",
+      "candidateToBaselineRatio": 1.0113196727642406
+    },
+    {
+      "mode": "OPTIMIZED_FIRST",
+      "candidateToBaselineRatio": 1.0026063305040749
+    }
+  ],
+  "traceCompilerPolicyConfirmed": true,
+  "originalStartupFailureStillPreserved": true,
+  "preflightFailureStillPreserved": true,
+  "clockReset": false,
+  "productChanged": false,
+  "performanceConfirmationCalls": 0,
+  "primaryPcThresholdCalls": 0,
+  "limitations": "Two repetitions in matched continuation cohort; trace separate from timings; compiler generation observed, not every executed frame; no claim past host mechanism proved"
+}

@@ -1,0 +1,78 @@
+{
+  "observations": [
+    {
+      "runId": "resume-tier-trace-0-DEFAULT-R",
+      "mode": "DEFAULT",
+      "variant": "R",
+      "rawCompiledFunctionLiterals": 73,
+      "parsedCompilationEvents": 73,
+      "rawLiftoffLiterals": 57,
+      "rawTurboFanLiterals": 16,
+      "interleavedOrUnparsedLines": 0,
+      "exampleLines": []
+    },
+    {
+      "runId": "resume-tier-trace-0-DEFAULT-A",
+      "mode": "DEFAULT",
+      "variant": "A",
+      "rawCompiledFunctionLiterals": 74,
+      "parsedCompilationEvents": 74,
+      "rawLiftoffLiterals": 58,
+      "rawTurboFanLiterals": 16,
+      "interleavedOrUnparsedLines": 0,
+      "exampleLines": []
+    },
+    {
+      "runId": "resume-tier-trace-0-LIFTOFF_ONLY-A",
+      "mode": "LIFTOFF_ONLY",
+      "variant": "A",
+      "rawCompiledFunctionLiterals": 58,
+      "parsedCompilationEvents": 58,
+      "rawLiftoffLiterals": 58,
+      "rawTurboFanLiterals": 0,
+      "interleavedOrUnparsedLines": 0,
+      "exampleLines": []
+    },
+    {
+      "runId": "resume-tier-trace-0-LIFTOFF_ONLY-R",
+      "mode": "LIFTOFF_ONLY",
+      "variant": "R",
+      "rawCompiledFunctionLiterals": 57,
+      "parsedCompilationEvents": 57,
+      "rawLiftoffLiterals": 57,
+      "rawTurboFanLiterals": 0,
+      "interleavedOrUnparsedLines": 0,
+      "exampleLines": []
+    },
+    {
+      "runId": "resume-tier-trace-0-OPTIMIZED_FIRST-R",
+      "mode": "OPTIMIZED_FIRST",
+      "variant": "R",
+      "rawCompiledFunctionLiterals": 450,
+      "parsedCompilationEvents": 449,
+      "rawLiftoffLiterals": 0,
+      "rawTurboFanLiterals": 449,
+      "interleavedOrUnparsedLines": 1,
+      "exampleLines": [
+        "Compiled function Compiled function 0x7f79ec00e9b0#197 using TurboFan, took 0 ms and 79744 / 177424 max/total bytes; bodysize 139 codesize 548 name wasm-function#197"
+      ]
+    },
+    {
+      "runId": "resume-tier-trace-0-OPTIMIZED_FIRST-A",
+      "mode": "OPTIMIZED_FIRST",
+      "variant": "A",
+      "rawCompiledFunctionLiterals": 445,
+      "parsedCompilationEvents": 442,
+      "rawLiftoffLiterals": 0,
+      "rawTurboFanLiterals": 442,
+      "interleavedOrUnparsedLines": 3,
+      "exampleLines": [
+        "Compiled function Compiled function 0x7f6f8400e2f0#337 using TurboFan, took 0 ms and 131784 / 313792 max/total bytes; bodysize 380 codesize 1072 name wasm-function#337",
+        "Compiled function Compiled function 0x7f6f8400e2f0#132 using TurboFan, took 1 ms and 366048 / 900728 max/total bytes; bodysize 614 codesize 3056 name wasm-function#132",
+        "Compiled function 0x7f6f8400e2f0Compiled function 0x7f6f8400e2f0#30 using TurboFan, took 0 ms and 219184 / 494688 max/total bytes; bodysize 578 codesize 1788 name wasm-function#30"
+      ]
+    }
+  ],
+  "rawTracesUnmodified": true,
+  "interpretation": "Parallel compiler stdout can interleave. Compiler event counts are parsed counts, not exhaustive full-module inventory. No execution tier at individual frames is claimed."
+}
