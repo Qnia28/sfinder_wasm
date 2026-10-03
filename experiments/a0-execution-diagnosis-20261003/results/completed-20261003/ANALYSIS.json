@@ -1,0 +1,2857 @@
+{
+  "status": "COMPLETE_INDEPENDENTLY_AUDITED",
+  "runId": 37104315714,
+  "sourceCommit": "fede5036e786f2779b650700f5e2b39cd3341318",
+  "nativeCallsVerified": 16,
+  "attemptedCalls": 16,
+  "plainCalls": 12,
+  "profileCalls": 4,
+  "capability": "FUNCTION_ONLY",
+  "executionTierIdentified": false,
+  "outcomeCounts": {
+    "VERIFIED": 16
+  },
+  "probeStatusCounts": {
+    "PROBE_CAPPED": 16
+  },
+  "sourceBlobsVerified": 203,
+  "artifactFilesVerified": 28,
+  "rawRecordsVerified": 48,
+  "weightedQualityAndSeedRecalculations": 32,
+  "stateQualityPairsVerified": 6,
+  "determinismCounts": {
+    "R": 1,
+    "A": 1
+  },
+  "runtime": {
+    "node": "v24.13.0",
+    "v8": "13.6.233.17-node.37",
+    "cpu": "INTEL(R) XEON(R) PLATINUM 8573C",
+    "cpus": 4,
+    "allowedCpuList": "0-3",
+    "workerCpu": "0",
+    "runId": "37104315714"
+  },
+  "groups": {
+    "plain:R": {
+      "count": 6,
+      "apiSamplesMs": [
+        5730.008849,
+        5909.870102999999,
+        5990.379806,
+        5788.660816,
+        5802.177528,
+        5753.290242
+      ],
+      "medianApiMs": 5795.419172,
+      "threadCpuSamplesMs": [
+        5727.792,
+        5895.099,
+        5982.917,
+        5788.043,
+        5785.104,
+        5752.664
+      ]
+    },
+    "plain:A": {
+      "count": 6,
+      "apiSamplesMs": [
+        6006.831043,
+        5775.435508,
+        5594.000098,
+        5645.793836,
+        5780.272629,
+        5693.424688
+      ],
+      "medianApiMs": 5734.430098,
+      "threadCpuSamplesMs": [
+        5995.209,
+        5774.782,
+        5589.459,
+        5645.138,
+        5779.124,
+        5692.564
+      ]
+    },
+    "profile:R": {
+      "count": 2,
+      "apiSamplesMs": [
+        5758.228478999999,
+        5696.333482
+      ],
+      "medianApiMs": 5727.2809805,
+      "threadCpuSamplesMs": [
+        5718.093,
+        5657.96
+      ]
+    },
+    "profile:A": {
+      "count": 2,
+      "apiSamplesMs": [
+        5703.059738,
+        5692.5538400000005
+      ],
+      "medianApiMs": 5697.806789,
+      "threadCpuSamplesMs": [
+        5663.126,
+        5653.871
+      ]
+    }
+  },
+  "pairs": [
+    {
+      "pairId": "pair-1",
+      "pair": "RR",
+      "instrumented": false,
+      "block": 1,
+      "apiMs": [
+        5730.008849,
+        5909.870102999999
+      ],
+      "maxToMinRatio": 1.031389350128384
+    },
+    {
+      "pairId": "pair-2",
+      "pair": "RA",
+      "instrumented": false,
+      "block": 1,
+      "apiMs": [
+        5990.379806,
+        6006.831043
+      ],
+      "aToRRatio": 1.0027462761181725,
+      "aMinusRMs": 16.45123700000022,
+      "largeASlower": false,
+      "largeRSlower": false
+    },
+    {
+      "pairId": "pair-3",
+      "pair": "AR",
+      "instrumented": false,
+      "block": 1,
+      "apiMs": [
+        5775.435508,
+        5788.660816
+      ],
+      "aToRRatio": 0.9977153078371003,
+      "aMinusRMs": -13.225308000000041,
+      "largeASlower": false,
+      "largeRSlower": false
+    },
+    {
+      "pairId": "pair-4",
+      "pair": "RA",
+      "instrumented": true,
+      "block": 1,
+      "apiMs": [
+        5758.228478999999,
+        5703.059738
+      ],
+      "aToRRatio": 0.990419146930137,
+      "aMinusRMs": -55.1687409999995,
+      "largeASlower": false,
+      "largeRSlower": false
+    },
+    {
+      "pairId": "pair-5",
+      "pair": "AA",
+      "instrumented": false,
+      "block": 2,
+      "apiMs": [
+        5594.000098,
+        5645.793836
+      ],
+      "maxToMinRatio": 1.009258801768437
+    },
+    {
+      "pairId": "pair-6",
+      "pair": "AR",
+      "instrumented": false,
+      "block": 2,
+      "apiMs": [
+        5780.272629,
+        5802.177528
+      ],
+      "aToRRatio": 0.996224710654872,
+      "aMinusRMs": -21.904899000000114,
+      "largeASlower": false,
+      "largeRSlower": false
+    },
+    {
+      "pairId": "pair-7",
+      "pair": "RA",
+      "instrumented": false,
+      "block": 2,
+      "apiMs": [
+        5753.290242,
+        5693.424688
+      ],
+      "aToRRatio": 0.9895945534673409,
+      "aMinusRMs": -59.865553999999975,
+      "largeASlower": false,
+      "largeRSlower": false
+    },
+    {
+      "pairId": "pair-8",
+      "pair": "AR",
+      "instrumented": true,
+      "block": 2,
+      "apiMs": [
+        5692.5538400000005,
+        5696.333482
+      ],
+      "aToRRatio": 0.9993364781026352,
+      "aMinusRMs": -3.7796419999995123,
+      "largeASlower": false,
+      "largeRSlower": false
+    }
+  ],
+  "controlAlarm": false,
+  "classification": "NO_REPEATED_LARGE_DIFFERENCE",
+  "profiles": [
+    {
+      "runId": "exec-4-1-R",
+      "variant": "R",
+      "block": 1,
+      "apiMsDiagnosticOnly": 5758.228478999999,
+      "threadCpuMsDiagnosticOnly": 5718.093,
+      "coreProfile": {
+        "coreEntries": 1,
+        "coreWallMs": 5753.547839,
+        "allocationAbiWallMs": 2.0141629999985753,
+        "allocationAbiCalls": 10,
+        "coreEntryMs": 436.696567,
+        "coreExport": "solver_min_cover_at_count_integrated_bounded",
+        "coreReturnMs": 6190.244406,
+        "preCoreWallMs": 2.856738000000007,
+        "postCoreWallMs": 1.8239020000000892,
+        "jsAndOtherAbiResidualMs": 2.6664770000010094,
+        "timerHookCalls": 22,
+        "getterHooks": false
+      },
+      "executionTierIdentified": false,
+      "apiSamples": 5450,
+      "apiBoundaryUs": 5758244,
+      "coveredSampleUs": 5758244,
+      "sampleCoverageFraction": 1.0,
+      "selfCategoriesUs": {
+        "identifiedWasmSelf": 5755879,
+        "unidentifiedWasmSelf": 2248,
+        "jsRuntimeOrOtherSelf": 117
+      },
+      "unknownWasmExamples": [
+        {
+          "functionName": "js-to-wasm:i:i",
+          "scriptId": "272",
+          "url": "wasm://wasm/002238e2",
+          "lineNumber": 0,
+          "columnNumber": 171551
+        },
+        {
+          "functionName": "js-to-wasm:i:i",
+          "scriptId": "272",
+          "url": "wasm://wasm/002238e2",
+          "lineNumber": 0,
+          "columnNumber": 171551
+        }
+      ],
+      "functions": [
+        {
+          "functionIndex": 359,
+          "selfSampleUs": 5599312,
+          "selfFraction": 0.9723992244857981,
+          "inclusiveSampleUs": 5599312,
+          "inclusiveFraction": 0.9723992244857981
+        },
+        {
+          "functionIndex": 113,
+          "selfSampleUs": 111937,
+          "selfFraction": 0.019439433271671018,
+          "inclusiveSampleUs": 5748363,
+          "inclusiveFraction": 0.9982840254772114
+        },
+        {
+          "functionIndex": 363,
+          "selfSampleUs": 16870,
+          "selfFraction": 0.002929712599882881,
+          "inclusiveSampleUs": 5619350,
+          "inclusiveFraction": 0.9758791048104248
+        },
+        {
+          "functionIndex": 266,
+          "selfSampleUs": 7467,
+          "selfFraction": 0.0012967494951585934,
+          "inclusiveSampleUs": 7467,
+          "inclusiveFraction": 0.0012967494951585934
+        },
+        {
+          "functionIndex": 112,
+          "selfSampleUs": 3231,
+          "selfFraction": 0.0005611085601791102,
+          "inclusiveSampleUs": 5753740,
+          "inclusiveFraction": 0.9992178170984071
+        },
+        {
+          "functionIndex": 11,
+          "selfSampleUs": 3214,
+          "selfFraction": 0.0005581562712521387,
+          "inclusiveSampleUs": 3214,
+          "inclusiveFraction": 0.0005581562712521387
+        },
+        {
+          "functionIndex": 378,
+          "selfSampleUs": 3193,
+          "selfFraction": 0.0005545093261070563,
+          "inclusiveSampleUs": 12806,
+          "inclusiveFraction": 0.002223941882282168
+        },
+        {
+          "functionIndex": 127,
+          "selfSampleUs": 2139,
+          "selfFraction": 0.0003714674126348241,
+          "inclusiveSampleUs": 2139,
+          "inclusiveFraction": 0.0003714674126348241
+        },
+        {
+          "functionIndex": 265,
+          "selfSampleUs": 1078,
+          "selfFraction": 0.00018720985078089777,
+          "inclusiveSampleUs": 8545,
+          "inclusiveFraction": 0.0014839593459394912
+        },
+        {
+          "functionIndex": 1,
+          "selfSampleUs": 1077,
+          "selfFraction": 0.00018703618672637006,
+          "inclusiveSampleUs": 1077,
+          "inclusiveFraction": 0.00018703618672637006
+        },
+        {
+          "functionIndex": 368,
+          "selfSampleUs": 1077,
+          "selfFraction": 0.00018703618672637006,
+          "inclusiveSampleUs": 1077,
+          "inclusiveFraction": 0.00018703618672637006
+        },
+        {
+          "functionIndex": 242,
+          "selfSampleUs": 1061,
+          "selfFraction": 0.0001842575618539263,
+          "inclusiveSampleUs": 1061,
+          "inclusiveFraction": 0.0001842575618539263
+        },
+        {
+          "functionIndex": 26,
+          "selfSampleUs": 1056,
+          "selfFraction": 0.00018338924158128764,
+          "inclusiveSampleUs": 1056,
+          "inclusiveFraction": 0.00018338924158128764
+        },
+        {
+          "functionIndex": 185,
+          "selfSampleUs": 1056,
+          "selfFraction": 0.00018338924158128764,
+          "inclusiveSampleUs": 1056,
+          "inclusiveFraction": 0.00018338924158128764
+        },
+        {
+          "functionIndex": 369,
+          "selfSampleUs": 1056,
+          "selfFraction": 0.00018338924158128764,
+          "inclusiveSampleUs": 1056,
+          "inclusiveFraction": 0.00018338924158128764
+        },
+        {
+          "functionIndex": 372,
+          "selfSampleUs": 1055,
+          "selfFraction": 0.0001832155775267599,
+          "inclusiveSampleUs": 1055,
+          "inclusiveFraction": 0.0001832155775267599
+        },
+        {
+          "functionIndex": 99,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 1077,
+          "inclusiveFraction": 0.00018703618672637006
+        },
+        {
+          "functionIndex": 114,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 5753740,
+          "inclusiveFraction": 0.9992178170984071
+        },
+        {
+          "functionIndex": 184,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 1056,
+          "inclusiveFraction": 0.00018338924158128764
+        }
+      ],
+      "samplesAll": 5458,
+      "profileEndMinusDeltaSumUs": 287,
+      "aggregation": "interval overlaps API hrtime boundary; recursive inclusive function index deduplicated per sample; self/inclusive never summed",
+      "sampleQuality": "SUFFICIENT_FOR_COARSE_LOCATION"
+    },
+    {
+      "runId": "exec-4-2-A",
+      "variant": "A",
+      "block": 1,
+      "apiMsDiagnosticOnly": 5703.059738,
+      "threadCpuMsDiagnosticOnly": 5663.126,
+      "coreProfile": {
+        "coreEntries": 1,
+        "coreWallMs": 5698.797876,
+        "allocationAbiWallMs": 1.752206000001479,
+        "allocationAbiCalls": 10,
+        "coreEntryMs": 430.119342,
+        "coreExport": "solver_min_cover_at_count_integrated_partitioned_bounded",
+        "coreReturnMs": 6128.917218,
+        "preCoreWallMs": 2.79899800000004,
+        "postCoreWallMs": 1.4628640000000814,
+        "jsAndOtherAbiResidualMs": 2.509655999998813,
+        "timerHookCalls": 22,
+        "getterHooks": false
+      },
+      "executionTierIdentified": false,
+      "apiSamples": 5391,
+      "apiBoundaryUs": 5703073,
+      "coveredSampleUs": 5703073,
+      "sampleCoverageFraction": 1.0,
+      "selfCategoriesUs": {
+        "identifiedWasmSelf": 5701162,
+        "unidentifiedWasmSelf": 1911
+      },
+      "unknownWasmExamples": [
+        {
+          "functionName": "readQualityVector",
+          "scriptId": "260",
+          "url": "file:///home/runner/work/sfinder_wasm/sfinder_wasm/src/pc-wasm-min-cover.mjs",
+          "lineNumber": 14,
+          "columnNumber": 26
+        },
+        {
+          "functionName": "solver.minimumCoverAtCount",
+          "scriptId": "182",
+          "url": "file:///home/runner/work/sfinder_wasm/sfinder_wasm/experiments/a0-execution-diagnosis-20261003/worker.mjs",
+          "lineNumber": 30,
+          "columnNumber": 35
+        }
+      ],
+      "functions": [
+        {
+          "functionIndex": 359,
+          "selfSampleUs": 5535848,
+          "selfFraction": 0.9706780888128207,
+          "inclusiveSampleUs": 5535848,
+          "inclusiveFraction": 0.9706780888128207
+        },
+        {
+          "functionIndex": 113,
+          "selfSampleUs": 115750,
+          "selfFraction": 0.020296075466682613,
+          "inclusiveSampleUs": 5692820,
+          "inclusiveFraction": 0.99820219730661
+        },
+        {
+          "functionIndex": 380,
+          "selfSampleUs": 18985,
+          "selfFraction": 0.003328907064664962,
+          "inclusiveSampleUs": 5561157,
+          "inclusiveFraction": 0.9751158717414278
+        },
+        {
+          "functionIndex": 266,
+          "selfSampleUs": 8466,
+          "selfFraction": 0.001484462850116069,
+          "inclusiveSampleUs": 8466,
+          "inclusiveFraction": 0.001484462850116069
+        },
+        {
+          "functionIndex": 112,
+          "selfSampleUs": 4266,
+          "selfFraction": 0.0007480177791867647,
+          "inclusiveSampleUs": 5698180,
+          "inclusiveFraction": 0.9991420414923674
+        },
+        {
+          "functionIndex": 1,
+          "selfSampleUs": 2157,
+          "selfFraction": 0.00037821714714154984,
+          "inclusiveSampleUs": 2157,
+          "inclusiveFraction": 0.00037821714714154984
+        },
+        {
+          "functionIndex": 368,
+          "selfSampleUs": 2132,
+          "selfFraction": 0.0003738335455288754,
+          "inclusiveSampleUs": 2132,
+          "inclusiveFraction": 0.0003738335455288754
+        },
+        {
+          "functionIndex": 378,
+          "selfSampleUs": 2120,
+          "selfFraction": 0.00037172941675479165,
+          "inclusiveSampleUs": 11649,
+          "inclusiveFraction": 0.0020425830074417774
+        },
+        {
+          "functionIndex": 193,
+          "selfSampleUs": 2109,
+          "selfFraction": 0.00036980063204521493,
+          "inclusiveSampleUs": 2109,
+          "inclusiveFraction": 0.00036980063204521493
+        },
+        {
+          "functionIndex": 381,
+          "selfSampleUs": 2105,
+          "selfFraction": 0.000369099255787187,
+          "inclusiveSampleUs": 2105,
+          "inclusiveFraction": 0.000369099255787187
+        },
+        {
+          "functionIndex": 127,
+          "selfSampleUs": 1919,
+          "selfFraction": 0.00033648525978888927,
+          "inclusiveSampleUs": 1919,
+          "inclusiveFraction": 0.00033648525978888927
+        },
+        {
+          "functionIndex": 243,
+          "selfSampleUs": 1072,
+          "selfFraction": 0.00018796883715147957,
+          "inclusiveSampleUs": 1072,
+          "inclusiveFraction": 0.00018796883715147957
+        },
+        {
+          "functionIndex": 116,
+          "selfSampleUs": 1063,
+          "selfFraction": 0.00018639074057091677,
+          "inclusiveSampleUs": 5699243,
+          "inclusiveFraction": 0.9993284322329383
+        },
+        {
+          "functionIndex": 310,
+          "selfSampleUs": 1060,
+          "selfFraction": 0.00018586470837739583,
+          "inclusiveSampleUs": 1060,
+          "inclusiveFraction": 0.00018586470837739583
+        },
+        {
+          "functionIndex": 192,
+          "selfSampleUs": 1056,
+          "selfFraction": 0.00018516333211936794,
+          "inclusiveSampleUs": 3165,
+          "inclusiveFraction": 0.0005549639641645828
+        },
+        {
+          "functionIndex": 360,
+          "selfSampleUs": 1054,
+          "selfFraction": 0.00018481264399035398,
+          "inclusiveSampleUs": 1054,
+          "inclusiveFraction": 0.00018481264399035398
+        },
+        {
+          "functionIndex": 99,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 1094,
+          "inclusiveFraction": 0.00019182640657063307
+        },
+        {
+          "functionIndex": 191,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 3165,
+          "inclusiveFraction": 0.0005549639641645828
+        },
+        {
+          "functionIndex": 242,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 1072,
+          "inclusiveFraction": 0.00018796883715147957
+        },
+        {
+          "functionIndex": 265,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 8466,
+          "inclusiveFraction": 0.001484462850116069
+        },
+        {
+          "functionIndex": 372,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 1060,
+          "inclusiveFraction": 0.00018586470837739583
+        }
+      ],
+      "samplesAll": 5400,
+      "profileEndMinusDeltaSumUs": 44,
+      "aggregation": "interval overlaps API hrtime boundary; recursive inclusive function index deduplicated per sample; self/inclusive never summed",
+      "sampleQuality": "SUFFICIENT_FOR_COARSE_LOCATION"
+    },
+    {
+      "runId": "exec-8-1-A",
+      "variant": "A",
+      "block": 2,
+      "apiMsDiagnosticOnly": 5692.5538400000005,
+      "threadCpuMsDiagnosticOnly": 5653.871,
+      "coreProfile": {
+        "coreEntries": 1,
+        "coreWallMs": 5688.46782,
+        "allocationAbiWallMs": 1.5109010000010699,
+        "allocationAbiCalls": 10,
+        "coreEntryMs": 466.796172,
+        "coreExport": "solver_min_cover_at_count_integrated_partitioned_bounded",
+        "coreReturnMs": 6155.263992,
+        "preCoreWallMs": 2.4182800000000384,
+        "postCoreWallMs": 1.667739999999867,
+        "jsAndOtherAbiResidualMs": 2.5751189999995745,
+        "timerHookCalls": 22,
+        "getterHooks": false
+      },
+      "executionTierIdentified": false,
+      "apiSamples": 5383,
+      "apiBoundaryUs": 5692567,
+      "coveredSampleUs": 5692567,
+      "sampleCoverageFraction": 1.0,
+      "selfCategoriesUs": {
+        "identifiedWasmSelf": 5690687,
+        "unidentifiedWasmSelf": 1880
+      },
+      "unknownWasmExamples": [
+        {
+          "functionName": "js-to-wasm:i:i",
+          "scriptId": "272",
+          "url": "wasm://wasm/002238e2",
+          "lineNumber": 0,
+          "columnNumber": 171551
+        },
+        {
+          "functionName": "solver.minimumCoverAtCount",
+          "scriptId": "182",
+          "url": "file:///home/runner/work/sfinder_wasm/sfinder_wasm/experiments/a0-execution-diagnosis-20261003/worker.mjs",
+          "lineNumber": 30,
+          "columnNumber": 35
+        }
+      ],
+      "functions": [
+        {
+          "functionIndex": 359,
+          "selfSampleUs": 5526937,
+          "selfFraction": 0.9709041632711569,
+          "inclusiveSampleUs": 5526937,
+          "inclusiveFraction": 0.9709041632711569
+        },
+        {
+          "functionIndex": 113,
+          "selfSampleUs": 112131,
+          "selfFraction": 0.019697791874913374,
+          "inclusiveSampleUs": 5682525,
+          "inclusiveFraction": 0.9982359452247115
+        },
+        {
+          "functionIndex": 380,
+          "selfSampleUs": 17951,
+          "selfFraction": 0.0031534104034260818,
+          "inclusiveSampleUs": 5552275,
+          "inclusiveFraction": 0.9753552307772574
+        },
+        {
+          "functionIndex": 378,
+          "selfSampleUs": 5321,
+          "selfFraction": 0.0009347276896345708,
+          "inclusiveSampleUs": 12777,
+          "inclusiveFraction": 0.0022445058617667564
+        },
+        {
+          "functionIndex": 266,
+          "selfSampleUs": 5318,
+          "selfFraction": 0.0009342006866146678,
+          "inclusiveSampleUs": 5318,
+          "inclusiveFraction": 0.0009342006866146678
+        },
+        {
+          "functionIndex": 112,
+          "selfSampleUs": 4280,
+          "selfFraction": 0.0007518576417282396,
+          "inclusiveSampleUs": 5688933,
+          "inclusiveFraction": 0.9993616236752242
+        },
+        {
+          "functionIndex": 11,
+          "selfSampleUs": 4275,
+          "selfFraction": 0.0007509793033617347,
+          "inclusiveSampleUs": 4275,
+          "inclusiveFraction": 0.0007509793033617347
+        },
+        {
+          "functionIndex": 381,
+          "selfSampleUs": 3166,
+          "selfFraction": 0.0005561638536709362,
+          "inclusiveSampleUs": 4222,
+          "inclusiveFraction": 0.0007416689166767822
+        },
+        {
+          "functionIndex": 368,
+          "selfSampleUs": 2129,
+          "selfFraction": 0.00037399647645780895,
+          "inclusiveSampleUs": 2129,
+          "inclusiveFraction": 0.00037399647645780895
+        },
+        {
+          "functionIndex": 127,
+          "selfSampleUs": 1754,
+          "selfFraction": 0.00030812109896993746,
+          "inclusiveSampleUs": 1754,
+          "inclusiveFraction": 0.00030812109896993746
+        },
+        {
+          "functionIndex": 1,
+          "selfSampleUs": 1074,
+          "selfFraction": 0.00018866708112526387,
+          "inclusiveSampleUs": 1074,
+          "inclusiveFraction": 0.00018866708112526387
+        },
+        {
+          "functionIndex": 242,
+          "selfSampleUs": 1067,
+          "selfFraction": 0.00018743740741215695,
+          "inclusiveSampleUs": 1067,
+          "inclusiveFraction": 0.00018743740741215695
+        },
+        {
+          "functionIndex": 275,
+          "selfSampleUs": 1063,
+          "selfFraction": 0.000186734736718953,
+          "inclusiveSampleUs": 2119,
+          "inclusiveFraction": 0.00037223979972479904
+        },
+        {
+          "functionIndex": 6,
+          "selfSampleUs": 1056,
+          "selfFraction": 0.00018550506300584604,
+          "inclusiveSampleUs": 1056,
+          "inclusiveFraction": 0.00018550506300584604
+        },
+        {
+          "functionIndex": 178,
+          "selfSampleUs": 1055,
+          "selfFraction": 0.00018532939533254505,
+          "inclusiveSampleUs": 1055,
+          "inclusiveFraction": 0.00018532939533254505
+        },
+        {
+          "functionIndex": 193,
+          "selfSampleUs": 1055,
+          "selfFraction": 0.00018532939533254505,
+          "inclusiveSampleUs": 2110,
+          "inclusiveFraction": 0.0003706587906650901
+        },
+        {
+          "functionIndex": 360,
+          "selfSampleUs": 1055,
+          "selfFraction": 0.00018532939533254505,
+          "inclusiveSampleUs": 1055,
+          "inclusiveFraction": 0.00018532939533254505
+        },
+        {
+          "functionIndex": 52,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 2119,
+          "inclusiveFraction": 0.00037223979972479904
+        },
+        {
+          "functionIndex": 99,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 1074,
+          "inclusiveFraction": 0.00018866708112526387
+        },
+        {
+          "functionIndex": 116,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 5688933,
+          "inclusiveFraction": 0.9993616236752242
+        },
+        {
+          "functionIndex": 191,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 2110,
+          "inclusiveFraction": 0.0003706587906650901
+        },
+        {
+          "functionIndex": 192,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 2110,
+          "inclusiveFraction": 0.0003706587906650901
+        },
+        {
+          "functionIndex": 265,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 5318,
+          "inclusiveFraction": 0.0009342006866146678
+        }
+      ],
+      "samplesAll": 5386,
+      "profileEndMinusDeltaSumUs": 1382,
+      "aggregation": "interval overlaps API hrtime boundary; recursive inclusive function index deduplicated per sample; self/inclusive never summed",
+      "sampleQuality": "SUFFICIENT_FOR_COARSE_LOCATION"
+    },
+    {
+      "runId": "exec-8-2-R",
+      "variant": "R",
+      "block": 2,
+      "apiMsDiagnosticOnly": 5696.333482,
+      "threadCpuMsDiagnosticOnly": 5657.96,
+      "coreProfile": {
+        "coreEntries": 1,
+        "coreWallMs": 5691.835797,
+        "allocationAbiWallMs": 1.8289070000007541,
+        "allocationAbiCalls": 10,
+        "coreEntryMs": 470.612129,
+        "coreExport": "solver_min_cover_at_count_integrated_bounded",
+        "coreReturnMs": 6162.447926,
+        "preCoreWallMs": 2.8483850000000075,
+        "postCoreWallMs": 1.6493000000000393,
+        "jsAndOtherAbiResidualMs": 2.66877799999952,
+        "timerHookCalls": 22,
+        "getterHooks": false
+      },
+      "executionTierIdentified": false,
+      "apiSamples": 5383,
+      "apiBoundaryUs": 5696343,
+      "coveredSampleUs": 5696343,
+      "sampleCoverageFraction": 1.0,
+      "selfCategoriesUs": {
+        "identifiedWasmSelf": 5693161,
+        "unidentifiedWasmSelf": 2189,
+        "jsRuntimeOrOtherSelf": 993
+      },
+      "unknownWasmExamples": [
+        {
+          "functionName": "withWasmU32Buffers",
+          "scriptId": "261",
+          "url": "file:///home/runner/work/sfinder_wasm/sfinder_wasm/.a0/baseline/src/pc-wasm-cover-matrix.mjs",
+          "lineNumber": 84,
+          "columnNumber": 34
+        },
+        {
+          "functionName": "js-to-wasm:i:i",
+          "scriptId": "272",
+          "url": "wasm://wasm/002238e2",
+          "lineNumber": 0,
+          "columnNumber": 171551
+        }
+      ],
+      "functions": [
+        {
+          "functionIndex": 359,
+          "selfSampleUs": 5538092,
+          "selfFraction": 0.9722188428611128,
+          "inclusiveSampleUs": 5538092,
+          "inclusiveFraction": 0.9722188428611128
+        },
+        {
+          "functionIndex": 113,
+          "selfSampleUs": 106742,
+          "selfFraction": 0.01873868901504,
+          "inclusiveSampleUs": 5686173,
+          "inclusiveFraction": 0.9982146440268783
+        },
+        {
+          "functionIndex": 363,
+          "selfSampleUs": 17955,
+          "selfFraction": 0.003152022271130794,
+          "inclusiveSampleUs": 5562381,
+          "inclusiveFraction": 0.9764828066006559
+        },
+        {
+          "functionIndex": 266,
+          "selfSampleUs": 7420,
+          "selfFraction": 0.0013025901003503476,
+          "inclusiveSampleUs": 7420,
+          "inclusiveFraction": 0.0013025901003503476
+        },
+        {
+          "functionIndex": 11,
+          "selfSampleUs": 4287,
+          "selfFraction": 0.0007525881078439273,
+          "inclusiveSampleUs": 4287,
+          "inclusiveFraction": 0.0007525881078439273
+        },
+        {
+          "functionIndex": 378,
+          "selfSampleUs": 3191,
+          "selfFraction": 0.0005601839636412344,
+          "inclusiveSampleUs": 12739,
+          "inclusiveFraction": 0.0022363470739033796
+        },
+        {
+          "functionIndex": 112,
+          "selfSampleUs": 3165,
+          "selfFraction": 0.0005556196317532143,
+          "inclusiveSampleUs": 5691486,
+          "inclusiveFraction": 0.9991473476930726
+        },
+        {
+          "functionIndex": 1,
+          "selfSampleUs": 2138,
+          "selfFraction": 0.0003753285221764209,
+          "inclusiveSampleUs": 2138,
+          "inclusiveFraction": 0.0003753285221764209
+        },
+        {
+          "functionIndex": 178,
+          "selfSampleUs": 2111,
+          "selfFraction": 0.0003705886390619385,
+          "inclusiveSampleUs": 2111,
+          "inclusiveFraction": 0.0003705886390619385
+        },
+        {
+          "functionIndex": 369,
+          "selfSampleUs": 2111,
+          "selfFraction": 0.0003705886390619385,
+          "inclusiveSampleUs": 2111,
+          "inclusiveFraction": 0.0003705886390619385
+        },
+        {
+          "functionIndex": 127,
+          "selfSampleUs": 1675,
+          "selfFraction": 0.0002940483043243709,
+          "inclusiveSampleUs": 1675,
+          "inclusiveFraction": 0.0002940483043243709
+        },
+        {
+          "functionIndex": 243,
+          "selfSampleUs": 1077,
+          "selfFraction": 0.00018906867089990895,
+          "inclusiveSampleUs": 1077,
+          "inclusiveFraction": 0.00018906867089990895
+        },
+        {
+          "functionIndex": 213,
+          "selfSampleUs": 1072,
+          "selfFraction": 0.0001881909147675974,
+          "inclusiveSampleUs": 1072,
+          "inclusiveFraction": 0.0001881909147675974
+        },
+        {
+          "functionIndex": 368,
+          "selfSampleUs": 1070,
+          "selfFraction": 0.00018783981231467278,
+          "inclusiveSampleUs": 2142,
+          "inclusiveFraction": 0.00037603072708227017
+        },
+        {
+          "functionIndex": 186,
+          "selfSampleUs": 1055,
+          "selfFraction": 0.0001852065439177381,
+          "inclusiveSampleUs": 3166,
+          "inclusiveFraction": 0.0005557951829796766
+        },
+        {
+          "functionIndex": 26,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 1057,
+          "inclusiveFraction": 0.00018555764637066274
+        },
+        {
+          "functionIndex": 99,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 1081,
+          "inclusiveFraction": 0.00018977087580575818
+        },
+        {
+          "functionIndex": 114,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 5691486,
+          "inclusiveFraction": 0.9991473476930726
+        },
+        {
+          "functionIndex": 184,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 3166,
+          "inclusiveFraction": 0.0005557951829796766
+        },
+        {
+          "functionIndex": 185,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 3166,
+          "inclusiveFraction": 0.0005557951829796766
+        },
+        {
+          "functionIndex": 242,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 1077,
+          "inclusiveFraction": 0.00018906867089990895
+        },
+        {
+          "functionIndex": 265,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 7420,
+          "inclusiveFraction": 0.0013025901003503476
+        },
+        {
+          "functionIndex": 352,
+          "selfSampleUs": 0,
+          "selfFraction": 0.0,
+          "inclusiveSampleUs": 1092,
+          "inclusiveFraction": 0.0001917019392968436
+        }
+      ],
+      "samplesAll": 5386,
+      "profileEndMinusDeltaSumUs": 1225,
+      "aggregation": "interval overlaps API hrtime boundary; recursive inclusive function index deduplicated per sample; self/inclusive never summed",
+      "sampleQuality": "SUFFICIENT_FOR_COARSE_LOCATION"
+    }
+  ],
+  "compilerGenerationTraces": [
+    {
+      "runId": "exec-4-1-R",
+      "variant": "R",
+      "compilerGenerationCounts": {
+        "Liftoff": 57,
+        "TurboFan": 16
+      },
+      "events": [
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 121,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 11,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 127,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 114,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 112,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 10,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 112,
+          "compiler": "TurboFan",
+          "compileMsRounded": 2
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 113,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 378,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 265,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 266,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 197,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 11,
+          "compiler": "TurboFan",
+          "compileMsRounded": 3
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 1,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 451,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 173,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 349,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 378,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 266,
+          "compiler": "TurboFan",
+          "compileMsRounded": 4
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 213,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 242,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 243,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 273,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 244,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 243,
+          "compiler": "TurboFan",
+          "compileMsRounded": 8
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 113,
+          "compiler": "TurboFan",
+          "compileMsRounded": 16
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 52,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 275,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 6,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 352,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 368,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 214,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 216,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 362,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 358,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 354,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 368,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 372,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 310,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 295,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 323,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 351,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 363,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 359,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 369,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 360,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 7,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 28,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 359,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 184,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 185,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 186,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 178,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 85,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 26,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 363,
+          "compiler": "TurboFan",
+          "compileMsRounded": 3
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 369,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 186,
+          "compiler": "TurboFan",
+          "compileMsRounded": 3
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 1,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 185,
+          "compiler": "TurboFan",
+          "compileMsRounded": 2
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 6,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 178,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 99,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 365,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 366,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 88,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 117,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 173,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 118,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 119,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 120,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 128,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 122,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        }
+      ],
+      "rawCompiledLiterals": 73,
+      "parsedEvents": 73,
+      "executionTierIdentified": false
+    },
+    {
+      "runId": "exec-4-2-A",
+      "variant": "A",
+      "compilerGenerationCounts": {
+        "Liftoff": 58,
+        "TurboFan": 16
+      },
+      "events": [
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 121,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 11,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 127,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 116,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 112,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 10,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 112,
+          "compiler": "TurboFan",
+          "compileMsRounded": 2
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 113,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 378,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 265,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 266,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 11,
+          "compiler": "TurboFan",
+          "compileMsRounded": 3
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 197,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 1,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 451,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 173,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 349,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 378,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 266,
+          "compiler": "TurboFan",
+          "compileMsRounded": 4
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 213,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 242,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 243,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 273,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 244,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 243,
+          "compiler": "TurboFan",
+          "compileMsRounded": 6
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 113,
+          "compiler": "TurboFan",
+          "compileMsRounded": 17
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 52,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 275,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 6,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 352,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 368,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 214,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 216,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 362,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 358,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 354,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 368,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 372,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 310,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 295,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 323,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 342,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 351,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 380,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 359,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 381,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 360,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 7,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 28,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 359,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 191,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 192,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 193,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 178,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 85,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 26,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 380,
+          "compiler": "TurboFan",
+          "compileMsRounded": 4
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 381,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 193,
+          "compiler": "TurboFan",
+          "compileMsRounded": 2
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 1,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 192,
+          "compiler": "TurboFan",
+          "compileMsRounded": 2
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 6,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 178,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 99,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 365,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 366,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 88,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 117,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 173,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 118,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 119,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 120,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 128,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 122,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        }
+      ],
+      "rawCompiledLiterals": 74,
+      "parsedEvents": 74,
+      "executionTierIdentified": false
+    },
+    {
+      "runId": "exec-8-1-A",
+      "variant": "A",
+      "compilerGenerationCounts": {
+        "Liftoff": 58,
+        "TurboFan": 16
+      },
+      "events": [
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 121,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 11,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 127,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 116,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 112,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 10,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 112,
+          "compiler": "TurboFan",
+          "compileMsRounded": 2
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 113,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 378,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 265,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 266,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 11,
+          "compiler": "TurboFan",
+          "compileMsRounded": 3
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 197,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 1,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 451,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 173,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 349,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 378,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 266,
+          "compiler": "TurboFan",
+          "compileMsRounded": 4
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 213,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 242,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 243,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 273,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 244,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 243,
+          "compiler": "TurboFan",
+          "compileMsRounded": 6
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 113,
+          "compiler": "TurboFan",
+          "compileMsRounded": 17
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 52,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 275,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 6,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 352,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 368,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 214,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 216,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 362,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 358,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 354,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 368,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 372,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 310,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 295,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 323,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 342,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 351,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 380,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 359,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 381,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 360,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 7,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 28,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 359,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 191,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 192,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 193,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 178,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 85,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 26,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 380,
+          "compiler": "TurboFan",
+          "compileMsRounded": 4
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 381,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 193,
+          "compiler": "TurboFan",
+          "compileMsRounded": 2
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 1,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 192,
+          "compiler": "TurboFan",
+          "compileMsRounded": 2
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 6,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 178,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 99,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 365,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 366,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 88,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 117,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 173,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 118,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 119,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 120,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 128,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 122,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        }
+      ],
+      "rawCompiledLiterals": 74,
+      "parsedEvents": 74,
+      "executionTierIdentified": false
+    },
+    {
+      "runId": "exec-8-2-R",
+      "variant": "R",
+      "compilerGenerationCounts": {
+        "Liftoff": 57,
+        "TurboFan": 16
+      },
+      "events": [
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 121,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 11,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 127,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 114,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 112,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 10,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 112,
+          "compiler": "TurboFan",
+          "compileMsRounded": 2
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 113,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 378,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 265,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 266,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 11,
+          "compiler": "TurboFan",
+          "compileMsRounded": 3
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 197,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 1,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 451,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 173,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 349,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 378,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 266,
+          "compiler": "TurboFan",
+          "compileMsRounded": 4
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 213,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 242,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 243,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 273,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 244,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 243,
+          "compiler": "TurboFan",
+          "compileMsRounded": 6
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 113,
+          "compiler": "TurboFan",
+          "compileMsRounded": 14
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 52,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 275,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 6,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 352,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 368,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 214,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 216,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 362,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 358,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 354,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 368,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 372,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 310,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 295,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 323,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 351,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 363,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 359,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 369,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 360,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 7,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 28,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 359,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 184,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 185,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 186,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 178,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 85,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 26,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 363,
+          "compiler": "TurboFan",
+          "compileMsRounded": 4
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 369,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 186,
+          "compiler": "TurboFan",
+          "compileMsRounded": 2
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 1,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 185,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 6,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 178,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 99,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 365,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 366,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 88,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 117,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 173,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 118,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 119,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 120,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 128,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 122,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        }
+      ],
+      "rawCompiledLiterals": 73,
+      "parsedEvents": 73,
+      "executionTierIdentified": false
+    }
+  ],
+  "notRun": [],
+  "stopReason": null,
+  "campaign": {
+    "originRunId": 37096100399,
+    "originCreated": "2026-10-03T04:18:25Z",
+    "computeMinutes": 160,
+    "cancelMinutes": 175,
+    "overallMinutes": 180
+  },
+  "clockReset": false,
+  "productChanged": false,
+  "performanceConfirmationCalls": 0,
+  "primaryPcThresholdCalls": 0,
+  "limits": "Function sample location only; generated code is not every-frame execution tier; profile and plain calls not pooled; two controls not a noise-distribution estimate."
+}

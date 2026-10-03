@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "tests": 2,
+  "nativeCalls": 0,
+  "checks": [
+    "API interval clipping",
+    "self versus inclusive separation",
+    "recursion deduplicated per function index",
+    "out-of-window samples excluded"
+  ]
+}

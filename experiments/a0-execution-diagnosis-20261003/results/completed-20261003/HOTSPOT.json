@@ -1,0 +1,168 @@
+{
+  "status": "COMMON_FUNCTION_HOTSPOT_IDENTIFIED_WITH_STATIC_SOURCE_CORRESPONDENCE",
+  "additionalNativeCalls": 0,
+  "wasmSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+  "priorWatSha256": "503c58385ce4055babcead4fcaab52d944f1d278005132e951a755423c0dc1e5",
+  "commonFunctionIndex": 359,
+  "directStaticParents": [
+    363,
+    380
+  ],
+  "watFunctionBodySha256": "e7dfd1b815a791cb2a10c5c3d824d60e066045da372c4ae29804ab6888706fe2",
+  "watFunctionBody": "  (func (;359;) (type 25) (param i32 i32 i32 i32 i32 i32) (result i32)\n    (local i32 i32 i32 i32 i32 i32 i32 i32 i32 i32 i32 i32)\n    block  ;; label = @1\n      local.get 3\n      local.get 1\n      local.get 3\n      local.get 1\n      i32.lt_u\n      select\n      local.tee 6\n      br_if 0 (;@1;)\n      i32.const 0\n      return\n    end\n    i32.const 0\n    local.set 7\n    i32.const 0\n    local.set 8\n    block  ;; label = @1\n      block  ;; label = @2\n        local.get 6\n        i32.const 1\n        i32.eq\n        br_if 0 (;@2;)\n        local.get 6\n        i32.const 1\n        i32.and\n        local.set 9\n        local.get 6\n        i32.const -2\n        i32.and\n        local.set 10\n        i32.const 0\n        local.set 8\n        local.get 2\n        local.set 6\n        local.get 0\n        local.set 11\n        i32.const 0\n        local.set 7\n        loop  ;; label = @3\n          local.get 8\n          local.get 6\n          i64.load\n          local.get 11\n          i64.load\n          i64.const -1\n          i64.xor\n          i64.and\n          i64.popcnt\n          i32.wrap_i64\n          i32.add\n          local.get 6\n          i32.const 8\n          i32.add\n          i64.load\n          local.get 11\n          i32.const 8\n          i32.add\n          i64.load\n          i64.const -1\n          i64.xor\n          i64.and\n          i64.popcnt\n          i32.wrap_i64\n          i32.add\n          local.set 8\n          local.get 6\n          i32.const 16\n          i32.add\n          local.set 6\n          local.get 11\n          i32.const 16\n          i32.add\n          local.set 11\n          local.get 10\n          local.get 7\n          i32.const 2\n          i32.add\n          local.tee 7\n          i32.ne\n          br_if 0 (;@3;)\n        end\n        local.get 9\n        i32.eqz\n        br_if 1 (;@1;)\n      end\n      local.get 8\n      local.get 2\n      local.get 7\n      i32.const 3\n      i32.shl\n      local.tee 6\n      i32.add\n      i64.load\n      local.get 0\n      local.get 6\n      i32.add\n      i64.load\n      i64.const -1\n      i64.xor\n      i64.and\n      i64.popcnt\n      i32.wrap_i64\n      i32.add\n      local.set 8\n    end\n    block  ;; label = @1\n      local.get 8\n      br_if 0 (;@1;)\n      i32.const 0\n      return\n    end\n    i32.const -1\n    local.set 12\n    block  ;; label = @1\n      local.get 5\n      i32.eqz\n      br_if 0 (;@1;)\n      block  ;; label = @2\n        block  ;; label = @3\n          local.get 3\n          local.get 1\n          local.get 4\n          i32.load offset=8\n          local.tee 6\n          local.get 1\n          local.get 6\n          i32.lt_u\n          select\n          local.tee 6\n          local.get 3\n          local.get 6\n          i32.lt_u\n          select\n          local.tee 6\n          br_if 0 (;@3;)\n          i32.const 0\n          local.set 13\n          br 1 (;@2;)\n        end\n        local.get 4\n        i32.load offset=4\n        local.set 14\n        i32.const 0\n        local.set 10\n        i32.const 0\n        local.set 13\n        block  ;; label = @3\n          local.get 6\n          i32.const 1\n          i32.eq\n          br_if 0 (;@3;)\n          local.get 6\n          i32.const 1\n          i32.and\n          local.set 15\n          local.get 6\n          i32.const -2\n          i32.and\n          local.set 9\n          i32.const 0\n          local.set 13\n          local.get 2\n          local.set 6\n          local.get 0\n          local.set 11\n          local.get 14\n          local.set 7\n          i32.const 0\n          local.set 10\n          loop  ;; label = @4\n            local.get 13\n            local.get 6\n            i64.load\n            local.get 11\n            i64.load\n            i64.const -1\n            i64.xor\n            i64.and\n            local.get 7\n            i64.load\n            i64.and\n            i64.popcnt\n            i32.wrap_i64\n            i32.add\n            local.get 6\n            i32.const 8\n            i32.add\n            i64.load\n            local.get 11\n            i32.const 8\n            i32.add\n            i64.load\n            i64.const -1\n            i64.xor\n            i64.and\n            local.get 7\n            i32.const 8\n            i32.add\n            i64.load\n            i64.and\n            i64.popcnt\n            i32.wrap_i64\n            i32.add\n            local.set 13\n            local.get 6\n            i32.const 16\n            i32.add\n            local.set 6\n            local.get 11\n            i32.const 16\n            i32.add\n            local.set 11\n            local.get 7\n            i32.const 16\n            i32.add\n            local.set 7\n            local.get 9\n            local.get 10\n            i32.const 2\n            i32.add\n            local.tee 10\n            i32.ne\n            br_if 0 (;@4;)\n          end\n          local.get 15\n          i32.eqz\n          br_if 1 (;@2;)\n        end\n        local.get 13\n        local.get 2\n        local.get 10\n        i32.const 3\n        i32.shl\n        local.tee 6\n        i32.add\n        i64.load\n        local.get 0\n        local.get 6\n        i32.add\n        i64.load\n        i64.const -1\n        i64.xor\n        i64.and\n        local.get 14\n        local.get 6\n        i32.add\n        i64.load\n        i64.and\n        i64.popcnt\n        i32.wrap_i64\n        i32.add\n        local.set 13\n      end\n      block  ;; label = @2\n        local.get 5\n        i32.const 1\n        i32.eq\n        br_if 0 (;@2;)\n        local.get 4\n        i32.const 12\n        i32.add\n        local.set 15\n        local.get 5\n        i32.const 12\n        i32.mul\n        i32.const -12\n        i32.add\n        i32.const 12\n        i32.div_u\n        local.set 16\n        i32.const 0\n        local.set 4\n        loop  ;; label = @3\n          i32.const 0\n          local.set 10\n          block  ;; label = @4\n            local.get 3\n            local.get 1\n            local.get 15\n            local.get 4\n            i32.const 12\n            i32.mul\n            i32.add\n            local.tee 11\n            i32.const 8\n            i32.add\n            i32.load\n            local.tee 6\n            local.get 1\n            local.get 6\n            i32.lt_u\n            select\n            local.tee 6\n            local.get 3\n            local.get 6\n            i32.lt_u\n            select\n            local.tee 6\n            i32.eqz\n            br_if 0 (;@4;)\n            local.get 11\n            i32.const 4\n            i32.add\n            i32.load\n            local.set 14\n            i32.const 0\n            local.set 9\n            i32.const 0\n            local.set 10\n            block  ;; label = @5\n              local.get 6\n              i32.const 1\n              i32.eq\n              br_if 0 (;@5;)\n              local.get 6\n              i32.const 1\n              i32.and\n              local.set 17\n              local.get 6\n              i32.const -2\n              i32.and\n              local.set 5\n              i32.const 0\n              local.set 10\n              local.get 2\n              local.set 6\n              local.get 0\n              local.set 11\n              local.get 14\n              local.set 7\n              i32.const 0\n              local.set 9\n              loop  ;; label = @6\n                local.get 10\n                local.get 6\n                i64.load\n                local.get 11\n                i64.load\n                i64.const -1\n                i64.xor\n                i64.and\n                local.get 7\n                i64.load\n                i64.and\n                i64.popcnt\n                i32.wrap_i64\n                i32.add\n                local.get 6\n                i32.const 8\n                i32.add\n                i64.load\n                local.get 11\n                i32.const 8\n                i32.add\n                i64.load\n                i64.const -1\n                i64.xor\n                i64.and\n                local.get 7\n                i32.const 8\n                i32.add\n                i64.load\n                i64.and\n                i64.popcnt\n                i32.wrap_i64\n                i32.add\n                local.set 10\n                local.get 6\n                i32.const 16\n                i32.add\n                local.set 6\n                local.get 11\n                i32.const 16\n                i32.add\n                local.set 11\n                local.get 7\n                i32.const 16\n                i32.add\n                local.set 7\n                local.get 5\n                local.get 9\n                i32.const 2\n                i32.add\n                local.tee 9\n                i32.ne\n                br_if 0 (;@6;)\n              end\n              local.get 17\n              i32.eqz\n              br_if 1 (;@4;)\n            end\n            local.get 10\n            local.get 2\n            local.get 9\n            i32.const 3\n            i32.shl\n            local.tee 6\n            i32.add\n            i64.load\n            local.get 0\n            local.get 6\n            i32.add\n            i64.load\n            i64.const -1\n            i64.xor\n            i64.and\n            local.get 14\n            local.get 6\n            i32.add\n            i64.load\n            i64.and\n            i64.popcnt\n            i32.wrap_i64\n            i32.add\n            local.set 10\n          end\n          local.get 10\n          local.get 13\n          local.get 10\n          local.get 13\n          i32.gt_u\n          select\n          local.set 13\n          local.get 4\n          i32.const 1\n          i32.add\n          local.tee 4\n          local.get 16\n          i32.ne\n          br_if 0 (;@3;)\n        end\n      end\n      local.get 13\n      i32.eqz\n      br_if 0 (;@1;)\n      local.get 8\n      local.get 13\n      i32.div_u\n      local.tee 6\n      local.get 8\n      local.get 6\n      local.get 13\n      i32.mul\n      i32.sub\n      i32.const 0\n      i32.ne\n      i32.add\n      local.set 12\n    end\n    local.get 12)\n",
+  "source": {
+    "file": "rust/pc-core/src/min_cover.rs",
+    "sourceCommit": "fede5036e786f2779b650700f5e2b39cd3341318",
+    "fileSha256": "35d08bccf37b7351bb9d49e609974f6c3fcc5a5a540ce91b0d30ae09e4f64148",
+    "lines": "54-88",
+    "excerpt": "#[inline]\nfn uncovered_count(covered: &[u64], full: &[u64]) -> u32 {\n    covered\n        .iter()\n        .zip(full)\n        .map(|(a, b)| (b & !a).count_ones())\n        .sum()\n}\n\n#[inline]\nfn gain(coverage: &[u64], covered: &[u64], full: &[u64]) -> u32 {\n    coverage\n        .iter()\n        .zip(covered)\n        .zip(full)\n        .map(|((s, c), f)| (s & (f & !c)).count_ones())\n        .sum()\n}\n\nfn lower_bound(covered: &[u64], full: &[u64], solution_coverage: &[Vec<u64>]) -> usize {\n    let remaining = uncovered_count(covered, full) as usize;\n    if remaining == 0 {\n        return 0;\n    }\n    let max_gain = solution_coverage\n        .iter()\n        .map(|s| gain(s, covered, full) as usize)\n        .max()\n        .unwrap_or(0);\n    if max_gain == 0 {\n        usize::MAX\n    } else {\n        remaining.div_ceil(max_gain)\n    }\n}"
+  },
+  "staticCorrespondence": {
+    "candidateRustSymbol": "lower_bound",
+    "confidence": "STRONG_STRUCTURAL_CORRESPONDENCE_NOT_DEBUG_SYMBOL_PROOF",
+    "evidence": [
+      "Six i32 parameters match three slice fat pointers; result i32",
+      "Initial popcount of full & !covered, zero returns0",
+      "Nested scan of coverage vectors computing popcount of coverage & (full & !covered)",
+      "Maximum candidate gain selection; no recursive/direct calls inside359",
+      "Zero maximum gain returns -1; otherwise unsigned division and remainder ceil",
+      "Both variant recursive functions directly call359; source BestSetSearch::run calls common lower_bound"
+    ]
+  },
+  "profiles": [
+    {
+      "runId": "exec-4-1-R",
+      "variant": "R",
+      "common359": {
+        "functionIndex": 359,
+        "selfSampleUs": 5599312,
+        "selfFraction": 0.9723992244857981,
+        "inclusiveSampleUs": 5599312,
+        "inclusiveFraction": 0.9723992244857981
+      },
+      "recursiveFunction": {
+        "functionIndex": 363,
+        "selfSampleUs": 16870,
+        "selfFraction": 0.002929712599882881,
+        "inclusiveSampleUs": 5619350,
+        "inclusiveFraction": 0.9758791048104248
+      },
+      "function359CompilerGeneration": [
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 359,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7ff6e0004a70",
+          "functionIndex": 359,
+          "compiler": "TurboFan",
+          "compileMsRounded": 0
+        }
+      ],
+      "executionTierIdentified": false
+    },
+    {
+      "runId": "exec-4-2-A",
+      "variant": "A",
+      "common359": {
+        "functionIndex": 359,
+        "selfSampleUs": 5535848,
+        "selfFraction": 0.9706780888128207,
+        "inclusiveSampleUs": 5535848,
+        "inclusiveFraction": 0.9706780888128207
+      },
+      "recursiveFunction": {
+        "functionIndex": 380,
+        "selfSampleUs": 18985,
+        "selfFraction": 0.003328907064664962,
+        "inclusiveSampleUs": 5561157,
+        "inclusiveFraction": 0.9751158717414278
+      },
+      "function359CompilerGeneration": [
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 359,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f00a4007c00",
+          "functionIndex": 359,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        }
+      ],
+      "executionTierIdentified": false
+    },
+    {
+      "runId": "exec-8-1-A",
+      "variant": "A",
+      "common359": {
+        "functionIndex": 359,
+        "selfSampleUs": 5526937,
+        "selfFraction": 0.9709041632711569,
+        "inclusiveSampleUs": 5526937,
+        "inclusiveFraction": 0.9709041632711569
+      },
+      "recursiveFunction": {
+        "functionIndex": 380,
+        "selfSampleUs": 17951,
+        "selfFraction": 0.0031534104034260818,
+        "inclusiveSampleUs": 5552275,
+        "inclusiveFraction": 0.9753552307772574
+      },
+      "function359CompilerGeneration": [
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 359,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7f8bc800b320",
+          "functionIndex": 359,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        }
+      ],
+      "executionTierIdentified": false
+    },
+    {
+      "runId": "exec-8-2-R",
+      "variant": "R",
+      "common359": {
+        "functionIndex": 359,
+        "selfSampleUs": 5538092,
+        "selfFraction": 0.9722188428611128,
+        "inclusiveSampleUs": 5538092,
+        "inclusiveFraction": 0.9722188428611128
+      },
+      "recursiveFunction": {
+        "functionIndex": 363,
+        "selfSampleUs": 17955,
+        "selfFraction": 0.003152022271130794,
+        "inclusiveSampleUs": 5562381,
+        "inclusiveFraction": 0.9764828066006559
+      },
+      "function359CompilerGeneration": [
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 359,
+          "compiler": "Liftoff",
+          "compileMsRounded": 0
+        },
+        {
+          "modulePointer": "0x7fb81001a090",
+          "functionIndex": 359,
+          "compiler": "TurboFan",
+          "compileMsRounded": 1
+        }
+      ],
+      "executionTierIdentified": false
+    }
+  ],
+  "conclusion": "Current cost location is a common popcount/max-gain/lower-bound path, not an observed A-only sibling/trail hotspot. This does not explain the old 9V45 R/A discrepancy.",
+  "limits": "Compiler optimizations can inline helpers. No Rust debug names; sampling proportion is not exact per-function CPU time; compiled TurboFan code is not every-frame tier evidence."
+}

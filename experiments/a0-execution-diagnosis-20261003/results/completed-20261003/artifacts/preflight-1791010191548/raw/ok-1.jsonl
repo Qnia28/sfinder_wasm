@@ -1,0 +1,3 @@
+{"type":"phase-start","runId":"ok-1","resources":{"cgroupPeakBytes":12517376,"cgroupCurrentBytes":12517376,"memoryMaxBytes":3221225472,"swapMaxBytes":0,"cgroupEvents":{"low":0,"high":0,"max":0,"oom":0,"oom_kill":0,"oom_group_kill":0}},"hostMs":2325.35068}
+{"type":"phase-result","runId":"ok-1","raw":{"keys":["000"],"count":1,"completed":false,"qualityVector":[1],"searchedStates":100000},"options":{"seedKeys":["000"]},"apiMs":1,"resources":{"cgroupPeakBytes":12517376,"cgroupCurrentBytes":12517376,"memoryMaxBytes":3221225472,"swapMaxBytes":0,"cgroupEvents":{"low":0,"high":0,"max":0,"oom":0,"oom_kill":0,"oom_group_kill":0}},"hostMs":2326.193397}
+{"type":"audit-result","runId":"ok-1","witness":{"keys":["000"]},"contract":null}
