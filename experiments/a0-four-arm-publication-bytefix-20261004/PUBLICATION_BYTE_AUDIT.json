@@ -1,0 +1,68 @@
+{
+  "status": "ALL_SEALED_BYTES_RECONSTRUCTIBLE_FROM_PUBLISHED_EVIDENCE",
+  "priorEvidenceCommit": "27e51f4e2bfb4ae1fc88924934764931b17fd54a",
+  "sourceCommit": "f4716e1f2686fa25c4e844e47b51e88835a980da",
+  "sealedFilesVerified": 6952,
+  "publishedDirectFiles": 114,
+  "gitTextNormalizationOnly": true,
+  "sealedOriginalsChanged": false,
+  "exactTextMirrorFile": "EXACT_SEALED_TEXT.zip",
+  "exactTextMirrorSha256": "cc81294f1b745f349b177170665cae755f21f6f8c41e27a1a21fcd8e109c494e",
+  "originalSealSha256": "f60443ca65b2325c7d306c33c42381b49675bc033e528b6a77adbee4197b7529",
+  "textFiles": [
+    {
+      "file": "ARCHIVES.json",
+      "sha256": "e092d401461a02501d3fe5212a4c38e0f9b6f71ac96c469d910d80d749a2c7dc",
+      "bytes": 2837
+    },
+    {
+      "file": "COMPARISON_BY_INPUT.csv",
+      "sha256": "6e46ade45d7724d9672b1a26fac83ba1e0682653948d84decf71172fecb82d64",
+      "bytes": 43184
+    },
+    {
+      "file": "COMPARISON_SUMMARY.json",
+      "sha256": "f9b82ecd50c9701e94e9e01f9a93c202b969e56103675bb649ea4019b492e0a1",
+      "bytes": 37110
+    },
+    {
+      "file": "DECISION.json",
+      "sha256": "c941bde2311d5766f151860c39aa612324689245efbbc74d63987045f5e947e3",
+      "bytes": 3061
+    },
+    {
+      "file": "ORIGIN_RUN.json",
+      "sha256": "44411703882e7aab411a436aa9aaf422b682f6e84a9cb5ff50df35c3f62b3912",
+      "bytes": 13559
+    },
+    {
+      "file": "PAIRED_STATS_AUDIT.json",
+      "sha256": "acb6811d4e8c9f78237b5eff842055762f126cea83a63820b727f40584bb4ed3",
+      "bytes": 352
+    },
+    {
+      "file": "SEAL.json",
+      "sha256": "f60443ca65b2325c7d306c33c42381b49675bc033e528b6a77adbee4197b7529",
+      "bytes": 1604239
+    },
+    {
+      "file": "SOURCE_LOCK.json",
+      "sha256": "ac519dcf565f12a0101af847a5199844aac44fc12687bb31dd39922e67b36e8a",
+      "bytes": 30119
+    },
+    {
+      "file": "STATUS.json",
+      "sha256": "35e8cf84d868ea73f3c577c8a00c4423c60db2dd5b94e494b991210aa1ddbbe0",
+      "bytes": 2855
+    },
+    {
+      "file": "SUPPLEMENTAL_AUDIT.json",
+      "sha256": "f6c6439b1983cdcec96ff348c0c549d04235a6645213039734687397639af379",
+      "bytes": 496
+    }
+  ],
+  "restore": "Use prior commit raw evidence and PACKED zips, then overlay EXACT_SEALED_TEXT.zip; verify the exact SEAL.json bytes and every listed file.",
+  "workflowLaunchPathChanged": false,
+  "nativeCallsAdded": 0,
+  "productChanged": false
+}
