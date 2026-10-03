@@ -1,0 +1,226 @@
+{
+  "status": "COMPLETE_INDEPENDENTLY_AUDITED",
+  "runId": 37099783258,
+  "sourceCommit": "50fcc0b0ff8beb33ae18abe96f221ae93dfbdcd8",
+  "expectedBaseCalls": 24,
+  "observedBaseCalls": 24,
+  "observedProfileCalls": 0,
+  "profileRequiredByFrozenRule": false,
+  "artifactFilesVerified": 28,
+  "sourceBlobsVerified": 169,
+  "rawRecordsVerified": 72,
+  "weightedQualityAndSeedRecalculations": 48,
+  "determinismCounts": {
+    "R": 1,
+    "A": 1
+  },
+  "runtime": {
+    "node": "v24.13.0",
+    "cpu": "AMD EPYC 9V74 80-Core Processor",
+    "cpus": 4,
+    "allowedCpuList": "0-3",
+    "workerCpu": "0",
+    "platform": "linux",
+    "runId": "37099783258"
+  },
+  "groups": {
+    "R:R": {
+      "apiSamplesMs": [
+        6003.639709,
+        5990.163401000001,
+        6087.478167,
+        6001.082507
+      ],
+      "medianApiMs": 6002.361108,
+      "medianThreadCpuMs": 6001.808,
+      "medianProcessCpuMs": 6046.889,
+      "medianThreadCpuToWall": 0.999909858959669,
+      "medianInitMs": 5.841937999999999,
+      "medianCoverageMs": 77.64844900000001
+    },
+    "A:A": {
+      "apiSamplesMs": [
+        6013.14178,
+        6066.108745,
+        5996.647317,
+        5999.960491
+      ],
+      "medianApiMs": 6006.5511355,
+      "medianThreadCpuMs": 6005.0515,
+      "medianProcessCpuMs": 6049.4145,
+      "medianThreadCpuToWall": 0.9998783196951808,
+      "medianInitMs": 5.728821999999994,
+      "medianCoverageMs": 84.60731950000002
+    },
+    "RA:R": {
+      "apiSamplesMs": [
+        6012.760057,
+        5988.5633609999995,
+        6053.505567,
+        6011.159946
+      ],
+      "medianApiMs": 6011.9600015,
+      "medianThreadCpuMs": 6010.5895,
+      "medianProcessCpuMs": 6054.192,
+      "medianThreadCpuToWall": 0.9997854438826308,
+      "medianInitMs": 5.576970999999986,
+      "medianCoverageMs": 83.32105849999998
+    },
+    "RA:A": {
+      "apiSamplesMs": [
+        6021.055331,
+        5944.432939999999,
+        5970.098621,
+        5968.703390000001
+      ],
+      "medianApiMs": 5969.4010055,
+      "medianThreadCpuMs": 5968.7675,
+      "medianProcessCpuMs": 5981.45,
+      "medianThreadCpuToWall": 0.9998938746069983,
+      "medianInitMs": 3.805425000000014,
+      "medianCoverageMs": 66.91156600000022
+    },
+    "AR:A": {
+      "apiSamplesMs": [
+        6000.711146000001,
+        6007.793835,
+        6004.207426,
+        6032.99821
+      ],
+      "medianApiMs": 6006.000630500001,
+      "medianThreadCpuMs": 6005.3189999999995,
+      "medianProcessCpuMs": 6051.217000000001,
+      "medianThreadCpuToWall": 0.9998865049403987,
+      "medianInitMs": 5.3672889999999995,
+      "medianCoverageMs": 89.06912499999999
+    },
+    "AR:R": {
+      "apiSamplesMs": [
+        5965.430805999999,
+        5931.612512,
+        5956.123666999999,
+        5961.037193000001
+      ],
+      "medianApiMs": 5958.58043,
+      "medianThreadCpuMs": 5957.8935,
+      "medianProcessCpuMs": 5970.5165,
+      "medianThreadCpuToWall": 0.9998882683114438,
+      "medianInitMs": 3.980013500000041,
+      "medianCoverageMs": 85.50725649999958
+    }
+  },
+  "contrasts": [
+    {
+      "name": "aAfterR",
+      "numerator": "RA:A",
+      "denominator": "A:A",
+      "ratioOfMedians": 0.993815064724841,
+      "blockRatios": [
+        1.0013160426428527,
+        0.9799417039629741,
+        0.9955727434687152,
+        0.9947904488626408
+      ],
+      "medianBlockRatio": 0.995181596165678,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    },
+    {
+      "name": "rAfterA",
+      "numerator": "AR:R",
+      "denominator": "R:R",
+      "ratioOfMedians": 0.9927060906179656,
+      "blockRatios": [
+        0.9936357101938142,
+        0.9902254938504305,
+        0.9784221813374101,
+        0.9933269849309208
+      ],
+      "medianBlockRatio": 0.9917762393906756,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    },
+    {
+      "name": "firstAMatched",
+      "numerator": "AR:A",
+      "denominator": "A:A",
+      "ratioOfMedians": 0.9999083492360956,
+      "blockRatios": [
+        0.997932755545305,
+        0.9903867681158756,
+        1.0012607226338903,
+        1.0055063227582177
+      ],
+      "medianBlockRatio": 0.9995967390895977,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    },
+    {
+      "name": "firstRMatched",
+      "numerator": "RA:R",
+      "denominator": "R:R",
+      "ratioOfMedians": 1.0015991862747489,
+      "blockRatios": [
+        1.0015191364642233,
+        0.9997328887556333,
+        0.9944192654054738,
+        1.0016792701963761
+      ],
+      "medianBlockRatio": 1.0006260126099282,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    },
+    {
+      "name": "standaloneAToR",
+      "numerator": "A:A",
+      "denominator": "R:R",
+      "ratioOfMedians": 1.000698063216226,
+      "blockRatios": [
+        1.0015827183942694,
+        1.0126783426287371,
+        0.9850790676355291,
+        0.9998130310658633
+      ],
+      "medianBlockRatio": 1.0006978747300663,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    },
+    {
+      "name": "aSecondVsFirst",
+      "numerator": "RA:A",
+      "denominator": "AR:A",
+      "ratioOfMedians": 0.9939061569833778,
+      "blockRatios": [
+        1.003390295667466,
+        0.9894535503813603,
+        0.994319182769686,
+        0.9893428080430345
+      ],
+      "medianBlockRatio": 0.9918863665755231,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    },
+    {
+      "name": "rSecondVsFirst",
+      "numerator": "AR:R",
+      "denominator": "RA:R",
+      "ratioOfMedians": 0.9911211033528697,
+      "blockRatios": [
+        0.9921285315643187,
+        0.9904900648841946,
+        0.9839131394326508,
+        0.9916617169647346
+      ],
+      "medianBlockRatio": 0.9910758909244646,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    }
+  ],
+  "profileRows": [],
+  "stopReason": null,
+  "primaryPcThresholdCalls": 0,
+  "performanceConfirmationCalls": 0,
+  "productChanged": false,
+  "devApplied": false,
+  "limits": "One host with pinned calling thread; background compiler/frequency/SMT not controlled; no CPU causal attribution from host change; no compiler-tier trace"
+}

@@ -1,0 +1,60 @@
+{
+  "status": "PRIOR_EVIDENCE_REANALYSIS_ONLY",
+  "observations": [
+    {
+      "host": 0,
+      "cpu": "AMD EPYC 9V45 96-Core Processor",
+      "firstSharedCallOrder": [
+        "R",
+        "A"
+      ],
+      "coldApiMedians": {
+        "R": 3818.5307885,
+        "A": 5731.589653999999
+      },
+      "firstSharedCalls": [
+        {
+          "label": "R",
+          "apiMs": 3839.1220900000003,
+          "processCpuMs": 3876.723
+        },
+        {
+          "label": "A",
+          "apiMs": 3819.000844,
+          "processCpuMs": 3829.937
+        }
+      ],
+      "individualVariantRepeatedBeforeFirstSharedCall": false,
+      "board028CoreProfileExists": false,
+      "nativeCallsNew": 0
+    },
+    {
+      "host": 1,
+      "cpu": "AMD EPYC 9V74 80-Core Processor",
+      "firstSharedCallOrder": [
+        "A",
+        "R"
+      ],
+      "coldApiMedians": {
+        "R": 5984.067649999999,
+        "A": 5996.690239
+      },
+      "firstSharedCalls": [
+        {
+          "label": "A",
+          "apiMs": 6043.401733,
+          "processCpuMs": 6089.089
+        },
+        {
+          "label": "R",
+          "apiMs": 5952.185363,
+          "processCpuMs": 5962.597
+        }
+      ],
+      "individualVariantRepeatedBeforeFirstSharedCall": false,
+      "board028CoreProfileExists": false,
+      "nativeCallsNew": 0
+    }
+  ],
+  "interpretation": "Shared-session A was fast on its own first call in block0; own repeated warmup is not necessary in that observation. Process-level preceding-export effect remains a hypothesis."
+}

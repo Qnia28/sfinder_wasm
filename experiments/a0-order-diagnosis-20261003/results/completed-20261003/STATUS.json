@@ -1,0 +1,184 @@
+{
+  "status": "ORDER_DIAGNOSIS_COMPLETE_KEEP_PRODUCT_UNCHANGED",
+  "runId": 37099783258,
+  "runConclusion": "success",
+  "sourceCommit": "50fcc0b0ff8beb33ae18abe96f221ae93dfbdcd8",
+  "matrixId": "board-028--restricted-split--ordinary",
+  "nativeIntegratedCalls": 24,
+  "conditionalProfileCalls": 0,
+  "missingTimeoutOomErrors": 0,
+  "independentAudit": "PASS",
+  "runtime": {
+    "node": "v24.13.0",
+    "cpu": "AMD EPYC 9V74 80-Core Processor",
+    "cpus": 4,
+    "allowedCpuList": "0-3",
+    "workerCpu": "0",
+    "platform": "linux",
+    "runId": "37099783258"
+  },
+  "contrasts": [
+    {
+      "name": "aAfterR",
+      "numerator": "RA:A",
+      "denominator": "A:A",
+      "ratioOfMedians": 0.993815064724841,
+      "blockRatios": [
+        1.0013160426428527,
+        0.9799417039629741,
+        0.9955727434687152,
+        0.9947904488626408
+      ],
+      "medianBlockRatio": 0.995181596165678,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    },
+    {
+      "name": "rAfterA",
+      "numerator": "AR:R",
+      "denominator": "R:R",
+      "ratioOfMedians": 0.9927060906179656,
+      "blockRatios": [
+        0.9936357101938142,
+        0.9902254938504305,
+        0.9784221813374101,
+        0.9933269849309208
+      ],
+      "medianBlockRatio": 0.9917762393906756,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    },
+    {
+      "name": "firstAMatched",
+      "numerator": "AR:A",
+      "denominator": "A:A",
+      "ratioOfMedians": 0.9999083492360956,
+      "blockRatios": [
+        0.997932755545305,
+        0.9903867681158756,
+        1.0012607226338903,
+        1.0055063227582177
+      ],
+      "medianBlockRatio": 0.9995967390895977,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    },
+    {
+      "name": "firstRMatched",
+      "numerator": "RA:R",
+      "denominator": "R:R",
+      "ratioOfMedians": 1.0015991862747489,
+      "blockRatios": [
+        1.0015191364642233,
+        0.9997328887556333,
+        0.9944192654054738,
+        1.0016792701963761
+      ],
+      "medianBlockRatio": 1.0006260126099282,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    },
+    {
+      "name": "standaloneAToR",
+      "numerator": "A:A",
+      "denominator": "R:R",
+      "ratioOfMedians": 1.000698063216226,
+      "blockRatios": [
+        1.0015827183942694,
+        1.0126783426287371,
+        0.9850790676355291,
+        0.9998130310658633
+      ],
+      "medianBlockRatio": 1.0006978747300663,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    },
+    {
+      "name": "aSecondVsFirst",
+      "numerator": "RA:A",
+      "denominator": "AR:A",
+      "ratioOfMedians": 0.9939061569833778,
+      "blockRatios": [
+        1.003390295667466,
+        0.9894535503813603,
+        0.994319182769686,
+        0.9893428080430345
+      ],
+      "medianBlockRatio": 0.9918863665755231,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    },
+    {
+      "name": "rSecondVsFirst",
+      "numerator": "AR:R",
+      "denominator": "RA:R",
+      "ratioOfMedians": 0.9911211033528697,
+      "blockRatios": [
+        0.9921285315643187,
+        0.9904900648841946,
+        0.9839131394326508,
+        0.9916617169647346
+      ],
+      "medianBlockRatio": 0.9910758909244646,
+      "blocksOver10PercentSlower": 0,
+      "blocksOver10PercentFaster": 0
+    }
+  ],
+  "findings": [
+    {
+      "claim": "On this 9V74 host, standalone R/A first calls differ by only +0.070 percent",
+      "confidence": "DIRECT_OBSERVATION",
+      "productPerformanceClaim": false
+    },
+    {
+      "claim": "On this 9V74 host, preceding opposite-variant execution changes API time by less than 1 percent in ratio-of-medians",
+      "confidence": "DIRECT_OBSERVATION",
+      "globalRefutation": false
+    },
+    {
+      "claim": "A general large cross-variant warming effect is not supported by this experiment",
+      "confidence": "LIMITED_TO_TESTED_HOST_AND_LIFECYCLE"
+    },
+    {
+      "claim": "Earlier 9V45 cold anomaly remains real recorded evidence but its mechanism is unresolved",
+      "confidence": "UNRESOLVED_NO_TRACE",
+      "discardEarlierFailure": false
+    },
+    {
+      "claim": "Pinning eliminated the anomaly is not established because the host changed too",
+      "confidence": "CAUSAL_ATTRIBUTION_NOT_AVAILABLE"
+    },
+    {
+      "claim": "Thread CPU closely matches wall time here; a seconds-scale IPC or off-CPU delay is not supported",
+      "confidence": "DIRECT_OBSERVATION_NOT_PRIOR_HOST_PROOF"
+    }
+  ],
+  "response": {
+    "modifySiblingTrailNow": false,
+    "addProductWarmup": false,
+    "addIdOrCpuExceptions": false,
+    "relaxGate": false,
+    "broadBenchmark": false,
+    "retryForFavorableHost": false,
+    "promoteA0": false,
+    "furtherAutomaticCalls": 0,
+    "nextProposal": "If further cause work is authorized, predeclare engine-tier trace/control on the same single input without successful-host selection. Do not infer tier causation without trace; do not expand to populations."
+  },
+  "oldReservedP95FailureStillValid": true,
+  "independentExactProofStillPending": "board-111--restricted-split--ordinary",
+  "nativeThresholdCalls": 0,
+  "actualPrimaryCalls": 0,
+  "actualPcCalls": 0,
+  "confirmationCalls": 0,
+  "productChanged": false,
+  "devApplied": false,
+  "mainMerged": false,
+  "deployed": false,
+  "devHead": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+  "localMain": "187fbf954ad0749e697b4e7f1252683b318d696e",
+  "remoteMain": "03b637730c5b541f4f2934be613498fbe65327fd",
+  "defaultBranch": "main",
+  "wallMinutes": 4.05,
+  "observedRunnerHours": 0.04833333333333333,
+  "artifactCompressedBytes": 77146
+}
