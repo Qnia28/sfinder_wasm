@@ -1,0 +1,52 @@
+name: A0 symmetric10-pair retests
+on:
+  push:
+    branches: [validation/a0-proof-retest-20261003]
+    paths: [experiments/a0-proof-retest-20261003/retest-launch.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: a0-retest-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  retest:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.event.repository.private == false
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        host: [0,1,2,3,4]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - run: |
+          mkdir -p .a0/baseline .a0/proof .a0/retest
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 | tar -x -C .a0/baseline
+          cp wasm/pc_wasm.wasm .a0/baseline/wasm/pc_wasm.wasm
+          sudo mkdir /sys/fs/cgroup/a0-retest
+          echo +memory | sudo tee /sys/fs/cgroup/a0-retest/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-retest' >> "$GITHUB_ENV"
+      - run: node --test --test-concurrency=1 experiments/a0-proof-retest-20261003/retest.test.mjs experiments/a0-execution-diagnosis-20261003/watchdog.test.mjs > .a0/proof/preflight.log 2>&1
+      - env:
+          A0_LOCK_STAGE: retest
+        run: node experiments/a0-proof-retest-20261003/lock.mjs
+      - run: node experiments/a0-proof-retest-20261003/run-retest.mjs ${{ matrix.host }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: a0-retest-${{ matrix.host }}
+          path: |
+            .a0/proof/
+            .a0/retest/
+          include-hidden-files: true
+          retention-days: 1
+          if-no-files-found: error

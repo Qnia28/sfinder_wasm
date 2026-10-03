@@ -10,7 +10,11 @@ const w=verify(m,expected.probe);assert.deepEqual(w.selectedIDs,expected.selecte
 const names=git('ls-tree','-r','--name-only','HEAD','--','src','rust','wasm','package.json','package-lock.json','experiments/a0-proof-retest-20261003','experiments/a0-diagnosis-20261003','experiments/a0-integrated-revalidation-20261003','.github/workflows/a0-proof-retest.yml').toString().trim().split('\n');
 const files=names.filter(f=>!f.includes('/results/')&&!f.includes('/inputs/')).map(file=>({file,sha256:sha(git('show',`HEAD:${file}`))}));
 for(const f of files)assert.equal(sha(fs.readFileSync(`${ROOT}/${f.file}`)),f.sha256,f.file);
+const retest=process.env.A0_LOCK_STAGE==='retest';
+if(retest){const proof=read(`${HERE}/PROOF_AUDIT.json`);assert.equal(proof.status,'INDEPENDENT_EXACT_VERIFIED');for(const e of read(`${HERE}/RETEST_INPUTS.json`).entries)matrix(e);}
 write(`${ROOT}/.a0/proof/LOCK.json`,{commit:git('rev-parse','HEAD').toString().trim(),baseline:BASELINE,wasmSha256:EXPECTED_WASM,files,input:entry,
  expectedSha256:jsonSha(expected),primaryProofSha256:jsonSha(m.primary),campaign:read(`${HERE}/CAMPAIGN.json`),
  rulesSha256:sha(fs.readFileSync(`${HERE}/TESTING_RULES_KO.md`)),independence:'Sequential fixed-K threshold search, not integrated partitioned BestSetSearch. Shared coverage/gain helpers and original input/WASM remain; not a fully separate implementation.',
- maxCalls:1,stateBudget:2000000,apiSeconds:30,processSeconds:45,startupSeconds:45,auditSeconds:30,durableAckSeconds:10,reapSeconds:2,noProductChanges:true});
+ stage:retest?'RETEST':'PROOF',maxCalls:retest?read(`${HERE}/RETEST_SCHEDULE.json`).runs.length:1,stateBudget:retest?100000:2000000,
+ apiSeconds:retest?10:30,processSeconds:retest?30:45,startupSeconds:retest?30:45,auditSeconds:30,durableAckSeconds:10,reapSeconds:2,noProductChanges:true,
+ ...(retest?{selection:read(`${HERE}/RETEST_SELECTION.json`),scheduleSha256:jsonSha(read(`${HERE}/RETEST_SCHEDULE.json`)),proof:read(`${HERE}/PROOF_AUDIT.json`)}:{})});

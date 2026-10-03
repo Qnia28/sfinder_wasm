@@ -1,0 +1,24 @@
+{
+  "status": "SELECTION_INDEPENDENTLY_VERIFIED_NO_NEW_SOLVER",
+  "populationInputs": 168,
+  "sourceRowsVerified": 1344,
+  "explicitLegacyPairMappingVerified": true,
+  "selectedIncludingControls": 121,
+  "mainSelected": 115,
+  "unselectedStratifiedControls": 6,
+  "uniqueVariationFlaggedInputs": 113,
+  "selectionReasonCounts": {
+    "VARIATION_10_PERCENT_R": 89,
+    "VARIATION_10_PERCENT_A": 94,
+    "IMPROVEMENT_TAIL": 10,
+    "HASH_STRATIFIED_UNSELECTED_CONTROL": 6,
+    "INPUT_SLOWDOWN_GATE_1_10": 10,
+    "REGRESSION_TAIL": 9,
+    "EXACT_STATUS_TRANSITION": 1
+  },
+  "plannedNativeCalls": 2460,
+  "plannedRunnerJobs": 5,
+  "sourceInputValuesNotReplaced": true,
+  "newNativeCalls": 0,
+  "proofPendingSoRetestNotLaunched": true
+}
