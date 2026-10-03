@@ -18,3 +18,4 @@ rust/generated/
 /benchmark-results/
 /bench/threshold/build/
 /bench/threshold/results/
+/bench/threshold/qb100/

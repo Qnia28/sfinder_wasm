@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 import { BASELINE_SHA, sha256 } from './engine.mjs';
 
 const id = process.argv[2], out = resolve(process.argv[3] || `bench/threshold/results/capture/${id}`);
-const config = JSON.parse(readFileSync(new URL('./capture-config.json', import.meta.url)));
-const db = JSON.parse(readFileSync(new URL('./cycle1-setups.json', import.meta.url)));
+const config = JSON.parse(readFileSync(process.env.THRESHOLD_CAPTURE_CONFIG || new URL('./capture-config.json', import.meta.url)));
+const db = JSON.parse(readFileSync(process.env.THRESHOLD_CAPTURE_DB || new URL('./cycle1-setups.json', import.meta.url)));
 assert(db.setups.some(s => s.id === id));
 assert(!existsSync(resolve(out, 'capture.json')), 'never overwrite a capture');
 mkdirSync(out, { recursive: true });

@@ -3,6 +3,7 @@ name: Threshold engine correctness and paired benchmark
 on:
   push:
     branches: [experiment/threshold-engine-20261003]
+    paths: ['bench/threshold/ci-run.json']
   workflow_dispatch:
     inputs:
       profile:

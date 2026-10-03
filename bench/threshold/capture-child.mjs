@@ -12,7 +12,7 @@ import { prepareCoverageMatrix, kernelizeCardinality, solvePreparedCardinalityKe
 import { BASELINE_SHA, sha256, validateMatrix } from './engine.mjs';
 
 const [phase, id, out, filter, seconds] = process.argv.slice(2);
-const dbBytes = readFileSync(new URL('./cycle1-setups.json', import.meta.url));
+const dbBytes = readFileSync(process.env.THRESHOLD_CAPTURE_DB || new URL('./cycle1-setups.json', import.meta.url));
 const db = JSON.parse(dbBytes), setup = db.setups.find(s => s.id === id);
 assert(setup, 'unknown setup');
 if (phase === 'enumerate') {
@@ -39,6 +39,7 @@ if (phase === 'enumerate') {
       writeFileSync(resolve(out, `${piece}.raw.json.gz`), gzipSync(JSON.stringify(raw)), { flag: 'wx' });
       records.push({ filter: piece, status: 'ENUMERATED', n: raw.keys.length, rows: raw.rows.length,
         entries: prepared.entryCount, qualityLevels: new Set(raw.rows.flatMap(r => r.map(x => x[1]))).size });
+      if (setup.chooseOneFilter) break;
     }
     writeFileSync(resolve(out, 'enumeration.json'), JSON.stringify({ setup, enumerationMs,
       candidateCount: compact.count, records, stats: solver.stats() }, null, 2));

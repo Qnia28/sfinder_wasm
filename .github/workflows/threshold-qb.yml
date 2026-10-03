@@ -1,0 +1,262 @@
+name: Threshold QB independent100 capture measure and recheck
+on:
+  push:
+    branches: [experiment/threshold-engine-20261003]
+    paths: ['bench/threshold/qb-run.json']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: threshold-qb-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  THRESHOLD_CAPTURE_DB: bench/threshold/qb-setups.json
+  THRESHOLD_CAPTURE_CONFIG: bench/threshold/qb-run.json
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      maxParallel: ${{ steps.plan.outputs.maxParallel }}
+      pairs: ${{ steps.plan.outputs.pairs }}
+      recheckPairs: ${{ steps.plan.outputs.recheckPairs }}
+      seconds: ${{ steps.plan.outputs.seconds }}
+      jobMinutes: ${{ steps.plan.outputs.jobMinutes }}
+      recheckMinutes: ${{ steps.plan.outputs.recheckMinutes }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - run: npm ci
+      - id: plan
+        run: node bench/threshold/qb-plan.mjs
+      - name: Supply equivalence and frozen selection tests
+        run: node --test bench/threshold/qb.test.mjs bench/threshold/qb-review.test.mjs
+      - name: Pinned Rust
+        run: |
+          rustup toolchain install 1.90.0 --profile minimal --component clippy --target wasm32-unknown-unknown
+          rustup default 1.90.0
+      - run: node bench/threshold/build.mjs
+      - name: Frozen engine identity against completed cycle1 campaign
+        run: node bench/threshold/check-retest-build.mjs
+      - name: Native oracle and undo contracts
+        run: |
+          cargo test --manifest-path rust/Cargo.toml --workspace --offline
+          cargo test --manifest-path rust/Cargo.toml -p pc-core --features threshold-trace --offline
+      - name: Lint
+        run: cargo clippy --manifest-path rust/Cargo.toml -p pc-wasm --all-targets --target wasm32-unknown-unknown --features threshold-trace --offline -- -D warnings -A clippy::needless_borrow -A clippy::manual_range_contains
+      - name: Real-WASM oracle and product regressions
+        run: |
+          node --test --test-concurrency=1 bench/threshold/correctness.test.mjs bench/threshold/harness.test.mjs bench/threshold/root-forced.test.mjs bench/threshold/timeout-policy.test.mjs
+          node bench/threshold/product-regression.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qb-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            bench/threshold/build/*.wasm
+            bench/threshold/build/build.json
+          retention-days: 30
+          if-no-files-found: error
+  capture:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: qb-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/build
+      - name: Enumerate QB and prove the presampled single filter K
+        run: node bench/threshold/capture.mjs "${{ matrix.setup }}" "bench/threshold/results/qb-captures/${{ matrix.setup }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qb-capture-${{ matrix.setup }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/results/qb-captures/
+          retention-days: 30
+          if-no-files-found: error
+  package:
+    needs: [build, capture]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      enabled: ${{ steps.package.outputs.enabled }}
+      matrix: ${{ steps.package.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - uses: actions/download-artifact@v4
+        with:
+          name: qb-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/build
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: qb-capture-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/results/qb-captures
+      - id: package
+        run: node bench/threshold/qb-package.mjs
+      - name: New real matrix budget and witness correctness gate
+        env: {THRESHOLD_FIXTURE_ROOT: bench/threshold/qb100}
+        run: |
+          node bench/threshold/fixtures.mjs --verify
+          node bench/threshold/qb-correctness.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qb-fixtures-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/qb100/
+          retention-days: 30
+          if-no-files-found: error
+  benchmark:
+    needs: [build, package]
+    if: needs.package.outputs.enabled == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ fromJSON(needs.build.outputs.jobMinutes) }}
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix: ${{ fromJSON(needs.package.outputs.matrix) }}
+    env: {THRESHOLD_FIXTURE_ROOT: bench/threshold/qb100}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - uses: actions/download-artifact@v4
+        with:
+          name: qb-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/build
+      - uses: actions/download-artifact@v4
+        with:
+          name: qb-fixtures-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/qb100
+      - name: Sequential paired comparisons on this runner
+        run: node bench/threshold/benchmark.mjs --profile qb-confirm --suite all --mask 20 --pairs "${{ needs.build.outputs.pairs }}" --timeout-seconds "${{ needs.build.outputs.seconds }}" --case "${{ matrix.case }}" --out "bench/threshold/results/qb-bench/${{ matrix.case }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qb-bench-${{ matrix.case }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/results/qb-bench/
+          retention-days: 30
+          if-no-files-found: error
+  review:
+    needs: [build, package, benchmark]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      enabled: ${{ steps.review.outputs.enabled }}
+      matrix: ${{ steps.review.outputs.matrix }}
+    env: {THRESHOLD_FIXTURE_ROOT: bench/threshold/qb100}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - uses: actions/download-artifact@v4
+        with:
+          name: qb-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/build
+      - uses: actions/download-artifact@v4
+        with:
+          name: qb-fixtures-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/qb100
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: qb-bench-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/results/qb-bench
+      - name: Independent raw witness audit and anomaly selection
+        id: review
+        run: node bench/threshold/qb-review.mjs bench/threshold/results/qb-bench bench/threshold/results/qb-review "${{ needs.build.outputs.pairs }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qb-review-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/results/qb-review/
+          retention-days: 30
+          if-no-files-found: error
+  recheck:
+    needs: [build, package, review]
+    if: needs.review.outputs.enabled == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ fromJSON(needs.build.outputs.recheckMinutes) }}
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix: ${{ fromJSON(needs.review.outputs.matrix) }}
+    env: {THRESHOLD_FIXTURE_ROOT: bench/threshold/qb100}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - uses: actions/download-artifact@v4
+        with:
+          name: qb-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/build
+      - uses: actions/download-artifact@v4
+        with:
+          name: qb-fixtures-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/qb100
+      - name: Ten new pairs, same frozen binary and matrices, fresh VM
+        run: node bench/threshold/benchmark.mjs --profile qb-confirm --suite all --mask 20 --pairs "${{ needs.build.outputs.recheckPairs }}" --timeout-seconds "${{ needs.build.outputs.seconds }}" --case "${{ matrix.case }}" --out "bench/threshold/results/qb-recheck/${{ matrix.case }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qb-recheck-${{ matrix.case }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/results/qb-recheck/
+          retention-days: 30
+          if-no-files-found: error
+  final:
+    needs: [build, package, review, recheck]
+    if: ${{ always() && needs.review.result == 'success' && (needs.recheck.result == 'success' || needs.recheck.result == 'skipped') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env: {THRESHOLD_FIXTURE_ROOT: bench/threshold/qb100}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - uses: actions/download-artifact@v4
+        with:
+          name: qb-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/build
+      - uses: actions/download-artifact@v4
+        with:
+          name: qb-fixtures-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/qb100
+      - uses: actions/download-artifact@v4
+        with:
+          name: qb-review-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/results/qb-review
+      - uses: actions/download-artifact@v4
+        if: needs.review.outputs.enabled == 'true'
+        with:
+          pattern: qb-recheck-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold/results/qb-recheck
+      - name: Audit new repeats against initial checked optima
+        if: needs.review.outputs.enabled == 'true'
+        run: node bench/threshold/qb-review.mjs bench/threshold/results/qb-recheck bench/threshold/results/qb-recheck-review "${{ needs.build.outputs.recheckPairs }}" bench/threshold/results/qb-review/review.json
+      - name: Final report, original selection and repeat resolution
+        run: node bench/threshold/qb-report.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qb-final-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            bench/threshold/results/qb-review/
+            bench/threshold/results/qb-recheck-review/
+            bench/threshold/results/qb-final/
+          retention-days: 30
+          if-no-files-found: error

@@ -2,13 +2,17 @@ import assert from 'node:assert/strict';
 import { manifest } from './fixtures.mjs';
 
 export const PROFILES = ['smoke','baseline','screen','ablation','confirm','confirm-onoff','factorial','diagnostic',
-  'root-screen', 'root-confirm'];
+  'root-screen', 'root-confirm', 'qb-confirm'];
 export function settings(profile, mask) {
   assert(PROFILES.includes(profile), 'unknown benchmark profile');
   assert(Number.isInteger(mask) && mask >= 0 && mask <= (profile === 'root-confirm' ? 100 : 31));
   const off = { engine: 'experiment', mask: 0 };
   const compare = (name, left, right) => ({ name,
     left: { engine: 'experiment', mask: left }, right: { engine: 'experiment', mask: right } });
+  if (profile === 'qb-confirm') {
+    assert.equal(mask, 20, 'freeze final combined candidate, not the rejected root refinements');
+    return [compare('combined-candidate-total', 0, 20), compare('root-incremental-independent', 16, 20)];
+  }
   if (profile === 'root-screen') return [
     compare('old-root-alone', 0, 4), compare('old-root-incremental', 16, 20),
     compare('fused-collection', 4, 36), compare('prepared-root-coverage', 4, 68),
@@ -43,7 +47,7 @@ export function defaults(profile) {
   return {
     smoke: [1, 10], baseline: [3, 20], screen: [3, 20], ablation: [3, 30],
     confirm: [5, 60], 'confirm-onoff': [5, 300], factorial: [2, 10], diagnostic: [1, 20],
-    'root-screen': [1, 300], 'root-confirm': [5, 300],
+    'root-screen': [1, 300], 'root-confirm': [5, 300], 'qb-confirm': [3, 300],
   }[profile];
 }
 

@@ -1,0 +1,5015 @@
+{
+  "version": 1,
+  "dataset": "cycle7-2plus2-qb-random100",
+  "source": "cycle-7-2plus2-qb-setups.json",
+  "sourceSha256": "3d21d8d97701af13261caea7381bf7b70e02931ce939d23b3381c6247e1dc69a",
+  "policySource": "cycle-7-2plus2-qb-policy.json",
+  "policySha256": "c8b52da795e6f8a96b323b6337d7a0ff6070c529e37cf462ad6d2aa8d331add1",
+  "entries": 356,
+  "sampleCount": 100,
+  "seed": 1900027942,
+  "sampling": "Fisher-Yates/xorshift32 with rejection-sampled bounded draws, sample100 physical DB rows without replacement. Do not deduplicate mirrors or use performance/proof outcomes to select setups. Presampled random filter priority selects first nonempty filter, uniform among eligible filters; prove/measure only that one. Failed setup/K proof stays a reported missing slot, no silent replacement.",
+  "policy": "Initial hold T + five unused pieces of the current bag in all120 orders + following bag first piece (7 possibilities), represented as virtual leading T. 840 queues/setup. Four-line PC with hold; single saved-piece matrix per setup.",
+  "setups": [
+    {
+      "id": "c7-2plus2-qb-row-039",
+      "displayName": "TIL - [JZ]! QB",
+      "fumen": "v115@9gh0GeAtg0GeBtg0GeAtglzhCeilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "J",
+        "L",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-039",
+      "occupied": 16,
+      "board": "0x80f01c078f",
+      "mirrorGroup": "0x80f01c078f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-039",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "J",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TILSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 0,
+      "filters": [
+        "O",
+        "I",
+        "J",
+        "T",
+        "Z",
+        "L",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-025",
+      "displayName": "TIL - [OZ]! QB",
+      "fumen": "v115@9gRpHeRpBtFeilBtEeglzhOeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "O",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-025",
+      "occupied": 16,
+      "board": "0xc0f07c1f",
+      "mirrorGroup": "0xc0f07c1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-025",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S"
+      ],
+      "pattern": "T,[TILJS]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 1,
+      "filters": [
+        "T",
+        "S",
+        "Z",
+        "O",
+        "L",
+        "I",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-326",
+      "displayName": "TTS - [OI]! QB",
+      "fumen": "v115@QhwwRpzhR4xwRpCeR4BewwJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "O",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-326",
+      "occupied": 16,
+      "board": "0x200ffe63",
+      "mirrorGroup": "0x1fff19",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-326",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 2,
+      "filters": [
+        "L",
+        "O",
+        "J",
+        "T",
+        "I",
+        "S",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-271",
+      "displayName": "TSZ - [LS]! QB",
+      "fumen": "v115@9gilR4EeglAtR4FeBtR4FeAtR4QeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "S",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-271",
+      "occupied": 16,
+      "board": "0x7c0f03c07",
+      "mirrorGroup": "0x7c0f03c07",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-271",
+      "previousBagPieces": [
+        "T",
+        "S",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TIJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 3,
+      "filters": [
+        "T",
+        "J",
+        "L",
+        "Z",
+        "I",
+        "S",
+        "O"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-134",
+      "displayName": "TLZ - [OL]! QB",
+      "fumen": "v115@EhilGeilBeBtCeRpglCeBtBeRpglJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "L",
+        "O",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-134",
+      "occupied": 16,
+      "board": "0xe0380e3398",
+      "mirrorGroup": "0x1c0731c67",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-134",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TIJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 4,
+      "filters": [
+        "J",
+        "T",
+        "L",
+        "I",
+        "O",
+        "Z",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-052",
+      "displayName": "TIS - [OZ]! QB",
+      "fumen": "v115@BhBtGeRpBtDeR4RpEeR4zhNeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "O",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-052",
+      "occupied": 16,
+      "board": "0xc0780783f",
+      "mirrorGroup": "0xc0780783f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-052",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S"
+      ],
+      "pattern": "T,[TILJS]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 5,
+      "filters": [
+        "T",
+        "J",
+        "L",
+        "I",
+        "O",
+        "S",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-339",
+      "displayName": "TTS - [IZ]! QB",
+      "fumen": "v115@9gwwBtGexwBtFewwR4GeR4zhNeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "S",
+        "T",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-339",
+      "occupied": 16,
+      "board": "0x1c0f01c3f",
+      "mirrorGroup": "0x1c0f01c3f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-339",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TLJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 6,
+      "filters": [
+        "T",
+        "L",
+        "O",
+        "S",
+        "J",
+        "Z",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-154",
+      "displayName": "TLZ - [JS]! QB",
+      "fumen": "v115@9gQ4IeR4Heg0Q4BtEegli0BtBeilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "L",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-154",
+      "occupied": 16,
+      "board": "0x40383f9f",
+      "mirrorGroup": "0x40383f9f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-154",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "J",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TILZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 7,
+      "filters": [
+        "S",
+        "I",
+        "J",
+        "O",
+        "T",
+        "L",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-087",
+      "displayName": "TLL - [OI]! QB",
+      "fumen": "v115@9gzhFejlFehlRpFehlRpPeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "L",
+        "O"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-087",
+      "occupied": 16,
+      "board": "0x3c0f03c0f",
+      "mirrorGroup": "0x3c0f03c0f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-087",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 8,
+      "filters": [
+        "J",
+        "O",
+        "Z",
+        "S",
+        "T",
+        "L",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-159",
+      "displayName": "TOI - [OI]! QB",
+      "fumen": "v115@9gzhFezhFeTpFeTpPeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "O",
+        "O"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-159",
+      "occupied": 16,
+      "board": "0x3c0f03c0f",
+      "mirrorGroup": "0x3c0f03c0f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-159",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 9,
+      "filters": [
+        "S",
+        "I",
+        "L",
+        "Z",
+        "T",
+        "O",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-260",
+      "displayName": "TSZ - [OL]! QB",
+      "fumen": "v115@FhRpEeQ4BtRpEeR4BtglFeQ4ilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "O",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-260",
+      "occupied": 16,
+      "board": "0xc03e0f83c0",
+      "mirrorGroup": "0xc1f07c0f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-260",
+      "previousBagPieces": [
+        "T",
+        "S",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TIJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 10,
+      "filters": [
+        "I",
+        "O",
+        "J",
+        "S",
+        "Z",
+        "L",
+        "T"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-062",
+      "displayName": "TIS - [LS]! QB",
+      "fumen": "v115@/gQ4IeS4EeilS4DeglzhQ4NeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "S",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-062",
+      "occupied": 16,
+      "board": "0x101c0fc3f",
+      "mirrorGroup": "0x101c0fc3f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-062",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TIJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 11,
+      "filters": [
+        "O",
+        "T",
+        "S",
+        "L",
+        "I",
+        "Z",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-104",
+      "displayName": "TLL - [JZ]! QB",
+      "fumen": "v115@9ghlHehlHehlg0CeBtBehli0BeBtKeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "L",
+        "L",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-104",
+      "occupied": 16,
+      "board": "0xc0331d9f",
+      "mirrorGroup": "0xc0331d9f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-104",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "J",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TILSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 12,
+      "filters": [
+        "S",
+        "O",
+        "J",
+        "T",
+        "Z",
+        "L",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-241",
+      "displayName": "TSS - [OS]! QB",
+      "fumen": "v115@ShV4RpAeV4AeRpKeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "O",
+        "S",
+        "S",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-241",
+      "occupied": 16,
+      "board": "0x7f9bf",
+      "mirrorGroup": "0x7f9bf",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-241",
+      "previousBagPieces": [
+        "T",
+        "S",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "Z"
+      ],
+      "pattern": "T,[TILJZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 13,
+      "filters": [
+        "O",
+        "L",
+        "T",
+        "I",
+        "J",
+        "Z",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-287",
+      "displayName": "TTI - [LS]! QB",
+      "fumen": "v115@MhR4wwFeR4ywglCezhilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-287",
+      "occupied": 16,
+      "board": "0xe0fc3f8",
+      "mirrorGroup": "0x1c0fc7f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-287",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TIJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 14,
+      "filters": [
+        "I",
+        "J",
+        "O",
+        "S",
+        "Z",
+        "L",
+        "T"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-139",
+      "displayName": "TLZ - [OZ]! QB",
+      "fumen": "v115@HhRpHeRpglBeDtAeilCeDtJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "O",
+        "Z",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-139",
+      "occupied": 16,
+      "board": "0x379fc7",
+      "mirrorGroup": "0x379fc7",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-139",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S"
+      ],
+      "pattern": "T,[TILJS]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 15,
+      "filters": [
+        "Z",
+        "T",
+        "L",
+        "I",
+        "S",
+        "J",
+        "O"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-069",
+      "displayName": "TIS - [SZ]! QB",
+      "fumen": "v115@9gwhCeR4DewhAeAtR4EewhBtR4EewhAtR4PeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "S",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-069",
+      "occupied": 16,
+      "board": "0xc41d07c0f",
+      "mirrorGroup": "0xc41d07c0f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-069",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "S",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "O"
+      ],
+      "pattern": "T,[TILJO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 16,
+      "filters": [
+        "S",
+        "I",
+        "Z",
+        "O",
+        "J",
+        "T",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-184",
+      "displayName": "TOL - [IL]! QB",
+      "fumen": "v115@9gzhFejlFehlRpFehlRpPeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "L",
+        "O"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-184",
+      "occupied": 16,
+      "board": "0x3c0f03c0f",
+      "mirrorGroup": "0x3c0f03c0f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-184",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TJSZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 17,
+      "filters": [
+        "J",
+        "T",
+        "O",
+        "Z",
+        "I",
+        "L",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-009",
+      "displayName": "TII - [IS]! QB",
+      "fumen": "v115@GhwhIe0hR4CewhCeR40hJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "I",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-009",
+      "occupied": 16,
+      "board": "0x802008fff8",
+      "mirrorGroup": "0x401fc47f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-009",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TLJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 18,
+      "filters": [
+        "Z",
+        "J",
+        "O",
+        "S",
+        "T",
+        "I",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-030",
+      "displayName": "TIL - [IS]! QB",
+      "fumen": "v115@JhglGeilBeR4CezhR4zhJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "L",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-030",
+      "occupied": 16,
+      "board": "0x419fff",
+      "mirrorGroup": "0x419fff",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-030",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TLJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 19,
+      "filters": [
+        "I",
+        "S",
+        "J",
+        "Z",
+        "T",
+        "O",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-079",
+      "displayName": "TLJ - [LJ]! QB",
+      "fumen": "v115@9gglBeh0EeglBeh0Eeilh0Eeilh0OeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "J",
+        "L",
+        "L"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-079",
+      "occupied": 16,
+      "board": "0x641907c1f",
+      "mirrorGroup": "0x641907c1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-079",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "J"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TISZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 20,
+      "filters": [
+        "J",
+        "L",
+        "I",
+        "T",
+        "O",
+        "Z",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-305",
+      "displayName": "TTL - [LJ]! QB",
+      "fumen": "v115@FhhlIeglg0DeglBewwgli0ilAeywJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "L",
+        "L",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-305",
+      "occupied": 16,
+      "board": "0xc0200c87bf",
+      "mirrorGroup": "0xc0184ff7",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-305",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TISZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 21,
+      "filters": [
+        "J",
+        "Z",
+        "O",
+        "S",
+        "I",
+        "L",
+        "T"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-258--mirror",
+      "displayName": "TSZ - [OI]! QB",
+      "fumen": "v115@ChBtIeBtBeRpCeR4CeRpBeR4zhJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "O",
+        "Z",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-258",
+      "occupied": 16,
+      "board": "0x180c018ff3",
+      "mirrorGroup": "0x600cc633f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-258",
+      "previousBagPieces": [
+        "T",
+        "S",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 22,
+      "filters": [
+        "Z",
+        "I",
+        "L",
+        "T",
+        "J",
+        "O",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-310",
+      "displayName": "TTL - [LZ]! QB",
+      "fumen": "v115@9gywGeglwwHeglBtFeilBtCeilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "L",
+        "T",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-310",
+      "occupied": 16,
+      "board": "0x1c0381f8f",
+      "mirrorGroup": "0x1c0381f8f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-310",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TIJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 23,
+      "filters": [
+        "O",
+        "T",
+        "S",
+        "I",
+        "J",
+        "L",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-038",
+      "displayName": "TIL - [JZ]! QB",
+      "fumen": "v115@9gilGeglAtg0GeBtg0GeAth0CezhJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "J",
+        "L",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-038",
+      "occupied": 16,
+      "board": "0x1c0701fc7",
+      "mirrorGroup": "0x1c0701fc7",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-038",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "J",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TILSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 24,
+      "filters": [
+        "J",
+        "L",
+        "T",
+        "I",
+        "Z",
+        "O",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-138",
+      "displayName": "TLZ - [OZ]! QB",
+      "fumen": "v115@9gBtHeglBtRpEeglBtRpEehlBtPeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "O",
+        "Z",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-138",
+      "occupied": 16,
+      "board": "0xc1f07c0f",
+      "mirrorGroup": "0xc1f07c0f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-138",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S"
+      ],
+      "pattern": "T,[TILJS]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 25,
+      "filters": [
+        "T",
+        "L",
+        "J",
+        "O",
+        "I",
+        "Z",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-300",
+      "displayName": "TTL - [IS]! QB",
+      "fumen": "v115@DhzhGeQ4hlFewwR4glEeywQ4glJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-300",
+      "occupied": 16,
+      "board": "0xf0380f03e0",
+      "mirrorGroup": "0x3c0703c1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-300",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TLJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 26,
+      "filters": [
+        "T",
+        "S",
+        "L",
+        "J",
+        "Z",
+        "O",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-035",
+      "displayName": "TIL - [LJ]! QB",
+      "fumen": "v115@9ghlHehlHehlg0Gehli0zhKeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "J",
+        "L",
+        "L"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-035",
+      "occupied": 16,
+      "board": "0xc0301dff",
+      "mirrorGroup": "0xc0301dff",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-035",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TISZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 27,
+      "filters": [
+        "L",
+        "Z",
+        "J",
+        "T",
+        "S",
+        "O",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-254",
+      "displayName": "TSS - [LZ]! QB",
+      "fumen": "v115@GhAtEeR4AeBtDeT4AtglEeR4ilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "S",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-254",
+      "occupied": 16,
+      "board": "0x80360fc3e0",
+      "mirrorGroup": "0x41b0fc1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-254",
+      "previousBagPieces": [
+        "T",
+        "S",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TIJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 28,
+      "filters": [
+        "O",
+        "I",
+        "S",
+        "Z",
+        "T",
+        "L",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-070",
+      "displayName": "TIS - [SZ]! QB",
+      "fumen": "v115@AhBtIeBtGeT4EeT4zhJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "S",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-070",
+      "occupied": 16,
+      "board": "0x60301e3fc",
+      "mirrorGroup": "0x60301e3fc",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-070",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "S",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "O"
+      ],
+      "pattern": "T,[TILJO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 29,
+      "filters": [
+        "I",
+        "T",
+        "J",
+        "L",
+        "S",
+        "O",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-153",
+      "displayName": "TLZ - [LZ]! QB",
+      "fumen": "v115@9gglIeglIeilBeDtAeilCeDtJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "L",
+        "Z",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-153",
+      "occupied": 16,
+      "board": "0x40179fc7",
+      "mirrorGroup": "0x40179fc7",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-153",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TIJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 30,
+      "filters": [
+        "L",
+        "Z",
+        "T",
+        "I",
+        "O",
+        "J",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-209",
+      "displayName": "TOO - [LZ]! QB",
+      "fumen": "v115@9gRpGeAtRpFeBtRpFeAtglRpEeilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "O",
+        "O",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-209",
+      "occupied": 16,
+      "board": "0x80f03c0f83",
+      "mirrorGroup": "0x80f03c0f83",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-209",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "O"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TIJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 31,
+      "filters": [
+        "J",
+        "O",
+        "I",
+        "T",
+        "S",
+        "Z",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-142",
+      "displayName": "TLZ - [IL]! QB",
+      "fumen": "v115@9gwhBehlEewhglBeglEewhglBtglEewhhlBtOeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "L",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-142",
+      "occupied": 16,
+      "board": "0x641307c1f",
+      "mirrorGroup": "0x641307c1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-142",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TJSZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 32,
+      "filters": [
+        "I",
+        "Z",
+        "O",
+        "L",
+        "T",
+        "J",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-107",
+      "displayName": "TLL - [JS]! QB",
+      "fumen": "v115@9gglBeQ4FeglBeR4Eeilg0Q4Eeili0NeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "L",
+        "L",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-107",
+      "occupied": 16,
+      "board": "0x241907c3f",
+      "mirrorGroup": "0x241907c3f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-107",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "J",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TILZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 33,
+      "filters": [
+        "I",
+        "T",
+        "O",
+        "Z",
+        "S",
+        "J",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-199",
+      "displayName": "TOL - [SZ]! QB",
+      "fumen": "v115@LhR4BtEeR4RpBtglEeRpilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "O",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-199",
+      "occupied": 16,
+      "board": "0xf0fe3e0",
+      "mirrorGroup": "0x3c1fc1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-199",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "S",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "O"
+      ],
+      "pattern": "T,[TILJO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 34,
+      "filters": [
+        "O",
+        "Z",
+        "J",
+        "S",
+        "T",
+        "L",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-133",
+      "displayName": "TLZ - [OI]! QB",
+      "fumen": "v115@9gRpHeRpHeilDeBtAeglzhCeBtJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "O",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-133",
+      "occupied": 16,
+      "board": "0xc0361f1f",
+      "mirrorGroup": "0xc0361f1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-133",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 35,
+      "filters": [
+        "O",
+        "L",
+        "S",
+        "T",
+        "I",
+        "J",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-232",
+      "displayName": "TOS - [LZ]! QB",
+      "fumen": "v115@EhAtHeBtFeR4AtglRpCeR4ilRpJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "O",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-232",
+      "occupied": 16,
+      "board": "0x200c0fc3f8",
+      "mirrorGroup": "0x100c0fc7f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-232",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TIJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 36,
+      "filters": [
+        "Z",
+        "S",
+        "O",
+        "I",
+        "L",
+        "T",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-280",
+      "displayName": "TTI - [OS]! QB",
+      "fumen": "v115@9gwhIewhIewhRpCeR4wwAewhRpBeR4ywJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "O",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-280",
+      "occupied": 16,
+      "board": "0x40171fe7",
+      "mirrorGroup": "0x40171fe7",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-280",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "Z"
+      ],
+      "pattern": "T,[TILJZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 37,
+      "filters": [
+        "S",
+        "J",
+        "L",
+        "Z",
+        "O",
+        "I",
+        "T"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-201",
+      "displayName": "TOO - [OI]! QB",
+      "fumen": "v115@9gRpHeRpHeTpFeTpBezhJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "O",
+        "O",
+        "O"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-201",
+      "occupied": 16,
+      "board": "0xc0303fcf",
+      "mirrorGroup": "0xc0303fcf",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-201",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "O"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 38,
+      "filters": [
+        "O",
+        "Z",
+        "S",
+        "I",
+        "L",
+        "T",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-322",
+      "displayName": "TTO - [LZ]! QB",
+      "fumen": "v115@DhywAtGewwBtRpFeAtglRpEeilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "O",
+        "T",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-322",
+      "occupied": 16,
+      "board": "0xf0380c0f83",
+      "mirrorGroup": "0x3c07c0f07",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-322",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "O"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TIJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 39,
+      "filters": [
+        "T",
+        "I",
+        "J",
+        "Z",
+        "L",
+        "O",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-020",
+      "displayName": "TIL - [OL]! QB",
+      "fumen": "v115@9gwhFeilwhFeilwhFeRpglwhFeRpglJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "L",
+        "O"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-020",
+      "occupied": 16,
+      "board": "0xe0781e0781",
+      "mirrorGroup": "0x81e0781e07",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-020",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TIJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 40,
+      "filters": [
+        "Z",
+        "J",
+        "S",
+        "L",
+        "T",
+        "I",
+        "O"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-122",
+      "displayName": "TLS - [IZ]! QB",
+      "fumen": "v115@9gwhHeAtwhGeBtwhEeR4AtglwhDeR4ilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-122",
+      "occupied": 16,
+      "board": "0x80701f07e1",
+      "mirrorGroup": "0x8060383e1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-122",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TLJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 41,
+      "filters": [
+        "T",
+        "L",
+        "S",
+        "I",
+        "Z",
+        "O",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-324",
+      "displayName": "TTS - [OI]! QB",
+      "fumen": "v115@9gwhIewhAeywEewhRpwwR4DewhRpR4OeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "O",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-324",
+      "occupied": 16,
+      "board": "0x41d0fc1f",
+      "mirrorGroup": "0x41d0fc1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-324",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 42,
+      "filters": [
+        "Z",
+        "T",
+        "I",
+        "L",
+        "J",
+        "O",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-204",
+      "displayName": "TOO - [OS]! QB",
+      "fumen": "v115@9gRpHeRpDeQ4CeRpDeR4TpEeQ4RpJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "O",
+        "O",
+        "O",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-204",
+      "occupied": 16,
+      "board": "0xc43f0f83",
+      "mirrorGroup": "0xc43f0f83",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-204",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "O"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "Z"
+      ],
+      "pattern": "T,[TILJZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 43,
+      "filters": [
+        "T",
+        "O",
+        "S",
+        "J",
+        "Z",
+        "I",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-175",
+      "displayName": "TOL - [OI]! QB",
+      "fumen": "v115@9gRpwhGeRpwhglFeRpwhglFeRpwhhlOeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "O",
+        "O"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-175",
+      "occupied": 16,
+      "board": "0x1c0f03c1f",
+      "mirrorGroup": "0x1c0f03c1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-175",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 44,
+      "filters": [
+        "L",
+        "T",
+        "S",
+        "J",
+        "O",
+        "Z",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-004",
+      "displayName": "TII - [OL]! QB",
+      "fumen": "v115@9gwhGehlwhFeRpglwhFeRpglwhEezhJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "L",
+        "O"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-004",
+      "occupied": 16,
+      "board": "0xc0781e07c1",
+      "mirrorGroup": "0x80e0781e0f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-004",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TIJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 45,
+      "filters": [
+        "J",
+        "S",
+        "L",
+        "T",
+        "I",
+        "O",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-013",
+      "displayName": "TII - [LS]! QB",
+      "fumen": "v115@EhQ4hlGeR4glDezhQ4glFezhJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "L",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-013",
+      "occupied": 16,
+      "board": "0xe0380fc3c0",
+      "mirrorGroup": "0x1c070fc0f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-013",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TIJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 46,
+      "filters": [
+        "J",
+        "I",
+        "T",
+        "S",
+        "Z",
+        "O",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-002",
+      "displayName": "TII - [OI]! QB",
+      "fumen": "v115@9g0hEewhRpGewhRpGe0hOeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "I",
+        "O"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-002",
+      "occupied": 16,
+      "board": "0x7c0701c1f",
+      "mirrorGroup": "0x7c0701c1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-002",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 47,
+      "filters": [
+        "O",
+        "L",
+        "Z",
+        "J",
+        "I",
+        "S",
+        "T"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-075",
+      "displayName": "TLJ - [OS]! QB",
+      "fumen": "v115@9gQ4IeR4EeRpAeg0Q4EeRpgli0DeilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "L",
+        "O",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-075",
+      "occupied": 16,
+      "board": "0x583e0f87",
+      "mirrorGroup": "0x583e0f87",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-075",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "J"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "Z"
+      ],
+      "pattern": "T,[TILJZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 48,
+      "filters": [
+        "J",
+        "O",
+        "S",
+        "L",
+        "Z",
+        "T",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-304",
+      "displayName": "TTL - [IZ]! QB",
+      "fumen": "v115@RhilCewwBtAeglzhywBtJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "T",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-304",
+      "occupied": 16,
+      "board": "0x71fff",
+      "mirrorGroup": "0x71fff",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-304",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TLJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 49,
+      "filters": [
+        "T",
+        "J",
+        "I",
+        "L",
+        "S",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-098",
+      "displayName": "TLL - [IS]! QB",
+      "fumen": "v115@ChQ4IeR4CellQ4CeglBeglzhLeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "L",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-098",
+      "occupied": 16,
+      "board": "0x80601fcf9",
+      "mirrorGroup": "0x4018fe27c",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-098",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TLJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 50,
+      "filters": [
+        "O",
+        "S",
+        "T",
+        "J",
+        "Z",
+        "I",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-327",
+      "displayName": "TTS - [OL]! QB",
+      "fumen": "v115@OhilDeR4wwglRpCeR4ywRpJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "O",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-327",
+      "occupied": 16,
+      "board": "0x380fc3f8",
+      "mirrorGroup": "0x70fc7f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-327",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TIJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 51,
+      "filters": [
+        "O",
+        "I",
+        "Z",
+        "S",
+        "J",
+        "T",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-275",
+      "displayName": "TTI - [OI]! QB",
+      "fumen": "v115@9gwhIewhGeRpwhAewwEeRpwhywBezhJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "O",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-275",
+      "occupied": 16,
+      "board": "0x701c17cf",
+      "mirrorGroup": "0x701c17cf",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-275",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 52,
+      "filters": [
+        "O",
+        "Z",
+        "I",
+        "T",
+        "L",
+        "J",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-072",
+      "displayName": "TLJ - [OI]! QB",
+      "fumen": "v115@9gzhFeh0hlFeg0RpglFeg0RpglPeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "J",
+        "L",
+        "O"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-072",
+      "occupied": 16,
+      "board": "0x3c0f03c0f",
+      "mirrorGroup": "0x3c0f03c0f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-072",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "J"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 53,
+      "filters": [
+        "T",
+        "J",
+        "I",
+        "S",
+        "Z",
+        "O",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-270",
+      "displayName": "TSZ - [LS]! QB",
+      "fumen": "v115@BhBtIeBtGeT4AeglCeT4ilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "S",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-270",
+      "occupied": 16,
+      "board": "0xc060bc3f8",
+      "mirrorGroup": "0xc0180f47f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-270",
+      "previousBagPieces": [
+        "T",
+        "S",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TIJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 54,
+      "filters": [
+        "T",
+        "I",
+        "J",
+        "O",
+        "S",
+        "Z",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-056",
+      "displayName": "TIS - [IJ]! QB",
+      "fumen": "v115@GhwhIe0hR4i0whCeR4Ceg0whJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "J",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-056",
+      "occupied": 16,
+      "board": "0x80200fff18",
+      "mirrorGroup": "0x401ffc63",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-056",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TLSZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 55,
+      "filters": [
+        "O",
+        "Z",
+        "T",
+        "J",
+        "S",
+        "I",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-222",
+      "displayName": "TOS - [IJ]! QB",
+      "fumen": "v115@9gwhIewhFeg0BewhDeR4g0RpwhCeR4h0RpJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "J",
+        "O",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-222",
+      "occupied": 16,
+      "board": "0x481f87f1",
+      "mirrorGroup": "0x481f87f1",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-222",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TLSZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 56,
+      "filters": [
+        "Z",
+        "J",
+        "S",
+        "T",
+        "O",
+        "L",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-220",
+      "displayName": "TOS - [IL]! QB",
+      "fumen": "v115@9gzhFeilGeglR4EeRpR4FeRpJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "O",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-220",
+      "occupied": 16,
+      "board": "0x3c07c1f03",
+      "mirrorGroup": "0x3c07c1f03",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-220",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TJSZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 57,
+      "filters": [
+        "I",
+        "T",
+        "O",
+        "Z",
+        "S",
+        "L",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-330",
+      "displayName": "TTS - [OJ]! QB",
+      "fumen": "v115@OhRpg0DeR4wwRpg0CeR4ywh0JeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "O",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-330",
+      "occupied": 16,
+      "board": "0x380fc3f8",
+      "mirrorGroup": "0x70fc7f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-330",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TILSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 58,
+      "filters": [
+        "O",
+        "Z",
+        "S",
+        "L",
+        "I",
+        "J",
+        "T"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-293",
+      "displayName": "TTL - [OL]! QB",
+      "fumen": "v115@EhilwwFeilxwEeRpglwwFeRpglJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "L",
+        "O",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-293",
+      "occupied": 16,
+      "board": "0xe0381e0f81",
+      "mirrorGroup": "0x1e07c1e07",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-293",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TIJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 59,
+      "filters": [
+        "S",
+        "O",
+        "Z",
+        "T",
+        "I",
+        "L",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-335",
+      "displayName": "TTS - [IJ]! QB",
+      "fumen": "v115@DhR4GeR4g0Feywi0EewwzhJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "J",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-335",
+      "occupied": 16,
+      "board": "0x300e0fc3e0",
+      "mirrorGroup": "0x301c0fc1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-335",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TLSZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 60,
+      "filters": [
+        "T",
+        "Z",
+        "L",
+        "O",
+        "I",
+        "J",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-346",
+      "displayName": "TTS - [JS]! QB",
+      "fumen": "v115@9gh0R4Feg0T4Eeg0wwR4FeywQeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "S",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-346",
+      "occupied": 16,
+      "board": "0x3c1f03c07",
+      "mirrorGroup": "0x3c1f03c07",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-346",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "J",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TILZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 61,
+      "filters": [
+        "Z",
+        "I",
+        "S",
+        "T",
+        "O",
+        "J",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-197",
+      "displayName": "TOL - [JS]! QB",
+      "fumen": "v115@9gQ4hlGeR4glGeg0Q4glEeRpi0EeRpJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "L",
+        "O",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-197",
+      "occupied": 16,
+      "board": "0x1c07c1f07",
+      "mirrorGroup": "0x1c07c1f07",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-197",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "J",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TILZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 62,
+      "filters": [
+        "L",
+        "J",
+        "Z",
+        "I",
+        "T",
+        "S",
+        "O"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-019",
+      "displayName": "TIL - [OI]! QB",
+      "fumen": "v115@9gwhGeRpwhGeRpwhHegl0hBeilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "L",
+        "O"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-019",
+      "occupied": 16,
+      "board": "0xc07018079f",
+      "mirrorGroup": "0x80e03807e7",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-019",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 63,
+      "filters": [
+        "L",
+        "S",
+        "J",
+        "I",
+        "T",
+        "O",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-250",
+      "displayName": "TSS - [LJ]! QB",
+      "fumen": "v115@RhilT4i0glAeT4Ceg0JeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "L",
+        "S",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-250",
+      "occupied": 16,
+      "board": "0xffe3d",
+      "mirrorGroup": "0xffe3d",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-250",
+      "previousBagPieces": [
+        "T",
+        "S",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TISZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 64,
+      "filters": [
+        "I",
+        "O",
+        "J",
+        "T",
+        "Z",
+        "S",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-145",
+      "displayName": "TLZ - [IS]! QB",
+      "fumen": "v115@/gQ4IeR4FeilQ4CeBtAeglzhCeBtJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-145",
+      "occupied": 16,
+      "board": "0x100c63f1f",
+      "mirrorGroup": "0x100c63f1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-145",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TLJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 65,
+      "filters": [
+        "J",
+        "T",
+        "L",
+        "O",
+        "I",
+        "S",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-332",
+      "displayName": "TTS - [OS]! QB",
+      "fumen": "v115@NhQ4FeR4wwR4RpBeR4ywQ4RpJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "O",
+        "S",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-332",
+      "occupied": 16,
+      "board": "0x40fe3fc",
+      "mirrorGroup": "0x81fcff",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-332",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "Z"
+      ],
+      "pattern": "T,[TILJZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 66,
+      "filters": [
+        "O",
+        "L",
+        "J",
+        "I",
+        "Z",
+        "S",
+        "T"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-214",
+      "displayName": "TOS - [OI]! QB",
+      "fumen": "v115@FhRpHeRpCeR4CeRpBeR4zhRpJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "O",
+        "O",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-214",
+      "occupied": 16,
+      "board": "0xc0300c63fc",
+      "mirrorGroup": "0xc0318cff",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-214",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 67,
+      "filters": [
+        "T",
+        "I",
+        "S",
+        "O",
+        "J",
+        "Z",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-274--mirror",
+      "displayName": "TSZ - [SZ]! QB",
+      "fumen": "v115@BhT4EeT4EeDtGeDtMeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "Z",
+        "Z",
+        "S",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-274",
+      "occupied": 16,
+      "board": "0x3c0780f078",
+      "mirrorGroup": "0xf0783c078",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-274",
+      "previousBagPieces": [
+        "T",
+        "S",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "S",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "O"
+      ],
+      "pattern": "T,[TILJO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 68,
+      "filters": [
+        "J",
+        "L",
+        "I",
+        "Z",
+        "O",
+        "S",
+        "T"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-273",
+      "displayName": "TSZ - [LZ]! QB",
+      "fumen": "v115@BhBtIeBtQ4hlEeBtR4glFeBtQ4glJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "S",
+        "Z",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-273",
+      "occupied": 16,
+      "board": "0xc3e0f83c0",
+      "mirrorGroup": "0xc01f07c0f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-273",
+      "previousBagPieces": [
+        "T",
+        "S",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TIJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 69,
+      "filters": [
+        "L",
+        "Z",
+        "I",
+        "J",
+        "T",
+        "S",
+        "O"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-313",
+      "displayName": "TTL - [JS]! QB",
+      "fumen": "v115@FhhlIeglg0EeR4wwgli0BeR4ywJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "L",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-313",
+      "occupied": 16,
+      "board": "0xc0200f07e7",
+      "mirrorGroup": "0xc0183f9f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-313",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "J",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TILZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 70,
+      "filters": [
+        "T",
+        "O",
+        "L",
+        "I",
+        "Z",
+        "J",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-167",
+      "displayName": "TOI - [IS]! QB",
+      "fumen": "v115@PhQ4AeRpBezhR4RpCezhQ4JeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "O",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-167",
+      "occupied": 16,
+      "board": "0x100fcfe3",
+      "mirrorGroup": "0x2cff1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-167",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TLJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 71,
+      "filters": [
+        "T",
+        "L",
+        "O",
+        "I",
+        "S",
+        "J",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-012",
+      "displayName": "TII - [LS]! QB",
+      "fumen": "v115@9gwhglQ4GewhglR4FewhhlQ4Fe0hOeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "L",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-012",
+      "occupied": 16,
+      "board": "0x1c0f03c1f",
+      "mirrorGroup": "0x1c0f03c1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-012",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TIJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 72,
+      "filters": [
+        "L",
+        "O",
+        "Z",
+        "J",
+        "I",
+        "S",
+        "T"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-306",
+      "displayName": "TTL - [LS]! QB",
+      "fumen": "v115@FhhlIeglDeglAeR4wwglBeilR4ywJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "L",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-306",
+      "occupied": 16,
+      "board": "0xc0200f43fc",
+      "mirrorGroup": "0xc010bcff",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-306",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TIJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 73,
+      "filters": [
+        "O",
+        "Z",
+        "T",
+        "L",
+        "S",
+        "I",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-284",
+      "displayName": "TTI - [LJ]! QB",
+      "fumen": "v115@JhwwGeg0ywEegli0zhilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "J",
+        "L",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-284",
+      "occupied": 16,
+      "board": "0x483fff",
+      "mirrorGroup": "0x483fff",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-284",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TISZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 74,
+      "filters": [
+        "Z",
+        "T",
+        "I",
+        "L",
+        "J",
+        "S",
+        "O"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-084",
+      "displayName": "TLJ - [LZ]! QB",
+      "fumen": "v115@9gglIeglIeilg0AeBtCeili0BtLeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "L",
+        "L",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-084",
+      "occupied": 16,
+      "board": "0x4011bcff",
+      "mirrorGroup": "0x4011bcff",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-084",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "J"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TIJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 75,
+      "filters": [
+        "L",
+        "S",
+        "O",
+        "T",
+        "Z",
+        "J",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-328",
+      "displayName": "TTS - [OL]! QB",
+      "fumen": "v115@FhhlIeglRpDeR4wwglRpCeR4ywJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "O",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-328",
+      "occupied": 16,
+      "board": "0xc0200f0fe3",
+      "mirrorGroup": "0xc01c3f1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-328",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TIJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 76,
+      "filters": [
+        "L",
+        "S",
+        "O",
+        "I",
+        "Z",
+        "J",
+        "T"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-174",
+      "displayName": "TOI - [SZ]! QB",
+      "fumen": "v115@AhQ4IeR4IeQ4BtAeRpBezhBtRpJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "O",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-174",
+      "occupied": 16,
+      "board": "0x2018dc3fc",
+      "mirrorGroup": "0x2018dc3fc",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-174",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "S",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "O"
+      ],
+      "pattern": "T,[TILJO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 77,
+      "filters": [
+        "T",
+        "J",
+        "Z",
+        "S",
+        "I",
+        "L",
+        "O"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-018",
+      "displayName": "TIL - [OI]! QB",
+      "fumen": "v115@9gwhRpGewhRpglFewhilFe0hOeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "L",
+        "O"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-018",
+      "occupied": 16,
+      "board": "0x1c0f03c1f",
+      "mirrorGroup": "0x1c0f03c1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-018",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 78,
+      "filters": [
+        "L",
+        "I",
+        "S",
+        "T",
+        "J",
+        "Z",
+        "O"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-272",
+      "displayName": "TSZ - [LZ]! QB",
+      "fumen": "v115@BhR4GeR4GeDtCeglCeDtilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "S",
+        "Z",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-272",
+      "occupied": 16,
+      "board": "0xc0188f3f8",
+      "mirrorGroup": "0xc0188f3f8",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-272",
+      "previousBagPieces": [
+        "T",
+        "S",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TIJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 79,
+      "filters": [
+        "Z",
+        "T",
+        "O",
+        "I",
+        "L",
+        "S",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-080",
+      "displayName": "TLJ - [LS]! QB",
+      "fumen": "v115@9gQ4hlGeR4glGeg0Q4glFegli0DeilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "L",
+        "L",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-080",
+      "occupied": 16,
+      "board": "0x1c0781f87",
+      "mirrorGroup": "0x1c0781f87",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-080",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "J"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TIJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 80,
+      "filters": [
+        "S",
+        "O",
+        "J",
+        "T",
+        "I",
+        "L",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-100",
+      "displayName": "TLL - [LJ]! QB",
+      "fumen": "v115@9gglIeglBeglEeg0jlEeg0klCeh0JeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "L",
+        "L",
+        "L"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-100",
+      "occupied": 16,
+      "board": "0x60983f1f",
+      "mirrorGroup": "0x60983f1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-100",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TISZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 81,
+      "filters": [
+        "L",
+        "Z",
+        "J",
+        "S",
+        "O",
+        "I",
+        "T"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-120",
+      "displayName": "TLS - [IJ]! QB",
+      "fumen": "v115@9gzhFeilg0FeglR4g0FeR4h0PeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "J",
+        "L",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-120",
+      "occupied": 16,
+      "board": "0x3c0f03c0f",
+      "mirrorGroup": "0x3c0f03c0f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-120",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TLSZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 82,
+      "filters": [
+        "L",
+        "I",
+        "O",
+        "S",
+        "Z",
+        "T",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-329",
+      "displayName": "TTS - [OJ]! QB",
+      "fumen": "v115@9gRpHeRpwwGeg0ywR4Dei0R4OeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "O",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-329",
+      "occupied": 16,
+      "board": "0xc070fc1f",
+      "mirrorGroup": "0xc070fc1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-329",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TILSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 83,
+      "filters": [
+        "J",
+        "O",
+        "T",
+        "S",
+        "L",
+        "Z",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-047",
+      "displayName": "TIS - [OI]! QB",
+      "fumen": "v115@9gwhIewhEeRpQ4AewhEeRpR4whDezhQ4JeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "O",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-047",
+      "occupied": 16,
+      "board": "0x5c1f07e1",
+      "mirrorGroup": "0x5c1f07e1",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-047",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 84,
+      "filters": [
+        "S",
+        "O",
+        "L",
+        "T",
+        "J",
+        "I",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-228",
+      "displayName": "TOS - [LJ]! QB",
+      "fumen": "v115@Chi0GeglQ4g0GeglR4RpEehlQ4RpJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "L",
+        "O",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-228",
+      "occupied": 16,
+      "board": "0x380e0f83e0",
+      "mirrorGroup": "0x701c07c1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-228",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TISZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 85,
+      "filters": [
+        "S",
+        "L",
+        "Z",
+        "I",
+        "J",
+        "O",
+        "T"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-181",
+      "displayName": "TOL - [OZ]! QB",
+      "fumen": "v115@FhRpFeBtRpEeRpBtglEeRpilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "O",
+        "O",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-181",
+      "occupied": 16,
+      "board": "0xc03c0f83e0",
+      "mirrorGroup": "0xc0f07c1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-181",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "S"
+      ],
+      "pattern": "T,[TILJS]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 86,
+      "filters": [
+        "I",
+        "J",
+        "L",
+        "O",
+        "S",
+        "Z",
+        "T"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-164",
+      "displayName": "TOI - [IL]! QB",
+      "fumen": "v115@/gzhFeglRpEeilRpEezhPeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "L",
+        "O"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-164",
+      "occupied": 16,
+      "board": "0xf01c07c0f",
+      "mirrorGroup": "0xf01c07c0f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-164",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TJSZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 87,
+      "filters": [
+        "T",
+        "J",
+        "S",
+        "L",
+        "O",
+        "Z",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-121",
+      "displayName": "TLS - [IS]! QB",
+      "fumen": "v115@ShT4zhglT4CeilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "S",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-121",
+      "occupied": 16,
+      "board": "0xffb8f",
+      "mirrorGroup": "0x7ffc7",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-121",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TLJZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 88,
+      "filters": [
+        "L",
+        "J",
+        "T",
+        "S",
+        "I",
+        "O",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-292",
+      "displayName": "TTL - [OI]! QB",
+      "fumen": "v115@FhRpwwGeRpxwCezhglwwFeilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "O",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-292",
+      "occupied": 16,
+      "board": "0xc0301f8f81",
+      "mirrorGroup": "0xe03c7e07",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-292",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "I"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TLJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 89,
+      "filters": [
+        "J",
+        "Z",
+        "T",
+        "O",
+        "L",
+        "S",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-196",
+      "displayName": "TOL - [LZ]! QB",
+      "fumen": "v115@9gilGeglBtGeRpBtglEeRpilOeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "L",
+        "O",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-196",
+      "occupied": 16,
+      "board": "0x1c0707c1f",
+      "mirrorGroup": "0x1c0707c1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-196",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "L"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TIJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 90,
+      "filters": [
+        "J",
+        "Z",
+        "S",
+        "I",
+        "T",
+        "O",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-112",
+      "displayName": "TLS - [OL]! QB",
+      "fumen": "v115@EhilGeilBeR4CeRpglAeR4DeRpglJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "L",
+        "L",
+        "O",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-112",
+      "occupied": 16,
+      "board": "0xe0380e3386",
+      "mirrorGroup": "0x1c0731d87",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-112",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "Z"
+      ],
+      "pattern": "T,[TIJSZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 91,
+      "filters": [
+        "O",
+        "Z",
+        "L",
+        "I",
+        "T",
+        "J",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-289",
+      "displayName": "TTI - [LZ]! QB",
+      "fumen": "v115@HhilGeglwwBtFeywBtzhKeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "T",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-289",
+      "occupied": 16,
+      "board": "0x703dff",
+      "mirrorGroup": "0x703dff",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-289",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "L",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TIJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 92,
+      "filters": [
+        "L",
+        "O",
+        "Z",
+        "J",
+        "T",
+        "I",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-007",
+      "displayName": "TII - [IL]! QB",
+      "fumen": "v115@9gyhGeyhGeyhFeglyhDeilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "I",
+        "I",
+        "L"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-007",
+      "occupied": 16,
+      "board": "0x1c0781f87",
+      "mirrorGroup": "0x1c0781f87",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-007",
+      "previousBagPieces": [
+        "T",
+        "I",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TJSZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 93,
+      "filters": [
+        "O",
+        "J",
+        "L",
+        "Z",
+        "S",
+        "T",
+        "I"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-125",
+      "displayName": "TLS - [JZ]! QB",
+      "fumen": "v115@GhAtHeBtg0EeR4Atgli0BeR4ilJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "L",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-125",
+      "occupied": 16,
+      "board": "0x80300f07e7",
+      "mirrorGroup": "0x40383f9f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-125",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "J",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TILSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 94,
+      "filters": [
+        "O",
+        "T",
+        "L",
+        "J",
+        "I",
+        "Z",
+        "S"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-249",
+      "displayName": "TSS - [IZ]! QB",
+      "fumen": "v115@AhBtIeBtGeT4EeT4zhJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "S",
+        "S",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-249",
+      "occupied": 16,
+      "board": "0x60301e3fc",
+      "mirrorGroup": "0x60301e3fc",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-249",
+      "previousBagPieces": [
+        "T",
+        "S",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "J",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TLJSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 95,
+      "filters": [
+        "J",
+        "T",
+        "O",
+        "I",
+        "Z",
+        "S",
+        "L"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-336",
+      "displayName": "TTS - [IJ]! QB",
+      "fumen": "v115@Rhg0zhywR4i0CewwR4KeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "J",
+        "S",
+        "T"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-336",
+      "occupied": 16,
+      "board": "0xffdc7",
+      "mirrorGroup": "0xffdc7",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-336",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "J"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "L",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TLSZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 96,
+      "filters": [
+        "O",
+        "L",
+        "T",
+        "I",
+        "J",
+        "S",
+        "Z"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-141",
+      "displayName": "TLZ - [IL]! QB",
+      "fumen": "v115@FhhlFeglBeglDeilBtglDezhBtJeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "L",
+        "L",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-141",
+      "occupied": 16,
+      "board": "0xc0240fc3f0",
+      "mirrorGroup": "0xc090fc3f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-141",
+      "previousBagPieces": [
+        "T",
+        "L",
+        "Z"
+      ],
+      "nextBagPrefixPieces": [
+        "I",
+        "L"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "J",
+        "S",
+        "Z",
+        "O"
+      ],
+      "pattern": "T,[TJSZO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 97,
+      "filters": [
+        "I",
+        "O",
+        "S",
+        "T",
+        "Z",
+        "L",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-343",
+      "displayName": "TTS - [JZ]! QB",
+      "fumen": "v115@9gh0R4Feg0R4Geg0wwBtFeywBtOeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "J",
+        "S",
+        "T",
+        "Z"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-343",
+      "occupied": 16,
+      "board": "0x3c0703c1f",
+      "mirrorGroup": "0x3c0703c1f",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-343",
+      "previousBagPieces": [
+        "T",
+        "T",
+        "S"
+      ],
+      "nextBagPrefixPieces": [
+        "J",
+        "Z"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "S",
+        "O"
+      ],
+      "pattern": "T,[TILSO]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 98,
+      "filters": [
+        "O",
+        "T",
+        "S",
+        "Z",
+        "I",
+        "L",
+        "J"
+      ]
+    },
+    {
+      "id": "c7-2plus2-qb-row-162",
+      "displayName": "TOI - [OS]! QB",
+      "fumen": "v115@9gRpHeRpHeRpBeR4DeRpAeR4zhKeAgH",
+      "family": "cycle-7-2plus2-qb",
+      "pieceSignature": [
+        "I",
+        "O",
+        "O",
+        "S"
+      ],
+      "recommendationGroup": "c7-2plus2-entry-162",
+      "occupied": 16,
+      "board": "0xc030cdfb",
+      "mirrorGroup": "0xc030cdfb",
+      "height": 4,
+      "useHold": true,
+      "entryId": "c7-2plus2-entry-162",
+      "previousBagPieces": [
+        "T",
+        "O",
+        "I"
+      ],
+      "nextBagPrefixPieces": [
+        "O",
+        "S"
+      ],
+      "initialHold": "T",
+      "remainingNextBag": [
+        "T",
+        "I",
+        "L",
+        "J",
+        "Z"
+      ],
+      "pattern": "T,[TILJZ]p5,*p1",
+      "cases": 840,
+      "equivalence": "Virtual leading T with empty hold represents initial hold T; six placed pieces and one saved piece. Checked by independent finite hold-order language enumeration.",
+      "chooseOneFilter": true,
+      "drawIndex": 99,
+      "filters": [
+        "S",
+        "J",
+        "L",
+        "Z",
+        "O",
+        "T",
+        "I"
+      ]
+    }
+  ]
+}

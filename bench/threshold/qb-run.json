@@ -1,0 +1,10 @@
+{
+  "profile": "qb-confirm",
+  "mask": 20,
+  "pairs": 3,
+  "recheckPairs": 10,
+  "timeoutSeconds": 300,
+  "maxParallel": 10,
+  "enumerationSeconds": 300,
+  "primarySeconds": 90
+}

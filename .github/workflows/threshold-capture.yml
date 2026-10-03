@@ -2,6 +2,7 @@ name: Threshold cycle1 database matrix capture
 on:
   push:
     branches: [experiment/threshold-engine-20261003]
+    paths: ['bench/threshold/capture-config.json', 'bench/threshold/cycle1-setups.json']
 permissions:
   contents: read
 concurrency:
