@@ -1,0 +1,17 @@
+{
+  "status": "AUTHORIZED_ONE_FROZEN_100PAIR_RETEST",
+  "authorization": "User: follow Astra's plan through selection, one M1 retest, and decision. Before launch, increase to100pairs and10runners. Parallel maximum12.",
+  "inputs": 122,
+  "comparisons": ["A0/R", "M1/R", "M1/A0"],
+  "pairsPerInputPerComparison": 100,
+  "runnerJobs": 10,
+  "pairsPerRunnerPerComparison": 10,
+  "calls": 73320,
+  "measuredBuildArtifactRunId": 37134463920,
+  "measuredBinaryRebuild": false,
+  "m2ActualCalls": 0,
+  "actualPrimaryPcThresholdCalls": 0,
+  "productApplyMergeDeploy": false,
+  "automaticSecondRetest": false,
+  "inputSlowdownAbove1_10IsIntegrationVeto": false
+}

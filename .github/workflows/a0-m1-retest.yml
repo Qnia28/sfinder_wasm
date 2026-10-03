@@ -1,0 +1,98 @@
+name: One M1 retest frozen selection and decision
+on:
+  push:
+    branches: [validation/a0-m1-retest-20261004]
+    paths: [experiments/a0-m1-retest-20261004/launch.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: a0-m1-retest-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  preflight:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node experiments/a0-m1-retest-20261004/origin.mjs
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37134463920
+          name: a0-four-build
+          path: .a0/four
+      - run: node experiments/a0-m1-retest-20261004/preflight.mjs
+      - run: |
+          sudo mkdir /sys/fs/cgroup/a0-m1-preflight
+          echo +memory | sudo tee /sys/fs/cgroup/a0-m1-preflight/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-m1-preflight' >> "$GITHUB_ENV"
+      - run: |
+          mkdir -p .a0/m1/preflight
+          python experiments/a0-m1-retest-20261004/test_selection.py > .a0/m1/preflight/selection.log 2>&1
+          python -m unittest discover -s experiments/a0-m1-retest-20261004 -p test_analysis.py -v > .a0/m1/preflight/analysis.log 2>&1
+          node --test --test-concurrency=1 experiments/a0-four-arm-20261003/contracts.test.mjs experiments/a0-execution-diagnosis-20261003/watchdog.test.mjs > .a0/m1/preflight/harness.log 2>&1
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: m1-retest-preflight
+          path: .a0/m1/
+          include-hidden-files: true
+          retention-days: 7
+          if-no-files-found: error
+  retest:
+    needs: preflight
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        host: [0,1,2,3,4,5,6,7,8,9]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 37134463920
+          name: a0-four-build
+          path: .a0/four
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: m1-retest-preflight
+          path: .a0/m1
+      - run: node experiments/a0-m1-retest-20261004/preflight.mjs
+      - run: |
+          sudo mkdir /sys/fs/cgroup/a0-m1-retest
+          echo +memory | sudo tee /sys/fs/cgroup/a0-m1-retest/cgroup.subtree_control
+          echo 'A0_CGROUP_ROOT=/sys/fs/cgroup/a0-m1-retest' >> "$GITHUB_ENV"
+      - run: node experiments/a0-m1-retest-20261004/run.mjs ${{ matrix.host }}
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: m1-retest-host-${{ matrix.host }}
+          path: |
+            .a0/m1/LOCK.json
+            .a0/m1/ORIGIN.json
+            .a0/m1/PREFLIGHT_GATE.json
+            .a0/m1/results/
+          include-hidden-files: true
+          retention-days: 7
+          if-no-files-found: error
