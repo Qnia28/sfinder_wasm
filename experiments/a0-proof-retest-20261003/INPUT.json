@@ -1,0 +1,41 @@
+{
+  "id": "board-111--restricted-split--ordinary",
+  "partition": "reserved-validation",
+  "identitySha256": "783b4d9c10aacda44e2c5c567085a8741b2ae37ac709a6568088c36da9a06063",
+  "sha256": "3d6659091377c69654b310fce046b1209d25beeea04db0e347e201c18727afb0",
+  "captureFile": "capture-shard-14/shard-14/matrices/reserved-validation/board-111--restricted-split--ordinary.json.gz",
+  "mirrorGroup": "701c17cf",
+  "board": "701c17cf",
+  "family": "restricted-split",
+  "filter": "ordinary",
+  "K": 35,
+  "n": 160,
+  "R": 3848,
+  "E": 23158,
+  "route": "INTEGRATED_100K_PROBE_ELIGIBLE",
+  "sourceAliases": [
+    {
+      "db": "qb.json",
+      "id": "c7-2plus2-qb-row-275",
+      "samplePosition": 80
+    }
+  ],
+  "matrixAliases": [
+    {
+      "id": "board-111--restricted-split--ordinary",
+      "file": "capture-shard-14/shard-14/matrices/reserved-validation/board-111--restricted-split--ordinary.json.gz",
+      "sha256": "3d6659091377c69654b310fce046b1209d25beeea04db0e347e201c18727afb0",
+      "board": "701c17cf",
+      "mirrorGroup": "701c17cf",
+      "family": "restricted-split",
+      "filter": "ordinary"
+    }
+  ],
+  "compressedBytes": 63427,
+  "dominanceDenseBytes": 2462720,
+  "pack": "inputs/reserved.bin",
+  "offset": 2490464,
+  "length": 63427,
+  "sourcePack": "inputs/reserved.bin",
+  "sourceOffset": 2490464
+}

@@ -1,0 +1,11 @@
+{
+ "campaignId":"a0-proof-retest-20261003",
+ "authorizedBy":"User: Astra의 계획에 따라 계속 진행하라",
+ "scope":"First stage: one independent fixed-K threshold proof; later retest selection/budget from existing evidence. No automatic increased-budget proof retry.",
+ "origin":"This first proof workflow run.created_at, frozen in downloaded metadata; old campaign remains closed",
+ "computeMinutes":160,"cancelMinutes":175,"overallMinutes":180,"runnerHoursCap":64,
+ "proofJobMinutes":10,"proofMaxNativeCalls":1,"proofRunnerHoursCap":0.16666666666666666,
+ "actualPrimaryCalls":0,"actualPcCalls":0,"integratedRecomputations":0,
+ "productChanges":false,"mainMerge":false,"deployment":false,
+ "conditionalNext":"Proof success permits frozen10-pair performance retest within this same campaign origin/budget. If proof pending, only read-only selection/budget and evidence handoff, not performance confirmation."
+}
