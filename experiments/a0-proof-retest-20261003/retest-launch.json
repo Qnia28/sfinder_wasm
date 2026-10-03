@@ -1,0 +1,13 @@
+{
+  "status": "AUTHORIZED_PROOF_VERIFIED_BUDGET_ADMITTED",
+  "goal": "frozen symmetric10-pair retests",
+  "hosts": 5,
+  "nativeCalls": 2460,
+  "selectedInputsIncludingControls": 121,
+  "proofRunId": 37115786679,
+  "proofSha256": "141435d54cd4da24eaff45781780995dd39d7426ba6f600888daee442b5d843b",
+  "campaignOriginRunId": 37115091562,
+  "clockReset": false,
+  "automaticRetries": 0,
+  "wholePopulationGateReplacement": false
+}

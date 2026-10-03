@@ -1,0 +1,49 @@
+{
+  "status": "RETEST_ADMITTED_AFTER_EXACT_PROOF",
+  "checkedAt": "2026-10-03T10:24:22.096452+00:00",
+  "origin": "2026-10-03T10:02:53Z",
+  "originRunId": 37115091562,
+  "computeDeadline": "2026-10-03T12:42:53+00:00",
+  "cancelDeadline": "2026-10-03T12:57:53+00:00",
+  "overallDeadline": "2026-10-03T13:02:53+00:00",
+  "clockReset": false,
+  "priorRuns": [
+    {
+      "runId": 37115091562,
+      "jobSeconds": 21.0,
+      "runnerHours": 0.005833333333333334
+    },
+    {
+      "runId": 37115786679,
+      "jobSeconds": 21.0,
+      "runnerHours": 0.005833333333333334
+    }
+  ],
+  "priorRunnerHours": 0.011666666666666667,
+  "retestRunnerHoursUpper": 3.75,
+  "totalRunnerHoursUpper": 3.7616666666666667,
+  "capRunnerHours": 64,
+  "runnerJobs": 5,
+  "maxParallel": 5,
+  "maxAllowedParallel": 16,
+  "inputsIncludingControls": 121,
+  "selectedAndControlCalls": 2420,
+  "environmentCalls": 40,
+  "nativeCalls": 2460,
+  "callsPerJob": 492,
+  "jobTimeoutMinutes": 45,
+  "jobComputeGuardMinutes": 42,
+  "perCallAdmissionSeconds": 167,
+  "perCallStateBudget": 100000,
+  "apiSeconds": 10,
+  "processSeconds": 30,
+  "childMemoryGiB": 3,
+  "swapBytes": 0,
+  "worstCaseAllCallsMayNotFit": true,
+  "budgetStopStatus": "NOT_RUN_BUDGET",
+  "selectionRulesSha256": "2f19b83dd01343f7cabcd972e5bd2a4fcf593ed665346afbf0ecbefe446c1d5c",
+  "executionRulesVersion": "1.1",
+  "selectionUnchanged": true,
+  "wholePopulationGateReplacement": false,
+  "originalReservedP95FailureStillValid": true
+}

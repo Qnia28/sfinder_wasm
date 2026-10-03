@@ -7,7 +7,7 @@ assert.equal(git('diff','--name-only','b64fcba9846ff3f9c88bb21b9d200c9d7ba18b45'
 for(const file of [`${ROOT}/wasm/pc_wasm.wasm`,`${ROOT}/.a0/baseline/wasm/pc_wasm.wasm`])assert.equal(sha(fs.readFileSync(file)),EXPECTED_WASM);
 const entry=read(`${HERE}/INPUT.json`),m=matrix(entry),expected=read(`${HERE}/EXPECTED.json`);
 const w=verify(m,expected.probe);assert.deepEqual(w.selectedIDs,expected.selectedIDs);assert.deepEqual(expected.qualityVector,expected.probe.qualityVector);
-const names=git('ls-tree','-r','--name-only','HEAD','--','src','rust','wasm','package.json','package-lock.json','experiments/a0-proof-retest-20261003','experiments/a0-diagnosis-20261003','experiments/a0-integrated-revalidation-20261003','.github/workflows/a0-proof-retest.yml').toString().trim().split('\n');
+const names=git('ls-tree','-r','--name-only','HEAD','--','src','rust','wasm','package.json','package-lock.json','experiments/a0-proof-retest-20261003','experiments/a0-diagnosis-20261003','experiments/a0-execution-diagnosis-20261003','experiments/a0-integrated-revalidation-20261003','.github/workflows/a0-proof-retest.yml','.github/workflows/a0-retest.yml').toString().trim().split('\n');
 const files=names.filter(f=>!f.includes('/results/')&&!f.includes('/inputs/')).map(file=>({file,sha256:sha(git('show',`HEAD:${file}`))}));
 for(const f of files)assert.equal(sha(fs.readFileSync(`${ROOT}/${f.file}`)),f.sha256,f.file);
 const retest=process.env.A0_LOCK_STAGE==='retest';
