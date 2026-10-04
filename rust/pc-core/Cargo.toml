@@ -6,3 +6,8 @@ license = "Apache-2.0"
 
 [lib]
 path = "src/lib.rs"
+
+[features]
+# Independently selectable threshold implementations; pc-wasm selects release defaults.
+threshold-current-propagation = []
+threshold-root-forced = []

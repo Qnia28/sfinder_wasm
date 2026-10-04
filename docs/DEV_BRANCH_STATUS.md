@@ -1,8 +1,17 @@
 # dev-branch 현재 상태 — 2026-09-29
 
+## 2026-10-04 threshold 최소 통합 후 작업 상태
+
+현재 제품 작업본은 `integration/threshold-minimal-20261004` branch다.
+Saves A5+A4를 유지한 기준 `c0cb2a0` 위에 currentPropagation + rootForced를 선별 통합했고 제품 기본값은 **B(rootForced ON)**다.
+A(rootForced만 OFF)와 현재 Rust reference(두 기능 OFF)는 독립 재빌드로 선택한다. 요청별 runtime toggle은 없다.
+평가 Linux B asset을 hash·source·exports 대조 후 설치했으며 JS wrapper/3체제 routing/CP/Worker/batch asset은 변경하지 않았다.
+고유 Node 185개 및 최종 제품 WASM/실제 브라우저 회귀 통과. 새 성능 캠페인, main merge·push·배포는 하지 않았다.
+[통합·rollback·검증 제한 기록](THRESHOLD_INTEGRATION_20261004.md).
+
 ## 2026-10-02 saves 최소 통합 후 작업 상태
 
-현재 제품 작업본은 `integration/saves-minimal-20261002` branch다. 아래의 `main` 표기는 2026-09-29 시점의 이력이다.
+당시 제품 작업본은 `integration/saves-minimal-20261002` branch였다. 아래의 `main` 표기는 2026-09-29 시점의 이력이다.
 A5 alias 파싱 수정과 A4 캐시 상한만 선별 반영하고 기존 Rust/WASM 및 3체제 정책은 유지했다.
 local main `187fbf9`와 remote main `03b6377`은 업데이트하지 않았다.
 [통합 범위·결정 기록](SAVES_INTEGRATION_20261002.md), [원시 증거·아카이브](../../archive/saves-experiments-20261002/README_KO.md).

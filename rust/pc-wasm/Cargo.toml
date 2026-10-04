@@ -7,3 +7,9 @@ license = "Apache-2.0"
 crate-type = ["cdylib"]
 [dependencies]
 pc-core = { path = "../pc-core" }
+
+[features]
+# Product default B; build with --no-default-features to select A or reference.
+default = ["threshold-current-propagation", "threshold-root-forced"]
+threshold-current-propagation = ["pc-core/threshold-current-propagation"]
+threshold-root-forced = ["pc-core/threshold-root-forced"]
