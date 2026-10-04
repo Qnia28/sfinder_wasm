@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "purpose": "LOCAL_LIGHTWEIGHT_CONTRACT_AND_REGRESSION_NOT_PERFORMANCE",
+  "command": "node --experimental-wasm-stack-switching --test-isolation=none --test-concurrency=1 --test tests/secondary-bench.test.mjs tests/secondary-bench-campaign.test.mjs tests/secondary-three-engine.test.mjs tests/parallel-secondary.test.mjs tests/threshold-product-default.test.mjs",
+  "node": "v24.13.0",
+  "platform": "win32",
+  "passed": 50,
+  "failed": 0,
+  "skipped": 0,
+  "workflowLint": { "tool": "actionlint", "version": "1.7.12", "status": "PASS", "shellcheck": "UNAVAILABLE" },
+  "checks": [
+    "60s/300s campaign contracts and common-source compatibility",
+    "300s 4/8/12/16/20,5h admission/6h wall,64min worst block,160min job cap",
+    "exact same first-run fixtures by SHA256, no new enumeration/primary",
+    "combined report keeps both timing populations separate and checks cross-run witnesses",
+    "lost VM torn final JSONL append retained without inventing a result"
+  ],
+  "productSourceDiff": "EMPTY"
+}

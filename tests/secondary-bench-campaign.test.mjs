@@ -6,7 +6,7 @@ import os from 'node:os';
 import { POLICY, DEFAULT_LIMITS, EXTENDED_POLICY, EXTENDED_LIMITS, jobShape, HOUR, validateCampaign, eligiblePair, roundTasks, packTasks, worstCallMs } from '../tools/secondary-bench/campaign.mjs';
 import { hash, identity, writeJson, readJson, verifyResult } from '../tools/secondary-bench/contracts.mjs';
 import { runChunk } from '../tools/secondary-bench/run-chunk.mjs';
-import { loadHistory, chooseFixtures } from '../tools/secondary-bench/plan-wave.mjs';
+import { loadHistory, chooseFixtures, planWave } from '../tools/secondary-bench/plan-wave.mjs';
 import { requireLinuxMemoryScope } from '../tools/secondary-bench/run.mjs';
 import { reportCampaign } from '../tools/secondary-bench/report-campaign.mjs';
 import { combineReports, combinedMarkdown } from '../tools/secondary-bench/combined-report.mjs';
@@ -141,6 +141,19 @@ test('capture partial files remain eligible provenance but do not claim command 
     assert.equal(loadHistory(root, p).rows.length, 1);
   } finally { removeOwned(root); }
 });
+test('lost VM torn final append is preserved as a warning, not an exact result or missing earlier raw rows', () => {
+  const root = temporary(), p = plan();
+  const good = { action: 'capture', campaignId: p.campaignId, sourceLock: identity(p.sourceFiles), inputId: command().id,
+    status: 'TIMEOUT_CALL', execution: { reaped: true } };
+  try {
+    const bytes = JSON.stringify(good) + '\n{"action":"secondary","status":"EX';
+    fs.writeFileSync(path.join(root, 'raw.jsonl'), bytes);
+    const history = loadHistory(root, p);
+    assert.equal(history.rows.length, 1); assert.equal(history.ledgerWarnings.length, 1);
+    assert.equal(history.ledgerWarnings[0].kind, 'INTERRUPTED_FINAL_RAW_APPEND');
+    assert.equal(fs.readFileSync(path.join(root, 'raw.jsonl'), 'utf8'), bytes);
+  } finally { removeOwned(root); }
+});
 test('a cgroup oom_kill increment is preserved as OOM and stops later calls', async () => {
   const root = temporary(), bundle = path.join(root, 'bundle'); fs.mkdirSync(bundle); const p = plan();
   writeJson(path.join(bundle, 'campaign.json'), p); const bytes = Buffer.from('{}'); fs.writeFileSync(path.join(bundle, 'fixture.json'), bytes);
@@ -207,6 +220,25 @@ test('combined report audits both runs with identical fixtures and NEVER pools60
     assert.equal(report.audit.crossRunWitness, 'AGREEMENT_FOR_RECORDED_EXACT_WITNESSES');
     assert.equal(report.audit.second.missingInitial.length, 0);
     assert(combinedMarkdown(report).includes('서로 다른 timeout의 시간 표본은 합쳐서'));
+  } finally { removeOwned(root); }
+});
+test('extended offline wave reuses only hash-locked first-run fixtures and schedules4/8/12/16/20', () => {
+  const root = temporary(), history = path.join(root, 'history'), reused = path.join(root, 'reused-capture');
+  fs.mkdirSync(history); fs.mkdirSync(reused); fs.mkdirSync(path.join(reused, 'fixtures'));
+  const f = { schema: 1, id: command().id + '/T', keys: ['a', 'b'], rows: [[[0, 1], [1, 2]]], K: 1, seed: [0],
+    cardinalityProof: { status: 'PROVEN', backend: 'synthetic' }, origin: { command: command(), filter: 'T' }, trivial: null };
+  const bytes = Buffer.from(JSON.stringify(f)); fs.writeFileSync(path.join(reused, 'fixtures', 'first.json'), bytes);
+  const p = { ...extended(), reusedFixtureLock: [{ id: f.id, sha256: hash(bytes) }] };
+  const planFile = path.join(root, 'campaign.json'); writeJson(planFile, p);
+  try {
+    const result = planWave(planFile, history, path.join(root, 'bundle'), '4', start);
+    assert.equal(result.tasks, 1); assert.equal(result.calls, 12); assert.equal(result.chunks, 1);
+    const chunk = readJson(path.join(root, 'bundle', 'chunk-0.json'));
+    assert.equal(chunk.tasks[0].fixture.sha256, hash(bytes)); assert.equal(chunk.tasks[0].worstMs, 64 * 60000);
+    const invalid = { ...p, reusedFixtureLock: [{ id: f.id, sha256: 'a'.repeat(64) }] };
+    writeJson(path.join(root, 'invalid.json'), invalid);
+    assert.throws(() => planWave(path.join(root, 'invalid.json'), history, path.join(root, 'invalid-bundle'), '4', start), /exactly the first-run frozen matrices/);
+    assert.throws(() => planWave(planFile, history, path.join(root, 'wrong-round'), '6', start));
   } finally { removeOwned(root); }
 });
 if (process.env.SECONDARY_LINUX_SCOPE_EXPECTED === '1') test('real public Linux process-tree cgroup is finite and swap-free', () => {

@@ -12,7 +12,7 @@ import { selectInformationRetests } from './select-retests.mjs';
 
 export function reportCampaign(plan, historyDir) {
   validateCampaign(plan);
-  const policy = policyFor(plan), { files, rows } = loadHistory(historyDir, plan);
+  const policy = policyFor(plan), { files, rows, ledgerWarnings } = loadHistory(historyDir, plan);
   const reusedFiles = plan.campaignVariant === 'extended-5m' ? filesUnder(path.join(historyDir, '..', 'reused-capture')) : [];
   const selection = chooseFixtures(plan, reusedFiles.length ? reusedFiles : files);
   const captureRows = reusedFiles.length ? reusedFiles.filter(f => path.basename(f) === 'raw.jsonl').flatMap(f =>
@@ -68,8 +68,8 @@ export function reportCampaign(plan, historyDir) {
     actionsSuccessIsNotCorrectnessPass: true, performancePass: 'NOT_APPLICABLE_INFORMATION_COLLECTION',
     witnessAudit: issues.length ? 'FAIL' : witnesses.size ? 'PASS_FOR_RECORDED_EXACT_RESULTS' : 'NO_EXACT_RESULTS',
     optimalityAudit: 'ENGINE_PROOFS_AND_AGREEMENT_WITH_SHARED_PRODUCT_PRIMITIVES',
-    issues, harnessErrors, incompleteChunks, failedScopes, missingInitial, captureMissing, captureIncomplete,
-    collectionState: issues.length || harnessErrors.length || incompleteChunks.length || failedScopes.length || missingInitial.length || captureMissing.length || captureIncomplete.length ? 'PARTIAL_OR_REVIEW_REQUIRED' : 'BASE_SCHEDULE_RECORDED',
+    issues, harnessErrors, incompleteChunks, failedScopes, missingInitial, captureMissing, captureIncomplete, ledgerWarnings,
+    collectionState: issues.length || harnessErrors.length || incompleteChunks.length || failedScopes.length || missingInitial.length || captureMissing.length || captureIncomplete.length || ledgerWarnings.length ? 'PARTIAL_OR_REVIEW_REQUIRED' : 'BASE_SCHEDULE_RECORDED',
     expectedCommands: plan.commands.length, selectedFixtures: selection.selected.length, maximumCalls: selection.selected.length * policy.maxRepeats * 3,
     statuses: Object.fromEntries([...new Set(rows.map(r => r.status))].map(status => [status, rows.filter(r => r.status === status).length])),
     selectionLedger: selection.ledger, repeatLedger, initialVariabilityDiagnostic: diagnostic,

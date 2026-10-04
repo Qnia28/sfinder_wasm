@@ -16,11 +16,21 @@ export function filesUnder(directory) {
   });
 }
 export function loadHistory(directory, plan) {
-  const files = filesUnder(directory), rows = [];
+  const files = filesUnder(directory), rows = [], ledgerWarnings = [];
   for (const filename of files.filter(f => path.basename(f) === 'raw.jsonl')) {
-    const lines = fs.readFileSync(filename, 'utf8').split(/\r?\n/).filter(Boolean);
-    for (const line of lines) {
-      const row = JSON.parse(line);
+    const text = fs.readFileSync(filename, 'utf8'), lines = text.split(/\r?\n/).filter(Boolean);
+    for (const [index, line] of lines.entries()) {
+      let row;
+      try { row = JSON.parse(line); }
+      catch (error) {
+        // A lost VM can leave a torn final append. Keep original bytes and the
+        // missing-attempt ledger; never fabricate a result or replace that row.
+        if (index === lines.length - 1 && !text.endsWith('\n')) {
+          ledgerWarnings.push({ filename, kind: 'INTERRUPTED_FINAL_RAW_APPEND', retainedBytes: Buffer.byteLength(line), error: error.message });
+          continue;
+        }
+        throw error;
+      }
       assert.equal(row.campaignId, plan.campaignId, 'foreign campaign artifact');
       assert.equal(row.sourceLock, identity(plan.sourceFiles), 'history source mismatch');
       rows.push(row);
@@ -32,7 +42,7 @@ export function loadHistory(directory, plan) {
     assert(!attempted.has(key), 'duplicate attempt retained; audit before continuation: ' + key);
     attempted.add(key);
   }
-  return { files, rows };
+  return { files, rows, ledgerWarnings };
 }
 export function chooseFixtures(plan, files) {
   const commands = new Map(plan.commands.map(c => [c.id, c])), groups = new Map(), seen = new Set(), ledger = [];
@@ -98,7 +108,7 @@ export function planWave(planFile, historyDir, outputDir, stage, now = Date.now(
   const summary = { campaignId: plan.campaignId, stage, plannedUtc: new Date(now).toISOString(), elapsedMs: times.elapsedMs,
     tasks: tasks.length, chunks: chunks.length, calls: tasks.reduce((n, t) => n + (t.calls?.length ?? 1), 0),
     fixtureSelection: plan.fixtureSelection, selection: selection?.ledger ?? null, decisions,
-    historyFiles: history.files.length, historyRows: history.rows.length, maxParallel: 16 };
+    historyFiles: history.files.length, historyRows: history.rows.length, ledgerWarnings: history.ledgerWarnings, maxParallel: 16 };
   writeJson(path.join(outputDir, 'WAVE_PLAN.json'), summary);
   return summary;
 }
