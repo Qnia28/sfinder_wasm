@@ -45,6 +45,8 @@ export async function calculateMinimalsFeature({
   fastStateBudget = undefined,
   primaryProof = "standard",
   secondary = 'auto',
+  exactProbe = 'reference',
+  exactProbeTiming = false,
   signal = null,
 }) {
   const context = decodeAndValidate(sourceFumen, clear);
@@ -61,6 +63,8 @@ export async function calculateMinimalsFeature({
     fastStateBudget,
     primaryProof,
     secondary,
+    exactProbe,
+    exactProbeTiming,
     signal,
   }, context);
   return {
@@ -90,6 +94,7 @@ export async function calculateMinimalsFeature({
     fastFallback: calculation.fastFallback,
     fastDecision: calculation.fastDecision,
     humanQualityExact: calculation.humanQualityExact,
+    ...(calculation.exactProbeTrace ? { exactProbeTrace: calculation.exactProbeTrace } : {}),
   };
 }
 

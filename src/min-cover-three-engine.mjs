@@ -3,6 +3,7 @@ import { findTrivialSecondary } from './min-cover-components.mjs';
 import { WasmPcSolver } from './wasm-backend.mjs';
 import { isORToolsSupported, assertORToolsSupported } from './ortools-min-cover.mjs';
 import { prepareSecondaryEngineInput, startSecondaryEngine, raceSecondaryEngines } from './secondary-engine-runner.mjs';
+import { normalizeExactProbe, createA0M1ProbeSolver } from './a0-m1-probe.mjs';
 
 export const SECONDARY_CP_DELAY_MS = 60000;
 export const SECONDARY_CP_LIMIT_MS = 120000;
@@ -32,11 +33,54 @@ export function validateSecondaryWitness(payload, result) {
 // not an early state-budget replacement. Rust progress survives the CP attempt.
 export async function solveExactSecondaryAsync(coverage, options) {
   const started = performance.now(), mode = normalizeSecondary(options.secondary);
+  options.signal?.throwIfAborted();
+  const policy = normalizeExactProbe(options.exactProbe);
+  const eligible = (policy === 'a0-m1' || options.exactProbeTiming === true)
+    && options.integratedProbe == null && ['auto', 'rust'].includes(mode) && !options.primaryHard
+    && (options.decomposition ?? 'off') === 'off'
+    && !findTrivialSecondary(coverage, options.primary.count, options.qualityFor);
+  let candidate = null, trace = options.integratedProbe?.exactProbeTrace ?? null;
+  try {
+    if (eligible) {
+      let loadMs = 0;
+      if (policy === 'a0-m1') {
+        const loading = performance.now();
+        candidate = await createA0M1ProbeSolver(options.signal);
+        loadMs = performance.now() - loading;
+      }
+      const ordinaryProbe = searchOptions => {
+        options.signal?.throwIfAborted();
+        const searching = performance.now();
+        const value = (candidate ?? options.solver)?.minimumCoverAtCount?.(coverage, options.primary.count,
+          candidate ? { ...searchOptions, partitioned: true } : searchOptions);
+        const apiMs = performance.now() - searching;
+        if (candidate && (typeof value?.completed !== 'boolean' || value.error)) throw new Error('A0+M1 probe failed');
+        // Validate both EXACT and CAPPED witnesses against original weighted rows.
+        // A feasible capped incumbent is not promoted to an exact proof.
+        if (candidate) validateSecondaryWitness(prepareSecondaryEngineInput(coverage, options.qualityFor,
+          options.primary.count, options.primaryKeys), { ...value, completed: true });
+        candidate?.close(); candidate = null; // Release matrix memory before threshold/CP starts.
+        options.signal?.throwIfAborted();
+        trace = { policy, status: value == null ? 'UNAVAILABLE' : value.completed ? 'EXACT' : 'CAPPED', stateBudget: 100000,
+          searchedStates: value?.searchedStates ?? 0,
+          ...(options.exactProbeTiming ? { apiMs, loadMs } : {}) };
+        if (value) value.exactProbeTrace = trace;
+        return value;
+      };
+      options = { ...options, ordinaryProbe };
+    }
+    const result = await solveSelectedSecondary(coverage, options, started, mode);
+    return trace ? { ...result, exactProbeTrace: trace } : result;
+  } finally { candidate?.close(); }
+}
+
+async function solveSelectedSecondary(coverage, options, started, mode) {
   const { solver, qualityFor, primary, primaryKeys, signal = null } = options;
   signal?.throwIfAborted();
   const elapsedBefore = options.secondaryElapsedMs ?? 0;
   const externalDefer = options.deferThreshold;
-  const forward = context => externalDefer({ ...context, secondary: mode,
+  const forward = context => externalDefer({ ...context, exactProbe: options.exactProbe ?? 'reference',
+    exactProbeTiming: options.exactProbeTiming ?? false, secondary: mode,
     secondaryElapsedMs: elapsedBefore + performance.now() - started });
   if (mode === 'rust' || (mode === 'auto' && ((options.decomposition ?? 'off') !== 'off' || !(solver instanceof WasmPcSolver) || !isORToolsSupported()))) {
     return solveExactSecondary(coverage, { ...options, deferThreshold: externalDefer ? forward : null });

@@ -73,6 +73,8 @@ export async function calculatePerSaveMinimalsFeature({
   fastStateBudget = undefined,
   secondaryWorkers = 'auto',
   secondary = 'auto',
+  exactProbe = 'reference',
+  exactProbeTiming = false,
   filterWorkers = 0,
   signal = null,
 }) {
@@ -92,6 +94,8 @@ export async function calculatePerSaveMinimalsFeature({
     includeCoverage: false,
     secondaryWorkers,
     secondary,
+    exactProbe,
+    exactProbeTiming,
     filterWorkers,
     signal,
   }, context);
@@ -115,6 +119,7 @@ export async function calculatePerSaveMinimalsFeature({
       primaryResolved: result.primaryResolved,
       cardinalityBackend: result.cardinalityBackend,
       qualityBackend: result.qualityBackend,
+      ...(result.exactProbeTrace ? { exactProbeTrace: result.exactProbeTrace } : {}),
     };
   }
   return {

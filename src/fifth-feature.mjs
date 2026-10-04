@@ -39,6 +39,8 @@ export async function calculateFifthFeature({
   useHiGHS = undefined,
   UseHiGHS = undefined,
   fastStateBudget = undefined,
+  exactProbe = 'reference',
+  exactProbeTiming = false,
 }) {
   const context = decodeAndValidate(sourceFumen, clear);
   if (clear !== 4) throw new Error("5th is clear=4 only");
@@ -51,6 +53,8 @@ export async function calculateFifthFeature({
     primary: primary ?? Primary,
     useHiGHS: useHiGHS ?? UseHiGHS ?? "auto",
     fastStateBudget,
+    exactProbe,
+    exactProbeTiming,
   }, context);
   const encoded = encodeFifthCombined({ sourceFumen, title, calculation }, context.page);
   return {

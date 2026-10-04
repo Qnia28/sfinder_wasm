@@ -1,0 +1,16 @@
+{
+  "policy": "a0-m1",
+  "sourceCommit": "c6554bce7356fe226693074610e8c7a2177335cb",
+  "overlaySource": "rust/pc-core/src/min_cover_four_arm.rs",
+  "overlaySha256": "4b69440c0c443f500c7e56309a1bdec5635f1ab498ca30826c5a202fc1dfe002",
+  "testsSha256": "25334364fe05ce3c1058545c232b26159878359423b4b90e67c99607bda08453",
+  "testReferenceSha256": "2608438931db4fefd56e4a6bb35a58a5157dd182337f80764220696c2919ffbe",
+  "baseTestsSha256": "e7a93defc8eb0a52a6981109d485f771be798923b4c853a49840ed300a4357a6",
+  "wasmOriginRunId": 37134463920,
+  "retestRunId": 37138752420,
+  "wasmSha256": "c3c9a8844148341db69a1216d348a09f857f9f3259d2d5b6a2ac0517cf654530",
+  "referenceLinuxSha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+  "features": ["pc-core/a0-lower-cutoff"],
+  "disabledFeatures": ["a0-last-sibling", "a0-diagnostics"],
+  "notes": "Exact audited source overlay retained, including disabled experiment sections, to avoid another code-layout change. Only M1 is compiled. Product rust tree and reference build remain untouched. Candidate used only through the partitioned100K export."
+}

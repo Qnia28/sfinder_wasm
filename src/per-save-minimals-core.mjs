@@ -7,6 +7,7 @@ import {createNumericCoverage} from "./numeric-cover-data.mjs";
 import { makeOrderCountQuality, recordOrderCount } from "./human-ranking.mjs";
 import { minimumCover } from "./min-cover.mjs";
 import { minimumCoverAdaptiveAsync } from "./min-cover-adaptive.mjs";
+import { normalizeExactProbe } from './a0-m1-probe.mjs';
 import { normalizeSecondary } from './min-cover-three-engine.mjs';
 import { orderMinimalKeysByCoverage } from "./minimal-order.mjs";
 import { canUsePatternEnumeration, enumerateCases, visitCaseSolutions } from "./pc-enumeration-engine.mjs";
@@ -163,6 +164,7 @@ function finishPieceResultNow({
     coverageCounts,
     coverage: coverage ?? new Map(),
     humanQualityVector,
+    ...(minimal?.exactProbeTrace ? { exactProbeTrace: minimal.exactProbeTrace } : {}),
     playableOrderCount: total === 1 && solutions.length
       ? requirePositiveQuality(humanQualityVector[0], {
         key: keys[0] ?? null,
@@ -257,7 +259,7 @@ function numericRowsToCoverage(rows, cases, solutions) {
 
 async function compactPerSaveResults({ board, cases, solver, useHold, displayOrder,
   requestedPrimary, exactHumanQuality, primary, useHiGHS, fastStateBudget,
-  tinyExactMaxCandidates, includeCoverage, deferExactSecondary, deferFilterCover, secondary, signal }) {
+  tinyExactMaxCandidates, includeCoverage, deferExactSecondary, deferFilterCover, secondary, exactProbe, exactProbeTiming, signal }) {
   if (typeof solver.enumeratePcPatternCompact !== 'function') return null;
   const compact = solver.enumeratePcPatternCompact(board, cases.map(entry => entry.queue), useHold);
   if (!compact) return null;
@@ -307,7 +309,7 @@ async function compactPerSaveResults({ board, cases, solver, useHold, displayOrd
       view = createNumericCoverage(keys, rows, cases);
       minimal = await minimumForFilter(view.coverage, {
         qualityFor: makeOrderCountQuality(view.qualityIndex), solver, exactQuality: exactHumanQuality,
-        primary, useHiGHS, fastStateBudget, tinyExactMaxCandidates, deferExactSecondary, secondary, signal,
+        primary, useHiGHS, fastStateBudget, tinyExactMaxCandidates, deferExactSecondary, secondary, exactProbe, exactProbeTiming, signal,
       }, deferFilterCover);
     }
     // Tiny integrated solves need no second numeric matrix or CSR packing.
@@ -386,9 +388,12 @@ async function calculatePerSaveMinimalsFromBoardInternal({
   deferExactSecondary = null,
   deferFilterCover = null,
   secondary = 'auto',
+  exactProbe = 'reference',
+  exactProbeTiming = false,
   signal = null,
 }) {
   secondary = normalizeSecondary(secondary);
+  exactProbe = normalizeExactProbe(exactProbe);
   signal?.throwIfAborted();
   const cases = normalizeCases(queues);
   const requestedPrimary = primaryRequest({primary, Primary, useHiGHS});
@@ -401,7 +406,7 @@ async function calculatePerSaveMinimalsFromBoardInternal({
   if (canUseNumericPattern) {
     const compact = await compactPerSaveResults({ board, cases, solver, useHold, displayOrder,
       requestedPrimary, exactHumanQuality, primary: primary ?? Primary, useHiGHS, fastStateBudget,
-       tinyExactMaxCandidates, includeCoverage, deferExactSecondary, deferFilterCover, secondary, signal });
+       tinyExactMaxCandidates, includeCoverage, deferExactSecondary, deferFilterCover, secondary, exactProbe, exactProbeTiming, signal });
     if (compact) return compact;
     const numeric = collectPatternPerSaveNumeric({ board, cases, solver, useHold, displayOrder });
     if (numeric) {
@@ -447,7 +452,7 @@ async function calculatePerSaveMinimalsFromBoardInternal({
             primary: primary ?? Primary,
             useHiGHS,
             fastStateBudget,
-            tinyExactMaxCandidates, deferExactSecondary, secondary, signal,
+            tinyExactMaxCandidates, deferExactSecondary, secondary, exactProbe, exactProbeTiming, signal,
           }, deferFilterCover);
         } else if (includeCoverage && activeRows.length > 0) {
           coverage = numericRowsToCoverage(rows, cases, numeric.solutions).coverage;
@@ -487,7 +492,7 @@ async function calculatePerSaveMinimalsFromBoardInternal({
         primary: primary ?? Primary,
         useHiGHS,
         fastStateBudget,
-        tinyExactMaxCandidates, deferExactSecondary, secondary, signal,
+        tinyExactMaxCandidates, deferExactSecondary, secondary, exactProbe, exactProbeTiming, signal,
       }, deferFilterCover)
       : null;
     results[piece] = finishPieceResult({

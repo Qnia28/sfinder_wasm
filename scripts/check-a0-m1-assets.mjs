@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+const root = new URL('../', import.meta.url);
+const sha = file => createHash('sha256').update(fs.readFileSync(new URL(file, root))).digest('hex');
+const provenance = JSON.parse(fs.readFileSync(new URL('candidate/a0-m1/PROVENANCE.json', root)));
+assert.equal(sha('candidate/a0-m1/min_cover.rs'), provenance.overlaySha256);
+assert.equal(sha('candidate/a0-m1/min_cover_four_arm_tests.rs'), provenance.testsSha256);
+assert.equal(sha('candidate/a0-m1/four_arm_reference.rs'), provenance.testReferenceSha256);
+assert.equal(sha('candidate/a0-m1/min_cover_tests.rs'), provenance.baseTestsSha256);
+assert.equal(sha('wasm/pc_a0_m1.wasm'), provenance.wasmSha256);
+if (process.argv.includes('--linux-reference')) assert.equal(sha('wasm/pc_wasm.wasm'), provenance.referenceLinuxSha256);
+const module = await WebAssembly.compile(fs.readFileSync(new URL('wasm/pc_a0_m1.wasm', root)));
+const exports = WebAssembly.Module.exports(module).map(e => e.name);
+assert(exports.includes('solver_min_cover_at_count_integrated_partitioned_bounded'));
+assert(!exports.some(e => e.includes('four_arm_diag')));
+console.log(JSON.stringify({ status: 'PASS', candidate: sha('wasm/pc_a0_m1.wasm'), reference: sha('wasm/pc_wasm.wasm'), diagnostics: false }));

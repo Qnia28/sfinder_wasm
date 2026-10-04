@@ -9,6 +9,7 @@ import {
   normalizePrimaryProof,
 } from "./highs-cardinality.mjs";
 import { refineMinimumCoverQuality } from "./min-cover-quality-refine.mjs";
+import { normalizeExactProbe } from './a0-m1-probe.mjs';
 
 // Release 2.1: ordinary fixed-K quality uses canonical-style integrated
 // BestSetSearch with a deterministic state budget. Fast falls back to 2x2 on
@@ -94,9 +95,12 @@ export async function minimumCoverAdaptiveAsync(coverage, {
   deferExactSecondary = null,
   signal = null,
   secondary = 'auto',
+  exactProbe = 'reference',
+  exactProbeTiming = false,
 } = {}) {
   signal?.throwIfAborted();
   secondary = normalizeSecondary(secondary);
+  exactProbe = normalizeExactProbe(exactProbe);
   normalizePrimaryProof(primaryProof);
   assertQualityProvider(qualityFor);
   const qualityMode = normalizeExactHumanQuality(exactQuality);
@@ -137,6 +141,8 @@ export async function minimumCoverAdaptiveAsync(coverage, {
     deferExactSecondary,
     signal,
     secondary,
+    exactProbe,
+    exactProbeTiming,
   });
 }
 
@@ -151,9 +157,12 @@ export async function minimumCoverAsync(coverage, {
   deferExactSecondary = null,
   signal = null,
   secondary = 'auto',
+  exactProbe = 'reference',
+  exactProbeTiming = false,
 } = {}) {
   signal?.throwIfAborted();
   secondary = normalizeSecondary(secondary);
+  exactProbe = normalizeExactProbe(exactProbe);
   normalizePrimaryProof(primaryProof);
   assertQualityProvider(qualityFor);
   const qualityMode = normalizeExactHumanQuality(exactQuality);
@@ -214,7 +223,7 @@ export async function minimumCoverAsync(coverage, {
   }
 
   if (qualityMode === "true") {
-    const context = { primary, primaryKeys, primaryHard, requestedPrimary, requested, kernelStats, secondary };
+    const context = { primary, primaryKeys, primaryHard, requestedPrimary, requested, kernelStats, secondary, exactProbe, exactProbeTiming };
     if (deferExactSecondary && !deferExactSecondary.onlyHeavy) return deferExactSecondary(prepared, context);
     if (deferExactSecondary) return solveExactSecondaryAsync(coverage, { ...context, solver, qualityFor, signal,
       deferThreshold: job => deferExactSecondary(prepared, job) });

@@ -1,0 +1,107 @@
+name: A0+M1 product ON OFF (explicit launch only)
+on:
+  push:
+    branches: [integration/a0-m1-selectable-20261004]
+    paths: [experiments/a0-m1-on-off-20261004/launch.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: a0-m1-on-off-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - name: Freeze absolute origin (requires separately authorized launch.json)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node experiments/a0-m1-on-off-20261004/origin.mjs
+      - name: Rebuild isolated candidate and unchanged baseline (pinned toolchain)
+        run: |
+          rustup toolchain install 1.90.0 --profile minimal --target wasm32-unknown-unknown
+          rustup default 1.90.0
+          unset RUSTFLAGS CARGO_ENCODED_RUSTFLAGS
+          npm ci --ignore-scripts
+          bash scripts/build-wasm.sh
+          bash scripts/build-a0-m1.sh
+          mkdir -p .a0-m1-build/reference/wasm
+          git archive c0cb2a048e7275bfea587d176b1954efff0a8a08 rust scripts/build-wasm.sh | tar -x -C .a0-m1-build/reference
+          bash .a0-m1-build/reference/scripts/build-wasm.sh
+          cmp wasm/pc_wasm.wasm .a0-m1-build/reference/wasm/pc_wasm.wasm
+          cmp wasm/batch_wasm.wasm .a0-m1-build/reference/wasm/batch_wasm.wasm
+          node scripts/check-a0-m1-assets.mjs --linux-reference
+      - name: Rust oracle and full product regression (synthetic fixtures only)
+        run: |
+          cargo test --manifest-path .a0-m1-build/source/rust/Cargo.toml -p pc-core --lib min_cover --features a0-lower-cutoff --locked --offline
+          cargo test --manifest-path .a0-m1-build/source/rust/Cargo.toml -p pc-core --lib min_cover --release --features a0-lower-cutoff --locked --offline
+          node --test --test-concurrency=1 tests/*.test.mjs
+          node --test experiments/a0-m1-on-off-20261004/selection.test.mjs
+          node --test experiments/a0-m1-on-off-20261004/request.test.mjs
+          python3 -m unittest discover -s experiments/a0-m1-on-off-20261004 -p test_analysis.py -v
+      - name: Independent watchdog and cgroup contracts
+        run: |
+          group=/sys/fs/cgroup/a0-m1-contract-$GITHUB_RUN_ID
+          sudo mkdir "$group"
+          echo '+memory' | sudo tee "$group/cgroup.subtree_control"
+          A0_CGROUP_ROOT="$group" node --test experiments/a0-m1-on-off-20261004/contracts.test.mjs
+      - name: Lock source/input/binary inventory before any actual input
+        run: node experiments/a0-m1-on-off-20261004/preflight.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a0-m1-on-off-preflight
+          include-hidden-files: true
+          path: |
+            .a0-m1-comparison/ORIGIN.json
+            .a0-m1-comparison/LOCK.json
+            wasm/pc_wasm.wasm
+            wasm/pc_a0_m1.wasm
+            wasm/batch_wasm.wasm
+          if-no-files-found: error
+          retention-days: 7
+  compare:
+    needs: preflight
+    runs-on: ubuntu-24.04
+    timeout-minutes: 165
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        host: [0,1,2,3,4,5,6,7,8,9]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - uses: actions/download-artifact@v4
+        with:
+          name: a0-m1-on-off-preflight
+          path: .a0-m1-download
+      - name: Restore locked Linux bytes, not per-host rebuilds
+        run: |
+          mkdir -p .a0-m1-comparison
+          cp .a0-m1-download/.a0-m1-comparison/{ORIGIN,LOCK}.json .a0-m1-comparison/
+          cp .a0-m1-download/wasm/*.wasm wasm/
+          npm ci --ignore-scripts
+      - name: Run frozen adjacent100pairs/full requests on this host
+        run: |
+          group=/sys/fs/cgroup/a0-m1-compare-$GITHUB_RUN_ID-${{ matrix.host }}
+          sudo mkdir "$group"
+          echo '+memory' | sudo tee "$group/cgroup.subtree_control"
+          A0_CGROUP_ROOT="$group" node experiments/a0-m1-on-off-20261004/run.mjs ${{ matrix.host }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: a0-m1-on-off-host-${{ matrix.host }}
+          path: .a0-m1-comparison/results/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7

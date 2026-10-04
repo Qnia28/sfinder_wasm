@@ -125,6 +125,7 @@ function finishSaveMinimals(collected, minimal) {
     fastFallback: minimal.fastFallback ?? false,
     fastDecision: minimal.fastDecision ?? null,
     humanQualityExact: minimal.qualityExact ?? true,
+    ...(minimal.exactProbeTrace ? { exactProbeTrace: minimal.exactProbeTrace } : {}),
   };
 }
 
@@ -148,6 +149,8 @@ export async function calculateSaveMinimals(input, context) {
     fastStateBudget: input.fastStateBudget,
     primaryProof: input.primaryProof ?? "standard",
     secondary: input.secondary ?? 'auto',
+    exactProbe: input.exactProbe ?? 'reference',
+    exactProbeTiming: input.exactProbeTiming ?? false,
     signal: input.signal ?? null,
   });
   return finishSaveMinimals(collected, minimal);

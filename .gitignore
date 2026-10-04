@@ -16,3 +16,7 @@ rust/generated/
 *.tmp
 
 /benchmark-results/
+/.a0-m1-build/
+/.a0-m1-comparison/
+__pycache__/
+*.pyc

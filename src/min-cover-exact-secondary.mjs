@@ -14,7 +14,7 @@ export function solveExactSecondary(coverage, options) {
 function solveInspectedSecondary(coverage, options, trivial) {
     const { solver, qualityFor, primary, primaryKeys, primaryHard, requestedPrimary, requested, kernelStats,
       integratedProbe, deferThreshold, decomposition = 'off', routingProbeStates = 10000,
-      routingMinComponents = 3, routingStructureFirst = false } = options;
+      routingMinComponents = 3, routingStructureFirst = false, ordinaryProbe = null } = options;
     const defer = probe => deferThreshold({ primary, primaryKeys, primaryHard, requestedPrimary,
       requested, kernelStats, integratedProbe: probe, ...(decomposition !== 'off' ? { decomposition } : {}),
       ...(decomposition === 'auto' ? { routingProbeStates, routingMinComponents, routingStructureFirst } : {}) });
@@ -64,7 +64,7 @@ function solveInspectedSecondary(coverage, options, trivial) {
     // attempt so pathological quality structures can fall back to the
     // sequential-threshold exact prover without sacrificing exactness.
     if (!primaryHard) {
-      const integrated = integratedProbe ?? search({
+       const integrated = integratedProbe ?? (ordinaryProbe && decomposition === 'off' ? ordinaryProbe : search)({
         qualityFor, seedKeys: primaryKeys, stateBudget: FAST_EXACT_STATE_BUDGET, integrated: true,
       });
       if (integrated?.completed && Number.isFinite(integrated.count) && integrated.count === primary.count) {

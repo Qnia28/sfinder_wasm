@@ -16,6 +16,8 @@ export function packFilterTask(coverage, qualityFor, options = {}) {
       tinyExactMaxCandidates: options.tinyExactMaxCandidates ?? 48,
       primaryProof: options.primaryProof ?? 'standard',
       secondary: options.secondary ?? 'auto',
+      exactProbe: options.exactProbe ?? 'reference',
+      exactProbeTiming: options.exactProbeTiming ?? false,
     },
   };
 }

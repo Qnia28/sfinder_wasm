@@ -145,6 +145,8 @@ export async function fifthMinimalsPerSavesAsync({
   useHiGHS = "auto",
   fastStateBudget = undefined,
   tinyExactMaxCandidates = 48,
+  exactProbe = 'reference',
+  exactProbeTiming = false,
 }, context) {
   const collected = collectFifth({ sourceFumen, analysisPattern, solver, useHold }, context);
   const usages = {};
@@ -160,6 +162,8 @@ export async function fifthMinimalsPerSavesAsync({
         useHiGHS,
         fastStateBudget,
         tinyExactMaxCandidates,
+        exactProbe,
+        exactProbeTiming,
       })
       : null;
     const finished = finishFifthPiece(collected, piece, data, minimal);

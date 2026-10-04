@@ -80,6 +80,8 @@ export async function calculatePerSaveMinimalsAsync({
   sourceFumen,pattern,solver,useHold=true,targetLines,clear,candidateLimit=16,
   primary=undefined,Primary=undefined,exactHumanQuality="true",useHiGHS="auto",UseHiGHS=undefined,fastStateBudget=undefined,
   tinyExactMaxCandidates=48,includeCoverage=true,secondaryWorkers='auto',filterWorkers=0,signal=null,secondary='auto',
+  exactProbe='reference',
+  exactProbeTiming=false,
 },context){
   const resolvedTargetLines=resolvePerSaveTargetLines({targetLines,clear});
   const geometry=perSaveInputGeometry({sourceFumen,targetLines:resolvedTargetLines},context);
@@ -95,7 +97,7 @@ export async function calculatePerSaveMinimalsAsync({
   return{
     ...await calculatePerSaveMinimalsFromBoardAsync({
       board:geometry.board,queues,solver,useHold,candidateLimit,
-      exactHumanQuality,primary:primary??Primary,useHiGHS:UseHiGHS??useHiGHS,fastStateBudget,tinyExactMaxCandidates,includeCoverage,secondaryWorkers,filterWorkers,signal,secondary,
+      exactHumanQuality,primary:primary??Primary,useHiGHS:UseHiGHS??useHiGHS,fastStateBudget,tinyExactMaxCandidates,includeCoverage,secondaryWorkers,filterWorkers,signal,secondary,exactProbe,exactProbeTiming,
     }),
     targetLines:geometry.targetLines,
     occupiedCells:geometry.occupiedCells,
