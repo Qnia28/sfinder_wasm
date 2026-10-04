@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import { readFileSync, appendFileSync } from 'node:fs';
+import { loadFixture } from './fixtures.mjs';
+const config = JSON.parse(readFileSync(new URL('./run.json', import.meta.url)));
+assert.equal(config.cases.length, 32); assert.equal(new Set(config.cases).size, 32);
+for (const id of config.cases) loadFixture(id);
+assert.equal(config.pairs, 5); assert.equal(config.recheckPairs, 10); assert.equal(config.maxParallel, 10);
+const plan = { matrix: { case: config.cases }, jobMinutes: 127, recheckMinutes: 244 };
+console.log(JSON.stringify(plan, null, 2));
+if (process.env.GITHUB_OUTPUT) for (const [k, v] of Object.entries(plan)) appendFileSync(process.env.GITHUB_OUTPUT, `${k}=${typeof v === 'object' ? JSON.stringify(v) : v}\n`);

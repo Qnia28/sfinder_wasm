@@ -1,0 +1,21 @@
+{
+  "baseline": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+  "reference": "908efa38b932837a0c12e5a26b8fd290c6d03d18",
+  "profile": "product-confirm",
+  "pairs": 5,
+  "recheckPairs": 10,
+  "timeoutSeconds": 300,
+  "maxParallel": 10,
+  "controlCases": ["cycle1-alt-jaws-a-O", "cycle1-grace-system-a-S", "c7-2plus2-qb-row-039-O", "c7-2plus2-qb-row-025-T", "c7-2plus2-qb-row-035-L", "c7-2plus2-qb-row-326-L"],
+  "cases": [
+    "cycle1-alt-jaws-a-O", "cycle1-big-jaws-a-S", "cycle1-jaws-a-I", "cycle1-pcinfo-016-S",
+    "cycle1-pcinfo-024-I", "cycle1-pcinfo-025-I", "cycle1-alt-shoes-a-Z", "cycle1-jeremy-a-Z",
+    "cycle1-grace-system-a-S", "cycle1-6p-pco-a-I", "cycle1-legs-a-S", "cycle1-hills-a-Z",
+    "cycle1-pcinfo-030-Z", "cycle1-pcinfo-031-O", "cycle1-pcinfo-032-Z", "cycle1-pcinfo-031-S",
+    "c7-2plus2-qb-row-007-O", "c7-2plus2-qb-row-035-L", "c7-2plus2-qb-row-072-T", "c7-2plus2-qb-row-084-L",
+    "c7-2plus2-qb-row-107-I", "c7-2plus2-qb-row-175-L", "c7-2plus2-qb-row-329-J", "c7-2plus2-qb-row-025-T",
+    "c7-2plus2-qb-row-020-Z", "c7-2plus2-qb-row-159-S", "c7-2plus2-qb-row-271-T", "c7-2plus2-qb-row-326-L",
+    "c7-2plus2-qb-row-039-O", "c7-2plus2-qb-row-052-T", "c7-2plus2-qb-row-134-J", "c7-2plus2-qb-row-087-J"
+  ],
+  "selection": "Frozen before any candidate product timing.16cycle1 controls/gains/regressions/long/boundary inputs and16QB controls/prior alerts/no-forced/forced inputs. These targeted32 inputs are not a random population estimate. Do not pool cohorts or initial/recheck timing."
+}

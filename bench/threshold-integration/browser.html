@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko"><meta charset="utf-8"><title>Threshold product browser verification</title>
+<body><h1>제품 모듈·Worker 브라우저 검증</h1><output id="status">검증 대기</output>
+<script type="module">
+import { createWasmSolver } from '/src/wasm-backend.mjs';
+import { createNumericCoverage } from '/src/numeric-cover-data.mjs';
+import { prepareSecondaryEngineInput, startSecondaryEngine } from '/src/secondary-engine-runner.mjs';
+import { validateSecondaryWitness, solveExactSecondaryAsync } from '/src/min-cover-three-engine.mjs';
+function view(m) {
+  const v = createNumericCoverage(m.keys, new Map(m.rows.map((r, i) => [i, r])), m.rows.map((_, caseId) => ({ caseId })));
+  return { ...v, qualityFor: (key, id) => v.qualityIndex.get(id)?.get(key), seedKeys: m.seed.map(i => m.keys[i]) };
+}
+window.verify = async ({ matrices, hard }) => {
+  const bytes = await (await fetch('/wasm/pc_wasm.wasm')).arrayBuffer();
+  const wasmHash = [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].map(x => x.toString(16).padStart(2, '0')).join('');
+  const solver = await createWasmSolver(4), results = [];
+  try {
+    for (const m of matrices) {
+      const v = view(m), payload = prepareSecondaryEngineInput(v.coverage, v.qualityFor, m.K, v.seedKeys);
+      const options = { qualityFor: v.qualityFor, seedKeys: v.seedKeys };
+      // Product JS zero budget is intentionally clamped to1, not experimental no-search.
+      const progressSupported = typeof solver.e.solver_min_cover_at_count_progress_bounded === 'function';
+      const bounded = solver.minimumCoverAtCount(v.coverage, m.K, { ...options, stateBudget: 0, proofProgress: progressSupported });
+      if (bounded.searchedStates > 1) throw Error('product budget clamp violated');
+      const progress = solver.minimumCoverAtCount(v.coverage, m.K, { ...options, stateBudget: 1000000, proofProgress: progressSupported });
+      if (!progress.completed) throw Error('short progress fixture did not finish');
+      const levels = [...new Set(m.rows.flatMap(r => r.map(([, q]) => q)))].sort((a, b) => a - b); if (levels.length > 1) levels.shift();
+      const prefix = progress.provenPrefix || levels.map(level => progress.qualityVector.filter(q => q >= level).length);
+      const locked = solver.minimumCoverAtCount(v.coverage, m.K, { ...options, seedKeys: progress.keys, lockedPrefix: prefix });
+      validateSecondaryWitness(payload, locked);
+      const started = performance.now(), job = startSecondaryEngine('threshold', payload);
+      let worker;
+      try { worker = validateSecondaryWitness(payload, await job.promise); } finally { await job.stop(); }
+      const workerMs = performance.now() - started;
+      const routed = await solveExactSecondaryAsync(v.coverage, { solver, qualityFor: v.qualityFor,
+        primary: { count: m.K, backend: 'proved-fixture' }, primaryKeys: v.seedKeys, secondary: 'auto', primaryHard: true,
+        kernelStats: { cases: m.rows.length, solutions: m.keys.length, entries: m.rows.reduce((n, r) => n + r.length, 0) } });
+      results.push({ id: m.id, worker, locked, workerMs, progressSupported, qualityDecision: routed.qualityDecision,
+        route: routed.secondaryResolved ?? routed.qualityBackend, wasmMemoryBytes: solver.e.memory.buffer.byteLength });
+      document.querySelector('#status').textContent = `${m.id}: 완료`;
+    }
+    const v = view(hard), payload = prepareSecondaryEngineInput(v.coverage, v.qualityFor, hard.K, v.seedKeys);
+    const OriginalWorker = window.Worker;
+    let live = 0, startedResolve;
+    const began = new Promise(resolve => startedResolve = resolve);
+    window.Worker = class extends OriginalWorker {
+      constructor(...args) { super(...args); live++; this.addEventListener('message', e => { if (e.data?.started) startedResolve(); }); }
+      terminate() { live--; return super.terminate(); }
+    };
+    let ticks = 0; const tick = setInterval(() => ticks++, 10);
+    const controller = new AbortController(), job = startSecondaryEngine('threshold', payload, { signal: controller.signal });
+    let cancellation;
+    try {
+      await Promise.race([began, new Promise((_, reject) => setTimeout(() => reject(Error('worker did not start')), 15000))]);
+      await new Promise(resolve => setTimeout(resolve, 80));
+      controller.abort(new Error('browser cancellation test'));
+      try { await job.promise; throw Error('hard worker unexpectedly completed before cancellation'); }
+      catch (e) { if (!String(e).includes('browser cancellation test')) throw e; }
+      await job.stop(); if (live !== 0) throw Error('cancelled worker not reclaimed');
+      cancellation = { activeWorkerStarted: true, reclaimed: true, heartbeatTicks: ticks };
+    } finally { clearInterval(tick); await job.stop(); window.Worker = OriginalWorker; }
+    if (ticks < 3) throw Error('main browser thread was not responsive');
+    const m = matrices[0], fresh = view(m), again = startSecondaryEngine('threshold', prepareSecondaryEngineInput(fresh.coverage, fresh.qualityFor, m.K, fresh.seedKeys));
+    try { validateSecondaryWitness(payloadFor(m, fresh), await again.promise); } finally { await again.stop(); }
+    document.querySelector('#status').textContent = '완료·취소·재실행 검증 통과';
+    return { wasmHash, results, cancellation, restarted: true, scope: 'Actual Chromium with unchanged product modules and Workers; engine library harness, not downstream application UI.' };
+  } finally { solver.close(); }
+};
+function payloadFor(m, v) { return prepareSecondaryEngineInput(v.coverage, v.qualityFor, m.K, v.seedKeys); }
+window.ready = true;
+</script></body></html>

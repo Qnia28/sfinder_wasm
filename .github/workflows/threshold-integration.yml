@@ -1,0 +1,242 @@
+name: Threshold product candidates correctness performance and recheck
+on:
+  push:
+    branches: [integration/threshold-candidates-20261004]
+    paths: ['bench/threshold-integration/run.json']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: threshold-integration-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      jobMinutes: ${{ steps.plan.outputs.jobMinutes }}
+      recheckMinutes: ${{ steps.plan.outputs.recheckMinutes }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - id: plan
+        run: node bench/threshold-integration/plan.mjs
+      - name: Pinned Rust
+        run: |
+          rustup toolchain install 1.90.0 --profile minimal --component rustfmt,clippy --target wasm32-unknown-unknown
+          rustup default 1.90.0
+      - name: Dev control and opt-in product candidates with unchanged exports
+        run: node bench/threshold-integration/build.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integration-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            bench/threshold-integration/build/*.wasm
+            bench/threshold-integration/build/build.json
+          retention-days: 30
+          if-no-files-found: error
+  correctness:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: integration-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/build
+      - name: Pinned Rust
+        run: |
+          rustup toolchain install 1.90.0 --profile minimal --component rustfmt,clippy --target wasm32-unknown-unknown
+          rustup default 1.90.0
+      - name: Format and lint
+        run: |
+          rustfmt --edition 2024 --config skip_children=true --check rust/pc-core/src/min_cover.rs rust/pc-core/src/threshold_candidate_tests.rs
+          cargo clippy --manifest-path rust/Cargo.toml -p pc-wasm --all-targets --target wasm32-unknown-unknown --all-features --offline -- -D warnings -A clippy::needless_borrow -A clippy::manual_range_contains
+          # Additional existing pc-core test-only lint categories, not new candidate warnings.
+          cargo clippy --manifest-path rust/Cargo.toml -p pc-core --all-targets --target wasm32-unknown-unknown --all-features --offline -- -D warnings -A clippy::needless_borrow -A clippy::manual_range_contains -A clippy::unusual_byte_groupings -A clippy::filter_map_bool_then
+      - name: Native control A B oracle budgets locks and state undo
+        run: |
+          mkdir -p bench/threshold-integration/results/correctness
+          set -o pipefail
+          cargo test --manifest-path rust/Cargo.toml --workspace --offline 2>&1 | tee bench/threshold-integration/results/correctness/native-C.txt
+          cargo test --manifest-path rust/Cargo.toml --workspace --features pc-wasm/threshold-current-propagation --offline 2>&1 | tee bench/threshold-integration/results/correctness/native-A.txt
+          cargo test --manifest-path rust/Cargo.toml --workspace --features pc-wasm/threshold-current-propagation,pc-wasm/threshold-root-forced --offline 2>&1 | tee bench/threshold-integration/results/correctness/native-B.txt
+      - name: Real product ABI parity reference activation and200 matrices
+        run: |
+          node bench/threshold-integration/correctness.mjs
+          node --test bench/threshold-integration/harness.test.mjs bench/threshold-integration/timeout-policy.test.mjs
+      - name: Active product worker portfolio and actual CP regressions
+        run: node bench/threshold-integration/product-regression.mjs
+      - name: Pinned actual browser
+        run: |
+          npm install --prefix bench/threshold-integration/build/browser-tools --no-package-lock --no-save playwright@1.62.1
+          node bench/threshold-integration/build/browser-tools/node_modules/playwright/cli.js install --with-deps chromium
+      - name: Actual browser product modules worker cancellation and restart
+        run: node bench/threshold-integration/browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-correctness-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/results/correctness/
+          retention-days: 30
+          if-no-files-found: error
+  control:
+    needs: [build, correctness]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - uses: actions/download-artifact@v4
+        with:
+          name: integration-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/build
+      - name: Separate tracked-asset rebuild and off-control bridge
+        run: node bench/threshold-integration/control.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-control-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/results/control/
+          retention-days: 30
+          if-no-files-found: error
+  benchmark:
+    needs: [build, correctness, control]
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ fromJSON(needs.build.outputs.jobMinutes) }}
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix: ${{ fromJSON(needs.build.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - uses: actions/download-artifact@v4
+        with:
+          name: integration-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/build
+      - name: Sequential paired product comparisons on this runner
+        run: node bench/threshold-integration/benchmark.mjs --profile product-confirm --suite all --mask 0 --pairs 5 --timeout-seconds 300 --case "${{ matrix.case }}" --out "bench/threshold-integration/results/bench/${{ matrix.case }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-bench-${{ matrix.case }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/results/bench/
+          retention-days: 30
+          if-no-files-found: error
+  review:
+    needs: [build, benchmark]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      enabled: ${{ steps.review.outputs.enabled }}
+      matrix: ${{ steps.review.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - uses: actions/download-artifact@v4
+        with:
+          name: integration-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/build
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: integration-bench-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/results/bench
+      - id: review
+        name: Audit all raw product witnesses and freeze rechecks
+        run: node bench/threshold-integration/review.mjs bench/threshold-integration/results/bench bench/threshold-integration/results/review 5
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integration-review-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/results/review/
+          retention-days: 30
+          if-no-files-found: error
+  recheck:
+    needs: [build, review]
+    if: needs.review.outputs.enabled == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ fromJSON(needs.build.outputs.recheckMinutes) }}
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix: ${{ fromJSON(needs.review.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - uses: actions/download-artifact@v4
+        with:
+          name: integration-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/build
+      - name: Ten new paired product comparisons on this runner
+        run: node bench/threshold-integration/benchmark.mjs --profile product-confirm --suite all --mask 0 --pairs 10 --timeout-seconds 300 --case "${{ matrix.case }}" --out "bench/threshold-integration/results/recheck/${{ matrix.case }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-recheck-${{ matrix.case }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/results/recheck/
+          retention-days: 30
+          if-no-files-found: error
+  final:
+    needs: [build, review, recheck]
+    if: ${{ always() && needs.review.result == 'success' && (needs.recheck.result == 'success' || needs.recheck.result == 'skipped') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: 24.13.0}
+      - uses: actions/download-artifact@v4
+        with:
+          name: integration-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/build
+      - uses: actions/download-artifact@v4
+        with:
+          name: integration-review-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/results/review
+      - uses: actions/download-artifact@v4
+        with:
+          name: integration-control-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/results/control
+      - uses: actions/download-artifact@v4
+        with:
+          name: integration-correctness-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/results/correctness
+      - uses: actions/download-artifact@v4
+        if: needs.review.outputs.enabled == 'true'
+        with:
+          pattern: integration-recheck-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bench/threshold-integration/results/recheck
+      - name: Independently audit repeats against checked initial optima
+        if: needs.review.outputs.enabled == 'true'
+        run: node bench/threshold-integration/review.mjs bench/threshold-integration/results/recheck bench/threshold-integration/results/recheck-review 10 bench/threshold-integration/results/review/review.json
+      - name: Report cohorts and repeat regressions separately
+        run: node bench/threshold-integration/report.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-final-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            bench/threshold-integration/results/review/
+            bench/threshold-integration/results/recheck-review/
+            bench/threshold-integration/results/final/
+            bench/threshold-integration/results/control/control-review.json
+            bench/threshold-integration/results/correctness/
+          retention-days: 30
+          if-no-files-found: error
