@@ -1,0 +1,22 @@
+{
+  "schema": 2,
+  "date": "2026-10-05",
+  "purpose": "lightweight-contract-and-regression",
+  "command": "node --experimental-wasm-stack-switching --test-isolation=none --test-concurrency=1 --test tests/secondary-bench.test.mjs tests/secondary-bench-campaign.test.mjs tests/secondary-three-engine.test.mjs tests/parallel-secondary.test.mjs tests/threshold-product-default.test.mjs",
+  "platform": "win32",
+  "node": "v24.13.0",
+  "tests": 45,
+  "passed": 45,
+  "failed": 0,
+  "skipped": 0,
+  "workflowLint": { "tool": "actionlint", "version": "1.7.12", "shellcheck": "UNAVAILABLE", "pyflakes": "UNAVAILABLE", "status": "PASS" },
+  "productDiff": "EMPTY_FOR_SRC_RUST_WASM_AND_PACKAGE_FILES",
+  "performanceEvidence": false,
+  "sourceLock": "LOCAL_CAMPAIGN_SOURCE_LOCK_V2.json",
+  "notes": [
+    "Synthetic PC boards and tiny matrices only; no supplied database solver campaign",
+    "60s / 2+2 up to10 / 6h admission / 8h origin / task checkpoint contracts checked",
+    "OOM counter increase, partial capture, missing repetitions and unsafe-result quarantine checked",
+    "Immutable original LOCAL_CONTRACT_RESULT.json and LOCAL_SOURCE_LOCK.json remain historical snapshots"
+  ]
+}

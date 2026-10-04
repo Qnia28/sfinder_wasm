@@ -1,0 +1,102 @@
+name: Secondary 8-hour wall campaign
+on:
+  workflow_dispatch:
+    inputs:
+      manifest:
+        description: Repository path of the approved, source-locked template
+        required: true
+        default: tools/secondary-bench/planning/CAMPAIGN_TEMPLATE_DRAFT.json
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: secondary-routing-20261005
+  cancel-in-progress: false
+jobs:
+  activate:
+    if: github.ref == 'refs/heads/experiment/secondary-routing-20261005' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Freeze one wall-clock origin (including capture and setup)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TEMPLATE: ${{ inputs.manifest }}
+        shell: bash
+        run: |
+          mkdir campaign-lock
+          origin=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" --jq .created_at)
+          node tools/secondary-bench/activate.mjs "$TEMPLATE" "$origin" "$GITHUB_RUN_ID" campaign-lock/campaign.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: secondary-campaign-lock
+          path: campaign-lock
+          retention-days: 30
+  capture:
+    needs: activate
+    uses: ./.github/workflows/secondary-bench-wave.yml
+    with:
+      stage: capture
+  basic-two:
+    needs: capture
+    uses: ./.github/workflows/secondary-bench-wave.yml
+    with:
+      stage: '2'
+  repeat-four:
+    needs: basic-two
+    uses: ./.github/workflows/secondary-bench-wave.yml
+    with:
+      stage: '4'
+  repeat-six:
+    needs: repeat-four
+    uses: ./.github/workflows/secondary-bench-wave.yml
+    with:
+      stage: '6'
+  repeat-eight:
+    needs: repeat-six
+    uses: ./.github/workflows/secondary-bench-wave.yml
+    with:
+      stage: '8'
+  repeat-ten:
+    needs: repeat-eight
+    uses: ./.github/workflows/secondary-bench-wave.yml
+    with:
+      stage: '10'
+  report:
+    needs: [activate, capture, basic-two, repeat-four, repeat-six, repeat-eight, repeat-ten]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: secondary-campaign-lock
+          path: campaign-lock
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          pattern: secondary-results-*
+          path: history
+      - name: Independent witness audit and completeness report, not performance PASS
+        continue-on-error: true
+        run: node tools/secondary-bench/report-campaign.mjs campaign-lock/campaign.json history REPORT.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: secondary-final-report
+          path: REPORT.json
+          if-no-files-found: warn
+          retention-days: 30

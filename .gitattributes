@@ -1,0 +1,6 @@
+# Keep research inputs, evidence and harness bytes stable across Windows/Linux.
+# Product source files retain the repository's original checkout behavior.
+/tools/secondary-bench/** -text
+/tests/secondary-bench*.mjs -text
+/tests/helpers/secondary-bench-*.mjs -text
+/.github/workflows/secondary-bench-*.yml -text

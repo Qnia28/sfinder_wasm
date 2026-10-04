@@ -1,0 +1,151 @@
+name: Secondary bounded wave
+on:
+  workflow_call:
+    inputs:
+      stage:
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      has_work: ${{ steps.plan.outputs.has_work }}
+      stop_epoch: ${{ steps.plan.outputs.stop_epoch }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        with:
+          name: secondary-campaign-lock
+          path: campaign-lock
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          pattern: secondary-results-*
+          path: history
+          merge-multiple: false
+      - id: plan
+        name: Plan from durable history (no solving)
+        continue-on-error: true
+        run: node tools/secondary-bench/plan-wave.mjs campaign-lock/campaign.json history bundle '${{ inputs.stage }}'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: secondary-plan-${{ inputs.stage }}
+          path: bundle
+          if-no-files-found: warn
+          retention-days: 30
+  measure:
+    needs: plan
+    if: needs.plan.outputs.has_work == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    continue-on-error: true
+    strategy:
+      max-parallel: 16
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - id: clock
+        name: Do not start queued chunks after the campaign deadline
+        env:
+          STOP_EPOCH: ${{ needs.plan.outputs.stop_epoch }}
+        run: |
+          if [ "$(date +%s)" -lt "$((STOP_EPOCH - 300))" ]; then
+            echo 'run=true' >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.clock.outputs.run == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.clock.outputs.run == 'true'
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+        if: steps.clock.outputs.run == 'true'
+      - uses: actions/download-artifact@v4
+        if: steps.clock.outputs.run == 'true'
+        with:
+          name: secondary-plan-${{ inputs.stage }}
+          path: bundle
+      - name: Part 0 — owned process-tree, two-repeat block
+        if: steps.clock.outputs.run == 'true'
+        continue-on-error: true
+        timeout-minutes: 11
+        env:
+          STAGE: ${{ inputs.stage }}
+          CHUNK: ${{ matrix.chunk }}
+        shell: bash
+        run: bash tools/secondary-bench/actions-part.sh 0
+      - name: Checkpoint 0 (even partial/error results)
+        uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        with:
+          name: secondary-results-${{ inputs.stage }}-${{ matrix.chunk }}-0-${{ github.run_attempt }}
+          path: results/part-0
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Part 1
+        if: steps.clock.outputs.run == 'true'
+        continue-on-error: true
+        timeout-minutes: 11
+        env:
+          STAGE: ${{ inputs.stage }}
+          CHUNK: ${{ matrix.chunk }}
+        run: bash tools/secondary-bench/actions-part.sh 1
+      - name: Checkpoint 1
+        uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        with:
+          name: secondary-results-${{ inputs.stage }}-${{ matrix.chunk }}-1-${{ github.run_attempt }}
+          path: results/part-1
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Part 2
+        if: steps.clock.outputs.run == 'true'
+        continue-on-error: true
+        timeout-minutes: 11
+        env:
+          STAGE: ${{ inputs.stage }}
+          CHUNK: ${{ matrix.chunk }}
+        run: bash tools/secondary-bench/actions-part.sh 2
+      - name: Checkpoint 2
+        uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        with:
+          name: secondary-results-${{ inputs.stage }}-${{ matrix.chunk }}-2-${{ github.run_attempt }}
+          path: results/part-2
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Part 3
+        if: steps.clock.outputs.run == 'true'
+        continue-on-error: true
+        timeout-minutes: 11
+        env:
+          STAGE: ${{ inputs.stage }}
+          CHUNK: ${{ matrix.chunk }}
+        run: bash tools/secondary-bench/actions-part.sh 3
+      - name: Checkpoint 3
+        uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        with:
+          name: secondary-results-${{ inputs.stage }}-${{ matrix.chunk }}-3-${{ github.run_attempt }}
+          path: results/part-3
+          if-no-files-found: warn
+          retention-days: 30

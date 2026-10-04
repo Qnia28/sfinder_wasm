@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "date": "2026-10-05",
+  "purpose": "lightweight-contract-and-regression",
+  "command": "node --experimental-wasm-stack-switching --test-isolation=none --test-concurrency=1 --test tests/secondary-bench.test.mjs tests/secondary-three-engine.test.mjs tests/parallel-secondary.test.mjs tests/threshold-product-default.test.mjs",
+  "platform": "win32",
+  "node": "v24.13.0",
+  "tests": 36,
+  "passed": 36,
+  "failed": 0,
+  "skipped": 0,
+  "performanceEvidence": false,
+  "githubActionsExecuted": false,
+  "sourceLock": "LOCAL_SOURCE_LOCK.json",
+  "notes": [
+    "Synthetic PC boards and tiny matrices only; no supplied database solver campaign",
+    "Real Integrated, Threshold and CP-SAT results compared with an independent JS oracle",
+    "Parent watchdog, nested Worker reap and subsequent request checked on Windows",
+    "Product collectors checked across compact, numeric and general enumeration routes",
+    "Linux cgroup/OOM, VM/artifact controller and real measurement workflow remain pending"
+  ]
+}

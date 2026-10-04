@@ -1,0 +1,43 @@
+name: Secondary harness contract preflight
+on:
+  push:
+    branches: [experiment/secondary-routing-20261005]
+    paths:
+      - tools/secondary-bench/**
+      - tests/secondary-bench.test.mjs
+      - tests/secondary-bench-campaign.test.mjs
+      - tests/helpers/secondary-bench-*.mjs
+      - .github/workflows/secondary-bench-preflight.yml
+permissions:
+  contents: read
+concurrency:
+  group: secondary-routing-20261005
+  cancel-in-progress: false
+jobs:
+  contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Contract checks only (no setup benchmarks)
+        run: node --experimental-wasm-stack-switching --test-isolation=none --test-concurrency=1 --test tests/secondary-bench.test.mjs tests/secondary-bench-campaign.test.mjs
+      - name: Offline DB audit
+        run: node tools/secondary-bench/catalog.mjs tools/secondary-bench/setupdata catalog-geometry.json
+      - name: Public Linux cgroup and real synchronous-WASM reclamation contract
+        timeout-minutes: 3
+        run: |
+          sudo systemd-run --unit="secondary-contract-${GITHUB_RUN_ID}" --wait --pipe --collect \
+            --property=MemoryMax=3G --property=MemorySwapMax=0 --property=RuntimeMaxSec=120 \
+            --property=KillMode=control-group --uid="$(id -u)" --working-directory="$GITHUB_WORKSPACE" \
+            /usr/bin/env PATH="$PATH" SECONDARY_LINUX_SCOPE_EXPECTED=1 \
+            node --experimental-wasm-stack-switching --test-isolation=none --test-concurrency=1 --test tests/secondary-bench.test.mjs tests/secondary-bench-campaign.test.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: secondary-preflight-${{ github.sha }}
+          path: catalog-geometry.json
+          if-no-files-found: warn
