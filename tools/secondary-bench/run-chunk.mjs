@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { readJson, writeJson, hash, identity } from './contracts.mjs';
 import { validateCampaign, campaignTimes, POLICY, unsafeStatus } from './campaign.mjs';
@@ -28,7 +29,9 @@ export async function runChunk(bundleDir, chunkId, outputDir, { now = Date.now, 
   writeJson(path.join(outputDir, 'RUN_LOCK.json'), { campaignId: plan.campaignId, chunkId, stage: chunk.stage,
     part, startedUtc: new Date(started).toISOString(), originUtc: plan.originUtc, sourceLock: chunk.sourceLock, memoryScope,
     github: { runId: process.env.GITHUB_RUN_ID ?? null, job: process.env.GITHUB_JOB ?? null, attempt: process.env.GITHUB_RUN_ATTEMPT ?? null },
-    environment: { node: process.version, v8: process.versions.v8, platform: process.platform, arch: process.arch } });
+    environment: { node: process.version, v8: process.versions.v8, platform: process.platform, arch: process.arch,
+      cpuModels: [...new Set(os.cpus().map(cpu => cpu.model))], logicalCPUs: os.cpus().length,
+      kernel: os.release(), memoryBytes: os.totalmem() } });
   const fd = fs.openSync(path.join(outputDir, 'raw.jsonl'), 'wx'), controller = new AbortController();
   const cancel = () => controller.abort(); process.once('SIGINT', cancel); process.once('SIGTERM', cancel);
   const deadlineTimer = setTimeout(cancel, Math.max(1, end - now()));
