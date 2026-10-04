@@ -145,6 +145,8 @@ fn candidates_match_oracle_with_budget_locks_and_full_undo() {
         }
         exercise::<false, false>(&rows, n);
         exercise::<true, false>(&rows, n);
+        exercise::<false, true>(&rows, n);
+        exercise::<true, true>(&rows, n);
     }
 }
 
@@ -158,4 +160,19 @@ fn empty_invalid_and_constant_quality_contracts() {
     assert!(fixed_quality_impl::<true, false>(&rows, 2, 1, &[2], &[], None, None).is_none());
     assert!(fixed_quality_impl::<true, false>(&rows, 2, 1, &[1], &[2], None, None).is_none());
     exercise::<true, false>(&rows, 2);
+}
+
+#[test]
+fn root_forced_duplicate_ids_equal_k_and_partial_budget_exits() {
+    let rows = vec![
+        vec![(0, 2), (0, 2)],
+        vec![(0, 3)],
+        vec![(1, 5)],
+        vec![(0, 7), (1, 1), (2, 3)],
+    ];
+    exercise::<false, false>(&rows, 3);
+    exercise::<true, false>(&rows, 3);
+    exercise::<false, true>(&rows, 3);
+    exercise::<true, true>(&rows, 3);
+    assert!(fixed_quality_impl::<true, true>(&rows, 3, 1, &[0], &[], None, None).is_none());
 }

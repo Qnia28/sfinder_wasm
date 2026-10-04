@@ -1789,6 +1789,24 @@ impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>
         true
     }
 
+    fn start(&mut self, forced: &[u32]) {
+        let mut covered = vec![0; self.full.len()];
+        for &id in forced {
+            if !self.charge() {
+                break;
+            }
+            self.add_solution(id as usize);
+            or_into(&mut covered, &self.solution_coverage[id as usize]);
+        }
+        if !self.budget_exceeded {
+            self.run(&covered);
+        }
+        // Includes a partially applied forced prefix on a budget exit.
+        while let Some(&id) = self.selected_ids.last() {
+            self.remove_solution(id as usize);
+        }
+    }
+
     // Only the current quality threshold is propagated. Prior thresholds still
     // constrain the search, but the rejected priorPropagation is not enabled.
     fn propagate_current(&mut self, covered: &mut [u64]) -> bool {
@@ -2090,6 +2108,19 @@ fn fixed_quality_impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>(
         return None;
     }
     let normalized = normalize_quality_cases(raw_cases, solution_count)?;
+    let mut forced = Vec::new();
+    if ROOT_FORCED {
+        for row in &normalized {
+            if row.len() == 1 {
+                forced.push(row[0].0);
+            }
+        }
+        forced.sort_unstable();
+        forced.dedup();
+        if forced.len() > exact_count {
+            return None;
+        }
+    }
     let mut seed = seed_selected.to_vec();
     seed.sort_unstable();
     seed.dedup();
@@ -2197,6 +2228,9 @@ fn fixed_quality_impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>(
                 }
             }
         }
+        if forced.iter().any(|&id| !active_candidate[id as usize]) {
+            return None;
+        }
         let mut search = SequentialThresholdSearch::<CURRENT_PROPAGATION, ROOT_FORCED> {
             covered_buffers: Vec::new(),
             full: &full,
@@ -2217,7 +2251,7 @@ fn fixed_quality_impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>(
             state_budget: remaining_budget,
             budget_exceeded: false,
         };
-        search.run(&vec![0u64; full.len()]);
+        search.start(&forced);
         searched_states += search.searched_states;
         best = search.best_selected;
         if search.budget_exceeded {
@@ -2270,6 +2304,9 @@ fn fixed_quality_impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>(
                 }
             }
         }
+        if forced.iter().any(|&id| !active_candidate[id as usize]) {
+            return None;
+        }
         let mut search = SequentialThresholdSearch::<CURRENT_PROPAGATION, ROOT_FORCED> {
             covered_buffers: Vec::new(),
             full: &full,
@@ -2290,7 +2327,7 @@ fn fixed_quality_impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>(
             state_budget: remaining_budget,
             budget_exceeded: false,
         };
-        search.run(&vec![0u64; full.len()]);
+        search.start(&forced);
         searched_states += search.searched_states;
         best = search.best_selected;
         if search.budget_exceeded {
