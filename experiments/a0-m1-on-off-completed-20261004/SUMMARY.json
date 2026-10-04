@@ -1,0 +1,182 @@
+{
+  "status": "BOUNDED_ON_OFF_FINISHED_PARTIAL_BUDGET_NO_DEFAULT_PROMOTION",
+  "runId": 37181392879,
+  "url": "https://github.com/Qnia28/sfinder_wasm/actions/runs/37181392879",
+  "sourceCommit": "b19ea7e1db7786af0e82ff6f9e66156c5e73ceaf",
+  "actionsConclusion": "success",
+  "originRunId": 37178792683,
+  "origin": "2026-10-04T05:03:42+00:00",
+  "lastJobCompletedAt": "2026-10-04T07:38:45+00:00",
+  "wallMinutesAllAttempts": 155.05,
+  "runnerHoursAllThreeAttempts": 17.11277777777778,
+  "runnerJobsCompletedSuccessfully": 10,
+  "runnerJobsBudgetStopped": 10,
+  "perJob": [
+    {
+      "host": 0,
+      "attemptedCalls": 480,
+      "verifiedCalls": 456,
+      "timeoutCalls": 24,
+      "stopReason": "PAIR_ADMISSION_DEADLINE",
+      "resumedAttemptedCalls": 13,
+      "newAttemptedCalls": 467
+    },
+    {
+      "host": 1,
+      "attemptedCalls": 486,
+      "verifiedCalls": 464,
+      "timeoutCalls": 22,
+      "stopReason": "PAIR_ADMISSION_DEADLINE",
+      "resumedAttemptedCalls": 13,
+      "newAttemptedCalls": 473
+    },
+    {
+      "host": 2,
+      "attemptedCalls": 480,
+      "verifiedCalls": 456,
+      "timeoutCalls": 24,
+      "stopReason": "PAIR_ADMISSION_DEADLINE",
+      "resumedAttemptedCalls": 13,
+      "newAttemptedCalls": 467
+    },
+    {
+      "host": 3,
+      "attemptedCalls": 480,
+      "verifiedCalls": 456,
+      "timeoutCalls": 24,
+      "stopReason": "PAIR_ADMISSION_DEADLINE",
+      "resumedAttemptedCalls": 13,
+      "newAttemptedCalls": 467
+    },
+    {
+      "host": 4,
+      "attemptedCalls": 448,
+      "verifiedCalls": 426,
+      "timeoutCalls": 22,
+      "stopReason": "PAIR_ADMISSION_DEADLINE",
+      "resumedAttemptedCalls": 13,
+      "newAttemptedCalls": 435
+    },
+    {
+      "host": 5,
+      "attemptedCalls": 480,
+      "verifiedCalls": 456,
+      "timeoutCalls": 24,
+      "stopReason": "PAIR_ADMISSION_DEADLINE",
+      "resumedAttemptedCalls": 13,
+      "newAttemptedCalls": 467
+    },
+    {
+      "host": 6,
+      "attemptedCalls": 480,
+      "verifiedCalls": 456,
+      "timeoutCalls": 24,
+      "stopReason": "PAIR_ADMISSION_DEADLINE",
+      "resumedAttemptedCalls": 13,
+      "newAttemptedCalls": 467
+    },
+    {
+      "host": 7,
+      "attemptedCalls": 480,
+      "verifiedCalls": 456,
+      "timeoutCalls": 24,
+      "stopReason": "PAIR_ADMISSION_DEADLINE",
+      "resumedAttemptedCalls": 13,
+      "newAttemptedCalls": 467
+    },
+    {
+      "host": 8,
+      "attemptedCalls": 480,
+      "verifiedCalls": 456,
+      "timeoutCalls": 24,
+      "stopReason": "PAIR_ADMISSION_DEADLINE",
+      "resumedAttemptedCalls": 13,
+      "newAttemptedCalls": 467
+    },
+    {
+      "host": 9,
+      "attemptedCalls": 480,
+      "verifiedCalls": 456,
+      "timeoutCalls": 24,
+      "stopReason": "PAIR_ADMISSION_DEADLINE",
+      "resumedAttemptedCalls": 13,
+      "newAttemptedCalls": 467
+    }
+  ],
+  "plannedRequests": 24480,
+  "correctedScheduledRequestsAttempted": 4774,
+  "verifiedRequests": 4538,
+  "timeoutRequests": 236,
+  "unattemptedRequests": 19706,
+  "malformedRequestsBeforeCorrection": 10,
+  "actualRequestsAllAttemptsNoReplay": 4784,
+  "newRequestsInLatestEpisode": 4644,
+  "previousConsumedRequestsRetained": 130,
+  "duplicateSuccessfulOrTimeoutReplays": 0,
+  "policyOutcomeCounts": {
+    "reference": {
+      "VERIFIED": 2269,
+      "TIMEOUT_API": 118
+    },
+    "a0-m1": {
+      "VERIFIED": 2269,
+      "TIMEOUT_API": 118
+    }
+  },
+  "attemptedInputCount": 122,
+  "finiteTimingInputCount": 116,
+  "complete100VerifiedPairInputs": 0,
+  "complete100OutcomePairInputsIncludingTimeout": 0,
+  "selectedOutcomePairs": 2347,
+  "verifiedSameEpisodeAdjacentPairs": 2229,
+  "censoredPairs": 118,
+  "timeoutByInput": {
+    "board-011--restricted-split--O": 20,
+    "board-012--restricted-split--L": 18,
+    "board-025--restricted-split--J": 38,
+    "board-028--restricted-split--ordinary": 40,
+    "board-088--restricted-split--ordinary": 40,
+    "board-117--restricted-split--O": 40,
+    "board-117--restricted-split--Z": 40
+  },
+  "fullyCompletedProbeStatusCounts": {
+    "reference": {
+      "CAPPED": 470,
+      "EXACT": 1799
+    },
+    "a0-m1": {
+      "CAPPED": 450,
+      "EXACT": 1819
+    }
+  },
+  "conditionalCompletedInputMedians": {
+    "candidateFasterInputs": 17,
+    "candidateSlowerInputs": 99,
+    "medianOfInputPairedRequestRatios": 1.015447470660908,
+    "interpretation": "Only inputs/pairs where both requests completed exactly; excludes censored and unattempted outcomes. Descriptive, not all-input/product-frequency-weighted effect or promotion proof."
+  },
+  "sourceAndRuntimeLocksIdenticalWithinLatestEpisode": true,
+  "originalWeightedInputAndWitnessAudit": "PASS_FOR_VERIFIED_REQUESTS",
+  "rawRecordsAudited": 23398,
+  "nativeSolverCallsFromAudit": 0,
+  "oomOrIntegrityFailures": 0,
+  "timeoutDidNotFailJobOrRemoveInput": true,
+  "searchStateBudget": 100000,
+  "apiDeadlineMs": 210000,
+  "nodeRuntimeORToolsSupported": false,
+  "clockAndBudgetsReset": false,
+  "logicalRunnerGroupsNotPersistentPhysicalHostClaim": true,
+  "executionEpisodeCounts": {
+    "37180176960": 130,
+    "37181392879": 4644
+  },
+  "newVmEnvironmentControlsNotMeasured": true,
+  "missingEnvironmentInputs": 114,
+  "performancePass": false,
+  "performanceFailAgainstCandidateEstablished": false,
+  "decision": "Keep selectable A0+M1 implementation and R default. Partial/censored Node fallback evidence does not settle default policy. No automatic further campaign, budget increase, merge or deployment.",
+  "activeActionsJobs": 0,
+  "activeWatchers": 0,
+  "productDefault": "reference",
+  "devMainMergeDeployment": false
+}
