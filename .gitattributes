@@ -1,2 +1,3 @@
 bench/threshold-integration/**/*.json text eol=lf
+bench/threshold-integration/reports/**/*.md text eol=lf
 bench/threshold-integration/**/*.json.gz -text

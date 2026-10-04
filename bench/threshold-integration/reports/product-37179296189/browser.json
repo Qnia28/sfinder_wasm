@@ -1,0 +1,477 @@
+[
+  {
+    "mode": "S",
+    "browser": "151.0.7922.34",
+    "wasmHash": "640232e30c586e87d6c5f5ad5ab52856c9ab173df984e4915f383e9fd399eee2",
+    "results": [
+      {
+        "id": "c7-2plus2-qb-row-039-O",
+        "worker": {
+          "count": 2,
+          "searchedStates": 62,
+          "completed": true,
+          "witnessHash": "9184ae72303e75cfe2423c0ff69a44305d72a45323351fd7ec69e05d9f4ae3d6"
+        },
+        "locked": {
+          "count": 2,
+          "searchedStates": 4,
+          "completed": true,
+          "witnessHash": "9184ae72303e75cfe2423c0ff69a44305d72a45323351fd7ec69e05d9f4ae3d6"
+        },
+        "workerMs": 60.75500000000466,
+        "progressSupported": false,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "c7-2plus2-qb-row-025-T",
+        "worker": {
+          "count": 2,
+          "searchedStates": 268,
+          "completed": true,
+          "witnessHash": "668a39515a08a3a971c9bba003c6547a5f82d63f6a95460ad7765e4dbb4567bc"
+        },
+        "locked": {
+          "count": 2,
+          "searchedStates": 15,
+          "completed": true,
+          "witnessHash": "668a39515a08a3a971c9bba003c6547a5f82d63f6a95460ad7765e4dbb4567bc"
+        },
+        "workerMs": 58.67999999993481,
+        "progressSupported": false,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "c7-2plus2-qb-row-035-L",
+        "worker": {
+          "count": 1,
+          "searchedStates": 20,
+          "completed": true,
+          "witnessHash": "5729751d5da1f441bd2ccfff5d01da87e08bf28db155c485ec3093edfe823b2b"
+        },
+        "locked": {
+          "count": 1,
+          "searchedStates": 2,
+          "completed": true,
+          "witnessHash": "5729751d5da1f441bd2ccfff5d01da87e08bf28db155c485ec3093edfe823b2b"
+        },
+        "workerMs": 39.32999999995809,
+        "progressSupported": false,
+        "qualityDecision": "trivial-exact",
+        "route": "original-row-proof",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "cycle1-jeremy-a-Z",
+        "worker": {
+          "count": 31,
+          "searchedStates": 967,
+          "completed": true,
+          "witnessHash": "a15eac38792df410ad3b11dc3fbf43dabf46b4ad13416c69fc610cd5365bd675"
+        },
+        "locked": {
+          "count": 31,
+          "searchedStates": 42,
+          "completed": true,
+          "witnessHash": "a15eac38792df410ad3b11dc3fbf43dabf46b4ad13416c69fc610cd5365bd675"
+        },
+        "workerMs": 104.68500000005588,
+        "progressSupported": false,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      }
+    ],
+    "cancellation": {
+      "activeWorkerStarted": true,
+      "reclaimed": true,
+      "heartbeatTicks": 15
+    },
+    "restarted": true,
+    "scope": "Actual Chromium with unchanged product modules and Workers; engine library harness, not downstream application UI.",
+    "originalRawHash": "4c76f14e03fa684bb66af788963cfec7dacff50cfed46a798530cb162d58724c"
+  },
+  {
+    "mode": "D",
+    "browser": "151.0.7922.34",
+    "wasmHash": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+    "results": [
+      {
+        "id": "c7-2plus2-qb-row-039-O",
+        "worker": {
+          "count": 2,
+          "searchedStates": 62,
+          "completed": true,
+          "witnessHash": "9184ae72303e75cfe2423c0ff69a44305d72a45323351fd7ec69e05d9f4ae3d6"
+        },
+        "locked": {
+          "count": 2,
+          "searchedStates": 4,
+          "completed": true,
+          "witnessHash": "9184ae72303e75cfe2423c0ff69a44305d72a45323351fd7ec69e05d9f4ae3d6"
+        },
+        "workerMs": 58.45499999995809,
+        "progressSupported": true,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "c7-2plus2-qb-row-025-T",
+        "worker": {
+          "count": 2,
+          "searchedStates": 268,
+          "completed": true,
+          "witnessHash": "668a39515a08a3a971c9bba003c6547a5f82d63f6a95460ad7765e4dbb4567bc"
+        },
+        "locked": {
+          "count": 2,
+          "searchedStates": 15,
+          "completed": true,
+          "witnessHash": "668a39515a08a3a971c9bba003c6547a5f82d63f6a95460ad7765e4dbb4567bc"
+        },
+        "workerMs": 62.71500000008382,
+        "progressSupported": true,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "c7-2plus2-qb-row-035-L",
+        "worker": {
+          "count": 1,
+          "searchedStates": 20,
+          "completed": true,
+          "witnessHash": "5729751d5da1f441bd2ccfff5d01da87e08bf28db155c485ec3093edfe823b2b"
+        },
+        "locked": {
+          "count": 1,
+          "searchedStates": 2,
+          "completed": true,
+          "witnessHash": "5729751d5da1f441bd2ccfff5d01da87e08bf28db155c485ec3093edfe823b2b"
+        },
+        "workerMs": 34.13500000000931,
+        "progressSupported": true,
+        "qualityDecision": "trivial-exact",
+        "route": "original-row-proof",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "cycle1-jeremy-a-Z",
+        "worker": {
+          "count": 31,
+          "searchedStates": 967,
+          "completed": true,
+          "witnessHash": "a15eac38792df410ad3b11dc3fbf43dabf46b4ad13416c69fc610cd5365bd675"
+        },
+        "locked": {
+          "count": 31,
+          "searchedStates": 42,
+          "completed": true,
+          "witnessHash": "a15eac38792df410ad3b11dc3fbf43dabf46b4ad13416c69fc610cd5365bd675"
+        },
+        "workerMs": 105.15000000002328,
+        "progressSupported": true,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      }
+    ],
+    "cancellation": {
+      "activeWorkerStarted": true,
+      "reclaimed": true,
+      "heartbeatTicks": 16
+    },
+    "restarted": true,
+    "scope": "Actual Chromium with unchanged product modules and Workers; engine library harness, not downstream application UI.",
+    "originalRawHash": "4c76f14e03fa684bb66af788963cfec7dacff50cfed46a798530cb162d58724c"
+  },
+  {
+    "mode": "C",
+    "browser": "151.0.7922.34",
+    "wasmHash": "ca3c72da64dd29a6619fb0ef6dc4e065e22f7703933dcb76a8a11d1ab2990303",
+    "results": [
+      {
+        "id": "c7-2plus2-qb-row-039-O",
+        "worker": {
+          "count": 2,
+          "searchedStates": 62,
+          "completed": true,
+          "witnessHash": "9184ae72303e75cfe2423c0ff69a44305d72a45323351fd7ec69e05d9f4ae3d6"
+        },
+        "locked": {
+          "count": 2,
+          "searchedStates": 4,
+          "completed": true,
+          "witnessHash": "9184ae72303e75cfe2423c0ff69a44305d72a45323351fd7ec69e05d9f4ae3d6"
+        },
+        "workerMs": 133.48499999998603,
+        "progressSupported": true,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "c7-2plus2-qb-row-025-T",
+        "worker": {
+          "count": 2,
+          "searchedStates": 268,
+          "completed": true,
+          "witnessHash": "668a39515a08a3a971c9bba003c6547a5f82d63f6a95460ad7765e4dbb4567bc"
+        },
+        "locked": {
+          "count": 2,
+          "searchedStates": 15,
+          "completed": true,
+          "witnessHash": "668a39515a08a3a971c9bba003c6547a5f82d63f6a95460ad7765e4dbb4567bc"
+        },
+        "workerMs": 123.88500000000931,
+        "progressSupported": true,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "c7-2plus2-qb-row-035-L",
+        "worker": {
+          "count": 1,
+          "searchedStates": 20,
+          "completed": true,
+          "witnessHash": "5729751d5da1f441bd2ccfff5d01da87e08bf28db155c485ec3093edfe823b2b"
+        },
+        "locked": {
+          "count": 1,
+          "searchedStates": 2,
+          "completed": true,
+          "witnessHash": "5729751d5da1f441bd2ccfff5d01da87e08bf28db155c485ec3093edfe823b2b"
+        },
+        "workerMs": 33.71999999997206,
+        "progressSupported": true,
+        "qualityDecision": "trivial-exact",
+        "route": "original-row-proof",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "cycle1-jeremy-a-Z",
+        "worker": {
+          "count": 31,
+          "searchedStates": 967,
+          "completed": true,
+          "witnessHash": "a15eac38792df410ad3b11dc3fbf43dabf46b4ad13416c69fc610cd5365bd675"
+        },
+        "locked": {
+          "count": 31,
+          "searchedStates": 42,
+          "completed": true,
+          "witnessHash": "a15eac38792df410ad3b11dc3fbf43dabf46b4ad13416c69fc610cd5365bd675"
+        },
+        "workerMs": 107.92499999993015,
+        "progressSupported": true,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      }
+    ],
+    "cancellation": {
+      "activeWorkerStarted": true,
+      "reclaimed": true,
+      "heartbeatTicks": 15
+    },
+    "restarted": true,
+    "scope": "Actual Chromium with unchanged product modules and Workers; engine library harness, not downstream application UI.",
+    "originalRawHash": "4c76f14e03fa684bb66af788963cfec7dacff50cfed46a798530cb162d58724c"
+  },
+  {
+    "mode": "A",
+    "browser": "151.0.7922.34",
+    "wasmHash": "f81c02daf812354c12262860284456bb1266178df28a2829eba12c347ae8679f",
+    "results": [
+      {
+        "id": "c7-2plus2-qb-row-039-O",
+        "worker": {
+          "count": 2,
+          "searchedStates": 58,
+          "completed": true,
+          "witnessHash": "9184ae72303e75cfe2423c0ff69a44305d72a45323351fd7ec69e05d9f4ae3d6"
+        },
+        "locked": {
+          "count": 2,
+          "searchedStates": 4,
+          "completed": true,
+          "witnessHash": "9184ae72303e75cfe2423c0ff69a44305d72a45323351fd7ec69e05d9f4ae3d6"
+        },
+        "workerMs": 57.00500000000466,
+        "progressSupported": true,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "c7-2plus2-qb-row-025-T",
+        "worker": {
+          "count": 2,
+          "searchedStates": 270,
+          "completed": true,
+          "witnessHash": "668a39515a08a3a971c9bba003c6547a5f82d63f6a95460ad7765e4dbb4567bc"
+        },
+        "locked": {
+          "count": 2,
+          "searchedStates": 15,
+          "completed": true,
+          "witnessHash": "668a39515a08a3a971c9bba003c6547a5f82d63f6a95460ad7765e4dbb4567bc"
+        },
+        "workerMs": 61.66500000003725,
+        "progressSupported": true,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "c7-2plus2-qb-row-035-L",
+        "worker": {
+          "count": 1,
+          "searchedStates": 22,
+          "completed": true,
+          "witnessHash": "5729751d5da1f441bd2ccfff5d01da87e08bf28db155c485ec3093edfe823b2b"
+        },
+        "locked": {
+          "count": 1,
+          "searchedStates": 2,
+          "completed": true,
+          "witnessHash": "5729751d5da1f441bd2ccfff5d01da87e08bf28db155c485ec3093edfe823b2b"
+        },
+        "workerMs": 35.80500000005122,
+        "progressSupported": true,
+        "qualityDecision": "trivial-exact",
+        "route": "original-row-proof",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "cycle1-jeremy-a-Z",
+        "worker": {
+          "count": 31,
+          "searchedStates": 965,
+          "completed": true,
+          "witnessHash": "a15eac38792df410ad3b11dc3fbf43dabf46b4ad13416c69fc610cd5365bd675"
+        },
+        "locked": {
+          "count": 31,
+          "searchedStates": 42,
+          "completed": true,
+          "witnessHash": "a15eac38792df410ad3b11dc3fbf43dabf46b4ad13416c69fc610cd5365bd675"
+        },
+        "workerMs": 105.17000000004191,
+        "progressSupported": true,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      }
+    ],
+    "cancellation": {
+      "activeWorkerStarted": true,
+      "reclaimed": true,
+      "heartbeatTicks": 14
+    },
+    "restarted": true,
+    "scope": "Actual Chromium with unchanged product modules and Workers; engine library harness, not downstream application UI.",
+    "originalRawHash": "4c76f14e03fa684bb66af788963cfec7dacff50cfed46a798530cb162d58724c"
+  },
+  {
+    "mode": "B",
+    "browser": "151.0.7922.34",
+    "wasmHash": "15bcd1171821d53c0e44d7b556d7d0680e957bbca5630643b34155c44b5923fd",
+    "results": [
+      {
+        "id": "c7-2plus2-qb-row-039-O",
+        "worker": {
+          "count": 2,
+          "searchedStates": 65,
+          "completed": true,
+          "witnessHash": "9184ae72303e75cfe2423c0ff69a44305d72a45323351fd7ec69e05d9f4ae3d6"
+        },
+        "locked": {
+          "count": 2,
+          "searchedStates": 4,
+          "completed": true,
+          "witnessHash": "9184ae72303e75cfe2423c0ff69a44305d72a45323351fd7ec69e05d9f4ae3d6"
+        },
+        "workerMs": 54.97999999998137,
+        "progressSupported": true,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "c7-2plus2-qb-row-025-T",
+        "worker": {
+          "count": 2,
+          "searchedStates": 270,
+          "completed": true,
+          "witnessHash": "668a39515a08a3a971c9bba003c6547a5f82d63f6a95460ad7765e4dbb4567bc"
+        },
+        "locked": {
+          "count": 2,
+          "searchedStates": 15,
+          "completed": true,
+          "witnessHash": "668a39515a08a3a971c9bba003c6547a5f82d63f6a95460ad7765e4dbb4567bc"
+        },
+        "workerMs": 64.75,
+        "progressSupported": true,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "c7-2plus2-qb-row-035-L",
+        "worker": {
+          "count": 1,
+          "searchedStates": 38,
+          "completed": true,
+          "witnessHash": "5729751d5da1f441bd2ccfff5d01da87e08bf28db155c485ec3093edfe823b2b"
+        },
+        "locked": {
+          "count": 1,
+          "searchedStates": 2,
+          "completed": true,
+          "witnessHash": "5729751d5da1f441bd2ccfff5d01da87e08bf28db155c485ec3093edfe823b2b"
+        },
+        "workerMs": 33.77000000001863,
+        "progressSupported": true,
+        "qualityDecision": "trivial-exact",
+        "route": "original-row-proof",
+        "wasmMemoryBytes": 11730944
+      },
+      {
+        "id": "cycle1-jeremy-a-Z",
+        "worker": {
+          "count": 31,
+          "searchedStates": 965,
+          "completed": true,
+          "witnessHash": "a15eac38792df410ad3b11dc3fbf43dabf46b4ad13416c69fc610cd5365bd675"
+        },
+        "locked": {
+          "count": 31,
+          "searchedStates": 42,
+          "completed": true,
+          "witnessHash": "a15eac38792df410ad3b11dc3fbf43dabf46b4ad13416c69fc610cd5365bd675"
+        },
+        "workerMs": 95.67999999993481,
+        "progressSupported": true,
+        "qualityDecision": "primary-hard-threshold-exact",
+        "route": "threshold",
+        "wasmMemoryBytes": 11730944
+      }
+    ],
+    "cancellation": {
+      "activeWorkerStarted": true,
+      "reclaimed": true,
+      "heartbeatTicks": 16
+    },
+    "restarted": true,
+    "scope": "Actual Chromium with unchanged product modules and Workers; engine library harness, not downstream application UI.",
+    "originalRawHash": "4c76f14e03fa684bb66af788963cfec7dacff50cfed46a798530cb162d58724c"
+  }
+]

@@ -1,0 +1,59 @@
+{
+  "baseline": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+  "candidate": "56e4f08809fb6350cd776fa96f5e26b50f864ddf",
+  "files": [
+    {
+      "file": "build.json",
+      "sha256": "15537877b7c7923aa5a0161153f7b3f118446cf07e951971ceb0e913f5fc8e9a"
+    },
+    {
+      "file": "initial.json",
+      "sha256": "3ae5d78f47ee492f9b8b3fc7bb6cffdec2820efaebc64df8878015bc72139711"
+    },
+    {
+      "file": "control.json",
+      "sha256": "9e59dea59d932cf0e7382e1e61bc6dd10adff5265c30a261b4d3dfd7cb4fdea8"
+    },
+    {
+      "file": "repeat.json",
+      "sha256": "f9fd94b4d147615fbd252fa31993e7cc84fd2fbf5423375b3fa35d02958a0cde"
+    },
+    {
+      "file": "selection.json",
+      "sha256": "efdd1216f33cb20f65d982124717a9b5e9490a32ae6e80df4c3b8c0bef11cf50"
+    },
+    {
+      "file": "resolution.json",
+      "sha256": "b2495c1ed09c10caa9711b926147421d400b83ede0dfce4c01de652ae737bedf"
+    },
+    {
+      "file": "REPORT_KO.md",
+      "sha256": "99b11be8817b76f357d48ba90ee778e62e73621a74b8806d867fe872ad9f7655"
+    },
+    {
+      "file": "correctness.json",
+      "sha256": "37bc21e11d85501811097b17de614833cc8c7e3012642d5eb6d80f26431ac2de"
+    },
+    {
+      "file": "source-audit.json",
+      "sha256": "34b314f1e678cc6530740e631bde2eb2eab3a14c81d023f89a5b71fa1304e7df"
+    },
+    {
+      "file": "raw-audit.json",
+      "sha256": "32b2f933731e93924ba13e77e66f06186efc5724dab402939824d2b26c4caef9"
+    },
+    {
+      "file": "replay.json",
+      "sha256": "bd8b3b4c2ccd9a72fa9c9f7b0230f01f4e5fefd6e8623b094f7be6e049849d5b"
+    },
+    {
+      "file": "validation.json",
+      "sha256": "0722a738c5b8f9b4d647be277f414b7414022cb35336a78c950f8db0bea361a8"
+    },
+    {
+      "file": "browser.json",
+      "sha256": "dff12423359d37fbc627c5d76e4f77486de9324f7a8c3ea3297d97fda71c71b1"
+    }
+  ],
+  "contract": "All paired measurements and completed witness hashes preserved; no stored full repeated witnesses/build metadata. Raw Actions witnesses retained30days; immutable200 input fixtures tracked separately."
+}

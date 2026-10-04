@@ -1,5 +1,7 @@
 # 제품 threshold 후보 검증
 
+완료 결과: [RESULT_KO.md](RESULT_KO.md). 측정소스는56e4f08이며후속커밋은감사·아카이브만추가한다.
+
 준비 branch와Dev/main은별개다. 기본feature는OFF이며기존제품JS/ABI/라우팅은변경하지않는다.
 설계·계약 차이는 `docs/THRESHOLD_INTEGRATION_KO.md`에기록한다.
 
@@ -44,6 +46,10 @@ frozen200은기존cycle1/QB각100원본선정·중복·행가중치를그대로�
 - `review.mjs`: 모든rawwitness/knownoptimum/input·build·source identity와paired회계감사.
 - `source-audit.mjs`: 실행build의모든source표를immutableGitblob과대조하고Actionsjob동시성확인.
 - `archive.mjs`: sample은전부남기고반복fullbuildmetadata만제거해한개의build.json으로대체.
+- `local-audit.mjs`: 다운로드한raw3단계의workflow감사와모든계산을다시대조한다.
+- `validation-receipt.mjs`: native/product실패·skip없는검사개수와개별이름·loghash를보존한다.
+- `replay.mjs`: 지정한측정build의byteidentity를검사한뒤200행렬을correctness-only재생한다.
+- `evidence.test.mjs`: 원래200선정/중복/seed/Gitblob와compactarchivehash/회계를검사한다.
 - generatedreports는`wx`로새파일만생성하며기존frozen선정/측정은덮어쓰지않는다.
 
 소비앱UI는이저장소에없으므로실제Chromium검사도엔진라이브러리제품API/Worker범위다.

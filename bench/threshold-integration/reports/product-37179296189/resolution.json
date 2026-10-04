@@ -1,0 +1,95 @@
+{
+  "selected": {
+    "cases": [
+      "c7-2plus2-qb-row-072-T",
+      "cycle1-pcinfo-032-Z"
+    ],
+    "criteria": "Any material>=10% and>=5ms regression by side or paired medians; any completed/timeout discordance; paired ON memory>20%; >=60sec OFF with>=100ms paired slowdown and>=2/3 slower; >=1sec OFF gain>=1.5. Range-noise alone does not trigger retest.",
+    "sourceManifestHash": "c8fe3f98397cd0368ec8952553307a27077e39238eaee0aba51725084d167c09",
+    "sourceWasmHashes": {
+      "D": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+      "C": "ca3c72da64dd29a6619fb0ef6dc4e065e22f7703933dcb76a8a11d1ab2990303",
+      "A": "f81c02daf812354c12262860284456bb1266178df28a2829eba12c347ae8679f",
+      "B": "15bcd1171821d53c0e44d7b556d7d0680e957bbca5630643b34155c44b5923fd",
+      "reference": "425888e502363eccf7a240c0fe37b999106da90cf829faa39142052ed59b2adf",
+      "S": "640232e30c586e87d6c5f5ad5ab52856c9ab173df984e4915f383e9fd399eee2"
+    },
+    "reviewHash": "5135a3d22681a6a6b3f9f044002854a3677211b0952837880b52dd7a10d1b0c1",
+    "details": [
+      {
+        "caseId": "c7-2plus2-qb-row-072-T",
+        "comparisonIndex": 1,
+        "reasons": [
+          "paired-material-regression"
+        ]
+      },
+      {
+        "caseId": "cycle1-pcinfo-032-Z",
+        "comparisonIndex": 0,
+        "reasons": [
+          "completion-discordance"
+        ]
+      }
+    ]
+  },
+  "resolutions": [
+    {
+      "caseId": "c7-2plus2-qb-row-072-T",
+      "cohort": "qb",
+      "comparison": "D/A",
+      "ratio": 1.0151241199266128,
+      "deltaMs": -1.1897050000000107,
+      "faster": 6,
+      "slower": 4,
+      "completePairs": 10,
+      "material": false,
+      "completionDiscordance": false,
+      "memoryAlert": false,
+      "smallConsistentSlowdown": false
+    },
+    {
+      "caseId": "c7-2plus2-qb-row-072-T",
+      "cohort": "qb",
+      "comparison": "A/B",
+      "ratio": 1.1049501882457722,
+      "deltaMs": -9.50639899999998,
+      "faster": 9,
+      "slower": 1,
+      "completePairs": 10,
+      "material": false,
+      "completionDiscordance": false,
+      "memoryAlert": false,
+      "smallConsistentSlowdown": false
+    },
+    {
+      "caseId": "cycle1-pcinfo-032-Z",
+      "cohort": "cycle1",
+      "comparison": "D/A",
+      "ratio": 1.0719793723831317,
+      "deltaMs": -11785.188810499996,
+      "faster": 10,
+      "slower": 0,
+      "completePairs": 10,
+      "material": false,
+      "completionDiscordance": false,
+      "memoryAlert": false,
+      "smallConsistentSlowdown": false
+    },
+    {
+      "caseId": "cycle1-pcinfo-032-Z",
+      "cohort": "cycle1",
+      "comparison": "A/B",
+      "ratio": 1.0004015417350365,
+      "deltaMs": -64.48000699999102,
+      "faster": 5,
+      "slower": 5,
+      "completePairs": 10,
+      "material": false,
+      "completionDiscordance": false,
+      "memoryAlert": false,
+      "smallConsistentSlowdown": false
+    }
+  ],
+  "decisionAlerts": [],
+  "smallConsistentSlowdowns": []
+}

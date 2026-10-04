@@ -44,7 +44,7 @@ export function reviewRow(row, raw) {
 export function audit(input, pairs, expectedIds, previous = null, profile = 'product-confirm') {
   function walk(dir) { return readdirSync(dir, { withFileTypes: true }).flatMap(e => e.isDirectory()
     ? walk(resolve(dir, e.name)) : e.name === 'samples.jsonl' ? [resolve(dir, e.name)] : []); }
-  const files = walk(input); assert.equal(files.length, expectedIds.length);
+  const files = (Array.isArray(input) ? input : [input]).flatMap(walk); assert.equal(files.length, expectedIds.length);
   const build = JSON.parse(readFileSync(process.env.THRESHOLD_BUILD_ROOT
     ? resolve(process.env.THRESHOLD_BUILD_ROOT, 'build.json') : new URL('./build/build.json', import.meta.url)));
   const known = JSON.parse(readFileSync(new URL('./fixtures/known-witnesses.json', import.meta.url)));
@@ -82,6 +82,9 @@ export function audit(input, pairs, expectedIds, previous = null, profile = 'pro
         assert.equal(witness.searchedStates, r.searchedStates); assert(Number.isFinite(r.nativeMs) && r.nativeMs > 0);
         assert.equal(r.productRoute, 'minimumCoverAtCount/solver_min_cover_at_count_locked'); assert.equal(r.productExportCalls, 1);
         assert.equal(r.productMs, r.solverMs); assert(r.productMs >= r.nativeMs);
+        assert(Number.isFinite(r.outerMs) && r.outerMs >= r.productMs);
+        assert(Number.isFinite(r.processPeakRssKiB) && r.processPeakRssKiB > 0);
+        assert(Number.isFinite(r.wasmMemoryBytes) && r.wasmMemoryBytes > 0);
         if (witnesses.has(id)) assert.equal(hash, witnesses.get(id)); else witnesses.set(id, hash);
         if (previous?.witnessHashes[id]) assert.equal(hash, previous.witnessHashes[id]);
         if (known[id]) assert.equal(hash, known[id], 'product witness differs from frozen historical optimum');
@@ -106,6 +109,7 @@ export function audit(input, pairs, expectedIds, previous = null, profile = 'pro
           assert.equal(row[side + summaryKey], median(done.map(r => r[sampleKey])));
         }
       }
+      assert.equal(row.solverSpeedupMedian, median(complete.map(p => p.find(r => r.side === 'left').solverMs / p.find(r => r.side === 'right').solverMs)));
       for (const [side, key] of [['left', 'leftOnlyExact'], ['right', 'rightOnlyExact']]) {
         assert.equal(row[key], records.filter(r => r.side === side && r.status === 'EXACT'
           && records.some(o => o.pair === r.pair && o.side !== side && o.status === 'TIMEOUT')).length);

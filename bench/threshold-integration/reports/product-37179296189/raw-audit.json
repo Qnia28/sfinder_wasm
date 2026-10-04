@@ -1,0 +1,39 @@
+{
+  "runId": "37179296189",
+  "runAttempt": 1,
+  "candidate": "56e4f08809fb6350cd776fa96f5e26b50f864ddf",
+  "buildHashes": {
+    "D": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+    "C": "ca3c72da64dd29a6619fb0ef6dc4e065e22f7703933dcb76a8a11d1ab2990303",
+    "A": "f81c02daf812354c12262860284456bb1266178df28a2829eba12c347ae8679f",
+    "B": "15bcd1171821d53c0e44d7b556d7d0680e957bbca5630643b34155c44b5923fd",
+    "reference": "425888e502363eccf7a240c0fe37b999106da90cf829faa39142052ed59b2adf",
+    "S": "640232e30c586e87d6c5f5ad5ab52856c9ab173df984e4915f383e9fd399eee2"
+  },
+  "original": {
+    "calls": 628,
+    "exact": 619,
+    "timeout": 9,
+    "unrun": 12
+  },
+  "repeat": {
+    "calls": 80,
+    "exact": 80,
+    "timeout": 0,
+    "unrun": 0
+  },
+  "bridge": {
+    "calls": 120,
+    "exact": 120,
+    "timeout": 0,
+    "unrun": 0
+  },
+  "allActualCalls": 828,
+  "allRawCompletedWitnessesValidated": 819,
+  "hashes": {
+    "review/review.json": "5135a3d22681a6a6b3f9f044002854a3677211b0952837880b52dd7a10d1b0c1",
+    "recheck-review/review.json": "c6ad95570d4354bc8bd4ca7265b09e6ba4c135f7d6e3939518d87f86bbed370d",
+    "control/control-review.json": "3c07e6688cca469b65613d5a9a20628337c0339d755e23f837a355a84633ecce"
+  },
+  "audit": "Recomputed every raw completed witness, summary median including product/solver metrics, memory, exact/timeout/early-stop/unrun and source/build identities. Deep equal to all three original workflow audits. No new performance samples."
+}

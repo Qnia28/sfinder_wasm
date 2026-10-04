@@ -1,0 +1,324 @@
+{
+  "candidate": "56e4f08809fb6350cd776fa96f5e26b50f864ddf",
+  "sourceMaps": [
+    {
+      "name": "devRust",
+      "revision": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+      "blobs": 40,
+      "digest": "a621d2791d75e2ea1da6f6552535f49fa582a2bbf15d8004c45304ac661734c8"
+    },
+    {
+      "name": "referenceRust",
+      "revision": "908efa38b932837a0c12e5a26b8fd290c6d03d18",
+      "blobs": 41,
+      "digest": "997db236347c81177ca3b6ea1904caf7e2ac0c3fca880c51113a9867e242cc14"
+    },
+    {
+      "name": "candidateRust",
+      "revision": "56e4f08809fb6350cd776fa96f5e26b50f864ddf",
+      "blobs": 41,
+      "digest": "cab917ee589705d68490cca30a95114298a4ea1b99f50b9579a31f5c09c82f29"
+    },
+    {
+      "name": "productJs",
+      "revision": "56e4f08809fb6350cd776fa96f5e26b50f864ddf",
+      "blobs": 94,
+      "digest": "65c2c90225a50166f0f590125a6dd94f0c663d2a952ef446220295d0ebdccc1e"
+    },
+    {
+      "name": "harness",
+      "revision": "56e4f08809fb6350cd776fa96f5e26b50f864ddf",
+      "blobs": 224,
+      "digest": "79253e6b41c89845f23afb3f98d94741a1619a3f36bfba207ded7c1da2463433"
+    }
+  ],
+  "immutableBlobs": 440,
+  "productJsAndWasmWrappersUnchanged": true,
+  "jobs": [
+    {
+      "id": 111368407301,
+      "name": "build",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:14:18Z",
+      "completed_at": "2026-10-04T05:15:26Z"
+    },
+    {
+      "id": 111368573696,
+      "name": "correctness",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:15:28Z",
+      "completed_at": "2026-10-04T05:20:56Z"
+    },
+    {
+      "id": 111369364191,
+      "name": "control",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:20:58Z",
+      "completed_at": "2026-10-04T05:21:26Z"
+    },
+    {
+      "id": 111369434148,
+      "name": "benchmark (cycle1-alt-jaws-a-O)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:29Z",
+      "completed_at": "2026-10-04T05:21:49Z"
+    },
+    {
+      "id": 111369434169,
+      "name": "benchmark (cycle1-pcinfo-024-I)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:28Z",
+      "completed_at": "2026-10-04T05:21:43Z"
+    },
+    {
+      "id": 111369434171,
+      "name": "benchmark (cycle1-pcinfo-025-I)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:29Z",
+      "completed_at": "2026-10-04T05:21:46Z"
+    },
+    {
+      "id": 111369434181,
+      "name": "benchmark (cycle1-6p-pco-a-I)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:28Z",
+      "completed_at": "2026-10-04T05:21:42Z"
+    },
+    {
+      "id": 111369434186,
+      "name": "benchmark (cycle1-hills-a-Z)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:43Z",
+      "completed_at": "2026-10-04T05:22:32Z"
+    },
+    {
+      "id": 111369434192,
+      "name": "benchmark (cycle1-jeremy-a-Z)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:28Z",
+      "completed_at": "2026-10-04T05:21:46Z"
+    },
+    {
+      "id": 111369434193,
+      "name": "benchmark (cycle1-grace-system-a-S)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:28Z",
+      "completed_at": "2026-10-04T05:21:41Z"
+    },
+    {
+      "id": 111369434195,
+      "name": "benchmark (cycle1-pcinfo-016-S)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:29Z",
+      "completed_at": "2026-10-04T05:21:44Z"
+    },
+    {
+      "id": 111369434200,
+      "name": "benchmark (cycle1-alt-shoes-a-Z)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:28Z",
+      "completed_at": "2026-10-04T05:21:43Z"
+    },
+    {
+      "id": 111369434201,
+      "name": "benchmark (cycle1-jaws-a-I)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:29Z",
+      "completed_at": "2026-10-04T05:21:50Z"
+    },
+    {
+      "id": 111369434209,
+      "name": "benchmark (cycle1-big-jaws-a-S)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:28Z",
+      "completed_at": "2026-10-04T05:21:43Z"
+    },
+    {
+      "id": 111369434213,
+      "name": "benchmark (cycle1-legs-a-S)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:43Z",
+      "completed_at": "2026-10-04T05:23:14Z"
+    },
+    {
+      "id": 111369434232,
+      "name": "benchmark (c7-2plus2-qb-row-072-T)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:51Z",
+      "completed_at": "2026-10-04T05:22:08Z"
+    },
+    {
+      "id": 111369434243,
+      "name": "benchmark (c7-2plus2-qb-row-084-L)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:52Z",
+      "completed_at": "2026-10-04T05:22:05Z"
+    },
+    {
+      "id": 111369434262,
+      "name": "benchmark (cycle1-pcinfo-032-Z)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:45Z",
+      "completed_at": "2026-10-04T06:56:38Z"
+    },
+    {
+      "id": 111369434268,
+      "name": "benchmark (cycle1-pcinfo-031-O)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:44Z",
+      "completed_at": "2026-10-04T05:50:18Z"
+    },
+    {
+      "id": 111369434271,
+      "name": "benchmark (cycle1-pcinfo-030-Z)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:44Z",
+      "completed_at": "2026-10-04T06:44:25Z"
+    },
+    {
+      "id": 111369434279,
+      "name": "benchmark (cycle1-pcinfo-031-S)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:45Z",
+      "completed_at": "2026-10-04T06:02:00Z"
+    },
+    {
+      "id": 111369434288,
+      "name": "benchmark (c7-2plus2-qb-row-007-O)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:48Z",
+      "completed_at": "2026-10-04T05:22:06Z"
+    },
+    {
+      "id": 111369434297,
+      "name": "benchmark (c7-2plus2-qb-row-035-L)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:21:48Z",
+      "completed_at": "2026-10-04T05:22:05Z"
+    },
+    {
+      "id": 111369434758,
+      "name": "benchmark (c7-2plus2-qb-row-175-L)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:22:07Z",
+      "completed_at": "2026-10-04T05:22:24Z"
+    },
+    {
+      "id": 111369434792,
+      "name": "benchmark (c7-2plus2-qb-row-107-I)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:22:07Z",
+      "completed_at": "2026-10-04T05:22:20Z"
+    },
+    {
+      "id": 111369434856,
+      "name": "benchmark (c7-2plus2-qb-row-329-J)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:22:07Z",
+      "completed_at": "2026-10-04T05:22:21Z"
+    },
+    {
+      "id": 111369434859,
+      "name": "benchmark (c7-2plus2-qb-row-159-S)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:22:22Z",
+      "completed_at": "2026-10-04T05:22:39Z"
+    },
+    {
+      "id": 111369434861,
+      "name": "benchmark (c7-2plus2-qb-row-025-T)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:22:09Z",
+      "completed_at": "2026-10-04T05:22:23Z"
+    },
+    {
+      "id": 111369434862,
+      "name": "benchmark (c7-2plus2-qb-row-020-Z)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:22:22Z",
+      "completed_at": "2026-10-04T05:22:36Z"
+    },
+    {
+      "id": 111369434902,
+      "name": "benchmark (c7-2plus2-qb-row-326-L)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:22:25Z",
+      "completed_at": "2026-10-04T05:22:39Z"
+    },
+    {
+      "id": 111369434903,
+      "name": "benchmark (c7-2plus2-qb-row-052-T)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:22:38Z",
+      "completed_at": "2026-10-04T05:22:51Z"
+    },
+    {
+      "id": 111369434932,
+      "name": "benchmark (c7-2plus2-qb-row-271-T)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:22:25Z",
+      "completed_at": "2026-10-04T05:22:42Z"
+    },
+    {
+      "id": 111369434958,
+      "name": "benchmark (c7-2plus2-qb-row-039-O)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:22:33Z",
+      "completed_at": "2026-10-04T05:22:49Z"
+    },
+    {
+      "id": 111369435292,
+      "name": "benchmark (c7-2plus2-qb-row-134-J)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:22:40Z",
+      "completed_at": "2026-10-04T05:22:52Z"
+    },
+    {
+      "id": 111369435362,
+      "name": "benchmark (c7-2plus2-qb-row-087-J)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T05:22:43Z",
+      "completed_at": "2026-10-04T05:23:03Z"
+    },
+    {
+      "id": 111382904780,
+      "name": "review",
+      "conclusion": "success",
+      "started_at": "2026-10-04T06:56:40Z",
+      "completed_at": "2026-10-04T06:56:57Z"
+    },
+    {
+      "id": 111382948142,
+      "name": "recheck (cycle1-pcinfo-032-Z)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T06:56:59Z",
+      "completed_at": "2026-10-04T08:49:26Z"
+    },
+    {
+      "id": 111382948144,
+      "name": "recheck (c7-2plus2-qb-row-072-T)",
+      "conclusion": "success",
+      "started_at": "2026-10-04T06:56:59Z",
+      "completed_at": "2026-10-04T06:57:20Z"
+    },
+    {
+      "id": 111400481895,
+      "name": "final",
+      "conclusion": "success",
+      "started_at": "2026-10-04T08:49:29Z",
+      "completed_at": "2026-10-04T08:49:45Z"
+    }
+  ],
+  "concurrency": {
+    "benchmark": {
+      "jobs": 32,
+      "peak": 10
+    },
+    "recheck": {
+      "jobs": 2,
+      "peak": 2
+    }
+  },
+  "jobFileHash": "66b00ba302ff6f6060dc51451b2c96a693514a80db822d6ae38e773d7952ae67",
+  "buildHash": "15537877b7c7923aa5a0161153f7b3f118446cf07e951971ceb0e913f5fc8e9a"
+}

@@ -1,5 +1,8 @@
 # Threshold 후보 통합 준비
 
+**2026-10-04 완료:** [제품 경로 검증·후보별 권고](../bench/threshold-integration/RESULT_KO.md).
+준비 브랜치에서 이식·검증·측정·재확인·독립감사를 마쳤다. Dev/main/기본ON/배포는 변경하지 않았다.
+
 - 준비 branch: `integration/threshold-candidates-20261004`.
 - Dev 기준: `c0cb2a048e7275bfea587d176b1954efff0a8a08`.
 - 실험 근거: `908efa38b932837a0c12e5a26b8fd290c6d03d18`.

@@ -1,0 +1,21 @@
+{
+  "buildHash": "15537877b7c7923aa5a0161153f7b3f118446cf07e951971ceb0e913f5fc8e9a",
+  "candidate": "56e4f08809fb6350cd776fa96f5e26b50f864ddf",
+  "hashes": {
+    "D": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+    "C": "ca3c72da64dd29a6619fb0ef6dc4e065e22f7703933dcb76a8a11d1ab2990303",
+    "A": "f81c02daf812354c12262860284456bb1266178df28a2829eba12c347ae8679f",
+    "B": "15bcd1171821d53c0e44d7b556d7d0680e957bbca5630643b34155c44b5923fd",
+    "reference": "425888e502363eccf7a240c0fe37b999106da90cf829faa39142052ed59b2adf",
+    "S": "640232e30c586e87d6c5f5ad5ab52856c9ab173df984e4915f383e9fd399eee2"
+  },
+  "correctnessOnly": true,
+  "performanceSamples": 0,
+  "preservedMatrices": 200,
+  "exactQbCalls": 700,
+  "boundedCalls": 1400,
+  "activation": {
+    "current": 10,
+    "root": 0
+  }
+}

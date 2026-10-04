@@ -1,0 +1,2441 @@
+{
+  "baseline": "c0cb2a048e7275bfea587d176b1954efff0a8a08",
+  "reference": "908efa38b932837a0c12e5a26b8fd290c6d03d18",
+  "candidate": "56e4f08809fb6350cd776fa96f5e26b50f864ddf",
+  "dirty": "",
+  "node": "v24.13.0",
+  "rustc": "rustc 1.90.0 (1159e78c4 2025-09-14)",
+  "modes": {
+    "D": [],
+    "C": [],
+    "A": [
+      "threshold-current-propagation"
+    ],
+    "B": [
+      "threshold-current-propagation",
+      "threshold-root-forced"
+    ],
+    "reference": [
+      "threshold-experiment"
+    ]
+  },
+  "hashes": {
+    "D": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3",
+    "C": "ca3c72da64dd29a6619fb0ef6dc4e065e22f7703933dcb76a8a11d1ab2990303",
+    "A": "f81c02daf812354c12262860284456bb1266178df28a2829eba12c347ae8679f",
+    "B": "15bcd1171821d53c0e44d7b556d7d0680e957bbca5630643b34155c44b5923fd",
+    "reference": "425888e502363eccf7a240c0fe37b999106da90cf829faa39142052ed59b2adf",
+    "S": "640232e30c586e87d6c5f5ad5ab52856c9ab173df984e4915f383e9fd399eee2"
+  },
+  "exports": {
+    "D": [
+      [
+        "__data_end",
+        "global"
+      ],
+      [
+        "__heap_base",
+        "global"
+      ],
+      [
+        "memory",
+        "memory"
+      ],
+      [
+        "solver_best_language_stat",
+        "function"
+      ],
+      [
+        "solver_best_pc",
+        "function"
+      ],
+      [
+        "solver_cache_entries",
+        "function"
+      ],
+      [
+        "solver_cache_estimated_bytes",
+        "function"
+      ],
+      [
+        "solver_cache_evictions",
+        "function"
+      ],
+      [
+        "solver_cache_hits",
+        "function"
+      ],
+      [
+        "solver_cache_misses",
+        "function"
+      ],
+      [
+        "solver_can_pc",
+        "function"
+      ],
+      [
+        "solver_can_pc_many",
+        "function"
+      ],
+      [
+        "solver_can_pc_pattern_many",
+        "function"
+      ],
+      [
+        "solver_copy_solution_words",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_geometry",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_path",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_pattern",
+        "function"
+      ],
+      [
+        "solver_free",
+        "function"
+      ],
+      [
+        "solver_geometry_fallback",
+        "function"
+      ],
+      [
+        "solver_legal_count",
+        "function"
+      ],
+      [
+        "solver_legal_memory_bytes",
+        "function"
+      ],
+      [
+        "solver_legal_pack_version",
+        "function"
+      ],
+      [
+        "solver_legal_rejects",
+        "function"
+      ],
+      [
+        "solver_load_legal_pack",
+        "function"
+      ],
+      [
+        "solver_min_cover",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_dominance_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_partitioned_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_locked",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_progress_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_cardinality",
+        "function"
+      ],
+      [
+        "solver_min_cover_proven_prefix",
+        "function"
+      ],
+      [
+        "solver_min_cover_proven_prefix_len",
+        "function"
+      ],
+      [
+        "solver_min_cover_quality",
+        "function"
+      ],
+      [
+        "solver_min_cover_quality_len",
+        "function"
+      ],
+      [
+        "solver_min_cover_searched_states",
+        "function"
+      ],
+      [
+        "solver_min_cover_selected",
+        "function"
+      ],
+      [
+        "solver_new",
+        "function"
+      ],
+      [
+        "solver_nodes",
+        "function"
+      ],
+      [
+        "solver_path_coverage_counts_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_cases_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_case",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_offset",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_order_count",
+        "function"
+      ],
+      [
+        "solver_pattern_offsets_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_qualities_ptr",
+        "function"
+      ],
+      [
+        "solver_per_save_best",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_case_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_entry_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_forced_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_forced_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_ids_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_offsets_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_solution_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_solution_ids_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernelize",
+        "function"
+      ],
+      [
+        "solver_probability_session",
+        "function"
+      ],
+      [
+        "solver_probability_stat",
+        "function"
+      ],
+      [
+        "solver_probe_can_pc",
+        "function"
+      ],
+      [
+        "solver_reconstruction_stat",
+        "function"
+      ],
+      [
+        "solver_save_outcomes_pattern",
+        "function"
+      ],
+      [
+        "solver_save_outcomes_ptr",
+        "function"
+      ],
+      [
+        "solver_set_best_engine",
+        "function"
+      ],
+      [
+        "solver_set_cache_budget",
+        "function"
+      ],
+      [
+        "solver_set_geometry_budget",
+        "function"
+      ],
+      [
+        "solver_set_probability_engine",
+        "function"
+      ],
+      [
+        "solver_solution_mask",
+        "function"
+      ],
+      [
+        "solver_solution_order_count",
+        "function"
+      ],
+      [
+        "solver_solution_saved_piece",
+        "function"
+      ],
+      [
+        "solver_solution_word_stride",
+        "function"
+      ],
+      [
+        "solver_stage8_oracle_entries",
+        "function"
+      ],
+      [
+        "solver_stage9_oracle_entries",
+        "function"
+      ],
+      [
+        "wasm_alloc",
+        "function"
+      ],
+      [
+        "wasm_alloc_u32",
+        "function"
+      ],
+      [
+        "wasm_alloc_u64",
+        "function"
+      ],
+      [
+        "wasm_dealloc",
+        "function"
+      ],
+      [
+        "wasm_dealloc_u32",
+        "function"
+      ],
+      [
+        "wasm_dealloc_u64",
+        "function"
+      ]
+    ],
+    "C": [
+      [
+        "__data_end",
+        "global"
+      ],
+      [
+        "__heap_base",
+        "global"
+      ],
+      [
+        "memory",
+        "memory"
+      ],
+      [
+        "solver_best_language_stat",
+        "function"
+      ],
+      [
+        "solver_best_pc",
+        "function"
+      ],
+      [
+        "solver_cache_entries",
+        "function"
+      ],
+      [
+        "solver_cache_estimated_bytes",
+        "function"
+      ],
+      [
+        "solver_cache_evictions",
+        "function"
+      ],
+      [
+        "solver_cache_hits",
+        "function"
+      ],
+      [
+        "solver_cache_misses",
+        "function"
+      ],
+      [
+        "solver_can_pc",
+        "function"
+      ],
+      [
+        "solver_can_pc_many",
+        "function"
+      ],
+      [
+        "solver_can_pc_pattern_many",
+        "function"
+      ],
+      [
+        "solver_copy_solution_words",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_geometry",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_path",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_pattern",
+        "function"
+      ],
+      [
+        "solver_free",
+        "function"
+      ],
+      [
+        "solver_geometry_fallback",
+        "function"
+      ],
+      [
+        "solver_legal_count",
+        "function"
+      ],
+      [
+        "solver_legal_memory_bytes",
+        "function"
+      ],
+      [
+        "solver_legal_pack_version",
+        "function"
+      ],
+      [
+        "solver_legal_rejects",
+        "function"
+      ],
+      [
+        "solver_load_legal_pack",
+        "function"
+      ],
+      [
+        "solver_min_cover",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_dominance_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_partitioned_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_locked",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_progress_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_cardinality",
+        "function"
+      ],
+      [
+        "solver_min_cover_proven_prefix",
+        "function"
+      ],
+      [
+        "solver_min_cover_proven_prefix_len",
+        "function"
+      ],
+      [
+        "solver_min_cover_quality",
+        "function"
+      ],
+      [
+        "solver_min_cover_quality_len",
+        "function"
+      ],
+      [
+        "solver_min_cover_searched_states",
+        "function"
+      ],
+      [
+        "solver_min_cover_selected",
+        "function"
+      ],
+      [
+        "solver_new",
+        "function"
+      ],
+      [
+        "solver_nodes",
+        "function"
+      ],
+      [
+        "solver_path_coverage_counts_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_cases_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_case",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_offset",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_order_count",
+        "function"
+      ],
+      [
+        "solver_pattern_offsets_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_qualities_ptr",
+        "function"
+      ],
+      [
+        "solver_per_save_best",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_case_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_entry_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_forced_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_forced_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_ids_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_offsets_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_solution_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_solution_ids_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernelize",
+        "function"
+      ],
+      [
+        "solver_probability_session",
+        "function"
+      ],
+      [
+        "solver_probability_stat",
+        "function"
+      ],
+      [
+        "solver_probe_can_pc",
+        "function"
+      ],
+      [
+        "solver_reconstruction_stat",
+        "function"
+      ],
+      [
+        "solver_save_outcomes_pattern",
+        "function"
+      ],
+      [
+        "solver_save_outcomes_ptr",
+        "function"
+      ],
+      [
+        "solver_set_best_engine",
+        "function"
+      ],
+      [
+        "solver_set_cache_budget",
+        "function"
+      ],
+      [
+        "solver_set_geometry_budget",
+        "function"
+      ],
+      [
+        "solver_set_probability_engine",
+        "function"
+      ],
+      [
+        "solver_solution_mask",
+        "function"
+      ],
+      [
+        "solver_solution_order_count",
+        "function"
+      ],
+      [
+        "solver_solution_saved_piece",
+        "function"
+      ],
+      [
+        "solver_solution_word_stride",
+        "function"
+      ],
+      [
+        "solver_stage8_oracle_entries",
+        "function"
+      ],
+      [
+        "solver_stage9_oracle_entries",
+        "function"
+      ],
+      [
+        "wasm_alloc",
+        "function"
+      ],
+      [
+        "wasm_alloc_u32",
+        "function"
+      ],
+      [
+        "wasm_alloc_u64",
+        "function"
+      ],
+      [
+        "wasm_dealloc",
+        "function"
+      ],
+      [
+        "wasm_dealloc_u32",
+        "function"
+      ],
+      [
+        "wasm_dealloc_u64",
+        "function"
+      ]
+    ],
+    "A": [
+      [
+        "__data_end",
+        "global"
+      ],
+      [
+        "__heap_base",
+        "global"
+      ],
+      [
+        "memory",
+        "memory"
+      ],
+      [
+        "solver_best_language_stat",
+        "function"
+      ],
+      [
+        "solver_best_pc",
+        "function"
+      ],
+      [
+        "solver_cache_entries",
+        "function"
+      ],
+      [
+        "solver_cache_estimated_bytes",
+        "function"
+      ],
+      [
+        "solver_cache_evictions",
+        "function"
+      ],
+      [
+        "solver_cache_hits",
+        "function"
+      ],
+      [
+        "solver_cache_misses",
+        "function"
+      ],
+      [
+        "solver_can_pc",
+        "function"
+      ],
+      [
+        "solver_can_pc_many",
+        "function"
+      ],
+      [
+        "solver_can_pc_pattern_many",
+        "function"
+      ],
+      [
+        "solver_copy_solution_words",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_geometry",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_path",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_pattern",
+        "function"
+      ],
+      [
+        "solver_free",
+        "function"
+      ],
+      [
+        "solver_geometry_fallback",
+        "function"
+      ],
+      [
+        "solver_legal_count",
+        "function"
+      ],
+      [
+        "solver_legal_memory_bytes",
+        "function"
+      ],
+      [
+        "solver_legal_pack_version",
+        "function"
+      ],
+      [
+        "solver_legal_rejects",
+        "function"
+      ],
+      [
+        "solver_load_legal_pack",
+        "function"
+      ],
+      [
+        "solver_min_cover",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_dominance_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_partitioned_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_locked",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_progress_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_cardinality",
+        "function"
+      ],
+      [
+        "solver_min_cover_proven_prefix",
+        "function"
+      ],
+      [
+        "solver_min_cover_proven_prefix_len",
+        "function"
+      ],
+      [
+        "solver_min_cover_quality",
+        "function"
+      ],
+      [
+        "solver_min_cover_quality_len",
+        "function"
+      ],
+      [
+        "solver_min_cover_searched_states",
+        "function"
+      ],
+      [
+        "solver_min_cover_selected",
+        "function"
+      ],
+      [
+        "solver_new",
+        "function"
+      ],
+      [
+        "solver_nodes",
+        "function"
+      ],
+      [
+        "solver_path_coverage_counts_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_cases_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_case",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_offset",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_order_count",
+        "function"
+      ],
+      [
+        "solver_pattern_offsets_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_qualities_ptr",
+        "function"
+      ],
+      [
+        "solver_per_save_best",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_case_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_entry_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_forced_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_forced_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_ids_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_offsets_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_solution_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_solution_ids_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernelize",
+        "function"
+      ],
+      [
+        "solver_probability_session",
+        "function"
+      ],
+      [
+        "solver_probability_stat",
+        "function"
+      ],
+      [
+        "solver_probe_can_pc",
+        "function"
+      ],
+      [
+        "solver_reconstruction_stat",
+        "function"
+      ],
+      [
+        "solver_save_outcomes_pattern",
+        "function"
+      ],
+      [
+        "solver_save_outcomes_ptr",
+        "function"
+      ],
+      [
+        "solver_set_best_engine",
+        "function"
+      ],
+      [
+        "solver_set_cache_budget",
+        "function"
+      ],
+      [
+        "solver_set_geometry_budget",
+        "function"
+      ],
+      [
+        "solver_set_probability_engine",
+        "function"
+      ],
+      [
+        "solver_solution_mask",
+        "function"
+      ],
+      [
+        "solver_solution_order_count",
+        "function"
+      ],
+      [
+        "solver_solution_saved_piece",
+        "function"
+      ],
+      [
+        "solver_solution_word_stride",
+        "function"
+      ],
+      [
+        "solver_stage8_oracle_entries",
+        "function"
+      ],
+      [
+        "solver_stage9_oracle_entries",
+        "function"
+      ],
+      [
+        "wasm_alloc",
+        "function"
+      ],
+      [
+        "wasm_alloc_u32",
+        "function"
+      ],
+      [
+        "wasm_alloc_u64",
+        "function"
+      ],
+      [
+        "wasm_dealloc",
+        "function"
+      ],
+      [
+        "wasm_dealloc_u32",
+        "function"
+      ],
+      [
+        "wasm_dealloc_u64",
+        "function"
+      ]
+    ],
+    "B": [
+      [
+        "__data_end",
+        "global"
+      ],
+      [
+        "__heap_base",
+        "global"
+      ],
+      [
+        "memory",
+        "memory"
+      ],
+      [
+        "solver_best_language_stat",
+        "function"
+      ],
+      [
+        "solver_best_pc",
+        "function"
+      ],
+      [
+        "solver_cache_entries",
+        "function"
+      ],
+      [
+        "solver_cache_estimated_bytes",
+        "function"
+      ],
+      [
+        "solver_cache_evictions",
+        "function"
+      ],
+      [
+        "solver_cache_hits",
+        "function"
+      ],
+      [
+        "solver_cache_misses",
+        "function"
+      ],
+      [
+        "solver_can_pc",
+        "function"
+      ],
+      [
+        "solver_can_pc_many",
+        "function"
+      ],
+      [
+        "solver_can_pc_pattern_many",
+        "function"
+      ],
+      [
+        "solver_copy_solution_words",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_geometry",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_path",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_pattern",
+        "function"
+      ],
+      [
+        "solver_free",
+        "function"
+      ],
+      [
+        "solver_geometry_fallback",
+        "function"
+      ],
+      [
+        "solver_legal_count",
+        "function"
+      ],
+      [
+        "solver_legal_memory_bytes",
+        "function"
+      ],
+      [
+        "solver_legal_pack_version",
+        "function"
+      ],
+      [
+        "solver_legal_rejects",
+        "function"
+      ],
+      [
+        "solver_load_legal_pack",
+        "function"
+      ],
+      [
+        "solver_min_cover",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_dominance_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_partitioned_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_locked",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_progress_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_cardinality",
+        "function"
+      ],
+      [
+        "solver_min_cover_proven_prefix",
+        "function"
+      ],
+      [
+        "solver_min_cover_proven_prefix_len",
+        "function"
+      ],
+      [
+        "solver_min_cover_quality",
+        "function"
+      ],
+      [
+        "solver_min_cover_quality_len",
+        "function"
+      ],
+      [
+        "solver_min_cover_searched_states",
+        "function"
+      ],
+      [
+        "solver_min_cover_selected",
+        "function"
+      ],
+      [
+        "solver_new",
+        "function"
+      ],
+      [
+        "solver_nodes",
+        "function"
+      ],
+      [
+        "solver_path_coverage_counts_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_cases_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_case",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_offset",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_order_count",
+        "function"
+      ],
+      [
+        "solver_pattern_offsets_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_qualities_ptr",
+        "function"
+      ],
+      [
+        "solver_per_save_best",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_case_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_entry_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_forced_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_forced_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_ids_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_offsets_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_solution_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_solution_ids_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernelize",
+        "function"
+      ],
+      [
+        "solver_probability_session",
+        "function"
+      ],
+      [
+        "solver_probability_stat",
+        "function"
+      ],
+      [
+        "solver_probe_can_pc",
+        "function"
+      ],
+      [
+        "solver_reconstruction_stat",
+        "function"
+      ],
+      [
+        "solver_save_outcomes_pattern",
+        "function"
+      ],
+      [
+        "solver_save_outcomes_ptr",
+        "function"
+      ],
+      [
+        "solver_set_best_engine",
+        "function"
+      ],
+      [
+        "solver_set_cache_budget",
+        "function"
+      ],
+      [
+        "solver_set_geometry_budget",
+        "function"
+      ],
+      [
+        "solver_set_probability_engine",
+        "function"
+      ],
+      [
+        "solver_solution_mask",
+        "function"
+      ],
+      [
+        "solver_solution_order_count",
+        "function"
+      ],
+      [
+        "solver_solution_saved_piece",
+        "function"
+      ],
+      [
+        "solver_solution_word_stride",
+        "function"
+      ],
+      [
+        "solver_stage8_oracle_entries",
+        "function"
+      ],
+      [
+        "solver_stage9_oracle_entries",
+        "function"
+      ],
+      [
+        "wasm_alloc",
+        "function"
+      ],
+      [
+        "wasm_alloc_u32",
+        "function"
+      ],
+      [
+        "wasm_alloc_u64",
+        "function"
+      ],
+      [
+        "wasm_dealloc",
+        "function"
+      ],
+      [
+        "wasm_dealloc_u32",
+        "function"
+      ],
+      [
+        "wasm_dealloc_u64",
+        "function"
+      ]
+    ],
+    "reference": [
+      [
+        "__data_end",
+        "global"
+      ],
+      [
+        "__heap_base",
+        "global"
+      ],
+      [
+        "memory",
+        "memory"
+      ],
+      [
+        "solver_best_language_stat",
+        "function"
+      ],
+      [
+        "solver_best_pc",
+        "function"
+      ],
+      [
+        "solver_cache_entries",
+        "function"
+      ],
+      [
+        "solver_cache_estimated_bytes",
+        "function"
+      ],
+      [
+        "solver_cache_evictions",
+        "function"
+      ],
+      [
+        "solver_cache_hits",
+        "function"
+      ],
+      [
+        "solver_cache_misses",
+        "function"
+      ],
+      [
+        "solver_can_pc",
+        "function"
+      ],
+      [
+        "solver_can_pc_many",
+        "function"
+      ],
+      [
+        "solver_can_pc_pattern_many",
+        "function"
+      ],
+      [
+        "solver_copy_solution_words",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_geometry",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_path",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_pattern",
+        "function"
+      ],
+      [
+        "solver_free",
+        "function"
+      ],
+      [
+        "solver_geometry_fallback",
+        "function"
+      ],
+      [
+        "solver_legal_count",
+        "function"
+      ],
+      [
+        "solver_legal_memory_bytes",
+        "function"
+      ],
+      [
+        "solver_legal_pack_version",
+        "function"
+      ],
+      [
+        "solver_legal_rejects",
+        "function"
+      ],
+      [
+        "solver_load_legal_pack",
+        "function"
+      ],
+      [
+        "solver_min_cover",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_dominance_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_partitioned_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_locked",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_progress_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_cardinality",
+        "function"
+      ],
+      [
+        "solver_min_cover_proven_prefix",
+        "function"
+      ],
+      [
+        "solver_min_cover_proven_prefix_len",
+        "function"
+      ],
+      [
+        "solver_min_cover_quality",
+        "function"
+      ],
+      [
+        "solver_min_cover_quality_len",
+        "function"
+      ],
+      [
+        "solver_min_cover_searched_states",
+        "function"
+      ],
+      [
+        "solver_min_cover_selected",
+        "function"
+      ],
+      [
+        "solver_new",
+        "function"
+      ],
+      [
+        "solver_nodes",
+        "function"
+      ],
+      [
+        "solver_path_coverage_counts_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_cases_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_case",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_offset",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_order_count",
+        "function"
+      ],
+      [
+        "solver_pattern_offsets_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_qualities_ptr",
+        "function"
+      ],
+      [
+        "solver_per_save_best",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_case_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_entry_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_forced_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_forced_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_ids_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_offsets_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_solution_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_solution_ids_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernelize",
+        "function"
+      ],
+      [
+        "solver_probability_session",
+        "function"
+      ],
+      [
+        "solver_probability_stat",
+        "function"
+      ],
+      [
+        "solver_probe_can_pc",
+        "function"
+      ],
+      [
+        "solver_reconstruction_stat",
+        "function"
+      ],
+      [
+        "solver_save_outcomes_pattern",
+        "function"
+      ],
+      [
+        "solver_save_outcomes_ptr",
+        "function"
+      ],
+      [
+        "solver_set_best_engine",
+        "function"
+      ],
+      [
+        "solver_set_cache_budget",
+        "function"
+      ],
+      [
+        "solver_set_geometry_budget",
+        "function"
+      ],
+      [
+        "solver_set_probability_engine",
+        "function"
+      ],
+      [
+        "solver_solution_mask",
+        "function"
+      ],
+      [
+        "solver_solution_order_count",
+        "function"
+      ],
+      [
+        "solver_solution_saved_piece",
+        "function"
+      ],
+      [
+        "solver_solution_word_stride",
+        "function"
+      ],
+      [
+        "solver_stage8_oracle_entries",
+        "function"
+      ],
+      [
+        "solver_stage9_oracle_entries",
+        "function"
+      ],
+      [
+        "solver_threshold_diagnostic",
+        "function"
+      ],
+      [
+        "solver_threshold_experiment",
+        "function"
+      ],
+      [
+        "solver_threshold_experiment_version",
+        "function"
+      ],
+      [
+        "solver_threshold_trace_enabled",
+        "function"
+      ],
+      [
+        "wasm_alloc",
+        "function"
+      ],
+      [
+        "wasm_alloc_u32",
+        "function"
+      ],
+      [
+        "wasm_alloc_u64",
+        "function"
+      ],
+      [
+        "wasm_dealloc",
+        "function"
+      ],
+      [
+        "wasm_dealloc_u32",
+        "function"
+      ],
+      [
+        "wasm_dealloc_u64",
+        "function"
+      ]
+    ],
+    "S": [
+      [
+        "__data_end",
+        "global"
+      ],
+      [
+        "__heap_base",
+        "global"
+      ],
+      [
+        "memory",
+        "memory"
+      ],
+      [
+        "solver_best_language_stat",
+        "function"
+      ],
+      [
+        "solver_best_pc",
+        "function"
+      ],
+      [
+        "solver_cache_entries",
+        "function"
+      ],
+      [
+        "solver_cache_estimated_bytes",
+        "function"
+      ],
+      [
+        "solver_cache_evictions",
+        "function"
+      ],
+      [
+        "solver_cache_hits",
+        "function"
+      ],
+      [
+        "solver_cache_misses",
+        "function"
+      ],
+      [
+        "solver_can_pc",
+        "function"
+      ],
+      [
+        "solver_can_pc_many",
+        "function"
+      ],
+      [
+        "solver_can_pc_pattern_many",
+        "function"
+      ],
+      [
+        "solver_copy_solution_words",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_geometry",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_path",
+        "function"
+      ],
+      [
+        "solver_enumerate_pc_pattern",
+        "function"
+      ],
+      [
+        "solver_free",
+        "function"
+      ],
+      [
+        "solver_geometry_fallback",
+        "function"
+      ],
+      [
+        "solver_legal_count",
+        "function"
+      ],
+      [
+        "solver_legal_memory_bytes",
+        "function"
+      ],
+      [
+        "solver_legal_pack_version",
+        "function"
+      ],
+      [
+        "solver_legal_rejects",
+        "function"
+      ],
+      [
+        "solver_load_legal_pack",
+        "function"
+      ],
+      [
+        "solver_min_cover",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_integrated_dominance_bounded",
+        "function"
+      ],
+      [
+        "solver_min_cover_at_count_locked",
+        "function"
+      ],
+      [
+        "solver_min_cover_cardinality",
+        "function"
+      ],
+      [
+        "solver_min_cover_quality",
+        "function"
+      ],
+      [
+        "solver_min_cover_quality_len",
+        "function"
+      ],
+      [
+        "solver_min_cover_searched_states",
+        "function"
+      ],
+      [
+        "solver_min_cover_selected",
+        "function"
+      ],
+      [
+        "solver_new",
+        "function"
+      ],
+      [
+        "solver_nodes",
+        "function"
+      ],
+      [
+        "solver_path_coverage_counts_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_cases_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_case",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_offset",
+        "function"
+      ],
+      [
+        "solver_pattern_coverage_order_count",
+        "function"
+      ],
+      [
+        "solver_pattern_offsets_ptr",
+        "function"
+      ],
+      [
+        "solver_pattern_qualities_ptr",
+        "function"
+      ],
+      [
+        "solver_per_save_best",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_case_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_entry_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_forced_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_forced_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_ids_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_offsets_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_solution_count",
+        "function"
+      ],
+      [
+        "solver_primary_kernel_solution_ids_ptr",
+        "function"
+      ],
+      [
+        "solver_primary_kernelize",
+        "function"
+      ],
+      [
+        "solver_probability_session",
+        "function"
+      ],
+      [
+        "solver_probability_stat",
+        "function"
+      ],
+      [
+        "solver_probe_can_pc",
+        "function"
+      ],
+      [
+        "solver_reconstruction_stat",
+        "function"
+      ],
+      [
+        "solver_save_outcomes_pattern",
+        "function"
+      ],
+      [
+        "solver_save_outcomes_ptr",
+        "function"
+      ],
+      [
+        "solver_set_best_engine",
+        "function"
+      ],
+      [
+        "solver_set_cache_budget",
+        "function"
+      ],
+      [
+        "solver_set_geometry_budget",
+        "function"
+      ],
+      [
+        "solver_set_probability_engine",
+        "function"
+      ],
+      [
+        "solver_solution_mask",
+        "function"
+      ],
+      [
+        "solver_solution_order_count",
+        "function"
+      ],
+      [
+        "solver_solution_saved_piece",
+        "function"
+      ],
+      [
+        "solver_solution_word_stride",
+        "function"
+      ],
+      [
+        "solver_stage8_oracle_entries",
+        "function"
+      ],
+      [
+        "solver_stage9_oracle_entries",
+        "function"
+      ],
+      [
+        "wasm_alloc",
+        "function"
+      ],
+      [
+        "wasm_alloc_u32",
+        "function"
+      ],
+      [
+        "wasm_alloc_u64",
+        "function"
+      ],
+      [
+        "wasm_dealloc",
+        "function"
+      ],
+      [
+        "wasm_dealloc_u32",
+        "function"
+      ],
+      [
+        "wasm_dealloc_u64",
+        "function"
+      ]
+    ]
+  },
+  "inheritedDevSourceExports": [
+    [
+      "solver_min_cover_at_count_integrated_partitioned_bounded",
+      "function"
+    ],
+    [
+      "solver_min_cover_at_count_progress_bounded",
+      "function"
+    ],
+    [
+      "solver_min_cover_proven_prefix",
+      "function"
+    ],
+    [
+      "solver_min_cover_proven_prefix_len",
+      "function"
+    ]
+  ],
+  "sources": {
+    "devRust": {
+      "rust/.gitignore": "deb6775709c118644ad316948957ebe178eb4569aabae2880651eac9d308ba0f",
+      "rust/batch-wasm/Cargo.toml": "60067295c93511ddfda9a19a5b9e2815eee6519de81cb189217c8a451cce4723",
+      "rust/batch-wasm/src/common.rs": "bc1014a85bb1d3c4c8386701745cb7c3e5d236a697480dd2868448fd97c6b8a4",
+      "rust/batch-wasm/src/diagnostics.rs": "c0a3bc72fc837226b10297e67967a86669fc2e7bf7f3b5490cae81873f9e3b2a",
+      "rust/batch-wasm/src/engine.rs": "bed586c9a413f9a30aa066cb534a9b6c070b5cc4bac8c5ba2eb66abfbf4b2b7f",
+      "rust/batch-wasm/src/lib.rs": "7235138b77c53888b9affa34da6aa8c50ab1b4389ef2504a7c2a528ab1ccc684",
+      "rust/batch-wasm/src/optimization_tests.rs": "c7a1155b522045c30acf6e25e734919bb08e4263213c95cc675cc4d1f65b0f87",
+      "rust/batch-wasm/src/placement.rs": "010b46873df35f8303493dad119174862799b505cb7ff7a535f641113c9bc9ec",
+      "rust/Cargo.lock": "c2f0e9b6337c2fbe5abd1f6a32881e62fc54af1d0eba3ecdf918342537ed2426",
+      "rust/Cargo.toml": "128190e29355ec4d24ef3fa1e7542f207853d0fb3ada2c2317d3544c26c8c216",
+      "rust/legal-gen/Cargo.toml": "417125fd81679941978035acd68d5e7707e61621a4f8cbc7e13b5660c262b6bc",
+      "rust/legal-gen/src/main.rs": "16d7426a2e6e424eed97e58ce92449041a935f68304c8e14bd4ef0011784b7f5",
+      "rust/pc-core/Cargo.toml": "ffbc60f240346f90cebcd729288fb08fd924f7b37ff1c75eb82e24c75c2cb29d",
+      "rust/pc-core/src/best_language.rs": "550f7af1107c8e9392bce9acdb5d57fdf9f48bc4fb7c7d8ac77f732869f20ddd",
+      "rust/pc-core/src/board.rs": "781d83c3e52becda2e71e6b1a57fbdb6ce83a4ca3a233bf7cfff7307157e4167",
+      "rust/pc-core/src/dag.rs": "f48f418f9673b00871def2822018aa77076bf62198c29459630f2fbfac5d618d",
+      "rust/pc-core/src/geometry.rs": "190f77ec81dbfc2f31eabeb9cdb9cf1df361ace7edac1879fab051d13a50ae47",
+      "rust/pc-core/src/hashing.rs": "b5249c9453c7ee0b53d0a8cd07b22b3d8fddef27d942a786c4b51e6f11cb56ca",
+      "rust/pc-core/src/legal.rs": "2bfc6bec2ff56b47617f3f4e0ed2f49dccd093fb695426aa3e7c3f2c6a5a2bd0",
+      "rust/pc-core/src/lib.rs": "02075f497f2e1e351820ef68ea43ad9aa75c298de23e488ce054ee1131a81bb3",
+      "rust/pc-core/src/min_cover_primary.rs": "1fc3ae9b9a14c2fb6a44c85b02ef0ba1080861bd153e3d80f7f4a2a2b5a7c89e",
+      "rust/pc-core/src/min_cover_tests.rs": "71d51874b2aecd4eb75c1e9c76e50ca16aba3176100d8a5aabeb854c286a3899",
+      "rust/pc-core/src/min_cover.rs": "35d08bccf37b7351bb9d49e609974f6c3fcc5a5a540ce91b0d30ae09e4f64148",
+      "rust/pc-core/src/movement.rs": "90f2d51b7bbb970e29e071dab463b2d04c4612c6be7a76c71a621171b0447a01",
+      "rust/pc-core/src/order_language.rs": "d5b8b0d9800869f6e83aabbe1d620f2e37607e548c79954f5822b37de06975a3",
+      "rust/pc-core/src/pattern.rs": "aeed2d4dda2c5cdc306f3f7b2d5367b2c20945ef197d7a153eff708c7a63309e",
+      "rust/pc-core/src/piece.rs": "325f6cc46f3dd909c9c6c0caae430007f2ec602b5864d4f2000bdd0e1ed5307f",
+      "rust/pc-core/src/queue_codec.rs": "0243e389e228a6ccc96971394479959c85103cbc068789c5a61b0ed06852ac31",
+      "rust/pc-core/src/queue_trie.rs": "f3598cdc5870939dfbf2aef8456d7477b6d01428b480f386446e716543367ccc",
+      "rust/pc-core/src/reverse.rs": "19aa11ba7e1b9840be55facdb508c9bdf4a47ac4a950b6d498151f3c72fad58a",
+      "rust/pc-core/src/single_queue.rs": "474f38f3defd7a76d1dec22b8a58ab6579ae306b42743413d177bf5092312cb9",
+      "rust/pc-core/src/tests.rs": "3192c976d0e786d1d7845decaf2ae79a91984beaa74e6e2d69278addc3b9e47e",
+      "rust/pc-core/tests/legal_oracle.rs": "f1f6cca7e6155b91b9953eceb73fab7270afe0b185da16fd83131191d34d9d84",
+      "rust/pc-wasm/Cargo.toml": "a5e78ba2b27534da9581855d62fc7cf6ccac45aa4bc053d8fc5af01ee11e4e36",
+      "rust/pc-wasm/src/enumeration.rs": "b60674e804120eaac55acef77d2f2cf900499283afd0ed917f81bb372774ebd4",
+      "rust/pc-wasm/src/lib.rs": "fe297976e18fb756fdafd758b84591b9ceca004e6760150919b39b19a3d0ae63",
+      "rust/pc-wasm/src/min_cover.rs": "d789e6f0c48ce559d47bab650e9e9d08b3c1099b48a1df79df9c94848109d0bb",
+      "rust/pc-wasm/src/runtime.rs": "8f24c89332238ef5bd981b914507bf7e7bbd8d7f411ee5f4c004c412c764aec3",
+      "rust/pc-wasm/src/state.rs": "cb7701264629acc17ff1d6d1507617e8d9dbc5c793d4719d8a85eb87d0754cea",
+      "rust/pc-wasm/src/stats.rs": "22eb80742a832a6daf7470cb08dfcb3f9b425eef4cedc1e78ace51ed7e0e3d99"
+    },
+    "candidateRust": {
+      "rust/.gitignore": "deb6775709c118644ad316948957ebe178eb4569aabae2880651eac9d308ba0f",
+      "rust/batch-wasm/Cargo.toml": "60067295c93511ddfda9a19a5b9e2815eee6519de81cb189217c8a451cce4723",
+      "rust/batch-wasm/src/common.rs": "bc1014a85bb1d3c4c8386701745cb7c3e5d236a697480dd2868448fd97c6b8a4",
+      "rust/batch-wasm/src/diagnostics.rs": "c0a3bc72fc837226b10297e67967a86669fc2e7bf7f3b5490cae81873f9e3b2a",
+      "rust/batch-wasm/src/engine.rs": "bed586c9a413f9a30aa066cb534a9b6c070b5cc4bac8c5ba2eb66abfbf4b2b7f",
+      "rust/batch-wasm/src/lib.rs": "7235138b77c53888b9affa34da6aa8c50ab1b4389ef2504a7c2a528ab1ccc684",
+      "rust/batch-wasm/src/optimization_tests.rs": "c7a1155b522045c30acf6e25e734919bb08e4263213c95cc675cc4d1f65b0f87",
+      "rust/batch-wasm/src/placement.rs": "010b46873df35f8303493dad119174862799b505cb7ff7a535f641113c9bc9ec",
+      "rust/Cargo.lock": "c2f0e9b6337c2fbe5abd1f6a32881e62fc54af1d0eba3ecdf918342537ed2426",
+      "rust/Cargo.toml": "128190e29355ec4d24ef3fa1e7542f207853d0fb3ada2c2317d3544c26c8c216",
+      "rust/legal-gen/Cargo.toml": "417125fd81679941978035acd68d5e7707e61621a4f8cbc7e13b5660c262b6bc",
+      "rust/legal-gen/src/main.rs": "16d7426a2e6e424eed97e58ce92449041a935f68304c8e14bd4ef0011784b7f5",
+      "rust/pc-core/Cargo.toml": "c14468af38e22638200a90eaab23f771843c991f73d4a7f1cfabea70749c3fab",
+      "rust/pc-core/src/best_language.rs": "550f7af1107c8e9392bce9acdb5d57fdf9f48bc4fb7c7d8ac77f732869f20ddd",
+      "rust/pc-core/src/board.rs": "781d83c3e52becda2e71e6b1a57fbdb6ce83a4ca3a233bf7cfff7307157e4167",
+      "rust/pc-core/src/dag.rs": "f48f418f9673b00871def2822018aa77076bf62198c29459630f2fbfac5d618d",
+      "rust/pc-core/src/geometry.rs": "190f77ec81dbfc2f31eabeb9cdb9cf1df361ace7edac1879fab051d13a50ae47",
+      "rust/pc-core/src/hashing.rs": "b5249c9453c7ee0b53d0a8cd07b22b3d8fddef27d942a786c4b51e6f11cb56ca",
+      "rust/pc-core/src/legal.rs": "2bfc6bec2ff56b47617f3f4e0ed2f49dccd093fb695426aa3e7c3f2c6a5a2bd0",
+      "rust/pc-core/src/lib.rs": "02075f497f2e1e351820ef68ea43ad9aa75c298de23e488ce054ee1131a81bb3",
+      "rust/pc-core/src/min_cover_primary.rs": "1fc3ae9b9a14c2fb6a44c85b02ef0ba1080861bd153e3d80f7f4a2a2b5a7c89e",
+      "rust/pc-core/src/min_cover_tests.rs": "71d51874b2aecd4eb75c1e9c76e50ca16aba3176100d8a5aabeb854c286a3899",
+      "rust/pc-core/src/min_cover.rs": "ebfa51463ac226e39cc286dc90b34aa8efbbc0b202e8085186de87b20924f102",
+      "rust/pc-core/src/movement.rs": "90f2d51b7bbb970e29e071dab463b2d04c4612c6be7a76c71a621171b0447a01",
+      "rust/pc-core/src/order_language.rs": "d5b8b0d9800869f6e83aabbe1d620f2e37607e548c79954f5822b37de06975a3",
+      "rust/pc-core/src/pattern.rs": "aeed2d4dda2c5cdc306f3f7b2d5367b2c20945ef197d7a153eff708c7a63309e",
+      "rust/pc-core/src/piece.rs": "325f6cc46f3dd909c9c6c0caae430007f2ec602b5864d4f2000bdd0e1ed5307f",
+      "rust/pc-core/src/queue_codec.rs": "0243e389e228a6ccc96971394479959c85103cbc068789c5a61b0ed06852ac31",
+      "rust/pc-core/src/queue_trie.rs": "f3598cdc5870939dfbf2aef8456d7477b6d01428b480f386446e716543367ccc",
+      "rust/pc-core/src/reverse.rs": "19aa11ba7e1b9840be55facdb508c9bdf4a47ac4a950b6d498151f3c72fad58a",
+      "rust/pc-core/src/single_queue.rs": "474f38f3defd7a76d1dec22b8a58ab6579ae306b42743413d177bf5092312cb9",
+      "rust/pc-core/src/tests.rs": "3192c976d0e786d1d7845decaf2ae79a91984beaa74e6e2d69278addc3b9e47e",
+      "rust/pc-core/src/threshold_candidate_tests.rs": "5c71d2e95349c0b777fa66ed4ff52868309586dfd30e8246ff95073dfaedb832",
+      "rust/pc-core/tests/legal_oracle.rs": "f1f6cca7e6155b91b9953eceb73fab7270afe0b185da16fd83131191d34d9d84",
+      "rust/pc-wasm/Cargo.toml": "3e02f4dc2b1ca9c1c134b3b39025efbb40fa4d2b85a962560bf8fc5813f41db2",
+      "rust/pc-wasm/src/enumeration.rs": "b60674e804120eaac55acef77d2f2cf900499283afd0ed917f81bb372774ebd4",
+      "rust/pc-wasm/src/lib.rs": "fe297976e18fb756fdafd758b84591b9ceca004e6760150919b39b19a3d0ae63",
+      "rust/pc-wasm/src/min_cover.rs": "d789e6f0c48ce559d47bab650e9e9d08b3c1099b48a1df79df9c94848109d0bb",
+      "rust/pc-wasm/src/runtime.rs": "8f24c89332238ef5bd981b914507bf7e7bbd8d7f411ee5f4c004c412c764aec3",
+      "rust/pc-wasm/src/state.rs": "cb7701264629acc17ff1d6d1507617e8d9dbc5c793d4719d8a85eb87d0754cea",
+      "rust/pc-wasm/src/stats.rs": "22eb80742a832a6daf7470cb08dfcb3f9b425eef4cedc1e78ace51ed7e0e3d99"
+    },
+    "referenceRust": {
+      "rust/.gitignore": "deb6775709c118644ad316948957ebe178eb4569aabae2880651eac9d308ba0f",
+      "rust/batch-wasm/Cargo.toml": "60067295c93511ddfda9a19a5b9e2815eee6519de81cb189217c8a451cce4723",
+      "rust/batch-wasm/src/common.rs": "bc1014a85bb1d3c4c8386701745cb7c3e5d236a697480dd2868448fd97c6b8a4",
+      "rust/batch-wasm/src/diagnostics.rs": "c0a3bc72fc837226b10297e67967a86669fc2e7bf7f3b5490cae81873f9e3b2a",
+      "rust/batch-wasm/src/engine.rs": "bed586c9a413f9a30aa066cb534a9b6c070b5cc4bac8c5ba2eb66abfbf4b2b7f",
+      "rust/batch-wasm/src/lib.rs": "7235138b77c53888b9affa34da6aa8c50ab1b4389ef2504a7c2a528ab1ccc684",
+      "rust/batch-wasm/src/optimization_tests.rs": "c7a1155b522045c30acf6e25e734919bb08e4263213c95cc675cc4d1f65b0f87",
+      "rust/batch-wasm/src/placement.rs": "010b46873df35f8303493dad119174862799b505cb7ff7a535f641113c9bc9ec",
+      "rust/Cargo.lock": "c2f0e9b6337c2fbe5abd1f6a32881e62fc54af1d0eba3ecdf918342537ed2426",
+      "rust/Cargo.toml": "128190e29355ec4d24ef3fa1e7542f207853d0fb3ada2c2317d3544c26c8c216",
+      "rust/legal-gen/Cargo.toml": "417125fd81679941978035acd68d5e7707e61621a4f8cbc7e13b5660c262b6bc",
+      "rust/legal-gen/src/main.rs": "16d7426a2e6e424eed97e58ce92449041a935f68304c8e14bd4ef0011784b7f5",
+      "rust/pc-core/Cargo.toml": "807a0626541810f8dc4f1348025efc285d2689676161612897d4626c9fbb811b",
+      "rust/pc-core/src/best_language.rs": "550f7af1107c8e9392bce9acdb5d57fdf9f48bc4fb7c7d8ac77f732869f20ddd",
+      "rust/pc-core/src/board.rs": "781d83c3e52becda2e71e6b1a57fbdb6ce83a4ca3a233bf7cfff7307157e4167",
+      "rust/pc-core/src/dag.rs": "f48f418f9673b00871def2822018aa77076bf62198c29459630f2fbfac5d618d",
+      "rust/pc-core/src/geometry.rs": "190f77ec81dbfc2f31eabeb9cdb9cf1df361ace7edac1879fab051d13a50ae47",
+      "rust/pc-core/src/hashing.rs": "b5249c9453c7ee0b53d0a8cd07b22b3d8fddef27d942a786c4b51e6f11cb56ca",
+      "rust/pc-core/src/legal.rs": "2bfc6bec2ff56b47617f3f4e0ed2f49dccd093fb695426aa3e7c3f2c6a5a2bd0",
+      "rust/pc-core/src/lib.rs": "02075f497f2e1e351820ef68ea43ad9aa75c298de23e488ce054ee1131a81bb3",
+      "rust/pc-core/src/min_cover_primary.rs": "1fc3ae9b9a14c2fb6a44c85b02ef0ba1080861bd153e3d80f7f4a2a2b5a7c89e",
+      "rust/pc-core/src/min_cover_tests.rs": "568650893146d9707d8652f094efc965c375371f4353a2f2e683b9d5201f4039",
+      "rust/pc-core/src/min_cover.rs": "f7975391be34c6ec677af91d04fb62eab111e91ca69c4a512d5c51f34f27417c",
+      "rust/pc-core/src/movement.rs": "90f2d51b7bbb970e29e071dab463b2d04c4612c6be7a76c71a621171b0447a01",
+      "rust/pc-core/src/order_language.rs": "d5b8b0d9800869f6e83aabbe1d620f2e37607e548c79954f5822b37de06975a3",
+      "rust/pc-core/src/pattern.rs": "aeed2d4dda2c5cdc306f3f7b2d5367b2c20945ef197d7a153eff708c7a63309e",
+      "rust/pc-core/src/piece.rs": "325f6cc46f3dd909c9c6c0caae430007f2ec602b5864d4f2000bdd0e1ed5307f",
+      "rust/pc-core/src/queue_codec.rs": "0243e389e228a6ccc96971394479959c85103cbc068789c5a61b0ed06852ac31",
+      "rust/pc-core/src/queue_trie.rs": "f3598cdc5870939dfbf2aef8456d7477b6d01428b480f386446e716543367ccc",
+      "rust/pc-core/src/reverse.rs": "19aa11ba7e1b9840be55facdb508c9bdf4a47ac4a950b6d498151f3c72fad58a",
+      "rust/pc-core/src/single_queue.rs": "474f38f3defd7a76d1dec22b8a58ab6579ae306b42743413d177bf5092312cb9",
+      "rust/pc-core/src/tests.rs": "3192c976d0e786d1d7845decaf2ae79a91984beaa74e6e2d69278addc3b9e47e",
+      "rust/pc-core/src/threshold_experiment_tests.rs": "906f9c3e86815b99afc88c4e41f8f9cac86ec26fe811f8e73bc29d4023c9a802",
+      "rust/pc-core/tests/legal_oracle.rs": "f1f6cca7e6155b91b9953eceb73fab7270afe0b185da16fd83131191d34d9d84",
+      "rust/pc-wasm/Cargo.toml": "68ddf4419597b86b9a994a4ba6032aee17f25502182eeb37ab999af8b07b5350",
+      "rust/pc-wasm/src/enumeration.rs": "b60674e804120eaac55acef77d2f2cf900499283afd0ed917f81bb372774ebd4",
+      "rust/pc-wasm/src/lib.rs": "fe297976e18fb756fdafd758b84591b9ceca004e6760150919b39b19a3d0ae63",
+      "rust/pc-wasm/src/min_cover.rs": "dac693ac43c41851af9a32de3d399a8781a64a0cbfc7c582506119cfd71de0e5",
+      "rust/pc-wasm/src/runtime.rs": "8f24c89332238ef5bd981b914507bf7e7bbd8d7f411ee5f4c004c412c764aec3",
+      "rust/pc-wasm/src/state.rs": "2f57c620dd7f05a6c3e13142718f5862e865f3ccf6064b064ab048885f2f3273",
+      "rust/pc-wasm/src/stats.rs": "22eb80742a832a6daf7470cb08dfcb3f9b425eef4cedc1e78ace51ed7e0e3d99"
+    },
+    "productJs": {
+      "src/batch-backend.mjs": "5eedaffd96edcd3994d17eddcb2ae01dddc98430a7a84401ea45bbd4467fb7ab",
+      "src/batch-congruent-feature.mjs": "8b367ef161b91841f9a726b3b905d9334c0e0fec31c6dcb36ffdce9d26f8b19a",
+      "src/batch-cover-count-feature.mjs": "073542c39f72c1c1fd042ea13dd76a116362d4b8aeb7849fc14314b67f44fbed",
+      "src/batch-cover-feature.mjs": "e9598815b0e2358e997f6b607f7c8aba490ea1811d4809c798753a5d8f5fbb82",
+      "src/batch-cover-percent-feature.mjs": "1c5166f9ca5da63de023f0c9e529ae750dfb7b647301bbb07d61b85a9fdfc498",
+      "src/batch-cover.mjs": "7eaa6f8d8c104ab92f356b555aef6294bff2b77b30e356df0638b722c3e59fe4",
+      "src/batch-feature-common.mjs": "9a964e08601a395b9d5b6f3db7421371a287a36487bc8018d2fa80dc9a9bcffe",
+      "src/batch-features.mjs": "b5d8d043ce564e837583a05c4e16b15571bc2a37f3489f5a17ff069cb5eb3e27",
+      "src/batch-geometry.mjs": "c80f36a4ed82142d8288c986b36b56702354834c4baf0d7986ac198e8b440628",
+      "src/batch-limits.mjs": "7f421c6aa924ea4f78631ecaa4068e50efb33f8133bdd2e96a5ef690c7c24923",
+      "src/batch-orders.mjs": "1a2e74684b50b2609b3059bf5675ea316a37024796bbb21fbff6955f34f20f83",
+      "src/batch-routing-policy.mjs": "1ad709755b60928e56c8492edc104e9232b7d4ebffd583838cff4f61bb34f3aa",
+      "src/batch-setup.mjs": "57cee4c9c8214b8737cbd864e35657f87187329c6eb205c30ff7ea6821aeebc5",
+      "src/batch-targets.mjs": "b01c54586209ecbfa5bb9ea02aab1f4325efdf60272d7fe48b17658ec41e9927",
+      "src/batch-worker-client.mjs": "749bf60a1c4ff4a4f10723b33de754143bd8fe39dfc106709d68ab30ae38ac86",
+      "src/batch-worker-runtime.mjs": "474240fad6d81ec735c6ab17e364b33fbf7bbd02e1a021518a083f3fc51e1bc3",
+      "src/batch.worker.mjs": "96e27df282df33929dd1820310abc8af6d7849731beb8e372d81564c8703482e",
+      "src/board.mjs": "7419f5a7d47c59088e049d61e9e5f4c6339bfd2ed945b49084c4c65dbe619507",
+      "src/chance-feature.mjs": "bcc1bb7e71363d8c4969e338d996f7796721aba1746bbf540d9d07f7052fd5af",
+      "src/compact-geometry.mjs": "f1e070eb78ca49ed715da6370162a8760c2ce4706f7cc3504b86d2bf8486b42c",
+      "src/cpsat-secondary-model.mjs": "5972578a5c2e20ab5886a94b3a7a113ddc7cd8b1442bb7a698f4e0cdafca2a49",
+      "src/exact-secondary-pool.mjs": "1e608e2c387963639103149874b4e52a41a41145451007c1a12842bf80c3caf7",
+      "src/exact-secondary.worker.mjs": "8c2c894461a68c9859622a5c9a6148f2e1e339f1823df7e478c2cc4de5bc1942",
+      "src/features.mjs": "dbe7459069657f781b323e8736293854409ab49dacbf4d3d5c1a54ba1cc7f22c",
+      "src/fifth-feature.mjs": "faaa7d84615f6843421432aad274ac1729091c4f3a4ca4c217259b73c91093cf",
+      "src/fifth.mjs": "0096136d0900c0c26a2471d338fc89ed7831805c0ab7b9471dc9cee56e45c126",
+      "src/filter-cover-pool.mjs": "8368cc81a94767de9abec9b0f9efa9b09799fa3b7ced5d23c0084828bd20f722",
+      "src/filter-cover-task.mjs": "3538c05cacfc1d536992f8be12424f1b7b3184a70f37f0dbc3e7e14cc5468ab8",
+      "src/filter-cover.worker.mjs": "91b2f5b58cccac3b3866d492d1195a27d01e0d42fbcd547c2aff14b473cd3092",
+      "src/fourth.mjs": "77fa742bf6be9b21e76d4bb690665adbaefed8110e4504be761f04d262f23d9b",
+      "src/fumen.mjs": "9217985c6b4705b44519943e2993fcdc276328f3993fc161661a474eeecb594f",
+      "src/highs-cardinality.mjs": "0b7394d753aa30febf39d4c8c409d0005e59f1c85e5e2770a101a1efa5fe379f",
+      "src/highs-min-cover.mjs": "dbf26bc4453356e5a694cad72f86b43177b61555ca79c3a09a003a5bf62a308d",
+      "src/human-ranking.mjs": "75aef33643797f5a92e87af7a563e254aa596b6c161ebfef40cd15ea953dde1a",
+      "src/min-cover-adaptive.mjs": "fda92e1fe0abc0b97b7fbdb4185ca0f5e0b4f7457630960b85ce06ad1f3ca118",
+      "src/min-cover-components.mjs": "bdde6f724fc0f028587832ac7f7f0cdbdc45c4ab1d665a7495186aa8f58343f5",
+      "src/min-cover-exact-secondary.mjs": "ff3eaf3fd91b818a7eda9139fc32cfc7a6e99e63ee1986a03f91707052c719a3",
+      "src/min-cover-quality-refine.mjs": "34ef8d5f80f1cbf48c35e67edb638c954c14326cf73a5d6f5fc64ba29328be4d",
+      "src/min-cover-rounded-cuts.mjs": "a475dd7fd97333f1e0a28f2c13168e796bb3a95cf033e0d2aa06af492be5ca26",
+      "src/min-cover-routing.mjs": "3a302676fdf7ff91637ebb8eb6e8a0428fe9a7380c267841a390a8290f70a89d",
+      "src/min-cover-secondary-portfolio.mjs": "ef29f5e218051bb9019e4a0ecb2f2d77b1ac9114bb035727675e8b06ab064ff7",
+      "src/min-cover-three-engine.mjs": "e250f5ae87b4e803a87d1dcbf03142b82fd942412532b4e813ad376adcafd4b1",
+      "src/min-cover.mjs": "e8105860ae8496cef529acddb9f818f9c0a7182c7a8f98fafd2a8bc65474dbdf",
+      "src/minimal-order.mjs": "5d76a5081b99c4e54b917f16c68e0c6898f7a3203a6b65cbec950cc7398c351a",
+      "src/minimals-compact.mjs": "9406dd9aa536badfa37a0d976264f571761f375dc0e916ca9ef80fdeb75d453b",
+      "src/minimals-feature.mjs": "b9f802940d45d6595ed3e880a073dea887bd9479c80fecfd68db7906fde28937",
+      "src/minimals-wrapper.mjs": "40f5c14d273b97ded666ed95b31d9d67d32add897fecc0ea164b35da6ab25c50",
+      "src/numeric-cover-data.mjs": "8f219c4b1fa72c992134e66d4bab34ae1df3a8068fbd6115b89fc434b81c5e90",
+      "src/ortools-min-cover.mjs": "87f0312fe5b112b1e961b789990b6d0ec96b7872da82b19459041a41dbe198c6",
+      "src/ortools-primary-worker.mjs": "b97b68f340c1b6e6984905f197de6aa5f29ba89184302795e0b2291dda776fd7",
+      "src/path-core.mjs": "043efe65aa411c4cbc8e97b005e7487edb6e6fffb0424544fff39dc76fa3ef52",
+      "src/path-engine.mjs": "26c9119540a3168f1d6b091b2cc0deefea292921858e619e031c86613439ed0f",
+      "src/path-feature.mjs": "6a19ca88c69080bdf51a89083d74f70431d9957f361b0b72cc0b5fc50bd4696b",
+      "src/pattern-prefix-source.mjs": "56f0c99415dd42ae63158334bd5b16c3b38608cc0f49cc0fd72e122d48905efc",
+      "src/pattern.mjs": "ee5de43286f5d3c7a5968fcdad47b0ec89219497752d4e4a4d05019303eeb9d9",
+      "src/pc-enumeration-engine.mjs": "f06c2c6f3277950a53a9f24f558fa0957822c64957eab2f9543cf365f1dcc007",
+      "src/pc-input.mjs": "4b9b49a3d17e4c53579763e4326e04e3cdd536c62bb010f730af93e6cdb16b56",
+      "src/pc-queue-utils.mjs": "187b5171b664a8aaab2299e1d94da0505a8561909a3da1948f2f8dc7e9bea508",
+      "src/pc-routing-policy.mjs": "236b634ae0f9bab35a0bf201beab00be02353c8e3de66f3eef28aafc46a34ee4",
+      "src/pc-solve.mjs": "17cc787867d824ddfdb4ee6d0905486f34d56ecba67db3c91cf2eb264f60ced8",
+      "src/pc-tail-legal.mjs": "04e71fc3df4ba5babb49064f049d1dc8024586993e9badc79f098db520ef8bbc",
+      "src/pc-wasm-abi.mjs": "c643c5de98bd299aac7f93341c58f77ff0b59da707b5d11b9047878f0e76a072",
+      "src/pc-wasm-compat.mjs": "194eb9df0bb48c4422eeb7ea3703df8ee62bea43a53cc55165bb308fceaabaf8",
+      "src/pc-wasm-cover-matrix.mjs": "1541471253cf3ea55e7059af63c8b4463691b1120ab8047b949e83169fb7776b",
+      "src/pc-wasm-enumeration.mjs": "4248f1d8ac9eca996cf1b09799d07482c16b87e3069e20b3aa76073d0e00846e",
+      "src/pc-wasm-min-cover.mjs": "39f34b78330bb089373a3bbb4e9af2079e376fd5f7e577d7c16da5192ee2e89b",
+      "src/pc.worker.mjs": "c507c704b497e91d9019c092403a88598fb235452b3b584a1d3ce363c8acc2c6",
+      "src/per-save-minimals-core.mjs": "a8562d2dde6b94b49bdfed362b76d7c63a3e2036fafbef72d0d5e63f2cd3bcf7",
+      "src/per-save-minimals-feature.mjs": "ae89d5c7a694365e16c71e332d1b833780c0837b758dbbf80931ec13d2f4365e",
+      "src/per-save-minimals.mjs": "78d45fd3729f453c30c6c0c6614c761f90c926b83e70528575670e309ddc0bbd",
+      "src/piece-order.mjs": "421911ffda44c0d7fc7f6729973dce77c5fbdd22789e3a69da55ee7744a12180",
+      "src/primary-backend.mjs": "666f2157237c02dd284d13a8306230dd785e5875811e434f41ddbf4f6c9924bd",
+      "src/promise-utils.mjs": "5957269c9621143603064e9bbf4cd9cdf962948b5a59e336beee47446cd86ffb",
+      "src/quality-contract.mjs": "bb2d4fe599f6a6106d481e5fd297812e8ff4c5dadb4fc6fbf9bef8c4316fda35",
+      "src/save-outcome-cache.mjs": "d4c4df13fe7c1bac480599f63982aaf8417670a94d3896f67d30cb8dfe1d838a",
+      "src/save-piece.mjs": "74713f60017c31bb04ed1c78710fb5754f7ce8c20d0048214377d5a811d50651",
+      "src/saves-feature.mjs": "aa5bf4020318286a2b9cb0f84c0cb65ec09a7fc59f5ae49cca02d59dd2a99821",
+      "src/saves.mjs": "5f39bba21bdcb67d6f150275c9ab0c4050a599897c5ce1a06204b08f556dcf2f",
+      "src/secondary-engine-runner.mjs": "973b9a39769b608791639cf5a0784af245f3cd85ab6e392f3b296dc26c0f9104",
+      "src/secondary-engine.worker.mjs": "6771b84455280082cb01c0c33805e0570a20931b22c294b5eca843fdd2e6e30c",
+      "src/tiling.mjs": "10cac5c0c53807a01ac0c8a26a113d03db5d3e2a1c03a1457845a46cf6da458a",
+      "src/vendor/highs.mjs": "c2eb1c846d3642eb066f48e3473c3c6443bfe0bbb4bb782691cd5864449c230b",
+      "src/vendor/ortools/browser/cp-sat.js": "49113758e249251cf1087443fbb63b7dadfdeff7f19b14e7d7319554e4758427",
+      "src/vendor/ortools/browser/runtime_loader_core.js": "b34148e1548062068d7dead335d12bfc18ea03e95019590cead19d67dce60813",
+      "src/vendor/ortools/browser/runtime_loader.js": "47b3d77fb5f8121ffe0758ea210f0a7f811df15465f6617e93cce01fb643f688",
+      "src/vendor/ortools/node-wasm/cp_sat_runtime_node.js": "53c1c552604384115049d9ab3e9b41ab230bd3d44aa2937ff099e7347589e6fe",
+      "src/vendor/ortools/node-wasm/cp_sat_runtime_node.wasm": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030",
+      "src/vendor/ortools/node/cp-sat.js": "8ed1333dd1c902c87a2c561d77df467f28dc66118c29a5107289e7c9bd83a5a0",
+      "src/vendor/ortools/node/runtime_loader.js": "f1c0c4011528eacc3581741f212aa3e1cb934c16519910a2192bcaed905f77e3",
+      "src/vendor/ortools/wasm/cp_sat_runtime.js": "708dd156b9f2da75e93b37177c66ae8e2c83d72cbf0efb18a22210aa633c20e1",
+      "src/vendor/ortools/wasm/cp_sat_runtime.wasm": "7482593df2d8fde213d17abd14a47d0def30401ab96d3afa6e0b5d14042c0030",
+      "src/wasm-backend.mjs": "b45648591d411df098b2ef5c7538c0fb31854996734259647940e6ad13af658f",
+      "src/worker-client.mjs": "5dc2143728dcc7ff92d77eb4cbc9207b95e22669461422eaa2500761bfe1cb55",
+      "src/worker-runtime.mjs": "278e97cb15012dc72378d0b4e1a7b671ff336e9bf4f1d7a7a1bd9866b043e273"
+    },
+    "harness": {
+      "bench/threshold-integration/archive.mjs": "e0496516afc5c50f73def615e52b67d4cc2b08ce08ac03f907d9ef462e5feb77",
+      "bench/threshold-integration/benchmark.mjs": "dd6dda7969dfe30bf069febddb56b5fd19e8b14d9b49ce1e7788d02737897748",
+      "bench/threshold-integration/browser.html": "056179782cfe890694fad9875239b5125bd19d25161513fa54c7556a71a2d8a4",
+      "bench/threshold-integration/browser.mjs": "7c793d612b03a833bc9db81dbaa6d8c0d5b93c79cc614beef2b8164426733cba",
+      "bench/threshold-integration/build.mjs": "7014ee86eac61e3912f1699ab36b7e5bed093c8ca9a1aa1bf0c04e310f7742cb",
+      "bench/threshold-integration/control.mjs": "5e36b4f106a3b96baba620a44b416631e5a5473d7889c069095c4217049575f2",
+      "bench/threshold-integration/correctness.mjs": "da5244224a34c4565da9310a32f347da783a6e9d515104d60b9216301b84849e",
+      "bench/threshold-integration/engine.mjs": "6d6332ed550bd05666db8484b4b49d478916a7f4e106b317f4fef36b00c080e2",
+      "bench/threshold-integration/fixtures.mjs": "9d306ed8488b6f9dd6660bf6409435c2d798e5a366cc598fe0d7d21e30e0a72b",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-6p-pco-a-I.json.gz": "49280a2acf52418b006b52403ecbb3e835093bce193f9921edaf133683ade1ef",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-6p-pco-a-O.json.gz": "96aad3e4ac9f254ad8ea6f9254914ff299f8a8e6671fe01fc8b7e274f0266524",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-6p-pco-a-S.json.gz": "7029020541dfd080b6595e4c8438d53c4986871abe42f6f4ff2f943608c2a246",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-alt-jaws-a-O.json.gz": "b7deaaf1832c5fea5cd40026b2d1631c0c4c3a466c31affdb35fadfb01e92c6a",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-alt-jaws-a-S.json.gz": "e995965a21ba031b7bbef0dc07034c81ee9672b51a3a456149cda480156234b3",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-alt-jaws-a-Z.json.gz": "aca65ccf1d808adc9d4fc3d9de2aca28ec8655d40130518f6793f7e47c286719",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-alt-shoes-a-O.json.gz": "bcaadc1e3a17a6e1bdd6f18359370a58da6b1c02d50c552e897ba675cd11daf1",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-alt-shoes-a-S.json.gz": "9d3ab97c036fda41ea77a01f07993bf448adb91c4d711854fdca74b67f2c04c0",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-alt-shoes-a-Z.json.gz": "7207ae88da051f4c33514f5b6326a6bd5f0721b1c4b4f3847c0f935a965d0e1e",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-big-jaws-a-O.json.gz": "91ff7b5f3ad0fa093a05f6461110d0482cb96f3779d61f935f130df87bd49b9b",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-big-jaws-a-S.json.gz": "c9324e48cf3e653b644dc0e6bbff88c20a6c60b917753171f89a63032bb379e5",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-cliff-o-a-I.json.gz": "73b49157dac5278869753e152fab8c0986876eb3a023328360d264b01d06abf5",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-cliff-o-a-S.json.gz": "51064ca3de0af2533a3a82292935d4a5bab49983a38905142fd8051eac6b1788",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-elephant-a-I.json.gz": "cf58a24098585cf5697e78942e5c9a9a5caef548c537cf621bde6dfda37b5e65",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-elephant-a-O.json.gz": "db564582401f456e4017f418609e5e204bc6ef813c03af1b575ef221874d0e15",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-elephant-a-S.json.gz": "836ce5eb3d9b6da3c7170eb7b81b2c753c8638811eb8c4b3f491757d50938d0c",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-elephant-j-a-O.json.gz": "2de61b2f662c1c57083c3b7d9d67b266b4717f1eeb318bf33a01c706d927067a",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-elephant-j-a-Z.json.gz": "4c4d81e52602ee8d26c2cdb8c27c91372e5af76387dc3e1039ec782a7e48561c",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-grace-system-a-O.json.gz": "eba4317c52d44a8f02d29deff2249fde725fb6327a93535de66ba4650908c95b",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-grace-system-a-S.json.gz": "fa13e3312c8a82e4c87322c0810e8127cca7a8f0e9ba1a06dd881b31c28837f3",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-grace-system-b-O.json.gz": "a8c8d48221d50a7541745476aee8a939073ecfce4ceb57932004f5d8aedc6c37",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-hills-a-O.json.gz": "adad6c5307f40ead1e86d7390a83c70723433a260e74b11e8b794a61cc8a89c6",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-hills-a-S.json.gz": "f0ec65a2319de9984f5647fe878387adac7795bea7efe267dca616b978afdac1",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-hills-a-Z.json.gz": "a197989284dad74e5c1f433c6102c883baf8a9d06ae796ef71d553f524dabd81",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-jaws-a-I.json.gz": "f46b78f40ff5260418c7f424f804bf7a7dbcd00193576d40cc86e22d765c4173",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-jaws-a-S.json.gz": "af20823f7082d6f7843652c9551f5144a8ee0c8f346241652c2c4974bf566e61",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-jaws-a-Z.json.gz": "eb7e69083c6b7a3a2f4f2b691c29093594c2ec387a6e18ade6a6444a3985c3a7",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-jeremy-a-L.json.gz": "6fa9559e3e5cc010d0ff75d0c47cf4232f4ef5145e1a32db20dc4fb7cfdc1080",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-jeremy-a-S.json.gz": "dbc8ab94ef29ae8075c3c86dd072d732f67e2663f1ffcf94cd14a5a18cc8bd74",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-jeremy-a-Z.json.gz": "16e48c67dd3dd808a913675b8aa95416e2b059850369d05af5969c4528bd7fc3",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-legs-a-O.json.gz": "dbda7a966535b160e8b647762fb8100e27d5d6a4808bad603790f94fc8276701",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-legs-a-S.json.gz": "4f3e869002c260ff47904a03e21a123a7dc1bfcc9f3e8b95e399d47a188d8b27",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-legs-a-Z.json.gz": "79aab4e1f466dc6e108c416c44c83cce04b6d26a34fc246f121c8412bbf0816a",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-007-J.json.gz": "43153e040a47c63bf5262ba562f20329cdb5eb5550fb6934f7c25f91b4bd5dbb",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-007-S.json.gz": "4bc35afbb5182f9d0cdebfc65b095c582089e206b39babf5a09d21e8dd228b95",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-011-S.json.gz": "a4b5edd34064d10f865416b734945b27d57bb0688056314a842ec47d4aa0051b",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-011-Z.json.gz": "73cacde74a5d3185e860421745658ecad7bfb2a0ff8929e424d926e219906235",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-013-S.json.gz": "5609fdbdd701dd5d5a09b82e8bb2e06ef554b5b4191f19440b378e8df09bcb28",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-013-T.json.gz": "33de4317b759bc53ed07f1489554a251aa2b95861c003d4c961356f7b1244d11",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-014-L.json.gz": "3ea2feaf0eebe06fac0bf914e70c59742aacf43bca5c0111cd3f5bbdee4b6c4d",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-014-O.json.gz": "417f8f20953f54e03e59a2bd29cdd65f70adb02e8229c3d8982114c2d4510c76",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-015-S.json.gz": "0a589c2a4e1139dac8edbebdcc33441622f6da4ff928fc5cc3b5231a882260a3",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-015-Z.json.gz": "d949ec3ef3bd801f4ddb8f962217b5aa480762eea95da98697794b4c87307692",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-016-S.json.gz": "8f6af6fef989ec12f8d28cba65873d500f9fffccc079266b9d8228c7a1636092",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-016-T.json.gz": "93408a209eb3e61418b44ba801425743ae2244b6cebcff0bb5f377aa975e4b8e",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-018-O.json.gz": "a0713550cb98c25a6a4fb091389af5d08b76b4a634fc34096b93dd7e2e29c29d",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-018-Z.json.gz": "e43b5dd373c338f32c65d0db008c5ef907dae159c816bb46a3359f6bb88a8ccd",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-019-O.json.gz": "ea9251b686d76d91bde6c91fff430ad924e88ac9cd443d4656a778e43ec325bc",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-019-S.json.gz": "e49ae6cd3f184763a90619b8242e61fda74c3d1a27ac237e8c927518d7e4d40f",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-020-O.json.gz": "402f0497b3bdac46090e8a1414e5b1e7422644d0af5052d08925296a8157ebe3",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-021-J.json.gz": "b3dfc4c623903a4581d27592565f561605f87a917dd9c2f46f77ccacd01261e1",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-021-S.json.gz": "a74a1b518979c06e7807440598417401fbd77a20353362218a0866e6059e922b",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-022-J.json.gz": "013248a1275abb0c7c3fac1244aaf9fe43387532b3ca0bc3a81a2117a07922e6",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-022-L.json.gz": "f8a97e68b9467ce4c4f9823e364aa0d08f0ba1b02f1c178348f6b4cbfaf0328e",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-022-O.json.gz": "54759eb6580012190af49c5af7c5fb5be405cadc292cf6521da73d2e61afca55",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-023-L.json.gz": "48aa023990bd9df72343890b3f5733f6482e3b2d03a42cedbf142aca82bcaec0",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-023-S.json.gz": "858d242411e4cda32a3bfc092c08fff3f211bdb079860e00fbad37ece7689eb6",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-024-I.json.gz": "9bbb812b2634f644ad40c860a222dde758ff626daf21e46c68594faea30af144",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-024-Z.json.gz": "9bf4b057586a79efd1ea3266b3db3e5dac5cf3998eada1812caf36b954938b3f",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-025-I.json.gz": "946293e34bbd7eb7d7f6ffc0ed5f5eb0cdb4ea0cd4a88790f72bf18b101abdc2",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-025-O.json.gz": "bd85e4ab58ef584b63bf1316c242611d5f54deb2312a3e0e4003654bb05e302f",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-026-O.json.gz": "dbfee0333f54efd702f42a1ff669023ac562cea3d62c97d38800872fdd71fc60",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-027-O.json.gz": "c006a37f463687e0a7c57a34802253c4b77c38f321f113cbfbff93b2ed7964c3",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-027-S.json.gz": "675b4dfc6811635966f0682522f6bdf96950755c7e5e6f772058b0dababf122b",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-028-S.json.gz": "0c248445d804cf27baf70295b6d1fd21e5d3af90203d9428930b3b2d5e33a19d",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-029-O.json.gz": "49c05bcf383f5a83caa7b71f0e1de27a2614b0db0563fe6266fa8c3ce4002027",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-029-S.json.gz": "41acf9ec8f6a6b39ae55b911fb95898d33f68e43350d012fa45abe2d5dd9e8f0",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-030-I.json.gz": "6f0409664726de7dfa1ad03ce6033625668c2293d43333c4b9fb0d9d6dd1df33",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-030-O.json.gz": "b0f35e7579b1a8fa0914d2c509e74d11df5e103d5589089321554cd27b0a4ad8",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-030-Z.json.gz": "4e7c048c74330365cdf7dfa64c4487344795ff04123fd637d3c7502ad2180fe8",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-031-O.json.gz": "21291b9ef98f4558cb3530a238e0eefd8b4667d2582d65c19254e02d74a12fe7",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-031-S.json.gz": "a6b0e2434b9e599a8000b2cf5bcd07babbdb2cfb08a1b5ea549e6b4a0fce494a",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-031-Z.json.gz": "56933dfdd375621ae5a3d3fa9be184be67c1d60a234288b4790520ea30c0a2ac",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-032-O.json.gz": "96c17551fc4c34ab0bdb6f3555d71141435e43e14cc48e670ed775128511eb99",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-032-S.json.gz": "bc1e2a90da62b554a5524381f224b0e6c84d1f9139840b364a48c14cd352080c",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-032-Z.json.gz": "03dee435d873af48276d41cef4f49696931c803b479e941fb7ab91a87b44d53d",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-033-O.json.gz": "fd3a1ddb78b894fcae0972c17f1560c0c1a18d9b2daca1316d0a4560ab16e000",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-033-S.json.gz": "38d5b1233887d69f4d377b22dacbadc1563541e5a6f56dd7f5d1ded35fad1187",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-033-Z.json.gz": "7b6438f7cec17d1a784b888ec90fdace92e30ced50a6cf66995db03ac2eb493b",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-034-S.json.gz": "0558a7a2b7b05bbc7e586e87591ac8af9bee61f15f631603c4602cb7c35a18d0",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-034-Z.json.gz": "bdfef865be20feed6b5891703acf0ed917caa097dc3af3c77cf5a6ffa059457b",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-035-I.json.gz": "2dcbe67721e179fbfdad78a1dd7fe73a7b17d28086e95b9a48e63e35dd6c80be",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-035-S.json.gz": "31005fcb8976fbc4775fd23beeb27314795312e69b9bdd4c7ed51f2c836f843a",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-035-Z.json.gz": "3927a09bb8d21ef59afd766bf780fba9ff009e184869afa178a8b47c93e45896",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-036-O.json.gz": "a76459a0ff003de4fb94019b5382bd3470b19b3e0a577f6caaf2a28c9668ad98",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-036-S.json.gz": "45cc850d82f235413e90f49cb74bf89e39d7328c565c4aae9bb92ca03588c557",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-036-Z.json.gz": "d5ca6834708a67f5020d49db58be010235e298d3aa689ce2f0a1aded39b26de1",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-037-S.json.gz": "644e4055509b83c1528d2bc3898fb3bf23f505fcecb208a347ee62de7aabde99",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-037-T.json.gz": "d4959335d5eb3e6e49fbc109815cbcd12bbc78397e89676aa9a56601736e7288",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-039-I.json.gz": "579359d1014466831d85e94272c1f756e97996a493f77abed18cd17280fc3587",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-039-S.json.gz": "c46dda55bb7c5de07a0fdcb653aa993d102cd98d5ec721ff33a26a1d65459100",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-039-Z.json.gz": "0ee11500a868d4dbfb80821ed598dfe9fd4529d4b5403971304f3f368f0679c5",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-040-J.json.gz": "c324346dc7f2a7b95bb7a3dd4779e4b3874b772c57f53b069d7e303b2f1db517",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-040-O.json.gz": "1c5efc3e30da815f88c0d483d258282a091064931a8503883dc0f2f7d1ebc3fa",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-040-Z.json.gz": "9009e7cf738bcdf6da7b6bf8939f369fc1a145f3cd7a0d7f993605d8b0d49a5a",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-041-I.json.gz": "88285d20ca118d2869c0597dbaec7f0209eed0d875e24daa323120f5ba5ea5ae",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-041-O.json.gz": "7e97cd7b37c505a24f650f3707f508734a45663e9de98bbe94e3554a9f8d017b",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-pcinfo-041-Z.json.gz": "7c2bed875842f3ee7523a627351f848878e0896ad5d59cf82013cb2c7d16f16d",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-shoes-a-I.json.gz": "bbf4ce8cf89e1ea8602690f8a99f507e9c31eb51e4806a7b067bafd49af24318",
+      "bench/threshold-integration/fixtures/cycle1/inputs/cycle1-shoes-a-Z.json.gz": "50e64663e0628f03c1473d3f799a9e39c8c0f4e952512a6843a1d5552a491f51",
+      "bench/threshold-integration/fixtures/known-witnesses.json": "ee37abb94cf9c4fee92463576986cea84ad09fe5c4f9d30b10696cfe8bb1dbce",
+      "bench/threshold-integration/fixtures/manifest.json": "c8fe3f98397cd0368ec8952553307a27077e39238eaee0aba51725084d167c09",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-002-O.json.gz": "58d2008d9b97d2cc20bb610a0e7048a4c67ea96f70b074f60da83d450ec262c9",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-004-J.json.gz": "9c453c838ad58434ad3aa936419f679a5704b26b9ba915105d749313d145246b",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-007-O.json.gz": "e8e25f9ba0b8091702f97765f94922dc50e20c23a02f084edeef5361ea871c4d",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-009-Z.json.gz": "c4ae92e61fb12c8f142f660e164d62fb49448db6e8631e763c745014f698678e",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-012-L.json.gz": "534c48d126f378ef0b90a8e69d60ec8d36e90bf061ba66cf0152af7617054519",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-013-J.json.gz": "fd4580896e4bfb4237bb8490f9c1912ed9e3c99f7a23496b3e624853ef5c7171",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-018-L.json.gz": "833b46501600f151e2e0b442116c66909a1c26048bff635003dd1687881f5fad",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-019-L.json.gz": "e26512c2e2dd85e91598362a9c28c4d54fb187b8c185b0a99672db859e4fd324",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-020-Z.json.gz": "6c8b1c74922f2939b03526edd1d0c73613a774ed23eb3f88160bc65b502cc1e0",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-025-T.json.gz": "98c38dd2b6271757fcca36a9b3b99b07716ff22a7ef43bd7dde75027fe8881bf",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-030-I.json.gz": "711964d38910b8f1233abf1ed5fe6c8336659ef453b5133225e72ecba988596c",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-035-L.json.gz": "8ed29fc721e6f0311013b56eb568f19ff711545e539cd18d161f183e040ee059",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-038-J.json.gz": "f2978a87b6f8f41b3afd84e798b238242738dee77a6e58a1344779aca55de7dc",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-039-O.json.gz": "69cc911d15695a9a63955f6b1c14d4f7c256c2a2dd410d1752812935d49606ca",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-047-S.json.gz": "f4071c9cf5eb23f8dbc34ebf0b4c0b203c27b112bba954d9b6eb19f9a48f5707",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-052-T.json.gz": "542fe7367763bf7bddb2467ad9d495c818411641d8042d02b351c9cd06852872",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-056-O.json.gz": "fbb93151e6f3f2b83801a43a50050f6945d02beff9f6e4410cf0214e2764e9d8",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-062-O.json.gz": "0fff64b1e5a2f90fba38ce356ab194177f15a7002fd3c7e2e2dda47866d40c04",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-069-S.json.gz": "76404099e7f9fa2a20e42ee9c2dc189b3bd5e18037f7f220bf025b1b0ba5a4d5",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-070-I.json.gz": "278f604bc5471be0d864719a7ca5c3e5aedd30e5c30539d33beb215fcf125f5e",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-072-T.json.gz": "196ac624b356e77252719868ad02bc7d7c639c79c3ab7ca0fb9a2ab8d58871ca",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-075-J.json.gz": "0a518660ec823ad0eba4ddf44570c3458ba3ad1957c57754204afec6a2f0739e",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-079-J.json.gz": "e7211c39c34b17ac506d2e77e437ebdbfc6b40f4a02766543ecc1fa9cdeafaf1",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-080-S.json.gz": "9df14a709b1d22fdeb8e959210a4a1d11f35a8e0578328288ee6f0e4a6cc9f9e",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-084-L.json.gz": "77a353324f10ffdf40f853541847302b1433f5a5dad74d3b88e80513113be2f2",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-087-J.json.gz": "4bc9d245d11d879b9026228bfe16929835f2d871611090682a27cc89de183730",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-098-O.json.gz": "7fe12a87d6f768afa814575e3de8ad032394d171a52b545eb0b4328bf87c1101",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-100-L.json.gz": "199f2ec844ac3879b9b5cdd669cc884881f89dc4ce27e365b7d6d88b87515132",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-104-S.json.gz": "201c6d2be188b7ee318820e0a7cc6b175fcf2afd1129c3c988c8c0ea8ae131d5",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-107-I.json.gz": "da235554559e2675bc228b6cbb0a6d1d7bfb4214b85fe12cc19d596e60db55a8",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-112-O.json.gz": "65da064a2770289f6f3b9c12bd77d26f69a1bdfd392d38a52c37e978a0164d6a",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-120-L.json.gz": "872e6f8a62575466ed55cbfbecbf5e7cbe548cb6fdcf727b164378709a506015",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-121-L.json.gz": "ef22e3624d7780cf92aef1790808a6b8bc81fe3255751aaf1683bdc2f467dfd4",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-122-T.json.gz": "a60ed6a7156591be3798ef7b5524493d4788abbb7a38a3160d2062ab0463d44c",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-125-O.json.gz": "f6f982cd3deb651cfab18d0ecc2d1a165faa728fb8341442478685495421223a",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-133-O.json.gz": "51bfbafde019a3a124b8c68b26bfa6cdd0af901299e21a289ff2214446a792ff",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-134-J.json.gz": "f17a93e6b28aa9593f7a96406a52ebd03cc0b85330e56693e8de089bf807d9d0",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-138-T.json.gz": "37abe483fef6256746aaaf07e91cecf62cfd3df259ca740aa4a4a1f7c571eb4c",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-139-Z.json.gz": "397df92096f3a77604a06771586c9c94c955abd75b4a6150fe409a1ca318a0d1",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-141-I.json.gz": "2ed4e2e7e1c6a513d1711e1f8d5859aebac580424d24dea5cd4059ad804162c9",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-142-I.json.gz": "5d346051394500cf68a0e32b57061b17035c7eafc11b42e63b065a61ba7217f4",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-145-J.json.gz": "48dd2cf8ff81c9e3b6ad0555b5397b86c7ea0a6fe044e995af9ac444d6f04e18",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-153-L.json.gz": "c62ccf9e3224a2a39323055e35f97a69d552c9eea95c6d3e9037884d2a74d3ec",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-154-S.json.gz": "c6e6974860a800341c427ea9e61052a9a7a728e4b6bae61c99b6b1172ab67a21",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-159-S.json.gz": "8900ccd994fda2e48b11ba7be1c07bd32156b9b1f7425b277c97f53615e6580a",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-162-S.json.gz": "b1b1ae844769e3df4bba65245eb9fa6b2771d33404de67989cede8d26743bfd3",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-164-T.json.gz": "0aa86a65ce354238d51eb23f572adcdef4c68fc6517daf6d130fc01a0e54daeb",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-167-T.json.gz": "4e7d146cd976ce9392eceeaca7db281ec9e5c26fb1f7ab299b50815e3cabef07",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-174-T.json.gz": "d9bbcd87ed020785b9f06692331b8fc8a4617b9aa0187ecb7016d84a449db9ff",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-175-L.json.gz": "8a85c00234ed77c9b186c286ae82fadc930a737f81b167f5a3cfe9b44cb36fa1",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-181-I.json.gz": "788d85534e8b5b3ef8e42b24080bdd569a22f558b5edef3ce50506dfc24d74af",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-184-J.json.gz": "e48e61c66fd6bc8bf245a43d68e55c74ef7b59636c0109317e42fcaf097f7645",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-196-J.json.gz": "bbb1db4be47dc61c8ce7bf2862b3b89f06bacce4eb58a731c3c950a04010bc14",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-197-L.json.gz": "e86ac283e3f9bb41a7fb6c78318ef7bb77454e75f0b7a5dd7fe869cf1836c4e0",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-199-O.json.gz": "4c1e615cce09ad8b961775f80bb28de889dcc18078eb07973422b7a7709213a6",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-201-O.json.gz": "81a4a688ddede4de835aec89cf307780b55e45a9839251d67b916cb8f1a2cb05",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-204-T.json.gz": "17f250a7893554acd5caeb4b6851d1548ed5be9f408b638b521b80605eb4bfef",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-209-J.json.gz": "b9e6aa06b6cd2aa7a52757791fa2fa023db9c84078e838da8247bd8b20c4554e",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-214-T.json.gz": "532532157f38b7e405f521ab55903cc54c993c3433f5beacfbee27be3a0783b9",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-220-I.json.gz": "765a24cf510b392278b9d47275266c1176092fd0835ee51d9f154310c6a50514",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-222-Z.json.gz": "330a0022eb7e195d81e867fcf22fbce929b047edcf98b9bcbace7fdf348399ac",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-228-S.json.gz": "ba9912cd1c5987db45f7faa721c593089e8fd59c3d80715e39fa1f924af6b308",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-232-Z.json.gz": "412a0a2ed9bb77c9956699d6bf0c6fff7085959f3d3de6200afb85e0b7534d9d",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-241-O.json.gz": "4239a756bde5e052cb6c22202be4c28aaf5dd001c02df03caf08339c59f3efce",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-249-J.json.gz": "51a0fa77a39f00776c1ec58551d3760875cacd2e781f8485620dbae695dde073",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-250-I.json.gz": "1ca9cc3e21658c4145a9c1bb3ac8cdaee0de2adc391fd50f0cbe71ad49b79321",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-254-O.json.gz": "e000267e9967ac4c54323241dac98aaf9ae41486c79c77faab4235c72788b88d",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-258--mirror-Z.json.gz": "58dfc077685e5d0954182a82204773d351fcb1d5a42a891ff53a91d5eb644308",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-260-I.json.gz": "f73baecd38b1b76f01c040558e6d2c6fd4f37b2e58c787db04a8d6e0998a328e",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-270-T.json.gz": "6e9b2e3a7e6f9215ccff20e685c0e938b4a1eeb1f20cfeb69443810f88b772d4",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-271-T.json.gz": "c66b99e2883af03e1cf7f99c53bedadf0423d77bbbd6eb748b7d41698c3949fd",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-272-Z.json.gz": "abf941bb403b27975878653cf5adf0ae5d25d8ad2827141f02256c5e0ef7a98e",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-273-L.json.gz": "7071ea6b6bb56be3b0c7f1e300f5d85a62467003f312769492c3a2bd46d4c5a3",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-274--mirror-J.json.gz": "5fcda2f69b2972ddfc12d38763ab9283dda3ffd6ba63bda4fc9d972932b2a1bb",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-275-O.json.gz": "5abfe805851be79653f23b746590990849006503033c723b1e984198d935e340",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-280-S.json.gz": "e88272b258ece31ef1ac76e841ce5154760d03c3cc8bbaf9858eec4d4a5932e9",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-284-Z.json.gz": "48986f98dd32aede939034b97de575e565cc21b247cb63ebea46b206107ceea9",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-287-I.json.gz": "f4d6a4fca933b79e2112efce94298d257f36d393a650a8de78116ca032dcb331",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-289-L.json.gz": "d4508717c3519bd9b6437a4e40739ba73bdb6baf45c0aa2cc4b4667407d7e355",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-292-J.json.gz": "3e7c00598cfca72f0452a6786afc400bbaeae2c5bd6d9bef8fbce83242ecbc36",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-293-S.json.gz": "7b30792c234dcea1960f14f5e9f58676c6e77ca8fdbe056d928e2d452569787c",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-300-T.json.gz": "a5307f13681abc28485e5e562aad51318561aab5090b4599f4e1792dcc1333e7",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-304-T.json.gz": "9fe7256b3da4ef864be6886fc6bd236dd0bcee222079b953cc01f20148a9e209",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-305-J.json.gz": "80ebf03797a348de21b91a646378913b3ebbcb5cc06459540917c24662bc7762",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-306-O.json.gz": "96e9b1e7ff8ad929c890bf7c4802670e87b4ac708e38b069d581cb242daa0af7",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-310-O.json.gz": "799e37b88add1719d21bab53376fa2982b20cb736201ed865b6cb684fa5f4074",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-313-T.json.gz": "74803292d262352956ee3fda8d10f1c324e282ca766b3be00bc100ba60f590bc",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-322-T.json.gz": "31a34256265d77b7fc5a61e1c67b67b9c506b2c5dfa855a0f6ef1ceb1e719c8e",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-324-Z.json.gz": "6bbe0571ccf3e4e9f7a8d4a4623dd99a59b9c23430ec19381d5505d3b51c32fc",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-326-L.json.gz": "48274f0c93ee625ec936dcca1aa7a7a22a34985a9266f98ad1144ce1d2d498ad",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-327-O.json.gz": "d03433c69de2a48a31e90b457f2db4e4944322c11555b569b2e4491384f284b3",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-328-L.json.gz": "bce0a6a8470b9e0b74f012995f66d7ea92b9fa882325965620b4bb04c6b454ea",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-329-J.json.gz": "4b553dc251c194aaac7ca546df1d10a88a44a1757dbc91583c9ba263841990fc",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-330-O.json.gz": "33800d38a2871dbe55a64c69bc84d794d16f02c57ec35ba4d65567716d43fbbd",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-332-O.json.gz": "d5dce1823f34bf78ef80d1a23b749f57a872cb4a7653b7338685c4def977f258",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-335-T.json.gz": "10a1314fc387253ad353280a6c3fe8bf0dd7b6abe84537c78fe059012c778f72",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-336-O.json.gz": "3971b71ba341c0d1b003ec8286e7183c2ea9fb7d8f873051a18dd7bcbd40da22",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-339-T.json.gz": "a3f5bbc3aa635b5514b5620c60ec4e7277ea626f9c0c102c75dd270f0754ba89",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-343-O.json.gz": "57606aca19c123054289680b4f8bd743722b771555860d2ede5eb1efc29a639b",
+      "bench/threshold-integration/fixtures/qb/inputs/c7-2plus2-qb-row-346-Z.json.gz": "b65f8d4f9657433a751915af7f7a49029572d3572d38a4511c9bc98569f364a0",
+      "bench/threshold-integration/harness.test.mjs": "6c551f9147e0da13c768dac9ca0cb12a8d5efbec45720f16cb4361d67d7743db",
+      "bench/threshold-integration/plan.mjs": "7deefb521bb69cafec8960b63be9fbfe304155fbef8eea3cf82a58a36b328ac4",
+      "bench/threshold-integration/prepare-fixtures.mjs": "5ec40dc2c5c85a32887fd60a4d385b68c6072eaec95fb6cf14a4b5dcc45f888b",
+      "bench/threshold-integration/product-regression.mjs": "534661ad3ae62531f22fb63444ac39cb5d18892bb23777e7af87e18834f37690",
+      "bench/threshold-integration/profiles.mjs": "4c659634602324fb17e7a2d74482d9d72cd58e2f4c7a8d88d26989de423ae2d0",
+      "bench/threshold-integration/README_KO.md": "a897b36261bbf018bc34ceec789674cb7012d01aaf8a1a2910306a29c07de02e",
+      "bench/threshold-integration/report.mjs": "cddb8ba12da61ba38de445e6fab43e604fc3f71e4fa162557c24bb50620b6c73",
+      "bench/threshold-integration/review.mjs": "05aa93a56e3b5ac62d3f2c0573672f3d342a17751113dffda9589b26effe253c",
+      "bench/threshold-integration/run.json": "85052591849a3dd1ef5c5901c5e68febfe9a8035a1dad1191762a43c5a643893",
+      "bench/threshold-integration/sample.mjs": "a28e97d900b83f3a2bdacd8abad7de1b76e2d927397f84ce42be6a515d79a35a",
+      "bench/threshold-integration/source-audit.mjs": "5308ec6f5e6f1047ef835e84756d3d8b4e067f3c3eb6edc67f28ffebb51ab860",
+      "bench/threshold-integration/timeout-policy.mjs": "39dee367d1b314912b6274cdc2d639fcd7b2e2dab34640719533dac6857b4d22",
+      "bench/threshold-integration/timeout-policy.test.mjs": "d2fa131e380fa208bec7020b778ad4ef19475001f5918fa0152d55d07d6835db"
+    }
+  },
+  "sourceDigest": {
+    "devRust": "a621d2791d75e2ea1da6f6552535f49fa582a2bbf15d8004c45304ac661734c8",
+    "candidateRust": "cab917ee589705d68490cca30a95114298a4ea1b99f50b9579a31f5c09c82f29",
+    "referenceRust": "997db236347c81177ca3b6ea1904caf7e2ac0c3fca880c51113a9867e242cc14",
+    "productJs": "65c2c90225a50166f0f590125a6dd94f0c663d2a952ef446220295d0ebdccc1e",
+    "harness": "79253e6b41c89845f23afb3f98d94741a1619a3f36bfba207ded7c1da2463433"
+  }
+}
