@@ -5,7 +5,7 @@ part="$1"
 mkdir -p "results/part-${part}"
 set +e
 sudo systemd-run --unit="secondary-${GITHUB_RUN_ID}-${STAGE}-${CHUNK}-${part}" --wait --pipe --collect \
-  --property=MemoryMax=3G --property=MemorySwapMax=0 --property=RuntimeMaxSec=600 \
+  --property=MemoryMax=3G --property=MemorySwapMax=0 --property=RuntimeMaxSec="${TASK_SCOPE_SECONDS:-600}" \
   --property=KillMode=control-group --uid="$(id -u)" --working-directory="$GITHUB_WORKSPACE" \
   /usr/bin/env PATH="$PATH" GITHUB_RUN_ID="$GITHUB_RUN_ID" GITHUB_JOB="$GITHUB_JOB" \
   GITHUB_RUN_ATTEMPT="$GITHUB_RUN_ATTEMPT" \

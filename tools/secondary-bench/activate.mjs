@@ -11,4 +11,5 @@ assert.equal(template.originPolicy, 'GITHUB_RUN_CREATED_AT'); assert.equal(templ
 assert(/^[0-9]+$/.test(runId), 'GitHub run ID required');
 const plan = { ...template, state: 'APPROVED', originUtc, campaignId: template.campaignId + '-' + runId };
 validateCampaign(plan); verifyFiles(plan.sourceFiles); writeJson(outputFile, plan);
-console.log(JSON.stringify({ campaignId: plan.campaignId, originUtc: plan.originUtc, overallHours: 8, extraAdmissionHours: 6 }));
+console.log(JSON.stringify({ campaignId: plan.campaignId, originUtc: plan.originUtc,
+  overallHours: plan.policy.overallMs / 3600000, extraAdmissionHours: plan.policy.extraAdmissionMs / 3600000 }));

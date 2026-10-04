@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readJson, writeJson, hash, identity, validateFixture } from './contracts.mjs';
-import { validateCampaign, campaignTimes, roundTasks, packTasks, worstCallMs } from './campaign.mjs';
+import { validateCampaign, campaignTimes, policyFor, jobShape, roundTasks, packTasks, worstCallMs } from './campaign.mjs';
 import { verifyFiles } from './run.mjs';
 
 export function filesUnder(directory) {
@@ -60,10 +60,16 @@ export function chooseFixtures(plan, files) {
       noFixtureReason: candidates.length ? null : 'EMPTY_OR_CAPTURE_INCOMPLETE_REVIEW_RAW',
       captureComplete: 'SEE_CAPTURE_RAW_NOT_INFERRED_FROM_FIXTURE_PRESENCE' });
   }
+  if (plan.campaignVariant === 'extended-5m') {
+    const actual = selected.map(f => ({ id: f.id, sha256: f.sha256 })).sort((a, b) => a.id.localeCompare(b.id));
+    const expected = [...plan.reusedFixtureLock].sort((a, b) => a.id.localeCompare(b.id));
+    assert.deepEqual(actual, expected, 'extended campaign must use exactly the first-run frozen matrices');
+  }
   return { selected, ledger };
 }
 export function planWave(planFile, historyDir, outputDir, stage, now = Date.now()) {
   const plan = validateCampaign(readJson(planFile)); verifyFiles(plan.sourceFiles);
+  const policy = policyFor(plan), shape = jobShape(plan);
   const times = campaignTimes(plan, now), history = loadHistory(historyDir, plan);
   fs.mkdirSync(outputDir, { recursive: false });
   writeJson(path.join(outputDir, 'campaign.json'), plan);
@@ -74,8 +80,9 @@ export function planWave(planFile, historyDir, outputDir, stage, now = Date.now(
       .sort((a, b) => hash(plan.scheduleSeed + a.id).localeCompare(hash(plan.scheduleSeed + b.id)))
       .map(command => ({ id: hash(command.id).slice(0, 20), action: 'capture', command, worstMs: worstCallMs(plan.captureLimits) }));
   } else {
-    const round = Number(stage); assert([2, 4, 6, 8, 10].includes(round));
-    selection = chooseFixtures(plan, history.files);
+    const round = Number(stage); assert(round >= policy.initialRepeats && round <= policy.maxRepeats && round % policy.repeatStep === 0);
+    const reuseFiles = plan.campaignVariant === 'extended-5m' ? filesUnder(path.join(historyDir, '..', 'reused-capture')) : [];
+    selection = chooseFixtures(plan, reuseFiles.length ? reuseFiles : history.files);
     fs.mkdirSync(path.join(outputDir, 'fixtures'));
     const fixtures = selection.selected.map(({ bytes, filename, ...fixture }) => {
       const relative = `fixtures/${fixture.sha256}.json`;
@@ -85,7 +92,7 @@ export function planWave(planFile, historyDir, outputDir, stage, now = Date.now(
     const planned = roundTasks(plan, fixtures, history.rows.filter(r => r.action === 'secondary'), round, now);
     tasks = planned.tasks; decisions = planned.decisions;
   }
-  const chunks = packTasks(tasks);
+  const chunks = packTasks(tasks, policy.jobSoftMs - policy.finishReserveMs, shape.maximumTasks);
   for (const chunk of chunks) writeJson(path.join(outputDir, `chunk-${chunk.id}.json`), { ...chunk, stage, campaignId: plan.campaignId,
     manifestSha256: hash(fs.readFileSync(planFile)), sourceLock: identity(plan.sourceFiles), plannedUtc: new Date(now).toISOString() });
   const summary = { campaignId: plan.campaignId, stage, plannedUtc: new Date(now).toISOString(), elapsedMs: times.elapsedMs,
@@ -99,6 +106,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   const [planFile, historyDir, outputDir, stage] = process.argv.slice(2);
   const result = planWave(planFile, historyDir, outputDir, stage);
   if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT,
-    `matrix=${JSON.stringify({ include: Array.from({ length: result.chunks }, (_, chunk) => ({ chunk })) })}\nhas_work=${result.chunks > 0}\nstop_epoch=${Math.floor(campaignTimes(readJson(planFile)).end / 1000)}\n`);
+    `matrix=${JSON.stringify({ include: Array.from({ length: result.chunks }, (_, chunk) => ({ chunk })) })}\nhas_work=${result.chunks > 0}\nstop_epoch=${Math.floor(campaignTimes(readJson(planFile)).end / 1000)}\n` +
+    `job_minutes=${policyFor(readJson(planFile)).jobHardMinutes}\ntask_minutes=${jobShape(readJson(planFile)).taskStepMinutes}\ntask_seconds=${jobShape(readJson(planFile)).taskScopeSeconds}\ncheckpoint_minutes=${jobShape(readJson(planFile)).checkpointMinutes}\nparts=${jobShape(readJson(planFile)).maximumTasks}\n`);
   console.log(JSON.stringify({ stage, chunks: result.chunks, calls: result.calls, elapsedMs: result.elapsedMs }));
 }

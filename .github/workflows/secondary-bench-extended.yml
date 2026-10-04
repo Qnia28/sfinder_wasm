@@ -1,0 +1,110 @@
+name: Secondary extended 5-minute 6-hour campaign
+on:
+  push:
+    branches: [experiment/secondary-routing-20261005]
+    paths: [tools/secondary-bench/planning/APPROVED_EXTENDED_TEMPLATE.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: secondary-routing-20261005
+  cancel-in-progress: false
+jobs:
+  activate:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      reuse_run_id: ${{ steps.reuse.outputs.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify first campaign finished and activate a NEW six-hour clock
+        id: reuse
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          mkdir campaign-lock
+          prior=$(node --input-type=module -e "import fs from 'node:fs'; console.log(JSON.parse(fs.readFileSync('tools/secondary-bench/planning/APPROVED_EXTENDED_TEMPLATE.json')).reuseCaptureRunId)")
+          status=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${prior}" --jq .status)
+          test "$status" = completed
+          origin=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" --jq .created_at)
+          node tools/secondary-bench/activate.mjs tools/secondary-bench/planning/APPROVED_EXTENDED_TEMPLATE.json "$origin" "$GITHUB_RUN_ID" campaign-lock/campaign.json
+          echo "run_id=$prior" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: secondary-campaign-lock
+          path: campaign-lock
+          retention-days: 30
+  basic-four:
+    needs: activate
+    uses: ./.github/workflows/secondary-bench-wave.yml
+    with:
+      stage: '4'
+      reuse_run_id: ${{ needs.activate.outputs.reuse_run_id }}
+  repeat-eight:
+    needs: [activate, basic-four]
+    uses: ./.github/workflows/secondary-bench-wave.yml
+    with:
+      stage: '8'
+      reuse_run_id: ${{ needs.activate.outputs.reuse_run_id }}
+  repeat-twelve:
+    needs: [activate, repeat-eight]
+    uses: ./.github/workflows/secondary-bench-wave.yml
+    with:
+      stage: '12'
+      reuse_run_id: ${{ needs.activate.outputs.reuse_run_id }}
+  repeat-sixteen:
+    needs: [activate, repeat-twelve]
+    uses: ./.github/workflows/secondary-bench-wave.yml
+    with:
+      stage: '16'
+      reuse_run_id: ${{ needs.activate.outputs.reuse_run_id }}
+  repeat-twenty:
+    needs: [activate, repeat-sixteen]
+    uses: ./.github/workflows/secondary-bench-wave.yml
+    with:
+      stage: '20'
+      reuse_run_id: ${{ needs.activate.outputs.reuse_run_id }}
+  report:
+    needs: [activate, basic-four, repeat-eight, repeat-twelve, repeat-sixteen, repeat-twenty]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: secondary-campaign-lock
+          path: campaign-lock
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          pattern: secondary-results-*
+          path: history
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: secondary-results-capture-*
+          path: reused-capture
+          run-id: ${{ needs.activate.outputs.reuse_run_id }}
+          github-token: ${{ github.token }}
+      - name: Audit longer-timeout run (conditions remain separate)
+        continue-on-error: true
+        run: node tools/secondary-bench/report-campaign.mjs campaign-lock/campaign.json history REPORT.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: secondary-final-report
+          path: REPORT.json
+          if-no-files-found: warn
+          retention-days: 30

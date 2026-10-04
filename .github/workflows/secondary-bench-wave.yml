@@ -5,6 +5,10 @@ on:
       stage:
         required: true
         type: string
+      reuse_run_id:
+        required: false
+        default: ''
+        type: string
 permissions:
   contents: read
   actions: read
@@ -16,6 +20,11 @@ jobs:
       matrix: ${{ steps.plan.outputs.matrix }}
       has_work: ${{ steps.plan.outputs.has_work }}
       stop_epoch: ${{ steps.plan.outputs.stop_epoch }}
+      job_minutes: ${{ steps.plan.outputs.job_minutes }}
+      task_minutes: ${{ steps.plan.outputs.task_minutes }}
+      task_seconds: ${{ steps.plan.outputs.task_seconds }}
+      checkpoint_minutes: ${{ steps.plan.outputs.checkpoint_minutes }}
+      parts: ${{ steps.plan.outputs.parts }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -32,6 +41,13 @@ jobs:
           pattern: secondary-results-*
           path: history
           merge-multiple: false
+      - uses: actions/download-artifact@v4
+        if: inputs.reuse_run_id != ''
+        with:
+          pattern: secondary-results-capture-*
+          path: reused-capture
+          run-id: ${{ inputs.reuse_run_id }}
+          github-token: ${{ github.token }}
       - id: plan
         name: Plan from durable history (no solving)
         continue-on-error: true
@@ -48,7 +64,7 @@ jobs:
     needs: plan
     if: needs.plan.outputs.has_work == 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: ${{ fromJSON(needs.plan.outputs.job_minutes) }}
     continue-on-error: true
     strategy:
       max-parallel: 16
@@ -79,17 +95,18 @@ jobs:
       - name: Part 0 — owned process-tree, two-repeat block
         if: steps.clock.outputs.run == 'true'
         continue-on-error: true
-        timeout-minutes: 11
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.task_minutes) }}
         env:
           STAGE: ${{ inputs.stage }}
           CHUNK: ${{ matrix.chunk }}
+          TASK_SCOPE_SECONDS: ${{ needs.plan.outputs.task_seconds }}
         shell: bash
         run: bash tools/secondary-bench/actions-part.sh 0
       - name: Checkpoint 0 (even partial/error results)
         uses: actions/upload-artifact@v4
         if: always()
         continue-on-error: true
-        timeout-minutes: 2
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.checkpoint_minutes) }}
         with:
           name: secondary-results-${{ inputs.stage }}-${{ matrix.chunk }}-0-${{ github.run_attempt }}
           path: results/part-0
@@ -98,52 +115,55 @@ jobs:
       - name: Part 1
         if: steps.clock.outputs.run == 'true'
         continue-on-error: true
-        timeout-minutes: 11
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.task_minutes) }}
         env:
           STAGE: ${{ inputs.stage }}
           CHUNK: ${{ matrix.chunk }}
+          TASK_SCOPE_SECONDS: ${{ needs.plan.outputs.task_seconds }}
         run: bash tools/secondary-bench/actions-part.sh 1
       - name: Checkpoint 1
         uses: actions/upload-artifact@v4
         if: always()
         continue-on-error: true
-        timeout-minutes: 2
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.checkpoint_minutes) }}
         with:
           name: secondary-results-${{ inputs.stage }}-${{ matrix.chunk }}-1-${{ github.run_attempt }}
           path: results/part-1
           if-no-files-found: warn
           retention-days: 30
       - name: Part 2
-        if: steps.clock.outputs.run == 'true'
+        if: steps.clock.outputs.run == 'true' && needs.plan.outputs.parts == '4'
         continue-on-error: true
-        timeout-minutes: 11
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.task_minutes) }}
         env:
           STAGE: ${{ inputs.stage }}
           CHUNK: ${{ matrix.chunk }}
+          TASK_SCOPE_SECONDS: ${{ needs.plan.outputs.task_seconds }}
         run: bash tools/secondary-bench/actions-part.sh 2
       - name: Checkpoint 2
         uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && needs.plan.outputs.parts == '4'
         continue-on-error: true
-        timeout-minutes: 2
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.checkpoint_minutes) }}
         with:
           name: secondary-results-${{ inputs.stage }}-${{ matrix.chunk }}-2-${{ github.run_attempt }}
           path: results/part-2
           if-no-files-found: warn
           retention-days: 30
       - name: Part 3
-        if: steps.clock.outputs.run == 'true'
+        if: steps.clock.outputs.run == 'true' && needs.plan.outputs.parts == '4'
         continue-on-error: true
-        timeout-minutes: 11
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.task_minutes) }}
         env:
           STAGE: ${{ inputs.stage }}
           CHUNK: ${{ matrix.chunk }}
+          TASK_SCOPE_SECONDS: ${{ needs.plan.outputs.task_seconds }}
         run: bash tools/secondary-bench/actions-part.sh 3
       - name: Checkpoint 3
         uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && needs.plan.outputs.parts == '4'
         continue-on-error: true
-        timeout-minutes: 2
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.checkpoint_minutes) }}
         with:
           name: secondary-results-${{ inputs.stage }}-${{ matrix.chunk }}-3-${{ github.run_attempt }}
           path: results/part-3

@@ -4,7 +4,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { readJson, writeJson, hash, identity } from './contracts.mjs';
-import { validateCampaign, campaignTimes, POLICY, unsafeStatus } from './campaign.mjs';
+import { validateCampaign, campaignTimes, policyFor, jobShape, unsafeStatus } from './campaign.mjs';
 import { verifyFiles, requireLinuxMemoryScope } from './run.mjs';
 import { runIsolated } from './isolation.mjs';
 
@@ -17,14 +17,15 @@ function oomKills(scope) {
 export async function runChunk(bundleDir, chunkId, outputDir, { now = Date.now, isolate = runIsolated, memoryCheck = requireLinuxMemoryScope,
   part = null, haltFile = null } = {}) {
   const plan = validateCampaign(readJson(path.join(bundleDir, 'campaign.json')));
+  const policy = policyFor(plan), shape = jobShape(plan);
   const chunk = readJson(path.join(bundleDir, `chunk-${chunkId}.json`));
   if (part !== null) {
-    assert(Number.isInteger(part) && part >= 0 && part < 4);
+    assert(Number.isInteger(part) && part >= 0 && part < shape.maximumTasks);
     chunk.tasks = chunk.tasks[part] ? [chunk.tasks[part]] : [];
   }
   assert.equal(chunk.campaignId, plan.campaignId); assert.equal(chunk.sourceLock, identity(plan.sourceFiles));
   verifyFiles(plan.sourceFiles);
-  const memoryScope = memoryCheck(), started = now(), end = Math.min(started + POLICY.jobSoftMs - POLICY.finishReserveMs, campaignTimes(plan, started).end - POLICY.finishReserveMs);
+  const memoryScope = memoryCheck(), started = now(), end = Math.min(started + policy.jobSoftMs - policy.finishReserveMs, campaignTimes(plan, started).end - policy.finishReserveMs);
   fs.mkdirSync(outputDir, { recursive: false }); fs.mkdirSync(path.join(outputDir, 'fixtures'));
   writeJson(path.join(outputDir, 'RUN_LOCK.json'), { campaignId: plan.campaignId, chunkId, stage: chunk.stage,
     part, startedUtc: new Date(started).toISOString(), originUtc: plan.originUtc, sourceLock: chunk.sourceLock, memoryScope,
@@ -43,7 +44,7 @@ export async function runChunk(bundleDir, chunkId, outputDir, { now = Date.now, 
     for (const task of chunk.tasks) {
       let reason = halted;
       if (!reason && controller.signal.aborted) reason = 'CANCELLED';
-      if (!reason && task.action === 'secondary' && task.round > 2 && now() >= campaignTimes(plan, now()).extraEnd) reason = 'EXTRA_ADMISSION_6H';
+      if (!reason && task.action === 'secondary' && task.round > policy.initialRepeats && now() >= campaignTimes(plan, now()).extraEnd) reason = `EXTRA_ADMISSION_${policy.extraAdmissionMs / 3600000}H`;
       if (!reason && now() + task.worstMs > end) reason = 'BUDGET';
       if (reason) {
         for (const call of task.calls ?? [{ callId: task.id, inputId: task.command.id }]) append({ ...base, action: task.action,

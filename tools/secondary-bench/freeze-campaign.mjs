@@ -22,7 +22,7 @@ const sourceFiles = Object.fromEntries(selected.sort().map(name => [name,
   hash(execFileSync('git', ['show', ':' + name], { maxBuffer: 64 * 1024 * 1024 }))]));
 assert(sourceFiles['tools/secondary-bench/freeze-campaign.mjs'], 'freeze script must be staged');
 const plan = { ...draft, state: 'APPROVED_TEMPLATE', sourceFiles,
-  approvalRecord: '2026-10-05 user explicitly authorizes execution and autonomous correction of execution/harness errors; prior runtime/repetition/queue rules retained',
+  approvalRecord: draft.approvalRecord + '; user explicitly authorizes execution and autonomous correction of execution/harness errors',
   pending: [], sourceByteContract: 'GIT_INDEX_CANONICAL_LINUX_CHECKOUT_NO_TEXT_NORMALIZATION_AT_VERIFY',
   provenance: { baselineCommit: '7ef62d18e1d155b6479e00d651c851ff3baa7112',
     preparationHead: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
@@ -31,8 +31,9 @@ const plan = { ...draft, state: 'APPROVED_TEMPLATE', sourceFiles,
     exposureAudit: 'PARTIAL_CONSERVATIVE_NO_CLAIM_OF_FRESHNESS',
     executionAuthorization: 'CURRENT_USER_MESSAGE_EXECUTE',
     historicalTimesImported: false,
-    fixtureSelection: 'ONE_NONTRIVIAL_SAVE_PER_COMMAND_HASH_BEFORE_ENGINE_MEASUREMENTS' } };
+    fixtureSelection: 'ONE_NONTRIVIAL_SAVE_PER_COMMAND_HASH_BEFORE_ENGINE_MEASUREMENTS',
+    campaignVariant: draft.campaignVariant ?? 'initial-1m', reuseCaptureRunId: draft.reuseCaptureRunId ?? null } };
 validateCampaign({ ...plan, state: 'APPROVED', originUtc: new Date().toISOString() });
 writeJson(outputFile, plan);
 console.log(JSON.stringify({ files: selected.length, commands: plan.commands.length,
-  outputFile, pcWasmSha256: sourceFiles['wasm/pc_wasm.wasm'], runtimeHours: 8, maximumConcurrentVMs: 16 }));
+  outputFile, pcWasmSha256: sourceFiles['wasm/pc_wasm.wasm'], runtimeHours: plan.policy.overallMs / 3600000, maximumConcurrentVMs: 16 }));

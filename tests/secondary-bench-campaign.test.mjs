@@ -3,12 +3,13 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
-import { POLICY, DEFAULT_LIMITS, HOUR, validateCampaign, eligiblePair, roundTasks, packTasks, worstCallMs } from '../tools/secondary-bench/campaign.mjs';
-import { hash, identity, writeJson, readJson } from '../tools/secondary-bench/contracts.mjs';
+import { POLICY, DEFAULT_LIMITS, EXTENDED_POLICY, EXTENDED_LIMITS, jobShape, HOUR, validateCampaign, eligiblePair, roundTasks, packTasks, worstCallMs } from '../tools/secondary-bench/campaign.mjs';
+import { hash, identity, writeJson, readJson, verifyResult } from '../tools/secondary-bench/contracts.mjs';
 import { runChunk } from '../tools/secondary-bench/run-chunk.mjs';
 import { loadHistory, chooseFixtures } from '../tools/secondary-bench/plan-wave.mjs';
 import { requireLinuxMemoryScope } from '../tools/secondary-bench/run.mjs';
 import { reportCampaign } from '../tools/secondary-bench/report-campaign.mjs';
+import { combineReports, combinedMarkdown } from '../tools/secondary-bench/combined-report.mjs';
 
 const command = () => ({ id: 'synthetic/queue', kind: 'per-save', family: 'bag', sourceFumen: 'not-enumerated-in-this-test',
   clear: 4, pattern: '*!', useHold: true, primary: 'auto', piecesNeeded: 6, queueLength: 7, savedPieceCount: 1, exactHumanQuality: 'true' });
@@ -33,6 +34,31 @@ function removeOwned(directory) {
   }
   fs.rmdirSync(directory);
 }
+const extended = () => ({ ...plan(), campaignVariant: 'extended-5m', campaignId: 'extended-contract', policy: EXTENDED_POLICY,
+  limits: Object.fromEntries(['integrated', 'threshold', 'cpsat'].map(engine => [engine, EXTENDED_LIMITS])), cpLimitMs: 300000,
+  reuseCaptureRunId: '37222172267', reuseCampaignId: 'original-contract', reuseSourceLock: 'f'.repeat(64),
+  reusedFixtureLock: fixtures.map(({ id, sha256 }) => ({ id, sha256 })) });
+test('extended campaign locks 300s / four-repeat blocks / max20 / 5h admission / 6h wall', () => {
+  const p = validateCampaign(extended()), basic = roundTasks(p, fixtures, [], 4, start);
+  assert.equal(basic.tasks[0].calls.length, 12); assert.equal(basic.tasks[0].worstMs, 64 * 60000);
+  assert.deepEqual(new Set(basic.tasks[0].calls.map(c => c.repeat)), new Set([1, 2, 3, 4]));
+  assert.equal(eligiblePair(p, fixtures[0], 'integrated', 8, rows('integrated', Array(4).fill('EXACT')), start + 5 * HOUR).reason, 'EXTRA_ADMISSION_5H');
+  assert.equal(eligiblePair(p, fixtures[0], 'integrated', 4, [], start + 6 * HOUR).reason, 'CAMPAIGN_6H');
+  assert.throws(() => eligiblePair(p, fixtures[0], 'integrated', 24, [], start));
+  assert.throws(() => eligiblePair(p, fixtures[0], 'integrated', 6, [], start));
+  assert.equal(eligiblePair(p, fixtures[0], 'integrated', 8, rows('integrated', ['EXACT', 'EXACT', 'TIMEOUT_CALL', 'TIMEOUT_CALL']), start).reason, 'PREVIOUS_TWO_TIMEOUTS');
+  const shape = jobShape(p), tasks = Array.from({ length: 309 }, (_, i) => ({ ...basic.tasks[0], id: String(i) }));
+  const chunks = packTasks(tasks, p.policy.jobSoftMs - p.policy.finishReserveMs, shape.maximumTasks);
+  assert.equal(chunks.length, 155); assert(chunks.every(c => c.tasks.length <= 2 && c.worstMs <= 128 * 60000));
+  assert(p.policy.jobHardMinutes < 360); assert(shape.taskScopeSeconds * 1000 > basic.tasks[0].worstMs);
+});
+test('extended round20 reserves repeats17-20 and excludes an incomplete earlier four-call block', () => {
+  const p = extended(), attempts = rows('integrated', Array(16).fill('EXACT'));
+  const schedule = roundTasks(p, fixtures, attempts, 20, start);
+  assert.equal(schedule.tasks[0].calls.length, 4);
+  assert.deepEqual(schedule.tasks[0].calls.map(c => c.repeat), [17, 18, 19, 20]);
+  assert.equal(eligiblePair(p, fixtures[0], 'integrated', 8, rows('integrated', Array(3).fill('EXACT')), start).reason, 'PRIOR_PAIR_INCOMPLETE');
+});
 test('campaign locks 60s, initial2 / +2 / max10, 6h admission and 8h wall without runner-hour budget', () => {
   const p = validateCampaign(plan());
   assert.equal(p.budget, undefined);
@@ -141,6 +167,46 @@ test('final campaign report preserves missing repetitions and never upgrades par
     assert.equal(report.selectedFixtures, 1); assert.equal(report.collectionState, 'PARTIAL_OR_REVIEW_REQUIRED');
     assert.equal(report.captureIncomplete.length, 1); assert.equal(report.missingInitial.length, 6);
     assert.equal(report.maximumCalls, 30); assert.equal(report.actionsSuccessIsNotCorrectnessPass, true);
+  } finally { removeOwned(root); }
+});
+test('combined report audits both runs with identical fixtures and NEVER pools60s/300s timing samples', () => {
+  const root = temporary(), firstDir = path.join(root, 'first'), secondDir = path.join(root, 'second');
+  fs.mkdirSync(firstDir); fs.mkdirSync(secondDir);
+  const firstHistory = path.join(firstDir, 'history'), secondHistory = path.join(secondDir, 'history');
+  fs.mkdirSync(firstHistory); fs.mkdirSync(secondHistory);
+  fs.mkdirSync(path.join(firstHistory, 'fixtures'));
+  const f = { schema: 1, id: command().id + '/T', keys: ['a', 'b'], rows: [[[0, 1], [1, 2]]], K: 1, seed: [0],
+    cardinalityProof: { status: 'PROVEN', backend: 'synthetic' }, origin: { command: command(), filter: 'T' }, trivial: null };
+  const bytes = Buffer.from(JSON.stringify(f)), fixture = { id: f.id, sha256: hash(bytes), path: 'fixture.json' };
+  fs.writeFileSync(path.join(firstHistory, 'fixtures', 'fixture.json'), bytes);
+  const p = plan(), q = { ...extended(), reuseCampaignId: p.campaignId, reuseSourceLock: identity(p.sourceFiles),
+    reusedFixtureLock: [{ id: f.id, sha256: hash(bytes) }] };
+  const capture = { action: 'capture', campaignId: p.campaignId, sourceLock: identity(p.sourceFiles),
+    inputId: command().id, status: 'CAPTURED', ms: null, execution: { reaped: true } };
+  const calls = (campaign, repeats, ms) => roundTasks(campaign, [fixture], [], repeats, start).tasks[0].calls.map(call => {
+    const result = { count: 1, keys: ['b'], qualityVector: [2], completed: true, qualityComplete: true, tieComplete: true };
+    return { ...call, action: 'secondary', campaignId: campaign.campaignId, sourceLock: identity(campaign.sourceFiles),
+      status: 'EXACT', ms, runnerId: campaign.campaignId,
+      condition: { sourceLock: identity(campaign.sourceFiles), fixtureSha256: hash(bytes), exactHumanQuality: 'true' },
+      execution: { reaped: true, code: 0, status: 'EXACT', result: { result, responseMs: ms,
+        verified: verifyResult(f, result, { engine: call.engine }), stateBudget: null, qualityResolved: 'true' } } };
+  });
+  fs.writeFileSync(path.join(firstHistory, 'raw.jsonl'), [capture, ...calls(p, 2, 10)].map(JSON.stringify).join('\n') + '\n');
+  fs.writeFileSync(path.join(secondHistory, 'raw.jsonl'), calls(q, 4, 20).map(JSON.stringify).join('\n') + '\n');
+  const reused = path.join(secondDir, 'reused-capture'); fs.mkdirSync(reused); fs.mkdirSync(path.join(reused, 'fixtures'));
+  fs.writeFileSync(path.join(reused, 'fixtures', 'fixture.json'), bytes);
+  fs.writeFileSync(path.join(reused, 'raw.jsonl'), JSON.stringify(capture) + '\n');
+  writeJson(path.join(firstDir, 'campaign.json'), p); writeJson(path.join(secondDir, 'campaign.json'), q);
+  try {
+    const report = combineReports(path.join(firstDir, 'campaign.json'), firstHistory, path.join(secondDir, 'campaign.json'), secondHistory);
+    assert.equal(report.totalAttempts, 18); assert.equal(report.combinedExactCalls, 18);
+    assert.equal(report.first.engines[0].medianOfConditionMediansMs, 10);
+    assert.equal(report.second.engines[0].medianOfConditionMediansMs, 20);
+    assert.equal(report.audit.first.witnessAudit, 'PASS_FOR_RECORDED_EXACT_RESULTS');
+    assert.equal(report.audit.second.witnessAudit, 'PASS_FOR_RECORDED_EXACT_RESULTS');
+    assert.equal(report.audit.crossRunWitness, 'AGREEMENT_FOR_RECORDED_EXACT_WITNESSES');
+    assert.equal(report.audit.second.missingInitial.length, 0);
+    assert(combinedMarkdown(report).includes('서로 다른 timeout의 시간 표본은 합쳐서'));
   } finally { removeOwned(root); }
 });
 if (process.env.SECONDARY_LINUX_SCOPE_EXPECTED === '1') test('real public Linux process-tree cgroup is finite and swap-free', () => {

@@ -62,3 +62,11 @@ Job hard60분, task scope hard10분, task step11분·artifact2분. 계획상4 ta
 ## source byte 주의
 
 원본 저장소의 Windows checkout은 core.autocrlf=true여서 제품 text bytes는 Git blob/Linux checkout과 CRLF/LF가 다르다. 로컬 SOURCE_LOCK은 로컬 계약 검사의 실제 bytes snapshot으로 보존하며 Linux campaign lock으로 그대로 쓰지 않는다. 제품 파일을 변환하지 않고 Linux 실제 checkout에서 다시 source freeze해야 한다. 새 하네스·DB·문서·원자료는 `.gitattributes`의 범위 제한 -text로 byte와 SHA256을 보존한다.
+
+## 승인된 후속 5분 run
+
+사용자 후속 지시로 첫run완료뒤 **300초/4→8→12→16→20회**, 추가block admission<5h/전체6h 캠페인을 별도로 실행한다. 첫run에서선정한309행렬의bytes/hash·원행·K·seed·stable IDs를그대로재사용하며첫run시간을후속반복에넣지않는다. 이전두회timeout 제외규칙은 engine×fixture별로유지한다.
+
+5분timeout에서3엔진×4회블록의최악예약비용은64분이다. 따라서한task scope70분/step71분, job≤2task(최악128분)/hard160분으로조정한다. task마다checkpoint3분을예약하며동시VM16은유지한다. 각round는최대155job이며job의6시간제한보다작다. 최초run끝나기전후속시계를시작하거나source를바꾸어원run을rerun하지않는다.
+
+후속trigger는실험branch의`planning/APPROVED_EXTENDED_TEMPLATE.json`명시게시다. activate는첫run.status=completed를검사한다. `combined-report.mjs`는두run을하나의보고서로작성하되60초와300초의조건별통계·timeout·반복·누락을분리하고cross-run exact witness일치를검사한다. 두조건시간표본을무조건pooling하지않는다.

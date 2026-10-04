@@ -17,7 +17,7 @@ function walk(directory) {
   }
 }
 for (const directory of ['src', 'wasm', 'rust/pc-core', 'rust/pc-wasm', 'tools/secondary-bench']) walk(directory);
-for (const name of ['.gitattributes', 'package.json', 'package-lock.json', '.github/workflows/secondary-bench-preflight.yml', '.github/workflows/secondary-bench-wave.yml', '.github/workflows/secondary-bench-campaign.yml',
+for (const name of ['.gitattributes', 'package.json', 'package-lock.json', '.github/workflows/secondary-bench-preflight.yml', '.github/workflows/secondary-bench-wave.yml', '.github/workflows/secondary-bench-campaign.yml', '.github/workflows/secondary-bench-extended.yml',
   'tests/secondary-bench.test.mjs', 'tests/secondary-bench-campaign.test.mjs', 'tests/helpers/secondary-bench-stall.mjs', 'tests/helpers/secondary-bench-startup-stall.mjs']) files[name] = hash(fs.readFileSync(path.join(root, name)));
 writeJson(output, { schema: 1, baselineCommit: '7ef62d18e1d155b6479e00d651c851ff3baa7112',
   workingHead: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
