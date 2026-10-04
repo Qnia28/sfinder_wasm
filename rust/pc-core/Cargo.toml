@@ -6,3 +6,8 @@ license = "Apache-2.0"
 
 [lib]
 path = "src/lib.rs"
+
+[features]
+# Opt-in integration candidates. The no-feature product remains the control.
+threshold-current-propagation = []
+threshold-root-forced = []

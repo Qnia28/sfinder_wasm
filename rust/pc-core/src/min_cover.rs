@@ -1672,7 +1672,7 @@ pub enum BoundedQualityResult {
     BudgetExceeded(MinimumCoverResult),
 }
 
-struct SequentialThresholdSearch<'a> {
+struct SequentialThresholdSearch<'a, const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool> {
     // Buffers are retained across siblings and grow with actual search depth.
     covered_buffers: Vec<Vec<u64>>,
     full: &'a [u64],
@@ -1694,7 +1694,9 @@ struct SequentialThresholdSearch<'a> {
     budget_exceeded: bool,
 }
 
-impl SequentialThresholdSearch<'_> {
+impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>
+    SequentialThresholdSearch<'_, CURRENT_PROPAGATION, ROOT_FORCED>
+{
     fn add_solution(&mut self, solution: usize) {
         self.selected_flags[solution] = true;
         self.selected_ids.push(solution as u32);
@@ -1932,6 +1934,31 @@ fn fixed_quality_internal(
     seed_selected: &[u32],
     locked_prefix: &[u32],
     state_budget: Option<u64>,
+    proven_prefix: Option<&mut Vec<u32>>,
+) -> Option<BoundedQualityResult> {
+    fixed_quality_impl::<
+        { cfg!(feature = "threshold-current-propagation") },
+        { cfg!(feature = "threshold-root-forced") },
+    >(
+        raw_cases,
+        solution_count,
+        exact_count,
+        seed_selected,
+        locked_prefix,
+        state_budget,
+        proven_prefix,
+    )
+}
+
+// Features select the existing product entry points at compile time. No
+// experiment mask/export, routing change, or runtime configuration is needed.
+fn fixed_quality_impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>(
+    raw_cases: &[Vec<(u32, u32)>],
+    solution_count: usize,
+    exact_count: usize,
+    seed_selected: &[u32],
+    locked_prefix: &[u32],
+    state_budget: Option<u64>,
     mut proven_prefix: Option<&mut Vec<u32>>,
 ) -> Option<BoundedQualityResult> {
     if let Some(prefix) = proven_prefix.as_deref_mut() {
@@ -2056,7 +2083,7 @@ fn fixed_quality_internal(
                 }
             }
         }
-        let mut search = SequentialThresholdSearch {
+        let mut search = SequentialThresholdSearch::<CURRENT_PROPAGATION, ROOT_FORCED> {
             covered_buffers: Vec::new(),
             full: &full,
             case_candidates: &case_candidates,
@@ -2129,7 +2156,7 @@ fn fixed_quality_internal(
                 }
             }
         }
-        let mut search = SequentialThresholdSearch {
+        let mut search = SequentialThresholdSearch::<CURRENT_PROPAGATION, ROOT_FORCED> {
             covered_buffers: Vec::new(),
             full: &full,
             case_candidates: &case_candidates,
