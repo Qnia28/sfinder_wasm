@@ -1,0 +1,103 @@
+{
+  "runId": 37180176960,
+  "sourceCommit": "fdf815cfe9e9b078efda6b5938146ee2081e27c2",
+  "originRunId": 37178792683,
+  "priorVerifiedCalls": 120,
+  "priorTimeoutCalls": 10,
+  "priorAttemptedCalls": 130,
+  "replayConsumedRequests": false,
+  "hostIdsAreLogicalJobIdsNotPersistentPhysicalMachines": true,
+  "crossEpisodePairRatiosForbidden": true,
+  "hosts": [
+    {
+      "host": 0,
+      "summarySha256": "ca547e4547529f179de7114b1579b203d4b5e8db5e7202a10c9720874ff3d100",
+      "attemptedCalls": 13,
+      "verifiedCalls": 12,
+      "timeoutCalls": 1,
+      "lastConsumedRunId": "h0-board-011--restricted-split--O-p0-1",
+      "nextPosition": 2
+    },
+    {
+      "host": 1,
+      "summarySha256": "a10266cee4b0c90d6b89bbc38261db433586cd4b5525881a5c6381c910726f86",
+      "attemptedCalls": 13,
+      "verifiedCalls": 12,
+      "timeoutCalls": 1,
+      "lastConsumedRunId": "h1-board-011--restricted-split--O-p0-1",
+      "nextPosition": 2
+    },
+    {
+      "host": 2,
+      "summarySha256": "600494561919f406908b4d2095fef92405b72745239b852c63a00db490363d74",
+      "attemptedCalls": 13,
+      "verifiedCalls": 12,
+      "timeoutCalls": 1,
+      "lastConsumedRunId": "h2-board-011--restricted-split--O-p0-1",
+      "nextPosition": 2
+    },
+    {
+      "host": 3,
+      "summarySha256": "cad199d493a84828d8f530fa70004c029d341ec269f9aaad708e223a6bf452e5",
+      "attemptedCalls": 13,
+      "verifiedCalls": 12,
+      "timeoutCalls": 1,
+      "lastConsumedRunId": "h3-board-011--restricted-split--O-p0-1",
+      "nextPosition": 2
+    },
+    {
+      "host": 4,
+      "summarySha256": "01321fb871313c86114e7ad675439b05446634c7f4e9219fa0b19bab965e62c6",
+      "attemptedCalls": 13,
+      "verifiedCalls": 12,
+      "timeoutCalls": 1,
+      "lastConsumedRunId": "h4-board-011--restricted-split--O-p0-1",
+      "nextPosition": 2
+    },
+    {
+      "host": 5,
+      "summarySha256": "0169900d4d5e367a4c7ab6bbb68375ea9e9c43ef0062fbc683d46a9b5f7abb1d",
+      "attemptedCalls": 13,
+      "verifiedCalls": 12,
+      "timeoutCalls": 1,
+      "lastConsumedRunId": "h5-board-011--restricted-split--O-p0-1",
+      "nextPosition": 2
+    },
+    {
+      "host": 6,
+      "summarySha256": "8bcd8381f4d0d10982f24cf9247c9bf751c4cc068d0faa0b90981f879fc95d0b",
+      "attemptedCalls": 13,
+      "verifiedCalls": 12,
+      "timeoutCalls": 1,
+      "lastConsumedRunId": "h6-board-011--restricted-split--O-p0-1",
+      "nextPosition": 2
+    },
+    {
+      "host": 7,
+      "summarySha256": "845fc98c9f5fcd927492e8d9e5b48891908d7317be797dbbba958256dc1cc2ae",
+      "attemptedCalls": 13,
+      "verifiedCalls": 12,
+      "timeoutCalls": 1,
+      "lastConsumedRunId": "h7-board-011--restricted-split--O-p0-1",
+      "nextPosition": 2
+    },
+    {
+      "host": 8,
+      "summarySha256": "7f6de17e9c03c0ac79ad1343e2e93ec968044d0f1090a1f219ab6e0188cef629",
+      "attemptedCalls": 13,
+      "verifiedCalls": 12,
+      "timeoutCalls": 1,
+      "lastConsumedRunId": "h8-board-011--restricted-split--O-p0-1",
+      "nextPosition": 2
+    },
+    {
+      "host": 9,
+      "summarySha256": "5fc6f0d2bcc603b0064ead07682bf92e2525aecc551c6f26617712526cbfd8f5",
+      "attemptedCalls": 13,
+      "verifiedCalls": 12,
+      "timeoutCalls": 1,
+      "lastConsumedRunId": "h9-board-011--restricted-split--O-p0-1",
+      "nextPosition": 2
+    }
+  ]
+}

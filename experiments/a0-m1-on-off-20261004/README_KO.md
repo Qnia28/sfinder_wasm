@@ -1,5 +1,13 @@
 # 통합 후 ON/OFF 비교 준비 — 아직 실행하지 않음
 
+## 최신 정책: timeout만 집계하고 다음 입력 계속, 정확한 cursor 재개
+
+사용자명시승인으로requesttimeout은검증성공과분리한censored결과로기록하고child를2초내수거한뒤다음고정policy/입력으로진행한다. OOM/정확성·입력hash불일치/프로토콜·fsync·수거실패는계속fatal이다. 전체일정attempt완료시`COMPLETE_WITH_TIMEOUTS`,원시간입장guard도달시`BUDGET_EXHAUSTED_WITH_PARTIAL_RESULTS`이며둘다jobexit0이다. 이는전체정확성/성능PASS가아니다.
+
+RESUME.json은37180176960의120검증완료+10timeout=130consumedrequests를고정했다. 각runner는이전artifact의summary와모든filehash·runtime/inputlock을확인하고원raw/결과prefix를복사한뒤**14번째request부터**시작한다. 완료/timeout요청을재실행하지않으며130개는수정새측정값으로대체하지않는다. 예전off/on한쪽timeout인pair의반대쪽pendingpolicy도그대로진행한다. timeout을유리한input제외나유한210초latency/EXACT로치환하지않는다.
+
+같은logicalrunner0..9를사용하지만재개VM은새physicalepisode다. 원쌍내같은episode에서완성된verified결과만timingratio에넣고episode간합성adjacencypair는금지한다. censoredpairs와policy별timeout/미측정수를별도보고한다. 이전envcontrol을새VM의환경증거로전용하지않고`missingEnvironment`로판정한다. 시간상한·100K·Nodeflags·inputbytes·원schedule는그대로다.
+
 ## 2026-10-04 실행 중 하네스 교정 및 동일 캠페인 계속
 
 사용자「단순오류는고치고계속」승인으로필터어댑터만교정했다. `request.mjs`는`entry.filter`(원capture의actualunused조각)를`unusedPiecePrepared`로판별한다. 잘못된`wantedSave`→fullbag-save치환은더이상사용하지않는다. 기존제품compact열거·numericcoverage·adaptiveprimary/secondary·realWorkerthreshold·outputencoding을사용하고,원capturehash/K/weightedrowgate는유지한다. **단일동결filter의제품연산경로**이며seven-filter UI전체/일반bag-save입력API와동일하다고주장하지않는다. 한요청에서추가7filter검색을하지않는다.

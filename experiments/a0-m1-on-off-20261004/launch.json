@@ -1,6 +1,11 @@
 {
   "status": "AUTHORIZED_ONE_PRODUCT_ON_OFF_CAMPAIGN",
-  "authorization": "User explicitly instructed: correct simple errors and continue; failure preservation not required.",
+  "authorization": "User explicitly instructed: do not fail the whole job on timeout; record the timeout and continue other inputs.",
+  "timeoutPolicy": "Record timed-out request as censored, reap child, proceed to next fixed request; do not retry it or mark it exact. Integrity/OOM/reaping/persistence errors remain fatal.",
+  "resumeRunId": 37180176960,
+  "consumedRequestsToSkip": 130,
+  "timeoutsAlreadyConsumed": 10,
+  "verifiedRequestsAlreadyConsumed": 120,
   "originRunId": 37178792683,
   "correction": "Use actual queue-unused-piece filtering, not complete bag-save expression; continue the same campaign within original time/search/resource limits.",
   "malformedEnvironmentRequestsAlreadyAttempted": 10,

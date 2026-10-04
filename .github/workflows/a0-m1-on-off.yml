@@ -52,6 +52,7 @@ jobs:
           sudo mkdir "$group"
           echo '+memory' | sudo tee "$group/cgroup.subtree_control"
           A0_CGROUP_ROOT="$group" node --test experiments/a0-m1-on-off-20261004/contracts.test.mjs
+          A0_CGROUP_ROOT="$group" node --test experiments/a0-m1-on-off-20261004/progress.test.mjs
       - name: Lock source/input/binary inventory before any actual input
         run: node experiments/a0-m1-on-off-20261004/preflight.mjs
       - uses: actions/upload-artifact@v4
@@ -92,7 +93,11 @@ jobs:
           cp .a0-m1-download/wasm/*.wasm wasm/
           npm ci --ignore-scripts
       - name: Run frozen adjacent100pairs/full requests on this host
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          prior=$(node -e "console.log(JSON.parse(require('fs').readFileSync('experiments/a0-m1-on-off-20261004/RESUME.json')).runId)")
+          gh run download "$prior" --repo "$GITHUB_REPOSITORY" --name a0-m1-on-off-host-${{ matrix.host }} --dir .a0-m1-prior
           group=/sys/fs/cgroup/a0-m1-compare-$GITHUB_RUN_ID-${{ matrix.host }}
           sudo mkdir "$group"
           echo '+memory' | sudo tee "$group/cgroup.subtree_control"
