@@ -42,7 +42,9 @@ node --experimental-wasm-stack-switching --test-isolation=none --test-concurrenc
 
 작은 합성 행렬에서 실제 세 엔진과 독립 JS oracle 비교, 원행 가중치·stable IDs·seed identity, Fast 거부, 무한 deadline 거부, 중단·중첩 Worker 회수, 후속 요청, 제품 collector와 추출 경로 비교를 확인한다. 로컬 테스트 시간은 성능 근거가 아니다.
 
-`secondary-bench-preflight.yml`은 새 branch만 대상으로 하는 계약 검사 workflow다. 실측은 **수동 dispatch 전용** `secondary-bench-campaign.yml`이며 APPROVED_TEMPLATE/source lock 없이는 시작하지 않는다. 공통 concurrency group으로 preflight와 campaign을 겹치지 않는다. 최대 16 측정 VM이며 계획·보고 job은 측정 단계와 겹치지 않는다.
+`secondary-bench-preflight.yml`은 새 branch만 대상으로 하는 계약 검사 workflow다. 실측은 `secondary-bench-campaign.yml`이며 APPROVED_TEMPLATE/source lock 없이는 시작하지 않는다. 새 workflow가 default/main에 없어서 dispatch에 의존할 수 없으므로, **실험 branch에서 `planning/APPROVED_CAMPAIGN_TEMPLATE.json`을 명시 게시하는 push**도 trigger로 지원한다. 이 파일은 아직 없다. 공통 concurrency group으로 preflight와 campaign을 겹치지 않는다. 최대 16 측정 VM이며 계획·보고 job은 측정 단계와 겹치지 않는다.
+
+실험 branch의 [Linux preflight 37221479350](https://github.com/Qnia28/sfinder_wasm/actions/runs/37221479350): 일반23/23·실제cgroup24/24 통과. [`planning/REMOTE_PREFLIGHT_RESULT.json`](planning/REMOTE_PREFLIGHT_RESULT.json)에 commit/job/artifact provenance를 기록했다. 전체 wave 실행·checkpoint 복구·실제 의도적 OOM까지 증명한 것은 아니다.
 
 ## 결과 보존과 Actions 상태
 

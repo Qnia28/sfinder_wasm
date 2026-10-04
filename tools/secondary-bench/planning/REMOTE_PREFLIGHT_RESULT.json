@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "purpose": "PUBLIC_LINUX_CONTRACT_PREFLIGHT_NOT_BROAD_BENCHMARK",
+  "repository": "Qnia28/sfinder_wasm",
+  "branch": "experiment/secondary-routing-20261005",
+  "sourceCommit": "6288c7aa6253a9c843250061bb77d9e6156194aa",
+  "runId": 37221479350,
+  "jobId": 111492542248,
+  "url": "https://github.com/Qnia28/sfinder_wasm/actions/runs/37221479350",
+  "createdAtUtc": "2026-10-04T17:41:36Z",
+  "completedAtUtc": "2026-10-04T17:41:52Z",
+  "actionsConclusion": "success",
+  "jobDurationSeconds": 12,
+  "vmCount": 1,
+  "node": "24.13.0",
+  "unscopedContracts": { "passed": 23, "failed": 0 },
+  "scopedContracts": { "passed": 24, "failed": 0, "memoryMaxBytes": 3221225472, "swapMaxBytes": 0, "scope": "parent-child-worker-process-tree" },
+  "artifact": {
+    "id": 11309633861,
+    "name": "secondary-preflight-6288c7aa6253a9c843250061bb77d9e6156194aa",
+    "compressedBytes": 13851,
+    "digest": "sha256:6ee07280f4c82a92644c38d4d93f6c5b8532e2c5986970f15e4f2bd817d7dcae"
+  },
+  "broadMeasurementsExecuted": false,
+  "productSolverChanged": false,
+  "limitation": "Full multi-wave campaign, checkpoint upload/resume and deliberate real OOM are not proved by this preflight",
+  "warning": "actions v4 Node20 handlers were forced to Node24 by GitHub; contract Node runtime is explicitly24.13.0"
+}

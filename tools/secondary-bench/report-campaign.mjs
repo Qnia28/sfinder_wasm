@@ -56,7 +56,7 @@ export function reportCampaign(plan, historyDir) {
   const captureIncomplete = rows.filter(r => r.action === 'capture' && r.status !== 'CAPTURED').map(r => ({ inputId: r.inputId, status: r.status }));
   return { schema: 2, campaignId: plan.campaignId, originUtc: plan.originUtc, policy: plan.policy,
     actionsSuccessIsNotCorrectnessPass: true, performancePass: 'NOT_APPLICABLE_INFORMATION_COLLECTION',
-    witnessAudit: issues.length ? 'FAIL' : 'PASS_FOR_RECORDED_EXACT_RESULTS',
+    witnessAudit: issues.length ? 'FAIL' : witnesses.size ? 'PASS_FOR_RECORDED_EXACT_RESULTS' : 'NO_EXACT_RESULTS',
     optimalityAudit: 'ENGINE_PROOFS_AND_AGREEMENT_WITH_SHARED_PRODUCT_PRIMITIVES',
     issues, harnessErrors, incompleteChunks, failedScopes, missingInitial, captureMissing, captureIncomplete,
     collectionState: issues.length || harnessErrors.length || incompleteChunks.length || failedScopes.length || missingInitial.length || captureMissing.length || captureIncomplete.length ? 'PARTIAL_OR_REVIEW_REQUIRED' : 'BASE_SCHEDULE_RECORDED',

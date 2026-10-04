@@ -1,5 +1,8 @@
 name: Secondary 8-hour wall campaign
 on:
+  push:
+    branches: [experiment/secondary-routing-20261005]
+    paths: [tools/secondary-bench/planning/APPROVED_CAMPAIGN_TEMPLATE.json]
   workflow_dispatch:
     inputs:
       manifest:
@@ -27,7 +30,7 @@ jobs:
       - name: Freeze one wall-clock origin (including capture and setup)
         env:
           GH_TOKEN: ${{ github.token }}
-          TEMPLATE: ${{ inputs.manifest }}
+          TEMPLATE: ${{ github.event_name == 'workflow_dispatch' && inputs.manifest || 'tools/secondary-bench/planning/APPROVED_CAMPAIGN_TEMPLATE.json' }}
         shell: bash
         run: |
           mkdir campaign-lock

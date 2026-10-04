@@ -10,7 +10,7 @@ branch `experiment/secondary-routing-20261005`, baseline `7ef62d18e1d155b6479e00
 - direct 3엔진·exact·무state cap, primary-only fixture 추출, OS 프로세스 watchdog·phase deadline·회수.
 - source/fixture lock, fsync raw/failure ledger, 직렬 3엔진 schedule, offline audit·정보 수집/A-B retest 선별.
 - 작은 합성 입력에서 실제 engine/oracle·collector·weighted/stable-ID 및 timeout/cancellation 회귀 검사.
-- branch 전용 계약 preflight workflow 파일. 원격 실행 없음.
+- branch 전용 계약 preflight: commit `6288c7aa6253a9c843250061bb77d9e6156194aa`, run `37221479350` success. 일반23/23·실제Linux cgroup24/24 통과. 전체 광범위 실측은 미실행.
 
 ## 변경하지 않음
 
@@ -22,4 +22,4 @@ merge와 광범위 실측은 수행하지 않았다. 초기 준비 단계에는 
 `MEASUREMENT_PROPOSAL_KO.md`의 모집단·pattern/save·반복·timeout·총 예산을 논의한다. 캡처와 최종 측정을 나누어 승인하는 것이 권장안이다.
 전체 노출·과거 직접 시간 재사용 감사 → approved source/input lock → Linux cgroup/OOM·Actions 외부 watchdog 및 artifact preflight → 승인한 캡처 → 구조 감사·matrix 선별 → 별도 동결한 측정.
 
-현재 하네스는 **준비판**이다. 후속 사용자 지정으로 두 family·N+1만440 command, timeout60초·기본2/추가2씩최대10·6h admission/8h wall의 wave/chunk 실행기와 수동 Actions workflow를 구현했다. 4-task job·task마다 checkpoint·cgroup OOM ledger를 추가했다. Linux preflight·전체 노출 감사·최종 save-filter sampling/source freeze는 아직 남아 있으며 DRAFT는 실측 시작을 거부한다. runner-hour 상한은 폐기했다. `fresh-process-cold` 자료를 end-to-end 또는 browser/concurrency 증거로 해석하지 않는다.
+현재 하네스는 **준비판**이다. 후속 사용자 지정으로 두 family·N+1만440 command, timeout60초·기본2/추가2씩최대10·6h admission/8h wall의 wave/chunk 실행기를 구현했다. 4-task job·task마다 checkpoint·cgroup OOM ledger를 추가했다. Linux 계약 preflight는 통과했으며 전체 노출 감사·최종 save-filter sampling/source freeze·전체wave/업로드복구 smoke가 남아 있다. DRAFT는 실측 시작을 거부한다. main을 변경하지 않고 실험 branch의 승인 manifest 명시 push로 실행할 수 있게 준비했다. runner-hour 상한은 폐기했다. `fresh-process-cold` 자료를 end-to-end 또는 browser/concurrency 증거로 해석하지 않는다.
