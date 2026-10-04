@@ -1,0 +1,747 @@
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* integration/a0-m1-selectable-20261004 A0+M1 product ON OFF (explicit launch only) · 37178792683
+Triggered via push less than a minute ago
+
+JOBS
+* preflight (ID 111366914776)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  * Run actions/setup-node@v4
+  * Freeze absolute origin (requires separately authorized launch.json)
+  * Rebuild isolated candidate and unchanged baseline (pinned toolchain)
+  * Rust oracle and full product regression (synthetic fixtures only)
+  * Independent watchdog and cgroup contracts
+  * Lock source/input/binary inventory before any actual input
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* integration/a0-m1-selectable-20261004 A0+M1 product ON OFF (explicit launch only) · 37178792683
+Triggered via push less than a minute ago
+
+JOBS
+* preflight (ID 111366914776)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Freeze absolute origin (requires separately authorized launch.json)
+  * Rebuild isolated candidate and unchanged baseline (pinned toolchain)
+  * Rust oracle and full product regression (synthetic fixtures only)
+  * Independent watchdog and cgroup contracts
+  * Lock source/input/binary inventory before any actual input
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* integration/a0-m1-selectable-20261004 A0+M1 product ON OFF (explicit launch only) · 37178792683
+Triggered via push less than a minute ago
+
+JOBS
+* preflight (ID 111366914776)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Freeze absolute origin (requires separately authorized launch.json)
+  ✓ Rebuild isolated candidate and unchanged baseline (pinned toolchain)
+  * Rust oracle and full product regression (synthetic fixtures only)
+  * Independent watchdog and cgroup contracts
+  * Lock source/input/binary inventory before any actual input
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* integration/a0-m1-selectable-20261004 A0+M1 product ON OFF (explicit launch only) · 37178792683
+Triggered via push about 1 minute ago
+
+JOBS
+* preflight (ID 111366914776)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Freeze absolute origin (requires separately authorized launch.json)
+  ✓ Rebuild isolated candidate and unchanged baseline (pinned toolchain)
+  * Rust oracle and full product regression (synthetic fixtures only)
+  * Independent watchdog and cgroup contracts
+  * Lock source/input/binary inventory before any actual input
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* integration/a0-m1-selectable-20261004 A0+M1 product ON OFF (explicit launch only) · 37178792683
+Triggered via push about 1 minute ago
+
+JOBS
+* preflight (ID 111366914776)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Freeze absolute origin (requires separately authorized launch.json)
+  ✓ Rebuild isolated candidate and unchanged baseline (pinned toolchain)
+  ✓ Rust oracle and full product regression (synthetic fixtures only)
+  ✓ Independent watchdog and cgroup contracts
+  * Lock source/input/binary inventory before any actual input
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* integration/a0-m1-selectable-20261004 A0+M1 product ON OFF (explicit launch only) · 37178792683
+Triggered via push about 2 minutes ago
+
+JOBS
+✓ preflight in 1m43s (ID 111366914776)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Freeze absolute origin (requires separately authorized launch.json)
+  ✓ Rebuild isolated candidate and unchanged baseline (pinned toolchain)
+  ✓ Rust oracle and full product regression (synthetic fixtures only)
+  ✓ Independent watchdog and cgroup contracts
+  ✓ Lock source/input/binary inventory before any actual input
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* compare (2) (ID 111367166425)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  * Run actions/download-artifact@v4
+  * Restore locked Linux bytes, not per-host rebuilds
+  * Run frozen adjacent100pairs/full requests on this host
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+* compare (6) (ID 111367166440)
+* compare (4) (ID 111367166462)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  * Run frozen adjacent100pairs/full requests on this host
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+* compare (0) (ID 111367166463)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  * Run frozen adjacent100pairs/full requests on this host
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+* compare (1) (ID 111367166475)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  * Run frozen adjacent100pairs/full requests on this host
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+* compare (7) (ID 111367166491)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  * Restore locked Linux bytes, not per-host rebuilds
+  * Run frozen adjacent100pairs/full requests on this host
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+* compare (5) (ID 111367166503)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  * Run frozen adjacent100pairs/full requests on this host
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+* compare (8) (ID 111367166520)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  * Run frozen adjacent100pairs/full requests on this host
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+* compare (9) (ID 111367166522)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  * Run frozen adjacent100pairs/full requests on this host
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+* compare (3) (ID 111367166683)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  * Run frozen adjacent100pairs/full requests on this host
+  * Run actions/upload-artifact@v4
+  * Post Run actions/setup-node@v4
+  * Post Run actions/checkout@v4
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+preflight: .github#2
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* integration/a0-m1-selectable-20261004 A0+M1 product ON OFF (explicit launch only) · 37178792683
+Triggered via push about 2 minutes ago
+
+JOBS
+✓ preflight in 1m43s (ID 111366914776)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Freeze absolute origin (requires separately authorized launch.json)
+  ✓ Rebuild isolated candidate and unchanged baseline (pinned toolchain)
+  ✓ Rust oracle and full product regression (synthetic fixtures only)
+  ✓ Independent watchdog and cgroup contracts
+  ✓ Lock source/input/binary inventory before any actual input
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (2) in 30s (ID 111367166425)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+* compare (6) (ID 111367166440)
+  ✓ Set up job
+  * Run actions/checkout@v4
+  * Run actions/setup-node@v4
+  * Run actions/download-artifact@v4
+  * Restore locked Linux bytes, not per-host rebuilds
+  * Run frozen adjacent100pairs/full requests on this host
+  * Run actions/upload-artifact@v4
+  * Post Run actions/checkout@v4
+X compare (4) in 26s (ID 111367166462)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (0) in 28s (ID 111367166463)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (1) in 22s (ID 111367166475)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (7) in 25s (ID 111367166491)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (5) in 28s (ID 111367166503)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (8) in 26s (ID 111367166520)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (9) in 28s (ID 111367166522)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (3) in 28s (ID 111367166683)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+preflight: .github#2
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (4): .github#2
+
+X Process completed with exit code 1.
+compare (4): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (0): .github#2
+
+X Process completed with exit code 1.
+compare (0): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (1): .github#2
+
+X Process completed with exit code 1.
+compare (1): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (7): .github#2
+
+X Process completed with exit code 1.
+compare (7): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (5): .github#2
+
+X Process completed with exit code 1.
+compare (5): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (8): .github#2
+
+X Process completed with exit code 1.
+compare (8): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (9): .github#2
+
+X Process completed with exit code 1.
+compare (9): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (3): .github#2
+
+X Process completed with exit code 1.
+compare (3): .github#9
+
+Refreshing run status every 20 seconds. Press Ctrl+C to quit.
+
+* integration/a0-m1-selectable-20261004 A0+M1 product ON OFF (explicit launch only) · 37178792683
+Triggered via push about 2 minutes ago
+
+JOBS
+✓ preflight in 1m43s (ID 111366914776)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Freeze absolute origin (requires separately authorized launch.json)
+  ✓ Rebuild isolated candidate and unchanged baseline (pinned toolchain)
+  ✓ Rust oracle and full product regression (synthetic fixtures only)
+  ✓ Independent watchdog and cgroup contracts
+  ✓ Lock source/input/binary inventory before any actual input
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (2) in 30s (ID 111367166425)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (6) in 26s (ID 111367166440)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (4) in 26s (ID 111367166462)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (0) in 28s (ID 111367166463)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (1) in 22s (ID 111367166475)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (7) in 25s (ID 111367166491)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (5) in 28s (ID 111367166503)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (8) in 26s (ID 111367166520)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (9) in 28s (ID 111367166522)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (3) in 28s (ID 111367166683)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+preflight: .github#2
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (4): .github#2
+
+X Process completed with exit code 1.
+compare (4): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (0): .github#2
+
+X Process completed with exit code 1.
+compare (0): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (1): .github#2
+
+X Process completed with exit code 1.
+compare (1): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (7): .github#2
+
+X Process completed with exit code 1.
+compare (7): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (5): .github#2
+
+X Process completed with exit code 1.
+compare (5): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (8): .github#2
+
+X Process completed with exit code 1.
+compare (8): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (9): .github#2
+
+X Process completed with exit code 1.
+compare (9): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (3): .github#2
+
+X Process completed with exit code 1.
+compare (3): .github#9
+
+X integration/a0-m1-selectable-20261004 A0+M1 product ON OFF (explicit launch only) · 37178792683
+Triggered via push about 3 minutes ago
+
+JOBS
+✓ preflight in 1m43s (ID 111366914776)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Freeze absolute origin (requires separately authorized launch.json)
+  ✓ Rebuild isolated candidate and unchanged baseline (pinned toolchain)
+  ✓ Rust oracle and full product regression (synthetic fixtures only)
+  ✓ Independent watchdog and cgroup contracts
+  ✓ Lock source/input/binary inventory before any actual input
+  ✓ Run actions/upload-artifact@v4
+  ✓ Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (2) in 30s (ID 111367166425)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (6) in 26s (ID 111367166440)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (4) in 26s (ID 111367166462)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (0) in 28s (ID 111367166463)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (1) in 22s (ID 111367166475)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (7) in 25s (ID 111367166491)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (5) in 28s (ID 111367166503)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (8) in 26s (ID 111367166520)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (9) in 28s (ID 111367166522)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+X compare (3) in 28s (ID 111367166683)
+  ✓ Set up job
+  ✓ Run actions/checkout@v4
+  ✓ Run actions/setup-node@v4
+  ✓ Run actions/download-artifact@v4
+  ✓ Restore locked Linux bytes, not per-host rebuilds
+  X Run frozen adjacent100pairs/full requests on this host
+  ✓ Run actions/upload-artifact@v4
+  - Post Run actions/setup-node@v4
+  ✓ Post Run actions/checkout@v4
+  ✓ Complete job
+
+ANNOTATIONS
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+preflight: .github#2
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (4): .github#2
+
+X Process completed with exit code 1.
+compare (4): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (0): .github#2
+
+X Process completed with exit code 1.
+compare (0): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (1): .github#2
+
+X Process completed with exit code 1.
+compare (1): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (7): .github#2
+
+X Process completed with exit code 1.
+compare (7): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (5): .github#2
+
+X Process completed with exit code 1.
+compare (5): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (8): .github#2
+
+X Process completed with exit code 1.
+compare (8): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (9): .github#2
+
+X Process completed with exit code 1.
+compare (9): .github#9
+
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/download-artifact@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+compare (3): .github#2
+
+X Process completed with exit code 1.
+compare (3): .github#9
+

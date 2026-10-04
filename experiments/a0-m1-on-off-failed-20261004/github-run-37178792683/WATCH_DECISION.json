@@ -1,0 +1,10 @@
+{
+  "runId": 37178792683,
+  "watchExit": 1,
+  "downloadExit": 0,
+  "cancelledAtWallDeadline": false,
+  "globalBudgetSourceRunId": 37178792683,
+  "overallWallLimitMinutes": 180,
+  "cancelAtMinutes": 175,
+  "resultsPreserved": true
+}

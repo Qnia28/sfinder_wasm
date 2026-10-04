@@ -1,0 +1,391 @@
+{
+  "schema": "a0-m1-product-on-off-failed-input-mapping-v1",
+  "status": "FAILED_INPUT_MAPPING_NO_PERFORMANCE_JUDGMENT",
+  "runId": 37178792683,
+  "origin": "2026-10-04T05:03:42Z",
+  "actualRequests": 10,
+  "candidateProbes": 0,
+  "completeComparisonPairs": 0,
+  "files": [
+    {
+      "file": "AUDIT.json",
+      "bytes": 9714,
+      "sha256": "7bf9b19fa6b8efeec288fe50ab5c58e19a4b171eb1c4b4e88779aa79198b9bec"
+    },
+    {
+      "file": "audit_failure.py",
+      "bytes": 8877,
+      "sha256": "4cf528f8de17511c48aa0c8221e223f0182e9b66c3b45977844a791b12988a05"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-0/0/LOCK.json",
+      "bytes": 143295,
+      "sha256": "82c1392e8b9751f61b429b74f85d1561c6bcbee7c639f025d4c3919c3be31aa4"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-0/0/outcomes.jsonl",
+      "bytes": 1586,
+      "sha256": "980a04dd608aeb898799d05de32951e2392207f091cdbd9a8c45796dd79c0147"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-0/0/raw/env-h0-development-reference-1.jsonl",
+      "bytes": 48871,
+      "sha256": "a8ce825bafc1b726119eeec033bdf40bd8853d0f3fa5c03a3197da948eb2a909"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-0/0/starts.jsonl",
+      "bytes": 255,
+      "sha256": "8dabf2b9bb135ec13eed58ee189486b50063c43bfe159738e03eee10d9e97d72"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-0/0/SUMMARY.json",
+      "bytes": 153312,
+      "sha256": "aed9f29d06dae257d4abd0c5127ec234e5d1bd95cb9f40603bdc51905b73c661"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-1/1/LOCK.json",
+      "bytes": 143295,
+      "sha256": "82c1392e8b9751f61b429b74f85d1561c6bcbee7c639f025d4c3919c3be31aa4"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-1/1/outcomes.jsonl",
+      "bytes": 1592,
+      "sha256": "7900e9d5e11448cceeffd53e5f0b8e6b76c85a7adeb7814ae259573c15c7fd69"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-1/1/raw/env-h1-development-reference-1.jsonl",
+      "bytes": 48883,
+      "sha256": "b43c8b4ed7326820dd562c511f04b90ee71205e5399f5a3da313b2f080ad01a9"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-1/1/starts.jsonl",
+      "bytes": 255,
+      "sha256": "699603a6312ade787bb110ed437698358cc589fc18b0db9f3bf2954a71a18742"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-1/1/SUMMARY.json",
+      "bytes": 153312,
+      "sha256": "da515ee095d24388afaa8cd252b5a9ac34944bfc70c34abf9152f17e2059cbe6"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-2/2/LOCK.json",
+      "bytes": 143295,
+      "sha256": "82c1392e8b9751f61b429b74f85d1561c6bcbee7c639f025d4c3919c3be31aa4"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-2/2/outcomes.jsonl",
+      "bytes": 1585,
+      "sha256": "b26c0d636671163ef635d2cf9978eb6cb69426f4109efb6023ef56410a9ea809"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-2/2/raw/env-h2-development-reference-1.jsonl",
+      "bytes": 48882,
+      "sha256": "a673550131d82a9df465143f7f98d6a304f70074e8857691514d40d5d1204506"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-2/2/starts.jsonl",
+      "bytes": 255,
+      "sha256": "03e010a635bd4810cfd0bb06a22ae29883e513b05ffaaedf9a6419baf32b32ef"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-2/2/SUMMARY.json",
+      "bytes": 153312,
+      "sha256": "cf0e14562e3d8db755fa875fb805476e0e7339b6f0999b0117e5b10e9abe636c"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-3/3/LOCK.json",
+      "bytes": 143295,
+      "sha256": "82c1392e8b9751f61b429b74f85d1561c6bcbee7c639f025d4c3919c3be31aa4"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-3/3/outcomes.jsonl",
+      "bytes": 1586,
+      "sha256": "42942f9c273c9ba343e03350d02f61d2aa37abb726171b160620800c1647634e"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-3/3/raw/env-h3-development-reference-1.jsonl",
+      "bytes": 48876,
+      "sha256": "d8263e962fb1f9bd75d24521f98ac1bde9042efa70fa9641bb839121ad18b7a0"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-3/3/starts.jsonl",
+      "bytes": 255,
+      "sha256": "1864a44c722d889d9ad10be967242fe169e00f86e5eb68f93866b268e396ede3"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-3/3/SUMMARY.json",
+      "bytes": 153312,
+      "sha256": "9534ebc99448ae8c9bb4f566155f2bda4f650c75019a3e45acfd099a3b0fff1e"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-4/4/LOCK.json",
+      "bytes": 143295,
+      "sha256": "82c1392e8b9751f61b429b74f85d1561c6bcbee7c639f025d4c3919c3be31aa4"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-4/4/outcomes.jsonl",
+      "bytes": 1510,
+      "sha256": "626656f2032cffd86d0b91b5e344bb72ce242dd3f8017f91a538a5f378aaf85c"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-4/4/raw/env-h4-development-reference-1.jsonl",
+      "bytes": 48898,
+      "sha256": "892cc905eedf385fa640646052dafab18bb7dd322ee93cdf7260a5e8c5634b30"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-4/4/starts.jsonl",
+      "bytes": 255,
+      "sha256": "4eaad8adb50e4913bf0e3669b6c397120211ca36ee7ceffe606be61784b1f020"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-4/4/SUMMARY.json",
+      "bytes": 153312,
+      "sha256": "a0ee52d16670d69a18ce8cffe80d1a362dec1619ed52dc9c97af37a4d77c23f5"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-5/5/LOCK.json",
+      "bytes": 143295,
+      "sha256": "82c1392e8b9751f61b429b74f85d1561c6bcbee7c639f025d4c3919c3be31aa4"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-5/5/outcomes.jsonl",
+      "bytes": 1585,
+      "sha256": "4e15931b97ca7dc876592b35952d1ee78501606da17fe599d13bbb01260347de"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-5/5/raw/env-h5-development-reference-1.jsonl",
+      "bytes": 48886,
+      "sha256": "76a37042d991b292c0957c60673dc30946b0f2a659e1bfbd0ad617a2cf4d3db8"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-5/5/starts.jsonl",
+      "bytes": 255,
+      "sha256": "e21f973afa3652303556a259aa89117750faea8a647ec8440764635fda00897d"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-5/5/SUMMARY.json",
+      "bytes": 153312,
+      "sha256": "e9d4ba9df416cdc61d6ec4ef36839c338a9338099516a25a8545e409e66da64b"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-6/6/LOCK.json",
+      "bytes": 143295,
+      "sha256": "82c1392e8b9751f61b429b74f85d1561c6bcbee7c639f025d4c3919c3be31aa4"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-6/6/outcomes.jsonl",
+      "bytes": 1586,
+      "sha256": "fb0612edbdcd044ba1c5f4083816fd450b0bbb044c0b87292f5b8af597322e5e"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-6/6/raw/env-h6-development-reference-1.jsonl",
+      "bytes": 48879,
+      "sha256": "26e1de6a3bdd59046282da45b17ce724e144fd41210c797fab5fb2011074d4c5"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-6/6/starts.jsonl",
+      "bytes": 255,
+      "sha256": "856705967b478a5b1c2909548d16de54d007af5d210fdd7e81500f577fb9a519"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-6/6/SUMMARY.json",
+      "bytes": 153312,
+      "sha256": "14266db0c7b1778e45bb97f4ded469d38d1ad2aac0fd76f06aec1ce305d91ebc"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-7/7/LOCK.json",
+      "bytes": 143295,
+      "sha256": "82c1392e8b9751f61b429b74f85d1561c6bcbee7c639f025d4c3919c3be31aa4"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-7/7/outcomes.jsonl",
+      "bytes": 1592,
+      "sha256": "5e3dd1a388abdd42692aada530dd81c1ad48db01caeeadc7cfd70e30ab0cc3f2"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-7/7/raw/env-h7-development-reference-1.jsonl",
+      "bytes": 48887,
+      "sha256": "fde9b9327e26e9b3750f33c92c626de3cc74834e4b09029547c3c17b05fe277e"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-7/7/starts.jsonl",
+      "bytes": 255,
+      "sha256": "1ee7a366d0e913e0587872050a527e13f43a6c9d960d5c104e62f2f10646fd4b"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-7/7/SUMMARY.json",
+      "bytes": 153312,
+      "sha256": "f4f87bd5973ed88c77fd8ff8012f79c54ece77b4478e8832d0feef7b725f7a39"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-8/8/LOCK.json",
+      "bytes": 143295,
+      "sha256": "82c1392e8b9751f61b429b74f85d1561c6bcbee7c639f025d4c3919c3be31aa4"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-8/8/outcomes.jsonl",
+      "bytes": 1509,
+      "sha256": "84464c16584b0c5d317021555e39902fe134c4e82d800fa2410753b6cb47fe23"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-8/8/raw/env-h8-development-reference-1.jsonl",
+      "bytes": 48898,
+      "sha256": "b028c034560474dece9c3301c3d3f3a183769f29f44cabe58991b5ff18a7c0f0"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-8/8/starts.jsonl",
+      "bytes": 255,
+      "sha256": "2c33f85481242f9622ed3c496d27afc0fa80ae2d369b703cd30eac8b9ea67d13"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-8/8/SUMMARY.json",
+      "bytes": 153312,
+      "sha256": "3edb749360163dfbb5978f3cf453c6a91648562ee7efe72e848aab3f543fba28"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-9/9/LOCK.json",
+      "bytes": 143295,
+      "sha256": "82c1392e8b9751f61b429b74f85d1561c6bcbee7c639f025d4c3919c3be31aa4"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-9/9/outcomes.jsonl",
+      "bytes": 1586,
+      "sha256": "9bd65766fbf9fa89d84e512bf7edd2ad16f2af66d7802b50de43bec785bfa3fa"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-9/9/raw/env-h9-development-reference-1.jsonl",
+      "bytes": 48897,
+      "sha256": "32e097446b942b19a9777e77844e680082928ecc800bd49957fb84afd01ec34d"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-9/9/starts.jsonl",
+      "bytes": 255,
+      "sha256": "128edd122bfd22fe3817f1fd4ffe7af4e7238ef39e836c360b8692434386ebb6"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-host-9/9/SUMMARY.json",
+      "bytes": 153312,
+      "sha256": "2e5d7c189c86edcc40ad1eb55c3d80eff151751a4bfe0e557f28186e149a2bad"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-preflight/.a0-m1-comparison/LOCK.json",
+      "bytes": 143295,
+      "sha256": "82c1392e8b9751f61b429b74f85d1561c6bcbee7c639f025d4c3919c3be31aa4"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-preflight/.a0-m1-comparison/ORIGIN.json",
+      "bytes": 249,
+      "sha256": "500884987ef1f5b142fd3dc9b00adc8643653f2205a2a6a1dafb66231034612a"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-preflight/wasm/batch_wasm.wasm",
+      "bytes": 176931,
+      "sha256": "65ce63009e1ce6b11664718f523f4e42a9597963566404740f04f735050f0477"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-preflight/wasm/pc_a0_m1.wasm",
+      "bytes": 561030,
+      "sha256": "c3c9a8844148341db69a1216d348a09f857f9f3259d2d5b6a2ac0517cf654530"
+    },
+    {
+      "file": "github-run-37178792683/a0-m1-on-off-preflight/wasm/pc_wasm.wasm",
+      "bytes": 560696,
+      "sha256": "73224bda4e514a99dfa0b97bc9ee3ada43f723cef84c419fade368045e4847f3"
+    },
+    {
+      "file": "github-run-37178792683/actions.log",
+      "bytes": 342601,
+      "sha256": "ff91680edf75c8e9c7aaeffa531d96788b1c648802422de0b6bca131aa9eabcf"
+    },
+    {
+      "file": "github-run-37178792683/ARTIFACTS.json",
+      "bytes": 7934,
+      "sha256": "4d8e1256a22623da0ea9a02cd67595b9ee6f59480ca019d67267a3e399943245"
+    },
+    {
+      "file": "github-run-37178792683/download.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "github-run-37178792683/INITIAL_RUN.json",
+      "bytes": 12001,
+      "sha256": "682aa9ec7e50b29e223f5f1652bc4e3c2d9f2f9a56b90d77d6f95dbf6c060d29"
+    },
+    {
+      "file": "github-run-37178792683/RUN.json",
+      "bytes": 22096,
+      "sha256": "4efa59a67bbfe64f01abc0de86354262e77410ca7ccbc8a59eb833ef5fe00add"
+    },
+    {
+      "file": "github-run-37178792683/watch.log",
+      "bytes": 33360,
+      "sha256": "38cf8209c094f37d8c3bfc6ee6bfce220b3e45800884ee7f3711607bb4671e2b"
+    },
+    {
+      "file": "github-run-37178792683/WATCH_DECISION.json",
+      "bytes": 242,
+      "sha256": "b61d668fecb164c50d00590ed717b05cfae08ad1b99671df8f72816cf43fda24"
+    },
+    {
+      "file": "LAUNCH.json",
+      "bytes": 1183,
+      "sha256": "62c3d5c9849d0fe99fe7ab91fa503fde8dc272ce02496bfe6a50097abfa54955"
+    },
+    {
+      "file": "README_KO.md",
+      "bytes": 1287,
+      "sha256": "e2e4cc349cbc12d79231f5e0848a7ebff2184186610c925e67c43e5893129e3b"
+    },
+    {
+      "file": "RESULT_KO.md",
+      "bytes": 3702,
+      "sha256": "b6fc401f51e50137ec9c2a6d20ba2b5e2b211f20c5bf92da9b7828132eefe863"
+    },
+    {
+      "file": "SOURCE_DIAGNOSTIC/experiments/a0-m1-on-off-20261004/common.mjs",
+      "bytes": 1856,
+      "sha256": "4ae0c2149423fa264cc40d379d04d034fbb8b305fad32525a17be4632f84f44d"
+    },
+    {
+      "file": "SOURCE_DIAGNOSTIC/experiments/a0-m1-on-off-20261004/launch.json",
+      "bytes": 870,
+      "sha256": "24caa55cd428e98bdaebb29b5b1cb4930c387246e2e16bef04d90779ec22d8d3"
+    },
+    {
+      "file": "SOURCE_DIAGNOSTIC/experiments/a0-m1-on-off-20261004/prepare.py",
+      "bytes": 4013,
+      "sha256": "b40b92c218ab7c41c113b11220ec01ea42621746d2d5b0c947f54ddddf6aa814"
+    },
+    {
+      "file": "SOURCE_DIAGNOSTIC/experiments/a0-m1-on-off-20261004/request.mjs",
+      "bytes": 2969,
+      "sha256": "8bf3226735126add9091daf5f34f674fc905534fd02f7b088d2d35271f5e8508"
+    },
+    {
+      "file": "SOURCE_DIAGNOSTIC/original-capture-enumerate.mjs",
+      "bytes": 5643,
+      "sha256": "c5df2b359457f6eb7bb0dbbce106067da6af1dc9a23c5044010a4252d58bc335"
+    },
+    {
+      "file": "SOURCE_DIAGNOSTIC/src/minimals-compact.mjs",
+      "bytes": 1340,
+      "sha256": "9406dd9aa536badfa37a0d976264f571761f375dc0e916ca9ef80fdeb75d453b"
+    },
+    {
+      "file": "SOURCE_DIAGNOSTIC/src/minimals-feature.mjs",
+      "bytes": 7260,
+      "sha256": "2164b74e843ba0f28aac969043fcbacdf72f8dc8c380064abb9eed2a994c7443"
+    },
+    {
+      "file": "SOURCE_DIAGNOSTIC/src/saves.mjs",
+      "bytes": 18319,
+      "sha256": "5f39bba21bdcb67d6f150275c9ab0c4050a599897c5ce1a06204b08f556dcf2f"
+    },
+    {
+      "file": "SYNTHETIC_FILTER_DIAGNOSTIC.json",
+      "bytes": 263,
+      "sha256": "e641946f9cb2b077fe9436276da896274249229b5471eab00b73012fce0afd67"
+    }
+  ]
+}
