@@ -23,6 +23,7 @@ jobs:
         with:
           node-version: 24.13.0
       - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
       - name: Contract checks only (no setup benchmarks)
         run: node --experimental-wasm-stack-switching --test-isolation=none --test-concurrency=1 --test tests/secondary-bench.test.mjs tests/secondary-bench-campaign.test.mjs
       - name: Offline DB audit
@@ -41,3 +42,12 @@ jobs:
           name: secondary-preflight-${{ github.sha }}
           path: catalog-geometry.json
           if-no-files-found: warn
+      - name: Paginated inventory and backend-ID checksum download contract
+        uses: ./tools/secondary-bench/artifact-action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          repository: ${{ github.repository }}
+          run-id: ${{ github.run_id }}
+          path: artifact-transport-contract
+          prefix: secondary-preflight-

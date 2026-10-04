@@ -76,22 +76,28 @@ jobs:
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24.13.0
       - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
       - uses: actions/download-artifact@v4
         continue-on-error: true
         with:
           name: secondary-campaign-lock
           path: campaign-lock
-      - uses: actions/download-artifact@v4
-        continue-on-error: true
+      - name: Full paginated result history
+        env:
+          GH_TOKEN: ${{ github.token }}
+        uses: ./tools/secondary-bench/artifact-action
         with:
-          pattern: secondary-results-*
+          repository: ${{ github.repository }}
+          run-id: ${{ github.run_id }}
           path: history
+          prefix: secondary-results-
       - name: Independent witness audit and completeness report, not performance PASS
         continue-on-error: true
         run: node tools/secondary-bench/report-campaign.mjs campaign-lock/campaign.json history REPORT.json

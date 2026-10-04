@@ -16,6 +16,7 @@ jobs:
   plan:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    continue-on-error: true
     outputs:
       matrix: ${{ steps.plan.outputs.matrix }}
       has_work: ${{ steps.plan.outputs.has_work }}
@@ -31,20 +32,25 @@ jobs:
         with:
           node-version: 24.13.0
       - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
       - uses: actions/download-artifact@v4
         with:
           name: secondary-campaign-lock
           path: campaign-lock
-      - uses: actions/download-artifact@v4
-        continue-on-error: true
+      - name: Download ALL result pages (no1000-artifact truncation)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        uses: ./tools/secondary-bench/artifact-action
         with:
-          pattern: secondary-results-*
+          repository: ${{ github.repository }}
+          run-id: ${{ github.run_id }}
           path: history
-          merge-multiple: false
-      - uses: actions/download-artifact@v4
+          prefix: secondary-results-
+      - name: Download the single immutable first-run fixture bundle (not hundreds of REST zip calls)
         if: inputs.reuse_run_id != ''
+        uses: actions/download-artifact@v4
         with:
-          pattern: secondary-results-capture-*
+          name: secondary-plan-2
           path: reused-capture
           run-id: ${{ inputs.reuse_run_id }}
           github-token: ${{ github.token }}

@@ -9,7 +9,9 @@ const template = readJson(templateFile);
 assert.equal(template.state, 'APPROVED_TEMPLATE', 'freeze source, inputs and selection before Actions execution');
 assert.equal(template.originPolicy, 'GITHUB_RUN_CREATED_AT'); assert.equal(template.originUtc, null);
 assert(/^[0-9]+$/.test(runId), 'GitHub run ID required');
-const plan = { ...template, state: 'APPROVED', originUtc, campaignId: template.campaignId + '-' + runId };
+const preservedOrigin = template.resumeOriginUtc ?? originUtc;
+assert(Number.isFinite(Date.parse(preservedOrigin)) && Date.parse(preservedOrigin) <= Date.parse(originUtc), 'recovery cannot reset or advance original budget origin');
+const plan = { ...template, state: 'APPROVED', originUtc: preservedOrigin, campaignId: template.campaignId + '-' + runId };
 validateCampaign(plan); verifyFiles(plan.sourceFiles); writeJson(outputFile, plan);
 console.log(JSON.stringify({ campaignId: plan.campaignId, originUtc: plan.originUtc,
   overallHours: plan.policy.overallMs / 3600000, extraAdmissionHours: plan.policy.extraAdmissionMs / 3600000 }));

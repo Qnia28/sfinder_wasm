@@ -1,0 +1,18 @@
+name: Complete paginated research artifact download
+description: Enumerate all REST pages, then download current-run artifacts by backend ID without REST fan-out
+inputs:
+  repository:
+    required: true
+    description: owner/repository
+  run-id:
+    required: true
+    description: Exact run ID
+  path:
+    required: true
+    description: New download destination
+  prefix:
+    required: true
+    description: Artifact name prefix
+runs:
+  using: node24
+  main: index.mjs

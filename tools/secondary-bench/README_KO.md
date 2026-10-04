@@ -70,3 +70,13 @@ Job hard60분, task scope hard10분, task step11분·artifact2분. 계획상4 ta
 5분timeout에서3엔진×4회블록의최악예약비용은64분이다. 따라서한task scope70분/step71분, job≤2task(최악128분)/hard160분으로조정한다. task마다checkpoint3분을예약하며동시VM16은유지한다. 각round는최대155job이며job의6시간제한보다작다. 최초run끝나기전후속시계를시작하거나source를바꾸어원run을rerun하지않는다.
 
 후속trigger는실험branch의`planning/APPROVED_EXTENDED_TEMPLATE.json`명시게시다. activate는첫run.status=completed를검사한다. `combined-report.mjs`는두run을하나의보고서로작성하되60초와300초의조건별통계·timeout·반복·누락을분리하고cross-run exact witness일치를검사한다. 두조건시간표본을무조건pooling하지않는다.
+
+## 실행 하네스 교정: artifact1000 제한
+
+첫run은1376artifact를보존했지만기본download action의1000목록제한으로후속repeat eligibility/최종보고에서일부history가누락됐다. 원raw/fixture는소실되지않았다. 전체1368result archive를페이지끝까지조회·SHA검증하여다시감사한결과기본누락0/witness문제0, EXACT5118/TIMEOUT180/CAPTURED440이었다. 초기보고서는부분목록결과이므로최종판정에사용하지않는다.
+
+최초5분launch `37225619701`도원fixture-lock검증이이누락을잡아measure job전부skip했고,실제solver호출은0이다. 반복적인cross-run440개zipREST다운로드에서secondary rate-limit까지발생했다. 교정은두가지다: (1)현재run은REST전체페이지로ID만조회하고SDKbackend ID로직접다운로드(1000cap/RESTfan-out없음); (2)과거run은동결한309fixture가들어있는단일`secondary-plan-2`bundle만다운로드하고hash검증한다.
+
+복구run은원5분launch의origin `2026-10-04T18:44:56Z`를보존한다. 교정시간도6h예산에포함하며재시계시작을하지않는다. 최초run의막힌추가반복을완료했다고주장하지않고실제로기록된반복수/선별오류를최종보고에명시한다. 첫run원raw시간을새값으로교체하지않는다.
+
+`artifact-action`은측정도구전용MIT `@actions/artifact6.2.1`과lockfile을사용하며제품package/source/WASM을변경하지않는다. SDK는custom Node24 action으로실행해backend runtime-token을획득한다. 설치디렉터리node_modules는git/source lock에서제외된다.

@@ -18,6 +18,7 @@ const selected = files.filter(name => name.startsWith('src/') || name.startsWith
     'tools/secondary-bench/planning/INPUT_PROPOSAL_2FAMILY.json',
     'tools/secondary-bench/planning/REMOTE_PREFLIGHT_RESULT.json',
     'tools/secondary-bench/planning/TESTING_RULES_KO.md'].includes(name));
+assert(selected.every(name => !name.includes('/node_modules/')), 'never freeze installed dependency directories');
 const sourceFiles = Object.fromEntries(selected.sort().map(name => [name,
   hash(execFileSync('git', ['show', ':' + name], { maxBuffer: 64 * 1024 * 1024 }))]));
 assert(sourceFiles['tools/secondary-bench/freeze-campaign.mjs'], 'freeze script must be staged');

@@ -1,0 +1,6 @@
+{
+  "name": "secondary-research-artifact-transport",
+  "private": true,
+  "type": "module",
+  "dependencies": { "@actions/artifact": "6.2.1" }
+}

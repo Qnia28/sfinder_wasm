@@ -1,0 +1,27 @@
+{
+  "runId": 37222172267,
+  "originUtc": "2026-10-04T17:52:29Z",
+  "endUtc": "2026-10-04T18:43:29Z",
+  "reportSha256": "eb89daf8369b30a6e2909ce64a0c0417eb348cb98731b39f8d93255326cc43f0",
+  "artifactCount": 1376,
+  "resultArtifactsVerified": 1368,
+  "statuses": {
+    "EXACT": 5118,
+    "TIMEOUT_CALL": 180,
+    "CAPTURED": 440
+  },
+  "collectionState": "BASE_SCHEDULE_RECORDED",
+  "witnessAudit": "PASS_FOR_RECORDED_EXACT_RESULTS",
+  "missingInitial": 0,
+  "issues": 0,
+  "repeatCounts": {
+    "2": 90,
+    "4": 140,
+    "6": 545,
+    "8": 116,
+    "10": 36
+  },
+  "sourceCommit": "df8de899edb7eda765a60a0b349bd8f48bc0e334",
+  "initialPartialReportSupersededForAnalysisOnly": true,
+  "sourceRawPreserved": true
+}

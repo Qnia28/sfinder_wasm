@@ -57,13 +57,15 @@ export function reportCampaign(plan, historyDir) {
       }) });
   }
   const expectedCapture = new Set(plan.commands.map(c => c.id));
-  const captureMissing = [...expectedCapture].filter(id => !captureRows.some(r => r.inputId === id && r.execution));
+  const captureMissing = plan.reuseCaptureSummary && reusedFiles.length && !captureRows.length
+    ? plan.reuseCaptureSummary.captureMissing : [...expectedCapture].filter(id => !captureRows.some(r => r.inputId === id && r.execution));
   const harnessErrors = files.filter(f => path.basename(f) === 'HARNESS_ERROR.json').map(f => ({ file: f, ...readJson(f) }));
   const incompleteChunks = files.filter(f => path.basename(f) === 'RUN_LOCK.json').filter(f => !fs.existsSync(path.join(path.dirname(f), 'COMPLETE.json')));
   const scopeExits = files.filter(f => path.basename(f) === 'scope-exit-code.txt').map(f => ({ file: f, code: Number(fs.readFileSync(f, 'utf8').trim()) }));
   const failedScopes = scopeExits.filter(e => e.code !== 0);
   const diagnostic = selectInformationRetests(initial.filter(r => r.condition), { expectedRepeats: policy.initialRepeats });
-  const captureIncomplete = captureRows.filter(r => r.status !== 'CAPTURED').map(r => ({ inputId: r.inputId, status: r.status }));
+  const captureIncomplete = plan.reuseCaptureSummary && reusedFiles.length && !captureRows.length
+    ? plan.reuseCaptureSummary.captureIncomplete : captureRows.filter(r => r.status !== 'CAPTURED').map(r => ({ inputId: r.inputId, status: r.status }));
   return { schema: 2, campaignId: plan.campaignId, originUtc: plan.originUtc, policy: plan.policy,
     actionsSuccessIsNotCorrectnessPass: true, performancePass: 'NOT_APPLICABLE_INFORMATION_COLLECTION',
     witnessAudit: issues.length ? 'FAIL' : witnesses.size ? 'PASS_FOR_RECORDED_EXACT_RESULTS' : 'NO_EXACT_RESULTS',

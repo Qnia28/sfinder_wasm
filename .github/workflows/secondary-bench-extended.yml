@@ -2,7 +2,7 @@ name: Secondary extended 5-minute 6-hour campaign
 on:
   push:
     branches: [experiment/secondary-routing-20261005]
-    paths: [tools/secondary-bench/planning/APPROVED_EXTENDED_TEMPLATE.json]
+    paths: [tools/secondary-bench/planning/APPROVED_EXTENDED_TEMPLATE.json, tools/secondary-bench/planning/APPROVED_EXTENDED_RECOVERY_TEMPLATE.json]
 permissions:
   contents: read
   actions: read
@@ -29,11 +29,13 @@ jobs:
         shell: bash
         run: |
           mkdir campaign-lock
-          prior=$(node --input-type=module -e "import fs from 'node:fs'; console.log(JSON.parse(fs.readFileSync('tools/secondary-bench/planning/APPROVED_EXTENDED_TEMPLATE.json')).reuseCaptureRunId)")
+          template=tools/secondary-bench/planning/APPROVED_EXTENDED_TEMPLATE.json
+          if [ -f tools/secondary-bench/planning/APPROVED_EXTENDED_RECOVERY_TEMPLATE.json ]; then template=tools/secondary-bench/planning/APPROVED_EXTENDED_RECOVERY_TEMPLATE.json; fi
+          prior=$(node --input-type=module -e "import fs from 'node:fs'; console.log(JSON.parse(fs.readFileSync(process.argv[1])).reuseCaptureRunId)" "$template")
           status=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${prior}" --jq .status)
           test "$status" = completed
           origin=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" --jq .created_at)
-          node tools/secondary-bench/activate.mjs tools/secondary-bench/planning/APPROVED_EXTENDED_TEMPLATE.json "$origin" "$GITHUB_RUN_ID" campaign-lock/campaign.json
+          node tools/secondary-bench/activate.mjs "$template" "$origin" "$GITHUB_RUN_ID" campaign-lock/campaign.json
           echo "run_id=$prior" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@v4
         with:
@@ -75,25 +77,31 @@ jobs:
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24.13.0
       - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
       - uses: actions/download-artifact@v4
         continue-on-error: true
         with:
           name: secondary-campaign-lock
           path: campaign-lock
-      - uses: actions/download-artifact@v4
-        continue-on-error: true
+      - name: Full paginated result history
+        env:
+          GH_TOKEN: ${{ github.token }}
+        uses: ./tools/secondary-bench/artifact-action
         with:
-          pattern: secondary-results-*
+          repository: ${{ github.repository }}
+          run-id: ${{ github.run_id }}
           path: history
+          prefix: secondary-results-
       - uses: actions/download-artifact@v4
         with:
-          pattern: secondary-results-capture-*
+          name: secondary-plan-2
           path: reused-capture
           run-id: ${{ needs.activate.outputs.reuse_run_id }}
           github-token: ${{ github.token }}
