@@ -1703,6 +1703,8 @@ impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>
         for (data, state) in self.threshold_data.iter().zip(&mut self.states) {
             state.add(data, solution);
         }
+        #[cfg(test)]
+        self.assert_state();
     }
 
     fn remove_solution(&mut self, solution: usize) {
@@ -1711,6 +1713,8 @@ impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>
         }
         self.selected_ids.pop();
         self.selected_flags[solution] = false;
+        #[cfg(test)]
+        self.assert_state();
     }
 
     fn exclude_solution(&mut self, solution: usize) {
@@ -1719,6 +1723,8 @@ impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>
         for (data, state) in self.threshold_data.iter().zip(&mut self.states) {
             state.disable_candidate(data, solution);
         }
+        #[cfg(test)]
+        self.assert_state();
     }
 
     fn include_solution(&mut self, solution: usize) {
@@ -1727,6 +1733,8 @@ impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>
             state.enable_candidate(data, solution);
         }
         self.excluded[solution] = false;
+        #[cfg(test)]
+        self.assert_state();
     }
 
     fn prior_possible(&self, slots: usize) -> bool {
@@ -1759,17 +1767,123 @@ impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>
             ))
     }
 
-    fn run(&mut self, covered: &[u64]) {
+    fn current_target(&self) -> u32 {
+        if self.stable_tie {
+            self.best_current
+        } else {
+            self.best_current.saturating_add(1)
+        }
+    }
+
+    fn charge(&mut self) -> bool {
         if self.budget_exceeded {
-            return;
+            return false;
         }
         if let Some(limit) = self.state_budget
             && self.searched_states >= limit
         {
             self.budget_exceeded = true;
-            return;
+            return false;
         }
         self.searched_states += 1;
+        true
+    }
+
+    // Only the current quality threshold is propagated. Prior thresholds still
+    // constrain the search, but the rejected priorPropagation is not enabled.
+    fn propagate_current(&mut self, covered: &mut [u64]) -> bool {
+        loop {
+            let data = &self.threshold_data[self.current_index];
+            let state = &self.states[self.current_index];
+            let Some(allowed_bad) = data.total_weight.checked_sub(self.current_target()) else {
+                return false;
+            };
+            let Some(slack) = allowed_bad.checked_sub(state.dead_bad) else {
+                return false;
+            };
+            let mut forced = None;
+            for group in 0..data.weights.len() {
+                if state.cover_count[group] == 0
+                    && state.available_count[group] == 1
+                    && data.weights[group] > slack
+                {
+                    forced = data.group_candidates[group].iter().copied().find(|&id| {
+                        available_candidate(id as usize, &self.selected_flags, &self.excluded)
+                    });
+                    debug_assert!(forced.is_some());
+                    break;
+                }
+            }
+            let Some(id) = forced else {
+                return true;
+            };
+            if self.selected_ids.len() >= self.exact_count || !self.charge() {
+                return false;
+            }
+            self.add_solution(id as usize);
+            or_into(covered, &self.solution_coverage[id as usize]);
+        }
+    }
+
+    #[cfg(test)]
+    fn assert_state(&self) {
+        for (data, state) in self.threshold_data.iter().zip(&self.states) {
+            let mut good = 0;
+            let mut dead = 0;
+            let mut gains = vec![0u32; self.selected_flags.len()];
+            for (group, ids) in data.group_candidates.iter().enumerate() {
+                let cover = ids
+                    .iter()
+                    .filter(|&&id| self.selected_flags[id as usize])
+                    .count();
+                let available = ids
+                    .iter()
+                    .filter(|&&id| {
+                        available_candidate(id as usize, &self.selected_flags, &self.excluded)
+                    })
+                    .count();
+                assert_eq!(state.cover_count[group] as usize, cover);
+                assert_eq!(state.available_count[group] as usize, available);
+                if cover > 0 {
+                    good += data.weights[group];
+                } else {
+                    if available == 0 {
+                        dead += data.weights[group];
+                    }
+                    for &id in ids {
+                        gains[id as usize] += data.weights[group];
+                    }
+                }
+            }
+            assert_eq!(state.good, good);
+            assert_eq!(state.dead_bad, dead);
+            assert_eq!(state.gains, gains);
+        }
+    }
+
+    fn run(&mut self, covered: &[u64]) {
+        if !self.charge() {
+            return;
+        }
+        if CURRENT_PROPAGATION {
+            let checkpoint = self.selected_ids.len();
+            let mut next = self.covered_buffers.pop().unwrap_or_default();
+            next.clear();
+            next.extend_from_slice(covered);
+            if self.propagate_current(&mut next) {
+                self.run_body(&next);
+            }
+            while self.selected_ids.len() > checkpoint {
+                let id = *self.selected_ids.last().unwrap();
+                self.remove_solution(id as usize);
+            }
+            self.covered_buffers.push(next);
+        } else {
+            self.run_body(covered);
+        }
+    }
+
+    fn run_body(&mut self, covered: &[u64]) {
         #[cfg(not(target_arch = "wasm32"))]
         if self.searched_states.is_multiple_of(1_000_000)
             && std::env::var_os("SFINDER_QUALITY_TRACE").is_some()
@@ -2228,8 +2342,15 @@ pub fn exact_quality_cover_at_count_progress_bounded(
     state_budget: Option<u64>,
 ) -> Option<(BoundedQualityResult, Vec<u32>)> {
     let mut prefix = Vec::new();
-    let result = fixed_quality_internal(raw_cases, solution_count, exact_count,
-        seed_selected, &[], state_budget, Some(&mut prefix))?;
+    let result = fixed_quality_internal(
+        raw_cases,
+        solution_count,
+        exact_count,
+        seed_selected,
+        &[],
+        state_budget,
+        Some(&mut prefix),
+    )?;
     Some((result, prefix))
 }
 
@@ -2277,3 +2398,7 @@ pub fn exact_quality_cover_at_count_with_locked_prefix(
 #[cfg(test)]
 #[path = "min_cover_tests.rs"]
 mod tests;
+
+#[cfg(test)]
+#[path = "threshold_candidate_tests.rs"]
+mod threshold_candidate_tests;
