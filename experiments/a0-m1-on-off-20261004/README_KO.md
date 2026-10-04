@@ -1,5 +1,13 @@
 # 통합 후 ON/OFF 비교 준비 — 아직 실행하지 않음
 
+## 2026-10-04 실행 중 하네스 교정 및 동일 캠페인 계속
+
+사용자「단순오류는고치고계속」승인으로필터어댑터만교정했다. `request.mjs`는`entry.filter`(원capture의actualunused조각)를`unusedPiecePrepared`로판별한다. 잘못된`wantedSave`→fullbag-save치환은더이상사용하지않는다. 기존제품compact열거·numericcoverage·adaptiveprimary/secondary·realWorkerthreshold·outputencoding을사용하고,원capturehash/K/weightedrowgate는유지한다. **단일동결filter의제품연산경로**이며seven-filter UI전체/일반bag-save입력API와동일하다고주장하지않는다. 한요청에서추가7filter검색을하지않는다.
+
+원122입력·100쌍·10runner·24,480정상계획requests·검색100K·3GiB/swap0불변. 최초실패attempt의잘못된환경OFFrequests10개는정상pairs에포함하지않고교정overhead로구분한다. 승인된corrective continuation이며자동두번째캠페인이아니다. **origin은37178792683의05:03:42Z**,compute07:43:42Z/cancel07:58:42Z/overall08:03:42Z로고정한다. 새로운Actionscreated_at으로clock/budget를리셋하지않는다. `launch.json.originRunId`와외부watcher의두번째인자로이를강제한다. 이전실패봉인을삭제/변경하지않고추가실패보존작업은하지않는다.
+
+이하「미실행」및save-minimals완전동등성표현은교정전준비당시이력이다. 현재설명은본항목/CAMPAIGN/launch및새실행receipt를따른다.
+
 이번승인범위는선택가능A0+M1구현과Actions비교준비까지다. **launch.json이없고실제campaign호출은0**이다. push준비만으로Actions가실행되지않는다. 실행은별도승인후이디렉터리에launch.json을추가한push로만가능하다.
 
 ## 비교 대상과 범위

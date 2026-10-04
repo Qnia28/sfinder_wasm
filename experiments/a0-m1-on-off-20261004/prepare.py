@@ -22,7 +22,7 @@ for e in entries:
  file='inputs/'+e['id']+'.json.gz';(EX/file).write_bytes(b)
  inputs.append({**e,'file':file,'selectionReasons':records[e['id']]['reasons'],
   'request':{'sourceFumen':m['fixture']['fumen'],'analysisPattern':m['pattern'],
-   'wantedSave':'*' if m['filter']=='ordinary' else m['filter'],'height':m['geometry']['targetLines'],
+   'unusedPieceFilter':m['filter'],'height':m['geometry']['targetLines'],
    'useHold':True,'exactHumanQuality':'true','primary':'auto','secondary':'auto','exactProbeTiming':True}})
 assert len(inputs)==122
 controls={p:s['environmentControlId'] for p,s in selection['populations'].items()};runs=[]
@@ -42,7 +42,7 @@ assert len(runs)==24480
 write('INPUTS.json',{'sourceRunId':37138752420,'sourceCommit':'c6554bce7356fe226693074610e8c7a2177335cb',
  'sourceSelectionSha256':sha((SOURCE/'SELECTION.json').read_bytes()),'same122InputsNotNewScreening':True,'entries':inputs,'environmentControls':controls})
 write('SCHEDULE.json',{'jobs':10,'pairsPerInput':100,'pairsPerRunner':10,'actualCalls':24480,'callsPerJob':2448,'selectedCalls':24400,'environmentCalls':80,'runs':runs})
-write('CAMPAIGN.json',{'status':'PREPARED_NOT_LAUNCHED','scope':'Full save-minimals request: fresh process, original input reconstruction, enumeration, primary, ordinary100K, real threshold/CP, output encoding. Not a probe-only bench.',
+write('CAMPAIGN.json',{'status':'PREPARED_NOT_LAUNCHED','scope':'Single unused-piece filter request: fresh process, original input reconstruction, product compact enumeration, original unused-piece filter, adaptive primary, ordinary100K, real threshold/CP if available, output encoding. Not a full seven-filter UI or probe-only bench.',
  'jobs':10,'maxParallel':10,'pairsPerInput':100,'actualCalls':24480,'memoryBytes':3221225472,'swapBytes':0,
  'startupMs':30000,'probeMs':10000,'apiMs':210000,'processMs':240000,'auditMs':30000,'ackMs':10000,'reapMs':2000,
  'pairAdmissionMs':664000,'computeMinutes':160,'cancelMinutes':175,'overallMinutes':180,

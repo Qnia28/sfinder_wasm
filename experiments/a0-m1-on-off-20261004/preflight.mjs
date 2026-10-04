@@ -19,4 +19,6 @@ write(`${ROOT}/.a0-m1-comparison/LOCK.json`,{status:'PASS_PRELAUNCH_PRODUCT_INPU
   referenceWasm:sha(fs.readFileSync(`${ROOT}/wasm/pc_wasm.wasm`)),candidateWasm:sha(fs.readFileSync(`${ROOT}/wasm/pc_a0_m1.wasm`)),
   batchWasm:sha(fs.readFileSync(`${ROOT}/wasm/batch_wasm.wasm`)),
   ortoolsSupported:isORToolsSupported(),runtime:'Node24.13 default flags, backend auto. Record CP availability; no browser-CP latency claim.',
-  fullActualInputCallsBeforeBenchmark:0});
+  fullActualInputCallsBeforeThisCorrectedBenchmark:0,
+  malformedEnvironmentRequestsInPriorAttempt:read(`${HERE}/launch.json`).malformedEnvironmentRequestsAlreadyAttempted??0,
+  filterSemantics:'Actual unused queue piece, excluding undrawn bag pieces; one frozen filter per request, not full seven-filter UI.'});
