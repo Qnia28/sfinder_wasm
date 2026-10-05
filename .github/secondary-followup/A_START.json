@@ -1,8 +1,8 @@
 {
   "confirm": "RUN_APPROVED_FOLLOWUP",
   "dataset": "A",
-  "templateSha256": "1e1c9ce11ed420c2f8d3fcc05cf6b99cf8815c6afe6ccef08580bed00262b2c7",
-  "sourceLock": "c848a6aef09989ea6fb33e306a71d91fb4640b1af0de5a9eb030582f68698d5b",
-  "preparedCommit": "75b7981d7af870560fe52cc8ce5bd29b18c5bc77",
+  "templateSha256": "ba1a2bba7aca8edd00050d9ffc03b2c77b95840d0feec15a54f071a00c8fa004",
+  "sourceLock": "136b9da2efa9f506b2f3e12ac6b4ddcd0d18763f26bc07f5b32f22fc8a9980c1",
+  "preparedCommit": "cbb2898e97379ac370b3774dd735b2f3ff98531f",
   "approval": "User explicitly requested correction and retry of both failed workflows; original 07:24:17Z origins and budgets retained"
 }
