@@ -82,6 +82,8 @@ fixture 참조는 `{id,file,sha256,acquisition,provenance}`이다. CLI의 로컬
 
 각 manifest의 고정 maxParallel 합계를 검사한다. 캠페인 내 control job과 matrix는 직렬 단계여서 할당 안에 포함된다. 그룹 전체 실행은 공통 concurrency group으로 직렬화하며 activate는 다른 진행 중 Secondary workflow가 있으면 거부한다. 이 guard는 관련 없는 모든 저장소 Actions의 runner 소비까지 제어하는 semaphore가 아니다.
 
+명시적으로 승인한 병행 캠페인은 `provenance.concurrentAllocation`에 외부run ID/head SHA/workflow path/동결template hash/maxParallel과 합산vmCap을 봉인할 수 있다. queued/waiting 상태도 예약에 포함하며 template·workflow 원bytes/상한을 검증한다. 미등록 Secondary run은 계속 거부한다. 기존외부run을 취소·재실행·수정하지 않는다. per-save128 별도workflow는 A `37280034634`의12VM + 신규4VM만 허용한다.
+
 default branch에 새 workflow가 없는 동안 dispatch가 안 될 수 있다. 합성 smoke는 실험 branch의 `.github/secondary-common/SMOKE_START.json`만 바꾸는 push도 지원한다. marker의 confirm과 새 sourceLock을 검증한다. 하네스 준비 push의 기존 preflight가 끝난 뒤 marker-only push하며, F/A start marker는 변경하지 않는다.
 
 합성 smoke는 실제 runtime에서 같은 공통 campaign/stage/run/audit 경로를 사용한다. 빈 preflight/acquire 단계, 실제 세 엔진 tiny fixture, task checkpoint, SDK 다운로드, witness/receipt 감사를 수행한다. capture 진단·OOM/회수 계약은 사전 검사에서 별도로 수행한다. 이를550개 실자료 측정 완료나 triage 검증 완료로 표현하지 않는다.

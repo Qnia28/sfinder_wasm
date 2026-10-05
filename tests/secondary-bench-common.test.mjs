@@ -18,6 +18,7 @@ import { makeFollowupTasks, selectFollowup, FOLLOWUP_POLICY, SHAPE } from '../to
 import { convertFollowup } from '../tools/secondary-bench/common/recipes/followup.mjs';
 import { validateFixture, verifyResult } from '../tools/secondary-bench/contracts.mjs';
 import { runIsolated } from '../tools/secondary-bench/isolation.mjs';
+import { checkAllocation } from '../tools/secondary-bench/common/allocation.mjs';
 
 function temporary(t) {
   const root = process.platform === 'win32' ? path.join(process.env.LOCALAPPDATA, 'Temp', 'opencode') : os.tmpdir();
@@ -69,6 +70,24 @@ test('canonical hash recursively sorts keys; rejects non-JSON/nonfinite values',
   assert.equal(digest({ b: 2, a: { z: 3, a: 1 } }), digest({ a: { a: 1, z: 3 }, b: 2 }));
   assert.notEqual(digest([1, 2]), digest([2, 1]));
   for (const value of [undefined, NaN, Infinity, new Date(), { a: undefined }]) assert.throws(() => canonical(value));
+});
+test('external VM reservation is explicit, source-pinned and includes queued workflows', () => {
+  const workflow = Buffer.from('frozen A workflow'), templateBytes = Buffer.from('frozen A template');
+  const reservation = { runId: '10', headSha: 'a'.repeat(40), workflowPath: '.github/workflows/A.yml', maxParallel: 12,
+    templateFile: 'A_TEMPLATE.json', templateSha256: sha256(templateBytes) };
+  const manifest = { budget: { maxParallel: 4 }, provenance: { concurrentAllocation: { vmCap: 20, reservations: [reservation] } } };
+  const options = { bytes: file => file === 'A_TEMPLATE.json' ? templateBytes : workflow,
+    readTemplate: () => ({ policy: { maxParallel: 12 }, sourceFiles: { '.github/workflows/A.yml': sha256(workflow) } }) };
+  const active = [{ id: 10, name: 'Secondary A', head_sha: reservation.headSha, path: reservation.workflowPath, status: 'queued' }];
+  assert.equal(checkAllocation(manifest, active, '11', options).allocatedVm, 16);
+  assert.throws(() => checkAllocation({ budget: { maxParallel: 4 }, provenance: {} }, active, '11', options));
+  assert.throws(() => checkAllocation(manifest, [...active, { ...active[0], id: 12 }], '11', options));
+  assert.throws(() => checkAllocation(manifest, [{ ...active[0], head_sha: 'b'.repeat(40) }], '11', options));
+  assert.throws(() => checkAllocation(manifest, [{ ...active[0], path: 'other.yml' }], '11', options));
+  assert.throws(() => checkAllocation({ ...manifest, budget: { maxParallel: 9 } }, active, '11', options));
+  assert.throws(() => checkAllocation(manifest, active, '11', { ...options, bytes: () => Buffer.from('changed') }));
+  assert.throws(() => checkAllocation(manifest, active, '11', { ...options, readTemplate: () => ({ policy: { maxParallel: 13 } }) }));
+  assert.equal(checkAllocation(manifest, [{ ...active[0], status: 'completed' }], '11', options).allocatedVm, 16);
 });
 test('Actions upload outputs and backend inventories normalize to the same artifact digest', () => {
   const sha = 'a'.repeat(64); assert.equal(artifactDigest(sha), 'sha256:' + sha); assert.equal(artifactDigest('sha256:' + sha), artifactDigest(sha));

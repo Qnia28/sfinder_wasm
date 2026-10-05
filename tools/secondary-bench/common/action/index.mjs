@@ -12,6 +12,7 @@ import { deadlineClient } from '../evidence.mjs';
 import { requireDisk, materializeFixture } from '../../followup-storage.mjs';
 import { resolveManifest } from '../manifest.mjs';
 import { validateLaunchGroup } from '../budget.mjs';
+import { checkAllocation } from '../allocation.mjs';
 
 const client = (await import('../../artifact-action/node_modules/@actions/artifact/lib/artifact.js')).default;
 const mode = process.env.INPUT_MODE, stage = process.env.INPUT_STAGE;
@@ -66,11 +67,15 @@ try {
     if (process.env['INPUT_CONFIG-ARTIFACT-ID']) await download(path.dirname(process.env.INPUT_MANIFEST),
       Number(process.env['INPUT_CONFIG-ARTIFACT-ID']), process.env['INPUT_CONFIG-DIGEST']);
     const authored = readJson(safePath(process.cwd(), process.env.INPUT_MANIFEST)); campaignId = authored.campaignId;
-    // Fail closed if unrelated benchmark workflows consume the shared runner allocation.
-    const active = JSON.parse(execFileSync('gh', ['api', '--paginate', '--slurp', `repos/${repository}/actions/runs?status=in_progress&per_page=100`], { encoding: 'utf8' }));
-    assert(!active.flatMap(p => p.workflow_runs).some(r => String(r.id) !== runId && /Secondary/.test(r.name)), 'conflicting benchmark workflow active');
+    // Include queued/waiting runs: they may consume their frozen reservation later.
+    const active = ['in_progress', 'queued', 'waiting', 'requested', 'pending'].flatMap(status => {
+      const pages = JSON.parse(execFileSync('gh', ['api', '--paginate', '--slurp', `repos/${repository}/actions/runs?status=${status}&per_page=100`], { encoding: 'utf8', timeout: 120000 }));
+      return pages.flatMap(p => p.workflow_runs);
+    });
+    const allocation = checkAllocation(authored, [...new Map(active.map(r => [r.id, r])).values()], runId);
     const run = JSON.parse(execFileSync('gh', ['api', `repos/${repository}/actions/runs/${runId}`], { encoding: 'utf8' }));
     const lock = activate(authored, 'common-lock', { createdUtc: run.created_at, invocationId: runId, commit: process.env.GITHUB_SHA, confirm: true });
+    writeJson('common-lock/VM_ALLOCATION.json', allocation);
     const locations = [];
     for (const ref of lock.manifest.inputs.fixtures) {
       const source = safePath(process.cwd(), ref.file), member = `inputs/${ref.sha256}.json`, destination = safePath('common-lock', member);

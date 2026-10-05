@@ -1,0 +1,49 @@
+name: Secondary common per-save supplement (4 VMs)
+on:
+  push:
+    branches: [experiment/secondary-routing-20261005]
+    paths: [.github/secondary-common/PERSAVE128_START.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: secondary-common-launch
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      artifact-id: ${{ steps.bundle.outputs.artifact-id }}
+      digest: ${{ steps.bundle.outputs.artifact-digest }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Offline common contracts (no population calls)
+        run: node --experimental-wasm-stack-switching --test-isolation=none --test-concurrency=1 --test tests/secondary-bench-common.test.mjs
+      - name: Verify frozen launch and restore original fixture bytes
+        run: node tools/secondary-bench/common/recipes/per-save128.mjs bundle
+      - id: bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: common-persave128-manifest
+          path: common-per-save128
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: common-persave128-prepare-failure
+          path: common-per-save128
+          if-no-files-found: warn
+          retention-days: 30
+  campaign:
+    needs: prepare
+    uses: ./.github/workflows/secondary-bench-common-campaign.yml
+    with:
+      manifest: common-per-save128/MANIFEST.json
+      confirm: RUN_COMMON_HARNESS
+      config-artifact-id: ${{ needs.prepare.outputs.artifact-id }}
+      config-digest: ${{ needs.prepare.outputs.digest }}

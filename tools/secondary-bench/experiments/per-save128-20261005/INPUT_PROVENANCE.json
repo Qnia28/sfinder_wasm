@@ -1,0 +1,1279 @@
+{
+  "schemaVersion": 1,
+  "selection": {
+    "schema": 1,
+    "state": "SELECTION_FROZEN_NOT_DISPATCHED",
+    "seed": "per-save-supplement-128-20261005-v1",
+    "database": "D:\\AI\\sfinder-wasm\\files\\triage-database\\per-save\\per-save.sqlite",
+    "databaseSha256": "b7fceaf6a690b2ab6b6ad4bb87fa435bc29c86cae31c3f784830779e8bf550d8",
+    "databaseManifestSha256": "f51ed98b8b4a5c458085dfce6c386b550ee1e72dd26a425389c71b783c62d6e2",
+    "selectorFile": "D:\\AI\\sfinder-wasm\\sol\\secondary-routing-20261005\\tools\\secondary-bench\\select-per-save-supplement.py",
+    "selectorSha256": "51b0890efac2beaf67fc687efe113ae48c205d127cb40141ee4ccce9a31bd657",
+    "candidateCount": 1597,
+    "selectedCount": 128,
+    "selectedMirrorGroups": 121,
+    "selectedCommands": 125,
+    "stratumQuotas": {
+      "tiny/bag": 4,
+      "tiny/bag-plus-next-draw": 2,
+      "tiny/restricted-split": 10,
+      "low-d-nontiny/bag": 3,
+      "low-d-nontiny/bag-plus-next-draw": 5,
+      "low-d-nontiny/restricted-split": 32,
+      "mid-d-nontiny/bag": 3,
+      "mid-d-nontiny/bag-plus-next-draw": 5,
+      "mid-d-nontiny/restricted-split": 32,
+      "high-d-nontiny/bag-plus-next-draw": 4,
+      "high-d-nontiny/restricted-split": 28
+    },
+    "maxPerMirrorGroup": 2,
+    "maxPerCommand": 2,
+    "selectionMethods": {
+      "RARE_BAG_LOW_D_NONTINY": 3,
+      "RARE_TINY_D_GE_9": 3,
+      "STRUCTURAL_MAXIMIN": 63,
+      "HASH_BREADTH": 59
+    },
+    "familyCounts": {
+      "bag": 10,
+      "restricted-split": 102,
+      "bag-plus-next-draw": 16
+    },
+    "piecesNeededCounts": {
+      "6": 106,
+      "7": 20,
+      "4": 2
+    },
+    "distanceFeatures": [
+      "log1p(d)",
+      "log1p(u)",
+      "log1p(r)",
+      "log1p(e/r)",
+      "k/n",
+      "forced/k"
+    ],
+    "distanceNormalization": {
+      "population": "ALL_2008_NONTRIVIAL",
+      "minima": [
+        0.6931471805599453,
+        1.0986122886681098,
+        3.2188758248682006,
+        0.7672551527136672,
+        0.01331967213114754,
+        0.0
+      ],
+      "maxima": [
+        4.219507705176107,
+        7.708410667257367,
+        10.324727579759655,
+        3.8971913357575665,
+        0.9444444444444444,
+        0.9807692307692307
+      ]
+    },
+    "algorithm": "6 protected rare combinations; fill least-filled quota proportion; prefer fewer selected per group then command; alternate squared-Euclidean maximin to measured411+selected and SHA256 order per cell; max2/group and command; content deduplicated",
+    "outcomesUsed": false,
+    "freshValidation": false,
+    "newSolverCalls": 0,
+    "fixtureHashesVerified": 128,
+    "previouslyScheduledOrMeasuredSelected": 0,
+    "existingMeasuredGroups": 258,
+    "newPreviouslyUnmeasuredGroups": 0,
+    "coverageDistance": {
+      "meanSquaredBefore": 0.008480314337720245,
+      "meanSquaredAfter": 0.005392326925579573,
+      "maxSquaredBefore": 0.20829317034525338,
+      "maxSquaredAfter": 0.12500488665347526
+    },
+    "proposedMeasurement": {
+      "maxVm": 4,
+      "engines": [
+        "integrated",
+        "threshold",
+        "cpsat"
+      ],
+      "initialRepeats": 2,
+      "initialCalls": 768,
+      "callMs": 60000,
+      "retest": "2 additional only for that engine when both initial EXACT and max/min>=1.10",
+      "executionManifestAndBudget": "SOL_TO_FREEZE_BEFORE_DISPATCH"
+    },
+    "files": [
+      {
+        "file": "candidate_ledger.jsonl",
+        "sha256": "2ace101797132c7f9c98ed9fe350d3d796f159089416f21dedd34a3dd5a30481",
+        "bytes": 586475
+      },
+      {
+        "file": "fixtures.json",
+        "sha256": "f66e5be43ba1b2d5a29546e2c26c002c37a058bf1e3c59b5b361387547e9a8ba",
+        "bytes": 64211
+      },
+      {
+        "file": "selected.csv",
+        "sha256": "bb0e4a9d4254bbde09dd6e17967efe14a874f8d958b726a73117df063d9047ee",
+        "bytes": 76693
+      },
+      {
+        "file": "selected.jsonl",
+        "sha256": "6ed95d7f6b1df0b64001fbdb22a8237258214519a836543fdd5a6188899c2819",
+        "bytes": 123908
+      }
+    ]
+  },
+  "selectionSha256": "83fff6859242979296cdf8bce42a7d0b60a0a528d8a8bd6c6db1c71c285959cd",
+  "fixtures": [
+    {
+      "id": "c7-2plus2-qb-row-283/bag/O",
+      "sha256": "0b6063568b7db2369a82a0c815d2c1685dfcef920e46c76e43549493b5e1ce78",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-24-0-1/data/fixtures/1a6ca332d4dc6933dba4-5.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "RARE_BAG_LOW_D_NONTINY",
+      "selectionRank": 1,
+      "stratum": "low-d-nontiny/bag"
+    },
+    {
+      "id": "c7-2plus2-qb-row-009/restricted-split/J",
+      "sha256": "df862d1cfc5c5a9f7a5c1d2c73153ae4bac1c5d1a3cb8a271de1b18f60a0ef92",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-13-0-1/data/fixtures/11993fe516ab0ca3af0f-3.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "RARE_TINY_D_GE_9",
+      "selectionRank": 2,
+      "stratum": "tiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-316/bag/O",
+      "sha256": "7c756088c0b4b860f99997403203392d44da977c605e00dcba34b3a5dc72969b",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-1-2-1/data/fixtures/8988aa79e1bce6c6f0b2-5.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "RARE_BAG_LOW_D_NONTINY",
+      "selectionRank": 3,
+      "stratum": "low-d-nontiny/bag"
+    },
+    {
+      "id": "c7-2plus2-qb-row-283/bag/S",
+      "sha256": "72fd978712c68bd0aa02a4bafa34d468c94f1a4296ec7505030b03e6af3c5f9a",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-24-0-1/data/fixtures/1a6ca332d4dc6933dba4-3.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "RARE_BAG_LOW_D_NONTINY",
+      "selectionRank": 4,
+      "stratum": "low-d-nontiny/bag"
+    },
+    {
+      "id": "c7-2plus2-qb-row-070/restricted-split/I",
+      "sha256": "969f227957cd0485863a5785a441a045f149a29f299a35b8aa35e5451d824af5",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-34-0-1/data/fixtures/f458871b1878439022cb-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "RARE_TINY_D_GE_9",
+      "selectionRank": 5,
+      "stratum": "tiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-058/restricted-split/I",
+      "sha256": "fed8e6554e29c3e61bb6f0fd91aaecf87ba61d183b7507faaf4b4447b1f7bfe0",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-40-1-1/data/fixtures/03f4f67d95ae6d786c32-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "RARE_TINY_D_GE_9",
+      "selectionRank": 6,
+      "stratum": "tiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-036/bag-plus-next-draw/T",
+      "sha256": "d4035984fa31ec646f5e7b416f84ca35b66c48a9b256c722b100c00f3799949a",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-30-1-1/data/fixtures/157925fcf2d80ed3615e-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 7,
+      "stratum": "high-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "pcinfokorea-c2-020/restricted-split/S",
+      "sha256": "f8ccdeda1c5d8b819fe8e46fee4633bdb12b1ba1db790ce875fa42a80835080b",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-53-2-1/data/fixtures/df810185b6213e928a3c-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 8,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "pcinfokorea-c2-021/bag-plus-next-draw/I",
+      "sha256": "9237f60c0da0c4374c6c597434799bd4e2905c7235658e6e0fca0de19614f70f",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-38-0-1/data/fixtures/5c2fc3f2c72b75e4a520-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 9,
+      "stratum": "low-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "c7-2plus2-qb-row-040/restricted-split/T",
+      "sha256": "3ecf026af71d4f6d2b1cad5040ad757a62b64b610db4256d79f39afe0cd9106c",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-33-3-1/data/fixtures/c2e837ce8cd33b80daaf-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 10,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-grace-system-a/bag/T",
+      "sha256": "4d9b766250ed9445b9e22af815552e2cef01b3e634f3236d273bcebe62483d8f",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-45-2-1/data/fixtures/437fda6eab5f9f50f311-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 11,
+      "stratum": "mid-d-nontiny/bag"
+    },
+    {
+      "id": "cycle1-pcinfo-030/bag-plus-next-draw/I",
+      "sha256": "8de71e902112e35800c89164aa877892ecad366a753d81a7677c115b8b778e1b",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-78-3-1/data/fixtures/e78d77442df172e668ee-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 12,
+      "stratum": "mid-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "pcinfokorea-c2-016-f0/restricted-split/L",
+      "sha256": "acd6eb0c85d2a164f667d8e343d54e80049b2f9b9369bcdae7f1141903cb8451",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-16-1-1/fixtures/acbbcd66833153eab854607c-1.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 13,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-126/bag/Z",
+      "sha256": "2edb029b63a90c218775bf0ac6a46c45627f076fa0e7bd6e0a08fac267d2db85",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-17-1-1/fixtures/4706e521af6138a3467372e8-4.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 14,
+      "stratum": "tiny/bag"
+    },
+    {
+      "id": "pcinfokorea-c2-037-f0/bag-plus-next-draw/S",
+      "sha256": "3b7b9fd2cf3520c1f23c4fb7766fe77f165d0f74c878b2e37c33b9da82f7f1ba",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-84-2-1/data/fixtures/567178165d0c609e3831-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 15,
+      "stratum": "tiny/bag-plus-next-draw"
+    },
+    {
+      "id": "c7-2plus2-qb-row-133/restricted-split/Z",
+      "sha256": "a616b68d1d5953d3c182e9f420ba1b41cb195e572fb6ff65af225789c9d6c409",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-26-0-1/data/fixtures/52d6e85f9b422849a5a8-5.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 16,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-116/restricted-split/Z",
+      "sha256": "ff813f22a51d5cea268b2e1a85b0fc766b1a787b99a491c4b1198fdb4119935b",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-28-0-1/data/fixtures/ddc9001a7885ab8d1ee6-5.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 17,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-024/restricted-split/I",
+      "sha256": "6df802fc88e184ed78380721573ad519214eb657ee0e89a9dc06c5845604e053",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-92-3-1/data/fixtures/40dff8462805fd203583-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 18,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-085/restricted-split/T",
+      "sha256": "21ac4146c8df0205ca12f2397ffffb61c0753ee2dcc82d8748dcace9416ece29",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-71-0-1/data/fixtures/41a4eb95a9129ed1da3c-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 19,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-019/restricted-split/O",
+      "sha256": "2a46f475884b636f603a72dc2b49324ed2e5356e5e6e6f9677ea43fcb10fed43",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-8-3-1/data/fixtures/5c983ecc09939d5c3d1a-6.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 20,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-041/restricted-split/T",
+      "sha256": "bd2e6de112145077c94c2e775950cde57f6146f70cc218d84b966ac4f75d69ee",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-25-2-1/data/fixtures/d8ab77b1533d19c052e1-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 21,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-016/restricted-split/I",
+      "sha256": "de16a9e6a4bd3af55af6e17accd823b7aafe594865845157aff4e325760a05ed",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-87-3-1/data/fixtures/4290b1b358884a8c2bd1-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 22,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-118/restricted-split/O",
+      "sha256": "e4f8a7dcbfeca60fa5f0aacca82a6de71ab499362c8bb85cba9641f92f36438c",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-14-1-1/fixtures/3b43157600252b68a7ea86c1-6.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 23,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-jaws-a/restricted-split/O",
+      "sha256": "76451e6bc76f106b5e61578e37f667686b37d275686a15e143e41939258b3c57",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-34-1-1/data/fixtures/06370a324eda64928c35-6.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 24,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-228/restricted-split/T",
+      "sha256": "0513b024707175a2f17ad7db3f01e1f0077b672673926576fb8686ce1ce7087a",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-93-1-1/data/fixtures/42d104879b8098a94a42-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 25,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-144/restricted-split/S",
+      "sha256": "7946e170ecdfe713561ef47e375be0bf47bea48fec39c23b84e132434e53d88b",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-63-0-1/data/fixtures/80ad5e1cb5e96ccaedc4-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 26,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-034/restricted-split/J",
+      "sha256": "548cd68af934b86ecfada48fa0d854707f4477bb43709c0b717aa4601b352206",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-99-0-1/data/fixtures/4d2894630fba119dbd5d-3.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 27,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-026/restricted-split/J",
+      "sha256": "6c901770ee4e489ec99c1ebdbd5c91eafe0d084305acb5e9e0d5d3ecff65b66b",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-78-2-1/data/fixtures/599782066f531afa6f83-3.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 28,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-204/restricted-split/Z",
+      "sha256": "461c99190191e3b6d9653f2f899c746ad8f8b05177564abb4403085f1f130dfc",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-83-3-1/data/fixtures/8473a0e001998825fc1f-5.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 29,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-170/restricted-split/S",
+      "sha256": "dc6b4e392c536f8009c4ee75cec5bdbff3d04bdda8608ab792064f78f76e09c8",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-76-1-1/data/fixtures/6b5c33b12a226175a6be-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 30,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-028/restricted-split/T",
+      "sha256": "2d56767e8289312afb8225b3e952a462a8ecac03e0a3b46069dcb9fd1e65040e",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-94-1-1/data/fixtures/48e70509d48225b33225-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 31,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-322/restricted-split/L",
+      "sha256": "2474e951c8a7877ec29914246ae2cbc8c710bb4b1d21b4397c85ce1cd75c42f1",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-42-0-1/data/fixtures/90fd59b362104efbbde9-2.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 32,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-037/bag-plus-next-draw/I",
+      "sha256": "a083011bcd94064b1a4927376ba6474d53d21a543621c86c830151d7ec07eddf",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-24-2-1/data/fixtures/608c074eae0199176d63-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 33,
+      "stratum": "low-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "cycle1-pcinfo-031/bag-plus-next-draw/I",
+      "sha256": "37a636692f97b33ad9a5bc95601a1f8219c055af197baf4e90438f046b537fed",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-26-2-1/data/fixtures/e71450c0be8df339f9fe-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 34,
+      "stratum": "mid-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "cycle1-pcinfo-033/restricted-split/T",
+      "sha256": "394f40a4b0e293d93c5a3500cd9138ad2deba14436724ccad6f33c96388c58a7",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-102-0-1/data/fixtures/1b11639fe6fed4347f80-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 35,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-054/restricted-split/T",
+      "sha256": "6bb32a9dcd12cae2b4f58e27180df2d0b3d8cfece4f9cca4e609d5f1cdfef86c",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-24-1-1/data/fixtures/9e7d4ece3fe8e81ed41c-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 36,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-273/restricted-split/L",
+      "sha256": "97004629aef841e6ff7112955986b900da7fa0b368772589357aaac9e5df8802",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-27-2-1/fixtures/8949b1621abfa6bb57500556-2.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 37,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-035/bag-plus-next-draw/O",
+      "sha256": "4424e7045a8c88f104e44c4a453df2861b0004c44be1be8104783e36a540d368",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-14-0-1/data/fixtures/176d5c84a674f4cda41c-6.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 38,
+      "stratum": "high-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "c7-2plus2-qb-row-290/restricted-split/I",
+      "sha256": "1e77bdf173fa4d65abc8e4697fcdba9b2c14f39f78f6de7b13cc0750437d9644",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-60-0-1/data/fixtures/be9bc120f2a8940bf416-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 39,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-002/restricted-split/T",
+      "sha256": "651af1172957e07fd3bed89ba5e757602f202cc8987eb8330688e0b21d0ac5f6",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-36-2-1/data/fixtures/de7d801e37d580f8b1a5-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 40,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-008/restricted-split/I",
+      "sha256": "0011abcd4c093310aec8206ecf660b5f29dfb8a7ef1d1ebf61516a70af5d8a67",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-75-0-1/data/fixtures/05a30a7f58b8648579d2-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 41,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "pcinfokorea-c2-036-f1/bag/T",
+      "sha256": "33632b4ad5e40aa34a7a7d43db767c6f90bb2977ffda59786ad4bd2f5213a896",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-1-1-1/fixtures/5d9aea3634040a0dfc7a53c6-0.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 42,
+      "stratum": "tiny/bag"
+    },
+    {
+      "id": "c7-2plus2-qb-row-047/restricted-split/L",
+      "sha256": "d3161efe8823895e90932e394e2a644cfdfe197218da477c700835d50e0d2c15",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-18-1-1/fixtures/10cc7040a1affe2503fda91f-2.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 43,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-051/restricted-split/I",
+      "sha256": "7ad83dbd9ba52b45e5ba12832eb6e5b38679d25524f0e966680ae5269e5f4db9",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-60-3-1/data/fixtures/3f54b22901d53c30e763-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 44,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-035/restricted-split/T",
+      "sha256": "c947c3cc588a38543ed07c7071b85708b70918e3817f0d830c9903dc6efc33bf",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-7-3-1/data/fixtures/bd8c3b39b42185b79a78-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 45,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-6p-pco-a/restricted-split/O",
+      "sha256": "28bf8d0e2c228bbd29950800937e39e230fa04372fef36ed01e3675d5164d87c",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-6-3-1/data/fixtures/2336edbcb1722d164705-6.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 46,
+      "stratum": "tiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-141/restricted-split/T",
+      "sha256": "e53ad42101b1444be9dd318af02a80e6c3e07f1d643285bb083b2c2e2f76b3ab",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-40-2-1/data/fixtures/e66a1077dc0755921185-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 47,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-164/restricted-split/S",
+      "sha256": "909d00ceba571e9501da6bc5a540577a9161d74412ba4e3e77f190b0bc13e814",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-92-1-1/data/fixtures/6a9d584cc31212640222-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 48,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-036/restricted-split/I",
+      "sha256": "9f2d8a49096133eb9f265de9744697644c1e507ce1e2ca15212e59ffa830088e",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-41-2-1/data/fixtures/b621b1f2c4ea90e0ed50-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 49,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-308/bag/S",
+      "sha256": "2375e29f7aa4179c7ba1bf7e7ecc71f4ec9e099b7c4b9350f870132688a0abbf",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-68-2-1/data/fixtures/1c2f8f56bd5bfb2f8774-3.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 50,
+      "stratum": "mid-d-nontiny/bag"
+    },
+    {
+      "id": "c7-2plus2-qb-row-342/restricted-split/S",
+      "sha256": "ee3f0a0cd80ae158ce464a95dde6263abb381c779768b7d56bd0e9f74f141e99",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-46-2-1/data/fixtures/bf452fd7aa1531dc9470-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 51,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "pcinfokorea-c2-046/restricted-split/S",
+      "sha256": "ea914274d3a941c79481261856124416089f4c1b4e5a683da0ab9f7de885af76",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-105-1-1/data/fixtures/f4be8fce5d45011820a9-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 52,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-253/restricted-split/O",
+      "sha256": "0b679885cd56ab4b44c2e523efa56a5d825892be776239a8c50b66a7a6176957",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-82-3-1/data/fixtures/f6569d3b98026614986b-6.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 53,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-075/restricted-split/T",
+      "sha256": "d5a146201b5d8c04524ac3e2b9b313e4264d201fabb14052513f76e5ba0b13dc",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-106-2-1/data/fixtures/bfbf0e34560a8b226ff6-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 54,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-028/restricted-split/I",
+      "sha256": "009f300938738db857295ab047597cda89261cd80b124af3b52bd111595192ee",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-7-2-1/data/fixtures/0ff01463057fc48e0dd3-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 55,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-293/restricted-split/T",
+      "sha256": "58b26db357ae1a28186b047b47f12688d5da9b3e96f0a9e953daba38db1923a7",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-1-3-1/data/fixtures/b5a9a8ca7699255f545e-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 56,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-039/bag-plus-next-draw/L",
+      "sha256": "f41723e41819b8600b97af58771a98e8a0f2d3a4d28edf98c0a54d6446549cbe",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-94-3-1/data/fixtures/4832ebe2d32791fae180-2.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 57,
+      "stratum": "low-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "cycle1-pcinfo-032/bag-plus-next-draw/S",
+      "sha256": "ded73b0aeabe788388143bd4530b1c9d45016be09fcdbcd08b92f4b2b0255124",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-19-3-1/data/fixtures/437afa38b5561c38e361-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 58,
+      "stratum": "mid-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "c7-2plus2-qb-row-132/restricted-split/O",
+      "sha256": "143a160b4b78f689626b7c603997606304bf463678222c6767bc38b5cef485e5",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-13-1-1/data/fixtures/32b601aa7f6ee2d1f876-6.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 59,
+      "stratum": "tiny/restricted-split"
+    },
+    {
+      "id": "pcinfokorea-c2-010-f0/restricted-split/L",
+      "sha256": "dabd3d6f2d896c5babe3aaf80fc5367bef9f7fcd738f46ee423baab22c86712b",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-39-1-1/data/fixtures/4130ed7f074bfd7cd9da-2.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 60,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "pcinfokorea-c2-002-f0/restricted-split/J",
+      "sha256": "1a68191fbcdbe1b0ea3aa48bcd1d534b161e8eef56bd55c42be41c6f4ca65817",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-79-0-1/data/fixtures/63f298434fc2360d33ae-3.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 61,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-014/restricted-split/I",
+      "sha256": "8ae4bb51f6345a4bffd647a7a344a111f07920ed8680f1850674d9828bb0b8b5",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-105-3-1/data/fixtures/92124e62ef4166f1989e-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 62,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-018/restricted-split/T",
+      "sha256": "dd5777b5ce357a53579f2fef87258ed9c2cc12089d5016dc81894ae62e4729cf",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-38-2-1/data/fixtures/69542b476709e9a1d846-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 63,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-076/restricted-split/T",
+      "sha256": "c9e0da98b177a878b9f529b7d049bd130f3f850a3503af5fd3a976ef67adc704",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-43-1-1/data/fixtures/98fd370b3a31ec83f7c8-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 64,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-318/restricted-split/L",
+      "sha256": "fbcd9ec3ef2311fa928b33ea68a45fc9a3ddeaa0077c2f20a5787d58d47d5dc2",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-23-0-1/fixtures/b0a9233d707df20103679f51-2.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 65,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-328/restricted-split/S",
+      "sha256": "b77d6e2ede4663568698afe9af51af93c4145a00267079185401b860f36bedbb",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-27-0-1/fixtures/b7d7ced8fe582f574e24b675-4.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 66,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-039/restricted-split/L",
+      "sha256": "78efd1e267070f9fccab06b4a70c3dda4c2dcbc959d9cdf5e7259059cb24404d",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-24-1-1/fixtures/1aff953437df0c10efd00105-2.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 67,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-040/bag-plus-next-draw/T",
+      "sha256": "53c09f4043a9e0858ed9468f882bd8952f9ef0172e027bcb5e634ed9fd7a53fa",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-102-3-1/data/fixtures/42c6a93e833391f27f36-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 68,
+      "stratum": "high-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "pcinfokorea-c2-036-f0/restricted-split/L",
+      "sha256": "e395fe95ffc4fcb3fd4cf2b3be500b54490e3f1ccd588cd8e2734226bf3718c8",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-39-0-1/data/fixtures/1c3a270700a8b6d97cec-2.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 69,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-191/restricted-split/L",
+      "sha256": "ba04028364a35a59666150160a4f3a37cb08b2bffe2c8fec81595cd969fe1399",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-48-1-1/data/fixtures/91cfb9a32c3dd2f25c4d-2.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 70,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-100/restricted-split/I",
+      "sha256": "209ca3350dd7eadca728129ccc4482c71570b073fd43aab75ccdd9fb4c8857aa",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-20-1-1/fixtures/127e9ae716a197e11428a85f-1.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 71,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-346/bag/Z",
+      "sha256": "e2f8718aac9c100c2fdcf28c164bb104f7393af2f12503d85752f484720e46a9",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-28-1-1/data/fixtures/68047589591aec5451c2-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 72,
+      "stratum": "tiny/bag"
+    },
+    {
+      "id": "pcinfokorea-c2-020/bag-plus-next-draw/L",
+      "sha256": "39b339e4b7b1a0551ae1d1fbb86a9d6fc8875875ce802c2c731c3bbbd39715b2",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-52-1-1/data/fixtures/3212f4a3e51f70e1c50d-2.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 73,
+      "stratum": "tiny/bag-plus-next-draw"
+    },
+    {
+      "id": "c7-2plus2-qb-row-243/restricted-split/S",
+      "sha256": "d6df3d355e22e7d11f78f87ed55d29516adb3b5823a4da82c3988a89cfe60dfd",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-53-3-1/data/fixtures/b580b8237b462cdcaafd-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 74,
+      "stratum": "tiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-254/restricted-split/S",
+      "sha256": "087b3ebb2ae77355eb961d2f1c63adbc2ed192ca13069e3f53367c563eb8a0f2",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-96-1-1/data/fixtures/c65329376706b31c91ec-3.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 75,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-327/restricted-split/L",
+      "sha256": "9323919f0a6e033670fb0a041462249af77466e84ed25ededfd99f55f4c21198",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-58-2-1/data/fixtures/4c49c2f4d81c91a061ce-2.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 76,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-hills-a/restricted-split/O",
+      "sha256": "e9a54b6bdb90070e12dcd048a61db3fad0fe332b82135b0b0488bfbdc27ad695",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-97-3-1/data/fixtures/24db9acf5f41c72c6bff-6.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 77,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-201/restricted-split/T",
+      "sha256": "0c6698dceb55b044af5a35b00e3692b4c87a493c826cdf7c995180ea6c86caa6",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-103-0-1/data/fixtures/f111f5fb2ea4523038d0-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 78,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-068/restricted-split/T",
+      "sha256": "a9579145ab63618ba809e1287ba34486a0d722cb6db9bea7ac38615bae15ff9d",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-107-2-1/data/fixtures/ba705a3747d8e511f199-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 79,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-legs-a/restricted-split/T",
+      "sha256": "977346cbe37404624d5da28432c7483f73c84961a6c43c8dea8cf21a4f7c09f3",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-41-0-1/data/fixtures/47d9d97cf71942f52571-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 80,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-275/restricted-split/O",
+      "sha256": "ac493924a425c276ed8abbfd3bc2bd0e896f561c3ecb7d7ff0e8956bfd529cc9",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-78-1-1/data/fixtures/e97701e5c6967a328eba-6.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 81,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-122/restricted-split/Z",
+      "sha256": "b1f309b08eff58c7cc0c3c448b28bade983d7126a8a501df27cb68de37d499ea",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-68-1-1/data/fixtures/1d2dbdd364b34c15e43c-5.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 82,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-041/bag-plus-next-draw/J",
+      "sha256": "499c530bed8b34b13d96fcdafe4ea95610dc4fa09906054595b09bfa8b03bacf",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-95-3-1/data/fixtures/a87a561eb6de734fe3fb-3.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 83,
+      "stratum": "low-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "cycle1-pcinfo-033/bag-plus-next-draw/L",
+      "sha256": "a39d5ddfbc7e79de4bc0426a646f204f4d3c9085e91bf86ec4e5ad8a29f2c348",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-40-3-1/data/fixtures/fd07bedadc2b636ceae6-2.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 84,
+      "stratum": "mid-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "c7-2plus2-qb-row-248/restricted-split/L",
+      "sha256": "f93f4d36aec99096e405d6a975a5d8c4cd9a2c0f589b9209561b17cc96c5de87",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-82-0-1/data/fixtures/7892b0adbcb97c510e40-2.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 85,
+      "stratum": "tiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-142/restricted-split/L",
+      "sha256": "ca15d6f7a7a18af99b6b6bd7a49b1438b56cd390b08e1a0c5ab0225c26d97ee2",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-6-2-1/data/fixtures/793e6e699f1815920fc5-2.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 86,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-238/restricted-split/O",
+      "sha256": "4882cf39f4997f4e620696639922b6edf81c21e712b8f779fdd82a0a7b33ad15",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-68-0-1/data/fixtures/ccae3278e633c9d2260a-6.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 87,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-shoes-a/restricted-split/L",
+      "sha256": "a67043f9ae184301cc8d206dc05fabddda3371b1c1b4afe63b17e035c5219ad3",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-69-0-1/data/fixtures/a5f9d0fdaa3a9309e3a9-2.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 88,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-041/restricted-split/I",
+      "sha256": "87da66ffeb0edc6675a9fac5f4e1c7eb2a289b0aa1fbad9618a9286d9d7e68ea",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-35-2-1/fixtures/c9d5ecd517f97cef0cccffee-1.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 89,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-046/restricted-split/S",
+      "sha256": "6d869632c099f9ed1e84d10cadd087e80df0c366e9b61bc4fae15eb5eb2747f1",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-13-2-1/fixtures/5558c4cf3000f199a024cdf9-4.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 90,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-056/restricted-split/I",
+      "sha256": "0f121e6435bd7a0b5d7855d4caf4b52b6f9b68354fb838443437a9cf811060cf",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-13-0-1/fixtures/6e839e58b09ec6ef23eae982-1.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 91,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-022/bag/S",
+      "sha256": "c6dbc300971bd8b7de92580987edc3ec5dc85d15b4585c699b07c1c18e3b322a",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-66-1-1/data/fixtures/2fc2df00b4dab973f68f-3.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 92,
+      "stratum": "mid-d-nontiny/bag"
+    },
+    {
+      "id": "cycle1-elephant-a/restricted-split/Z",
+      "sha256": "97bad6559f61d9177b97e0293aa706cfb8d1895aaed135404392b899cea04100",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-8-2-1/data/fixtures/768f903228381943b3f5-5.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 93,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "pcinfokorea-c2-026-f0/restricted-split/L",
+      "sha256": "fa549b78480ca868ad92ebed2cd5feb8d27ac415bf14a59e13829228ab4c463a",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-88-1-1/data/fixtures/206c73989cb424e6603f-2.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 94,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-247/restricted-split/S",
+      "sha256": "680df1809fb114943f55aef2640bc559df284af03f99a3450f7922ec5ab395a4",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-16-1-1/data/fixtures/dd34a168d97e2b0364a0-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 95,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-267/restricted-split/T",
+      "sha256": "fe6eabf522f541a6186c159f30636b95628b3198e7f0712d3f90bc8122103a92",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-4-1-1/fixtures/dfb1ea29725d4607e09013b4-0.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 96,
+      "stratum": "tiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-011/restricted-split/L",
+      "sha256": "6a9c56ce4bd9cc1ceb079097cb3fce8c822a732b1acdd29efbceda69d6b1dfe6",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-95-0-1/data/fixtures/055faded2cf06f8055b4-2.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 97,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-301/restricted-split/T",
+      "sha256": "ffc605eb9585413e7ada54e465dd999918b659e83985b4c2981bec1a43e9a4a0",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-25-3-1/data/fixtures/ab043387a4cd4d14bf6f-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 98,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-alt-shoes-a/restricted-split/S",
+      "sha256": "a07b6c2e43c5b1afd95c6e2499fa6d77f3f774ef957bd1d2f23b96571a7b847a",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-5-0-1/data/fixtures/e2c2488bbd337239725a-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 99,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-034/bag-plus-next-draw/O",
+      "sha256": "f6cbdfdd096e5df1ec13a4eb35bf37948739e924c5146f9c58d4c86c1fcbc27e",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-64-3-1/data/fixtures/af17574d0ea343701d16-6.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 100,
+      "stratum": "high-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "c7-2plus2-qb-row-020/restricted-split/S",
+      "sha256": "0be9d904a359ea96f2bd5c66efca79128580f3b25ab804b62eee889705218615",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-80-2-1/data/fixtures/dd62dfe6bd5115d99551-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 101,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-127/restricted-split/T",
+      "sha256": "8f87f6d74a43c9e1a02d41396ae7be2dd073a96269d1f6cd1705fba135caf052",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-102-1-1/data/fixtures/25ae19abbaed01053615-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 102,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-339/restricted-split/O",
+      "sha256": "ed4f689ce66b8cb03ae22c5446db3675d536bde0311fc3333759d9b204eb9984",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-55-2-1/data/fixtures/4a40803d6e6900a34d51-6.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 103,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-013/bag/Z",
+      "sha256": "c09b0372892860c4ab3f078db3969d22d17fe4fd3c83f4d405b954c1a2c5e8af",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-21-0-1/data/fixtures/687d813b47ce161abc6b-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 104,
+      "stratum": "tiny/bag"
+    },
+    {
+      "id": "c7-2plus2-qb-row-297/restricted-split/S",
+      "sha256": "dfe93a5659f79b75a0f9677ed0a9dfa7336f2233edb44757f69abe720d77ad2f",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-38-3-1/data/fixtures/fd3109432710fe770ccf-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 105,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-026/restricted-split/T",
+      "sha256": "6be630154195957907cb7f6d7c309c13c83af6f761ac9f2d8935e58a523f16e0",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-11-3-1/data/fixtures/3c9a38e875ee422724b0-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 106,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-022/restricted-split/T",
+      "sha256": "393c1fdc5c990a62d6a9c01aadab9a49c66c988abe6a8b90bce028a1eb1868fb",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-3-3-1/data/fixtures/2fc82b82ebea35b3468b-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 107,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-039/bag-plus-next-draw/J",
+      "sha256": "76678be7aa6cec863265f4840716bd00035befda1a59e020bbc9efc6a7eb0c34",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-94-3-1/data/fixtures/4832ebe2d32791fae180-3.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 108,
+      "stratum": "low-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "pcinfokorea-c2-021/bag-plus-next-draw/S",
+      "sha256": "e13ff5ee2ab0221a2039c5c4d01acc68010acb524d5f06d23ea7ab498d3e284a",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-38-0-1/data/fixtures/5c2fc3f2c72b75e4a520-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 109,
+      "stratum": "mid-d-nontiny/bag-plus-next-draw"
+    },
+    {
+      "id": "c7-2plus2-qb-row-305/restricted-split/I",
+      "sha256": "996876862a1c716d7800ac3c1c3c83fd902cad0a984e94fd111002601fa8b959",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-50-1-1/data/fixtures/559c4e827a3deafc79f4-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 110,
+      "stratum": "tiny/restricted-split"
+    },
+    {
+      "id": "cycle1-pcinfo-013/restricted-split/T",
+      "sha256": "fa310dbe9b4ced0a4fa557bb892ca5c342e413a95177ab3b80b1924fc5627af9",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-84-1-1/data/fixtures/dce41d4424655a020af8-0.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 111,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-278/restricted-split/T",
+      "sha256": "e2f1cdb26dbc87ae232471a672b2fe6ae5437df816b036b14f5cb349939d71a7",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-31-0-1/fixtures/87bfd286b94b73b2f82e63d9-0.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 112,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-203/restricted-split/S",
+      "sha256": "41c22a092654da4d890e9a9a0b55d489a340e8b1b67eb6b71ade09dfcb877134",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-27-3-1/data/fixtures/e6b1fca57b296775b7dd-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 113,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-067/restricted-split/Z",
+      "sha256": "c97db6577c086aca90d45389249b9200db4c7315c713b20d5dcc7fa44474e0cc",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-7-0-1/fixtures/71d7c8168b17df279bdb9e48-5.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 114,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-114/restricted-split/I",
+      "sha256": "864ae3c691bc10416fd0a25f6a7e53f5f6845fe5d7b8e9b027ecf1147e2d03e0",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-7-1-1/data/fixtures/00eb57a4e813e200a2b2-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 115,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-077/restricted-split/O",
+      "sha256": "3fe270843e4209a6d3d959bb82fe96d139142171d75342edec4621c8ab109ac2",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-2-3-1/data/fixtures/fb919f86f6834b62a5e6-6.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 116,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-195/restricted-split/L",
+      "sha256": "3b65389845e7be9fc41f92ea9a705a856faa56cf8f7c27e8bbe14b25207687b7",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-15-2-1/fixtures/37b5ad33f140b48c7ea0eb03-2.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 117,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-079/restricted-split/S",
+      "sha256": "0a74ac904c6fcd393ec344ce8df887516e832e9af4cb7e21b4ba439559bcf252",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-77-2-1/data/fixtures/5471b055a3c9ea2b92f3-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 118,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-015/restricted-split/I",
+      "sha256": "4ee38402e1d0a6892026c28fb8d4e419be98cd54187c509f2d7795af93a1e69f",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-20-2-1/data/fixtures/d1ede5d538fd5cb6782d-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 119,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-309/restricted-split/L",
+      "sha256": "fb7b7b9f9c3584c611b1199d77afd4eb29dee3d282049d3004ee904a6bb88f2d",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-28-3-1/data/fixtures/bee7160642362615f03b-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 120,
+      "stratum": "tiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-115/restricted-split/S",
+      "sha256": "a3bc1d2a547a47cac972d060897540ba84d2c322dd1e1a56a7c3db7e00749108",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-73-3-1/data/fixtures/4b5244f0a04e8e4c0384-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 121,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-092/restricted-split/Z",
+      "sha256": "00f92400568cc54ab0e9b8edad76257f722bd4457b1c5585437dee73d85bb50f",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-82-1-1/data/fixtures/8948b2111daae88f4b2e-5.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 122,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-216/restricted-split/Z",
+      "sha256": "d49c2208732d491e6c40422b385337367b8eedff4e25d868dff2c6fe349c1484",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-33-0-1/fixtures/dc982a7be9a3e2897ad3472d-5.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 123,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-323/restricted-split/S",
+      "sha256": "ca0a3b55a301ef0c938a0d3286932ee27c00709786115454e7f013ace1beaede",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-62-3-1/data/fixtures/fd0346b6c929fefe69fc-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 124,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-325/restricted-split/I",
+      "sha256": "1f77410c427268233bca3b86d29815aa8b1e4dfa18f45033739c02c08e81060e",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-35-2-1/data/fixtures/1a03a1a9f05feae9c513-1.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "STRUCTURAL_MAXIMIN",
+      "selectionRank": 125,
+      "stratum": "mid-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-294/restricted-split/J",
+      "sha256": "5cb6a87a37c5e5e01c1ce29be092f23ad1aa4300e58f6bcac84968725cf23a02",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-74-1-1/data/fixtures/f83bf21beb790ecaa4d0-3.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 126,
+      "stratum": "high-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-280/restricted-split/S",
+      "sha256": "68178025f2af3b8bb41a25011092c54c27c0dc4fb9e6c491318f72f3c50d66a5",
+      "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-102-2-1/data/fixtures/23a3d804fda1fa1bd5ff-4.json",
+      "captureRunId": "37222172267",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 127,
+      "stratum": "low-d-nontiny/restricted-split"
+    },
+    {
+      "id": "c7-2plus2-qb-row-219/restricted-split/I",
+      "sha256": "64d9b9d851ed60d4cfc1a7501f32c110cd6190548b54d96ca09ea6f25bba99c7",
+      "originalFile": "benchmark-results/followup-F-37280034657/archive/followup-results-capture-32-1-1/fixtures/431b80583c7dca5945bb719c-1.json",
+      "captureRunId": "37280034657",
+      "selectionReason": "HASH_BREADTH",
+      "selectionRank": 128,
+      "stratum": "mid-d-nontiny/restricted-split"
+    }
+  ]
+}
