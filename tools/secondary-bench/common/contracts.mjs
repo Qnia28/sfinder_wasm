@@ -4,6 +4,10 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 
 export const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
+export function artifactDigest(value) {
+  assert(typeof value === 'string' && /^(sha256:)?[a-f0-9]{64}$/.test(value), 'artifact SHA256 required');
+  return value.startsWith('sha256:') ? value : 'sha256:' + value;
+}
 export function canonical(value) {
   if (value === null || typeof value === 'boolean' || typeof value === 'string') return JSON.stringify(value);
   if (typeof value === 'number') { assert(Number.isFinite(value), 'nonfinite canonical number'); return JSON.stringify(value); }

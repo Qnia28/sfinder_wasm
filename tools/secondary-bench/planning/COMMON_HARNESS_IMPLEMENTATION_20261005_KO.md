@@ -36,3 +36,10 @@
 - 게시 전 로컬: 기존77개 + 공통21개 = **98/98 PASS**. 공통 테스트에는 실제 세 엔진의 소형 합성 fixture 실행과 실제 Bash clock 검사가 포함된다.
 - 신규4개workflow actionlint 통과(shellcheck/pyflakes 비활성). runtime Bash는 별도 실제 실행 검사로 보완했다.
 - 원격 run/artifact/archive 및 최종 관문은 원격 검증 뒤 아래에 기록한다. 미기입은 원격 PASS를 뜻하지 않는다.
+
+### 첫 원격 smoke의 경계 오류
+
+- 준비 preflight `37299660129` 성공.
+- 합성 smoke `37299789888`: 공통21개계약·실제Linux OOM계약 성공 후 activate에서 config digest 표기를 거부했다. 측정 stage는 전부 skip, dataset 호출0.
+- 원인: `actions/upload-artifact`의 bare SHA256 출력과 backend의 `sha256:` 표기를 동일하게 처리하지 못함.
+- 공통 `artifactDigest` 경계 정규화와 두 표기/잘못된 digest 회귀 검사를 추가했다. 실패run 및 진단artifact `11341330936`은 보존한다. 이 실패를 측정PASS로 취급하지 않는다.

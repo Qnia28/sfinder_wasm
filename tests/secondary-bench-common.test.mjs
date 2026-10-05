@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { execFileSync } from 'node:child_process';
-import { canonical, digest, sha256, writeJson, readJson, sourceBytes, STAGES, filesUnder } from '../tools/secondary-bench/common/contracts.mjs';
+import { canonical, digest, sha256, writeJson, readJson, sourceBytes, STAGES, filesUnder, artifactDigest } from '../tools/secondary-bench/common/contracts.mjs';
 import { resolveManifest, activate, PROFILE, validateLock, conditionHash } from '../tools/secondary-bench/common/manifest.mjs';
 import { FOLLOWUP_JOB, capacity, packTasks, worstCall, admitted, validateLaunchGroup } from '../tools/secondary-bench/common/budget.mjs';
 import { selection, engineSchedule, additionalDecision } from '../tools/secondary-bench/common/policies.mjs';
@@ -69,6 +69,10 @@ test('canonical hash recursively sorts keys; rejects non-JSON/nonfinite values',
   assert.equal(digest({ b: 2, a: { z: 3, a: 1 } }), digest({ a: { a: 1, z: 3 }, b: 2 }));
   assert.notEqual(digest([1, 2]), digest([2, 1]));
   for (const value of [undefined, NaN, Infinity, new Date(), { a: undefined }]) assert.throws(() => canonical(value));
+});
+test('Actions upload outputs and backend inventories normalize to the same artifact digest', () => {
+  const sha = 'a'.repeat(64); assert.equal(artifactDigest(sha), 'sha256:' + sha); assert.equal(artifactDigest('sha256:' + sha), artifactDigest(sha));
+  for (const bad of ['', undefined, 'md5:' + sha, 'sha256:' + sha + 'a', 'A'.repeat(64)]) assert.throws(() => artifactDigest(bad));
 });
 test('strict resolved manifest rejects unsupported lifecycle, fields, limits and primary-thread override', t => {
   const m = manifest(temporary(t)); assert.equal(capacity(m.budget.job), 104 * 60000);

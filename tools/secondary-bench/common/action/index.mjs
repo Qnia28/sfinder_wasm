@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { readJson, writeJson, filesUnder, digest, safePath, sha256, strict } from '../contracts.mjs';
+import { readJson, writeJson, filesUnder, digest, safePath, sha256, strict, artifactDigest } from '../contracts.mjs';
 import { activate, validateLock } from '../manifest.mjs';
 import { planStage } from '../planner.mjs';
 import { runChunk } from '../executor.mjs';
@@ -22,7 +22,7 @@ async function upload(name, directory, ms = 180000) {
   return deadlineClient(client, ms).uploadArtifact(name, filesUnder(directory), path.resolve(directory), { retentionDays: 30 });
 }
 async function download(directory, id = Number(process.env['INPUT_ARTIFACT-ID']), hash = process.env.INPUT_DIGEST) {
-  assert(Number.isSafeInteger(id) && id > 0 && /^sha256:[a-f0-9]{64}$/.test(hash));
+  assert(Number.isSafeInteger(id) && id > 0); hash = artifactDigest(hash);
   const staging = directory + '-zip'; fs.mkdirSync(staging);
   const result = await client.downloadArtifact(id, { path: path.resolve(staging), expectedHash: hash, skipDecompress: true });
   assert(!result.digestMismatch, 'payload hash mismatch');
