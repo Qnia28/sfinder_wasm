@@ -49,12 +49,16 @@ export function reportCampaign(plan, historyDir) {
   const repeatLedger = [];
   for (const fixture of selection.selected) for (const engine of ENGINES) {
     const attempts = secondary.filter(r => r.inputId === fixture.id && r.engine === engine && r.execution).sort((a, b) => a.repeat - b.repeat);
+    const blocks = Array.from({ length: policy.maxRepeats / policy.repeatStep }, (_, i) => (i + 1) * policy.repeatStep)
+      .map(endRepeat => {
+        const block = attempts.filter(r => r.repeat > endRepeat - policy.repeatStep && r.repeat <= endRepeat);
+        return { endRepeat, attempts: block.length, complete: block.length === policy.repeatStep,
+          runnerIds: [...new Set(block.map(r => r.runnerId))] };
+      }).filter(block => block.attempts);
     repeatLedger.push({ inputId: fixture.id, engine, attempts: attempts.length, repeats: attempts.map(r => r.repeat), statuses: attempts.map(r => r.status),
       runnerIds: [...new Set(attempts.map(r => r.runnerId))],
-      sameRunnerPerPair: Array.from({ length: policy.maxRepeats / policy.repeatStep }, (_, i) => (i + 1) * policy.repeatStep).filter(n => attempts.some(r => r.repeat === n)).every(n => {
-        const pair = attempts.filter(r => r.repeat > n - policy.repeatStep && r.repeat <= n);
-        return pair.length === policy.repeatStep && new Set(pair.map(r => r.runnerId)).size === 1;
-      }) });
+      blocks, allRecordedBlocksSingleRunner: blocks.every(block => block.runnerIds.length === 1),
+      sameRunnerPerPair: blocks.every(block => block.complete && block.runnerIds.length === 1) });
   }
   const expectedCapture = new Set(plan.commands.map(c => c.id));
   const captureMissing = plan.reuseCaptureSummary && reusedFiles.length && !captureRows.length

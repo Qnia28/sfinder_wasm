@@ -80,3 +80,22 @@ Job hard60분, task scope hard10분, task step11분·artifact2분. 계획상4 ta
 복구run은원5분launch의origin `2026-10-04T18:44:56Z`를보존한다. 교정시간도6h예산에포함하며재시계시작을하지않는다. 최초run의막힌추가반복을완료했다고주장하지않고실제로기록된반복수/선별오류를최종보고에명시한다. 첫run원raw시간을새값으로교체하지않는다.
 
 `artifact-action`은측정도구전용MIT `@actions/artifact6.2.1`과lockfile을사용하며제품package/source/WASM을변경하지않는다. SDK는custom Node24 action으로실행해backend runtime-token을획득한다. 설치디렉터리node_modules는git/source lock에서제외된다.
+
+## 완료된 통합 보고서
+
+- 보고서: [`planning/FINAL_COMBINED_REPORT_KO.md`](planning/FINAL_COMBINED_REPORT_KO.md)
+- 단일 JSON 부록: [`planning/FINAL_COMBINED_REPORT.json`](planning/FINAL_COMBINED_REPORT.json)
+- 60초 run `37222172267`: 실제 secondary 5,298회 / exact 5,118 / timeout 180. capture 440명령 모두 완료, 기본 누락0. 추가 선별의 artifact1000 제한은 보고서에 별도 명시했다.
+- 300초 복구 run `37226653891`: 실제 secondary 16,244회 / exact15,976 / timeout253 / OOM15. OOM 뒤 격리로 기본236회 미실행. 20회에 도달한 engine×fixture 조건798개.
+- 합계21,542회/원 가중치 witness 검산21,094회. 두 run의 선택 ID·quality hash 불일치0, 저장 raw 교체0. 60초 전부-timeout→300초 exact9조건.
+- 후속 origin18:44:56Z 보존/종료23:26:01Z, 4h41m05s. 두 run 동시 job 최대16, 후속 최장 job120m19s<160분hard<6h.
+- 제품 라우팅 변경/성능 PASS는 없다. 시간 표본은60초/300초, 기본/추가를 분리했고 timeout/OOM/미실행은 exact 시간에 넣지 않았다.
+- 현재 보류55그룹은52노출가능/3미확인이다. fresh 후보 검증에는 추가 미노출 setup/fumen 출처가 필요하다.
+
+오프라인 재생성(저장해 둔 전체 result history 및 wave plan 필요):
+
+1. `audit-campaign-execution.mjs <campaign.json> <full-history> <all-wave-plans> <immutable-commit> <새 audit.json>`: source bytes·원계획·clock·메모리/runner·censored 상태 감사. solver 호출 없음.
+2. `combined-report.mjs <첫 plan> <첫 history> <후속 plan> <후속 history> <새 combined.json> <새 combined.md> <notes.json>`: fixture/product 계약 동일성 및 모든 exact witness 재계산, 조건별·기본반복 matched 비교.
+3. `publish-combined-report.mjs <첫 campaign-root> <후속 campaign-root> <새 출력 directory>`: `COMBINED_REPORT_FINAL.json`·download digest·실행 감사·VM 감사·노출 summary를 검증하여 최종 문서/JSON을 생성.
+
+산출물은 기존 파일을 덮어쓰지 않으므로 재생성은 새 출력 directory를 사용한다. `information-analysis.mjs`는 완료된 최초 기본 반복에만 matched ratio를 계산하며 격리된 다른 엔진을 loser로 세지 않는다. 로컬 계약·제품 회귀52/52 및 actionlint1.7.12 통과(성능 측정 아님).

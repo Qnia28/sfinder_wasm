@@ -10,6 +10,8 @@ import { loadHistory, chooseFixtures, planWave } from '../tools/secondary-bench/
 import { requireLinuxMemoryScope } from '../tools/secondary-bench/run.mjs';
 import { reportCampaign } from '../tools/secondary-bench/report-campaign.mjs';
 import { combineReports, combinedMarkdown } from '../tools/secondary-bench/combined-report.mjs';
+import { analyzeInformation } from '../tools/secondary-bench/information-analysis.mjs';
+import { auditExecution } from '../tools/secondary-bench/audit-campaign-execution.mjs';
 
 const command = () => ({ id: 'synthetic/queue', kind: 'per-save', family: 'bag', sourceFumen: 'not-enumerated-in-this-test',
   clear: 4, pattern: '*!', useHold: true, primary: 'auto', piecesNeeded: 6, queueLength: 7, savedPieceCount: 1, exactHumanQuality: 'true' });
@@ -219,7 +221,37 @@ test('combined report audits both runs with identical fixtures and NEVER pools60
     assert.equal(report.audit.second.witnessAudit, 'PASS_FOR_RECORDED_EXACT_RESULTS');
     assert.equal(report.audit.crossRunWitness, 'AGREEMENT_FOR_RECORDED_EXACT_WITNESSES');
     assert.equal(report.audit.second.missingInitial.length, 0);
+    assert.equal(report.first.populations.initial.attempts, 6);
+    assert.equal(report.second.populations.initial.attempts, 12);
+    assert.equal(report.second.populations.additional.attempts, 0);
+    assert.equal(report.second.populations.additional.engines[0].medianOfConditionMediansMs, null);
     assert(combinedMarkdown(report).includes('서로 다른 timeout의 시간 표본은 합쳐서'));
+    const extendedRows = calls(q, 4, 20);
+    const extraRows = roundTasks(q, [fixture], extendedRows, 8, start).tasks[0].calls.map(call =>
+      ({ ...structuredClone(extendedRows.find(row => row.engine === call.engine)), ...call, ms: 40,
+        execution: { ...extendedRows.find(row => row.engine === call.engine).execution,
+          result: { ...extendedRows.find(row => row.engine === call.engine).execution.result, responseMs: 40 } } }));
+    fs.writeFileSync(path.join(secondHistory, 'raw.jsonl'), [...extendedRows, ...extraRows].map(JSON.stringify).join('\n') + '\n');
+    const withExtra = combineReports(path.join(firstDir, 'campaign.json'), firstHistory, path.join(secondDir, 'campaign.json'), secondHistory,
+      { collectionNotes: ['Synthetic harness interruption record, not a solver loss.'] });
+    assert.equal(withExtra.second.populations.additional.attempts, 12);
+    assert.equal(withExtra.second.populations.initial.engines[0].medianOfConditionMediansMs, 20);
+    assert.equal(withExtra.second.populations.additional.engines[0].medianOfConditionMediansMs, 40);
+    assert(combinedMarkdown(withExtra).includes('Synthetic harness interruption'));
+    extendedRows[0].execution.result.verified.selected = [0];
+    fs.writeFileSync(path.join(secondHistory, 'raw.jsonl'), extendedRows.map(JSON.stringify).join('\n') + '\n');
+    const corrupt = combineReports(path.join(firstDir, 'campaign.json'), firstHistory, path.join(secondDir, 'campaign.json'), secondHistory);
+    assert.equal(corrupt.audit.second.witnessAudit, 'FAIL');
+    assert.equal(corrupt.audit.crossRunWitness, 'FAIL');
+    extendedRows[0].execution.result.verified = verifyResult(f, extendedRows[0].execution.result.result, { engine: extendedRows[0].engine });
+    fs.writeFileSync(path.join(secondHistory, 'raw.jsonl'), JSON.stringify(extendedRows[0]) + '\n');
+    const partial = combineReports(path.join(firstDir, 'campaign.json'), firstHistory, path.join(secondDir, 'campaign.json'), secondHistory);
+    const partialLedger = partial.audit.second.repeatLedger.find(row => row.engine === extendedRows[0].engine);
+    assert.equal(partialLedger.sameRunnerPerPair, false);
+    assert.equal(partialLedger.allRecordedBlocksSingleRunner, true);
+    assert.equal(partialLedger.blocks[0].complete, false);
+    fs.writeFileSync(path.join(secondDir, 'campaign.json'), JSON.stringify({ ...q, scheduleSeed: 'changed' }));
+    assert.throws(() => combineReports(path.join(firstDir, 'campaign.json'), firstHistory, path.join(secondDir, 'campaign.json'), secondHistory), /schedule seed changed/);
   } finally { removeOwned(root); }
 });
 test('extended offline wave reuses only hash-locked first-run fixtures and schedules4/8/12/16/20', () => {
@@ -239,6 +271,53 @@ test('extended offline wave reuses only hash-locked first-run fixtures and sched
     writeJson(path.join(root, 'invalid.json'), invalid);
     assert.throws(() => planWave(path.join(root, 'invalid.json'), history, path.join(root, 'invalid-bundle'), '4', start), /exactly the first-run frozen matrices/);
     assert.throws(() => planWave(planFile, history, path.join(root, 'wrong-round'), '6', start));
+  } finally { removeOwned(root); }
+});
+test('matched initial analysis excludes adaptive samples, censoring, OOM and incomplete repetitions from ratios', () => {
+  const p = plan(), fixtures = ['one', 'two', 'three'].map(id => ({ id, family: 'bag' }));
+  const raw = [];
+  const add = (inputId, engine, repeat, status, ms) => raw.push({ action: 'secondary', inputId, engine, repeat, status, ms, execution: {} });
+  for (const repeat of [1, 2]) {
+    add('one', 'integrated', repeat, 'EXACT', 10);
+    add('one', 'threshold', repeat, 'EXACT', 20);
+    add('one', 'cpsat', repeat, 'EXACT', 100);
+    add('two', 'threshold', repeat, 'EXACT', 5);
+    add('two', 'cpsat', repeat, 'EXACT', 10);
+    add('three', 'integrated', repeat, 'TIMEOUT_CALL', null);
+  }
+  add('one', 'integrated', 3, 'EXACT', 9999);
+  add('two', 'integrated', 1, 'OOM', null);
+  add('three', 'threshold', 1, 'EXACT', 1);
+  const report = analyzeInformation(p, raw, fixtures);
+  assert.equal(report.allThreeCompleteInitial, 1);
+  assert.equal(report.pairs[0].matchedCompleteInitial, 1);
+  assert.equal(report.pairs[0].medianRatio, 2);
+  assert.equal(report.pairs[2].matchedCompleteInitial, 2);
+  assert.equal(report.pairs[2].medianRatio, 3.5);
+  assert.equal(report.matchedAllThreeEngineSummary[0].medianMs, 10);
+  assert.equal(report.fastestCounts.integrated, 1);
+  assert.equal(report.fixtureData[1].engines.integrated.completeExactInitial, false);
+});
+test('execution audit checks durable plans, uncapped clock and censored states without solver calls', () => {
+  const root = temporary(), history = path.join(root, 'history'), wave = path.join(root, 'wave'), p = plan();
+  fs.mkdirSync(history); fs.mkdirSync(wave);
+  writeJson(path.join(wave, 'WAVE_PLAN.json'), { campaignId: p.campaignId, stage: 'capture',
+    plannedUtc: new Date(start).toISOString(), elapsedMs: 0, maxParallel: 16, chunks: 1, calls: 1, tasks: 1, historyRows: 0 });
+  writeJson(path.join(wave, 'chunk-0.json'), { id: 0, campaignId: p.campaignId, sourceLock: identity(p.sourceFiles),
+    worstMs: worstCallMs(p.captureLimits), tasks: [{ action: 'capture', id: 'capture-id', command: command(), worstMs: worstCallMs(p.captureLimits) }] });
+  const raw = { action: 'capture', campaignId: p.campaignId, sourceLock: identity(p.sourceFiles), chunkId: 0,
+    stage: 'capture', callId: 'capture-id', inputId: command().id, status: 'TIMEOUT_CALL', ms: null, execution: {} };
+  try {
+    fs.writeFileSync(path.join(history, 'raw.jsonl'), JSON.stringify(raw) + '\n');
+    const report = auditExecution(p, history, wave);
+    assert.equal(report.provenanceScheduleSafety, 'PASS_FOR_RECORDED_FILES');
+    assert.equal(report.missingPlannedRaw.length, 0);
+    fs.writeFileSync(path.join(history, 'raw.jsonl'), JSON.stringify({ ...raw, ms: 60000 }) + '\n');
+    assert.equal(auditExecution(p, history, wave).provenanceScheduleSafety, 'REVIEW_REQUIRED');
+    fs.writeFileSync(path.join(history, 'raw.jsonl'), JSON.stringify({ ...raw, callId: 'not-planned' }) + '\n');
+    const forged = auditExecution(p, history, wave);
+    assert.equal(forged.provenanceScheduleSafety, 'REVIEW_REQUIRED');
+    assert.equal(forged.missingPlannedRaw.length, 1);
   } finally { removeOwned(root); }
 });
 if (process.env.SECONDARY_LINUX_SCOPE_EXPECTED === '1') test('real public Linux process-tree cgroup is finite and swap-free', () => {
