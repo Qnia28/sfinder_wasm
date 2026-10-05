@@ -1,0 +1,43 @@
+name: Secondary common manual launch
+on:
+  workflow_dispatch:
+    inputs:
+      manifest:
+        description: Approved manifest or launch-group JSON (campaigns and vmCap)
+        required: true
+        type: string
+      confirm:
+        description: Type RUN_COMMON_HARNESS
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: secondary-common-launch
+  cancel-in-progress: false
+jobs:
+  allocation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      matrix: ${{ steps.group.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: group
+        uses: ./tools/secondary-bench/common/runtime-action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: launch-plan
+          manifest: ${{ inputs.manifest }}
+          confirm: ${{ inputs.confirm }}
+  campaign:
+    needs: allocation
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.allocation.outputs.matrix) }}
+    uses: ./.github/workflows/secondary-bench-common-campaign.yml
+    with:
+      manifest: ${{ matrix.manifest }}
+      confirm: ${{ inputs.confirm }}

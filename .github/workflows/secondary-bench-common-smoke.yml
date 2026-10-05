@@ -1,0 +1,52 @@
+name: Secondary common synthetic smoke
+on:
+  push:
+    branches: [experiment/secondary-routing-20261005]
+    paths: [.github/secondary-common/SMOKE_START.json]
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: Type RUN_COMMON_HARNESS (synthetic only)
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: secondary-common-launch
+  cancel-in-progress: false
+jobs:
+  contracts:
+    if: github.event_name == 'push' || inputs.confirm == 'RUN_COMMON_HARNESS'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      artifact-id: ${{ steps.bundle.outputs.artifact-id }}
+      digest: ${{ steps.bundle.outputs.artifact-digest }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Offline common contracts and synthetic fault injection
+        run: node --experimental-wasm-stack-switching --test-isolation=none --test-concurrency=1 --test tests/secondary-bench-common.test.mjs
+      - name: Real Linux OOM containment (no setup measurements)
+        env:
+          FOLLOWUP_LINUX_SCOPE_EXPECTED: '1'
+        run: node --experimental-wasm-stack-switching --test-isolation=none --test-concurrency=1 --test tests/secondary-bench-followup.test.mjs
+      - run: node tools/secondary-bench/common/recipes/smoke.mjs common-smoke
+      - id: bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: common-smoke-manifest
+          path: common-smoke
+          retention-days: 30
+  campaign:
+    needs: contracts
+    uses: ./.github/workflows/secondary-bench-common-campaign.yml
+    with:
+      manifest: common-smoke/MANIFEST.json
+      confirm: ${{ inputs.confirm || 'RUN_COMMON_HARNESS' }}
+      config-artifact-id: ${{ needs.contracts.outputs.artifact-id }}
+      config-digest: ${{ needs.contracts.outputs.digest }}

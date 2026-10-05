@@ -1,0 +1,71 @@
+name: Prepare and invoke common benchmark operation
+description: Shared runtime preparation, independent from experiment configuration
+inputs:
+  mode:
+    required: true
+    description: Native operation
+  manifest:
+    required: false
+    description: Authored manifest path
+  confirm:
+    required: false
+    description: Explicit execution confirmation
+  stage:
+    required: false
+    description: Stage identifier
+  artifact-id:
+    required: false
+    description: Immutable backend ID
+  digest:
+    required: false
+    description: SHA256
+  job-started-ms:
+    required: false
+    description: Pre-checkout job clock
+  config-artifact-id:
+    required: false
+    description: Optional manifest bundle ID
+  config-digest:
+    required: false
+    description: Optional manifest bundle hash
+outputs:
+  artifact-id:
+    description: Activation lock backend ID
+    value: ${{ steps.native.outputs.artifact-id }}
+  digest:
+    description: Activation lock SHA256
+    value: ${{ steps.native.outputs.digest }}
+  matrix:
+    description: Frozen chunk matrix
+    value: ${{ steps.native.outputs.matrix }}
+  has-work:
+    description: Nonempty planned stage
+    value: ${{ steps.native.outputs.has-work }}
+  max-parallel:
+    description: Validated VM allocation
+    value: ${{ steps.native.outputs.max-parallel }}
+  job-minutes:
+    description: Validated hard job deadline
+    value: ${{ steps.native.outputs.job-minutes }}
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 24.13.0
+    - run: npm ci --ignore-scripts --no-audit --no-fund
+      shell: bash
+    - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      shell: bash
+    - id: native
+      uses: ./tools/secondary-bench/common/action
+      with:
+        mode: ${{ inputs.mode }}
+        manifest: ${{ inputs.manifest }}
+        confirm: ${{ inputs.confirm }}
+        stage: ${{ inputs.stage }}
+        artifact-id: ${{ inputs.artifact-id }}
+        digest: ${{ inputs.digest }}
+        job-started-ms: ${{ inputs.job-started-ms }}
+        config-artifact-id: ${{ inputs.config-artifact-id }}
+        config-digest: ${{ inputs.config-digest }}

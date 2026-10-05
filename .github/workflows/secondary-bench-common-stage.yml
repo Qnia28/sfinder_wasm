@@ -1,0 +1,58 @@
+name: Secondary common bounded stage
+on:
+  workflow_call:
+    inputs:
+      stage:
+        required: true
+        type: string
+      artifact-id:
+        required: true
+        type: string
+      digest:
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      has-work: ${{ steps.plan.outputs.has-work }}
+      max-parallel: ${{ steps.plan.outputs.max-parallel }}
+      job-minutes: ${{ steps.plan.outputs.job-minutes }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: plan
+        uses: ./tools/secondary-bench/common/runtime-action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: plan
+          stage: ${{ inputs.stage }}
+          artifact-id: ${{ inputs.artifact-id }}
+          digest: ${{ inputs.digest }}
+  run:
+    needs: plan
+    if: needs.plan.outputs.has-work == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ fromJSON(needs.plan.outputs.job-minutes) }}
+    strategy:
+      fail-fast: false
+      max-parallel: ${{ fromJSON(needs.plan.outputs.max-parallel) }}
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - id: clock
+        run: echo "started=$(node -p 'Date.now()')" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/common/runtime-action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: run
+          stage: ${{ inputs.stage }}
+          artifact-id: ${{ matrix.artifactId }}
+          digest: ${{ matrix.digest }}
+          job-started-ms: ${{ steps.clock.outputs.started }}

@@ -1,0 +1,33 @@
+name: Common benchmark operation
+description: Native manifest-driven planner, executor, transport and auditor
+inputs:
+  mode:
+    description: activate, plan, run or audit
+    required: true
+  manifest:
+    description: Repository-relative approved manifest
+    required: false
+  confirm:
+    description: Explicit RUN_COMMON_HARNESS confirmation
+    required: false
+  stage:
+    description: Registered stage
+    required: false
+  artifact-id:
+    description: Lock or chunk backend ID
+    required: false
+  digest:
+    description: Lock or chunk SHA256
+    required: false
+  job-started-ms:
+    description: Clock captured before checkout and setup
+    required: false
+  config-artifact-id:
+    description: Optional manifest bundle backend ID
+    required: false
+  config-digest:
+    description: Optional manifest bundle SHA256
+    required: false
+runs:
+  using: node24
+  main: index.mjs

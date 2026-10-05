@@ -1,0 +1,82 @@
+name: Secondary common campaign
+on:
+  workflow_call:
+    inputs:
+      manifest:
+        required: true
+        type: string
+      confirm:
+        required: true
+        type: string
+      config-artifact-id:
+        required: false
+        default: ''
+        type: string
+      config-digest:
+        required: false
+        default: ''
+        type: string
+permissions:
+  contents: read
+  actions: read
+jobs:
+  activate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      artifact-id: ${{ steps.activate.outputs.artifact-id }}
+      digest: ${{ steps.activate.outputs.digest }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: activate
+        uses: ./tools/secondary-bench/common/runtime-action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: activate
+          manifest: ${{ inputs.manifest }}
+          confirm: ${{ inputs.confirm }}
+          config-artifact-id: ${{ inputs.config-artifact-id }}
+          config-digest: ${{ inputs.config-digest }}
+  preflight:
+    needs: activate
+    uses: ./.github/workflows/secondary-bench-common-stage.yml
+    with:
+      stage: preflight
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  acquire:
+    needs: [activate, preflight]
+    uses: ./.github/workflows/secondary-bench-common-stage.yml
+    with:
+      stage: acquire
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  initial:
+    needs: [activate, acquire]
+    uses: ./.github/workflows/secondary-bench-common-stage.yml
+    with:
+      stage: initial
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  additional:
+    needs: [activate, initial]
+    uses: ./.github/workflows/secondary-bench-common-stage.yml
+    with:
+      stage: additional
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  audit:
+    needs: [activate, preflight, acquire, initial, additional]
+    if: always() && needs.activate.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/common/runtime-action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: audit
+          artifact-id: ${{ needs.activate.outputs.artifact-id }}
+          digest: ${{ needs.activate.outputs.digest }}

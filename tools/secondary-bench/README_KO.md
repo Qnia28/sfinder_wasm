@@ -1,5 +1,11 @@
 # Secondary 3엔진 측정 하네스
 
+## 공통 하네스 구현 인계
+
+후속 공통화와 triage 설계·검증 지원의 확정 설계는 [COMMON_HARNESS_DESIGN_20261005_KO.md](planning/COMMON_HARNESS_DESIGN_20261005_KO.md)를 따른다. 공통 실행·저장·복구·감사, 측정 어댑터, 실험 manifest의 경계와 Sol의 단계별 완료 기준을 정의한다. 설계 문서이며 아래 기존 실행본·원자료의 조건을 소급 변경하지 않는다.
+
+공통 실행 기반 구현과 사용 방법은 [common/README_KO.md](common/README_KO.md), 관문·원격 검증 상태는 [COMMON_HARNESS_IMPLEMENTATION_20261005_KO.md](planning/COMMON_HARNESS_IMPLEMENTATION_20261005_KO.md)를 본다. 기존 F/A 실행 경로는 동결본으로 유지한다.
+
 작업 branch: `experiment/secondary-routing-20261005`.
 baseline: `7ef62d18e1d155b6479e00d651c851ff3baa7112`.
 제품 `src/`, Rust, 설치 WASM은 변경하지 않는다. 하네스·DB 복사본만 추가한다.
