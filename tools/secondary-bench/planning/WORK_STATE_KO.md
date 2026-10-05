@@ -1,5 +1,7 @@
 # Sol / Build 준비 상태
 
+> **최신 상태(2026-10-05):** 아래는 초기 준비 단계의 역사 기록이다. 현재는 두 광범위 run과 통합 보고서·raw join까지 완료했고, Astra가 [해석·분류 방향과 누락 작업](ASTRA_ROUTING_DIRECTION_20261005_KO.md)을 결정했다. 다음은 Sol의 S0 데이터/하네스 보완 및 S1 정적 고-d probe 생략 상세안이다. `wave_decisions` export의 engine 누락은 발견됐지만 아직 수정하지 않았다. 새 분류 구현·후속 성능 캠페인은 실행하지 않았다.
+
 2026-10-05. 작업 저장소 `D:/AI/sfinder-wasm/sol/secondary-routing-20261005`.
 branch `experiment/secondary-routing-20261005`, baseline `7ef62d18e1d155b6479e00d651c851ff3baa7112`.
 원본을 `git clone --no-hardlinks`로 독립 복사했으며 원본의 node_modules를 공유하지 않고 `npm.cmd ci`로 설치했다. 새 저장소의 기본 push는 비활성화하고 명시 branch refspec만 설정했다.
