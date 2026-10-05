@@ -1,7 +1,7 @@
 {
   "confirm": "RUN_COMMON_HARNESS",
-  "sourceLock": "bf14ebbd73b6b646db692875883a51a6bdd791e58656bd3e3e556340c292a7fd",
-  "preparedCommit": "024bcd34fcdd0e4f5ff4481eb9cb210cd4c60a4e",
+  "sourceLock": "ecb5f0b6779d5db6e17982b35672e20c0394cfedff39f4bef092013ea81e1ce7",
+  "preparedCommit": "0460391d3df0a6165a307e69f5b5d8f4d903ea07",
   "scope": "Synthetic tiny fixture and contract tests only; no F/A restart or product changes",
   "approval": "User explicitly approved publishing on the experiment branch and remote synthetic smoke validation"
 }
