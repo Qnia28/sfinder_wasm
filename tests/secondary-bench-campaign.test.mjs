@@ -12,6 +12,7 @@ import { reportCampaign } from '../tools/secondary-bench/report-campaign.mjs';
 import { combineReports, combinedMarkdown } from '../tools/secondary-bench/combined-report.mjs';
 import { analyzeInformation } from '../tools/secondary-bench/information-analysis.mjs';
 import { auditExecution } from '../tools/secondary-bench/audit-campaign-execution.mjs';
+import { originalStructure, exportClassifierRaw } from '../tools/secondary-bench/export-classifier-raw.mjs';
 
 const command = () => ({ id: 'synthetic/queue', kind: 'per-save', family: 'bag', sourceFumen: 'not-enumerated-in-this-test',
   clear: 4, pattern: '*!', useHold: true, primary: 'auto', piecesNeeded: 6, queueLength: 7, savedPieceCount: 1, exactHumanQuality: 'true' });
@@ -318,6 +319,57 @@ test('execution audit checks durable plans, uncapped clock and censored states w
     const forged = auditExecution(p, history, wave);
     assert.equal(forged.provenanceScheduleSafety, 'REVIEW_REQUIRED');
     assert.equal(forged.missingPlannedRaw.length, 1);
+  } finally { removeOwned(root); }
+});
+test('raw export computes original-singleton F/d/u, preserves unknown captured F and rejects forged structure', () => {
+  const f = { schema: 1, id: 'all-candidates', keys: ['a', 'b'], K: 2, seed: [0, 1],
+    rows: [[[0, 1], [1, 2]], [[1, 8]]], cardinalityProof: { status: 'PROVEN', backend: 'synthetic' },
+    structure: { candidateCount: 2, count: 2, rowCount: 2, entryCount: 3, forcedCount: null } };
+  const s = originalStructure(f);
+  assert.deepEqual([s.n, s.K, s.R, s.E, s.F, s.d, s.u], [2, 2, 2, 3, 1, 1, 1]);
+  assert.equal(s.capturedF, null); assert.equal(s.capturedD, null);
+  assert.throws(() => originalStructure({ ...f, structure: { ...f.structure, forcedCount: 2 } }), /captured structure differs/);
+});
+test('raw exporter joins fumen/pattern/save and individual calls without pooling or imputing timeout/NOT_RUN', () => {
+  const root = temporary(), firstRoot = path.join(root, 'campaign-1'), secondRoot = path.join(root, 'campaign-2');
+  const c = { ...command(), pattern: '[ILJ]p3,*p4', family: 'restricted-split' };
+  const f = { schema: 1, id: c.id + '/T', keys: ['a', 'b'], rows: [[[0, 1], [1, 2]]], K: 1, seed: [0],
+    cardinalityProof: { status: 'PROVEN', backend: 'synthetic' }, origin: { command: c, filter: 'T' }, trivial: null };
+  const fixtureDir = path.join(firstRoot, 'full-history', 'secondary-results-capture-0-0-1', 'data', 'fixtures');
+  fs.mkdirSync(fixtureDir, { recursive: true }); writeJson(path.join(fixtureDir, 'f.json'), f);
+  const sha = hash(fs.readFileSync(path.join(fixtureDir, 'f.json')));
+  const p = { ...plan(), commands: [c] }, q = { ...extended(), commands: [c], reuseCampaignId: p.campaignId,
+    reuseSourceLock: identity(p.sourceFiles), reusedFixtureLock: [{ id: f.id, sha256: sha }] };
+  try {
+    for (const [directory, planName, p0, stage] of [[firstRoot, 'basic-two-plan', p, '2'], [secondRoot, 'basic-four-plan', q, '4']]) {
+      fs.mkdirSync(path.join(directory, planName), { recursive: true }); writeJson(path.join(directory, planName, 'campaign.json'), p0);
+      fs.mkdirSync(path.join(directory, 'all-wave-plans'), { recursive: true });
+      writeJson(path.join(directory, 'all-wave-plans', 'WAVE_PLAN.json'), { campaignId: p0.campaignId, stage,
+        plannedUtc: p0.originUtc, decisions: [{ inputId: f.id, engine: 'integrated', eligible: true, reason: 'SYNTHETIC', repeats: [1] }] });
+    }
+    const capture = { action: 'capture', campaignId: p.campaignId, sourceLock: identity(p.sourceFiles), inputId: c.id,
+      status: 'CAPTURED', execution: { result: { fixtures: [{ id: f.id }], filters: [{ filter: 'T', status: 'CAPTURED' }] } } };
+    fs.writeFileSync(path.join(path.dirname(fixtureDir), 'raw.jsonl'), JSON.stringify(capture) + '\n');
+    for (const [directory, p0, stage, status, ms] of [[firstRoot, p, '2', 'EXACT', 10], [secondRoot, q, '4', 'TIMEOUT_CALL', null]]) {
+      const dataDir = path.join(directory, 'full-history', 'secondary-results-' + stage + '-0-0-1', 'data'); fs.mkdirSync(dataDir, { recursive: true });
+      const row = { action: 'secondary', campaignId: p0.campaignId, sourceLock: identity(p0.sourceFiles), inputId: f.id,
+        engine: 'integrated', repeat: 1, stage, callId: 'call-1', chunkId: 0, runnerId: 'synthetic', status, ms,
+        condition: { fixtureSha256: sha }, execution: { reaped: true } };
+      const lines = [row]; if (p0 === q) lines.push({ ...row, repeat: 2, callId: 'call-2', status: 'NOT_RUN_CANCELLED', ms: null, execution: undefined });
+      fs.writeFileSync(path.join(dataDir, 'raw.jsonl'), lines.map(JSON.stringify).join('\n') + '\n');
+    }
+    const db = path.join(root, 'db'); fs.mkdirSync(db);
+    const out = path.join(root, 'export'); const manifest = exportClassifierRaw(firstRoot, secondRoot, out, { databaseDir: db });
+    assert.equal(manifest.allCapturedFixtures, 1); assert.equal(manifest.selectedFixtures, 1);
+    const calls = fs.readFileSync(path.join(out, 'calls.jsonl'), 'utf8').trim().split('\n').map(JSON.parse);
+    assert.equal(calls.length, 3); assert(calls.every(r => r.fumen === c.sourceFumen && r.pattern === c.pattern && r.save === 'T'));
+    assert.deepEqual(calls.map(r => r.timeoutMs), [60000, 300000, 300000]);
+    assert.deepEqual(calls.map(r => r.ms), [10, null, null]); assert.equal(calls[2].executed, false);
+    assert(calls.every(r => r.n === 2 && r.K === 1 && r.E === 2 && r.F === 0 && r.d === 1 && r.u === 2));
+    assert(calls.every(r => r.rawLine >= 1 && r.fixtureSha256 === sha));
+    assert(fs.readFileSync(path.join(out, 'calls.csv'), 'utf8').includes('"[ILJ]p3,*p4"'));
+    assert.equal(manifest.runs['1'].executed, 1); assert.equal(manifest.runs['2'].executed, 1); assert.equal(manifest.runs['2'].notRun, 1);
+    assert.throws(() => exportClassifierRaw(firstRoot, secondRoot, out, { databaseDir: db }), /NEW directory/);
   } finally { removeOwned(root); }
 });
 if (process.env.SECONDARY_LINUX_SCOPE_EXPECTED === '1') test('real public Linux process-tree cgroup is finite and swap-free', () => {

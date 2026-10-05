@@ -1,0 +1,152 @@
+{
+  "schema": 1,
+  "kind": "RAW_JOIN_LOCATION_AND_HASH_INDEX_NOT_AGGREGATE_REPORT",
+  "workspace": "D:\\AI\\sfinder-wasm\\sol\\secondary-routing-20261005",
+  "directory": "benchmark-results/classifier-raw-20261005",
+  "manifest": {
+    "file": "benchmark-results/classifier-raw-20261005/MANIFEST.json",
+    "sha256": "d2417fdae1b3cbaed0ee4f02ad18c907c1ce7d05553ff3fb67762eedf28f1b20"
+  },
+  "selectedFixtures": 309,
+  "allCapturedFixtures": 2685,
+  "captureCommands": 440,
+  "runs": {
+    "37222172267": {
+      "executed": 5298,
+      "notRun": 0,
+      "statuses": {
+        "EXACT": 5118,
+        "TIMEOUT_CALL": 180
+      },
+      "initial": 1854,
+      "additional": 3444
+    },
+    "37226653891": {
+      "executed": 16244,
+      "notRun": 236,
+      "statuses": {
+        "EXACT": 15976,
+        "TIMEOUT_CALL": 253,
+        "OOM": 15,
+        "NOT_RUN_UNSAFE_OR_INVALID_RESULT": 152,
+        "NOT_RUN_EARLIER_CHUNK_PART_ERROR": 84
+      },
+      "initial": 3472,
+      "additional": 12772
+    }
+  },
+  "tables": [
+    {
+      "name": "fixtures",
+      "rows": 2685,
+      "files": [
+        {
+          "file": "fixtures.csv",
+          "bytes": 1221394,
+          "sha256": "f182586e05fe8914c5567fcd58c0f9a76ab28be986d4b980e531884a1a092084"
+        },
+        {
+          "file": "fixtures.jsonl",
+          "bytes": 2058490,
+          "sha256": "4b1c630c387623cf67a6c732fc82bac6b300427b6d9f43d2b9628642671830e3"
+        }
+      ]
+    },
+    {
+      "name": "calls",
+      "rows": 21778,
+      "files": [
+        {
+          "file": "calls.csv",
+          "bytes": 31616075,
+          "sha256": "0990efbf657e36f7b0e1f87b38160c9a06dce998be8b71a80ce9df8f25b21c88"
+        },
+        {
+          "file": "calls.jsonl",
+          "bytes": 50695865,
+          "sha256": "ac4abf0a7545a298a081c45c3782440dd6d43f598f2f118548e4a02f1d08f634"
+        }
+      ]
+    },
+    {
+      "name": "capture_commands",
+      "rows": 440,
+      "files": [
+        {
+          "file": "capture_commands.csv",
+          "bytes": 541799,
+          "sha256": "58d30a85f197228041d02597666f30403d34f683826e70f862d9accebe4cdf08"
+        },
+        {
+          "file": "capture_commands.jsonl",
+          "bytes": 571880,
+          "sha256": "3b37da4e7d2b5ccf9785d44fbf4443a7f5675b9cbea6153935aa52db0db89948"
+        }
+      ]
+    },
+    {
+      "name": "wave_decisions",
+      "rows": 9270,
+      "files": [
+        {
+          "file": "wave_decisions.csv",
+          "bytes": 6042455,
+          "sha256": "4d78cc096d3619e9c8e44ed4a9117d957c9a6a175458c7ec98c65b976bfa6b3d"
+        },
+        {
+          "file": "wave_decisions.jsonl",
+          "bytes": 9789107,
+          "sha256": "92540b0a9d1580f828a60cf30b3da348e3da20de3a4b8836415264df73a8c3b5"
+        }
+      ]
+    },
+    {
+      "name": "aliases",
+      "rows": 748,
+      "files": [
+        {
+          "file": "aliases.csv",
+          "bytes": 168301,
+          "sha256": "0917b977551f6f972da017f100d561e00ea5be3631c846b33031ca958a6f673f"
+        },
+        {
+          "file": "aliases.jsonl",
+          "bytes": 325931,
+          "sha256": "4c6969a3b5ab7f3490fd4eb258e1e18ba899aecc06e4d2c441eed30e53483ac7"
+        }
+      ]
+    }
+  ],
+  "independentValidation": {
+    "kind": "INDEPENDENT_PYTHON_CSV_JSONL_AND_EVERY_CALL_ORIGINAL_RAW_POINTER_AUDIT",
+    "status": "PASS",
+    "tableRows": {
+      "fixtures": 2685,
+      "calls": 21778,
+      "capture_commands": 440,
+      "wave_decisions": 9270,
+      "aliases": 748
+    },
+    "rawFilesForCalls": 2330,
+    "callRowsChecked": 21778,
+    "inventedMissingTimes": 0
+  },
+  "bundle": {
+    "file": "benchmark-results/classifier-raw-20261005-joined-tables.zip",
+    "bytes": 7021133,
+    "sha256": "4fd83c0dedea7a763eaa7fedd68ed8c45055b45660fb3b6fbb970932988ca025",
+    "contains": "Joined CSV/JSONL, MANIFEST, data dictionary, validation; NOT original matrices/witness/logs"
+  },
+  "originals": [
+    "benchmark-results/campaign-37222172267/full-history",
+    "benchmark-results/campaign-37226653891/full-history"
+  ],
+  "measuredFeatures": "n/K/R/E/F/d/u all non-null; captured structure agrees for all309 selected fixtures",
+  "offlineSupplement": {
+    "unknownCapturedF": 633,
+    "definition": "F is unique ORIGINAL singleton candidates, d=K-F,u=n-F; original captured null preserved"
+  },
+  "exporterSha256": "38cc736a67846d65d3231f593ce5b4bf7326d498ab91f2fae3dcc79b99200422",
+  "rawTablesCommittedToGit": false,
+  "originalRawModified": false
+}

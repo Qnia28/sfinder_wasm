@@ -99,3 +99,11 @@ Job hard60분, task scope hard10분, task step11분·artifact2분. 계획상4 ta
 3. `publish-combined-report.mjs <첫 campaign-root> <후속 campaign-root> <새 출력 directory>`: `COMBINED_REPORT_FINAL.json`·download digest·실행 감사·VM 감사·노출 summary를 검증하여 최종 문서/JSON을 생성.
 
 산출물은 기존 파일을 덮어쓰지 않으므로 재생성은 새 출력 directory를 사용한다. `information-analysis.mjs`는 완료된 최초 기본 반복에만 matched ratio를 계산하며 격리된 다른 엔진을 loser로 세지 않는다. 로컬 계약·제품 회귀52/52 및 actionlint1.7.12 통과(성능 측정 아님).
+
+## 분류 기준용 개별 raw join
+
+[`planning/CLASSIFIER_RAW_DATA_KO.md`](planning/CLASSIFIER_RAW_DATA_KO.md)에 원자료 위치, n/K/R/E/F/d/u 정의와 읽기 예를 정리했다. 로컬 `benchmark-results/classifier-raw-20261005/calls.csv`는 setup(fumen)×pattern×save×engine×timeout×repeat별 21,778개 원기록(실제21,542+미실행236)을 구조값과 join한 데이터다. `fixtures.csv`에는 capture한 모든 save 행렬2,685개와 selected309개 구분이 있다. CSV/JSONL과 각 호출의 원 raw 줄 연결을 모두 독립 검사했다.
+
+압축 묶음은 `benchmark-results/classifier-raw-20261005-joined-tables.zip`이다. 이는 읽기 쉬운 join 파일/사전/인덱스 묶음이며 원 matrix 및 전체 witness/log ZIP을 대체하지 않는다. 원 data와 큰 join 파일은 gitignore된 로컬 파일로 보존한다. `export-classifier-raw.mjs`로 solver 실행 없이 새 폴더에 재생성할 수 있다. 기록된 F가 unknown인 all-candidates shortcut도 원 singleton 스캔으로 별도 계산하고 capturedF/d/u의 null은 보존한다.
+
+분류용 export 추가 뒤 계약·제품 회귀54/54 통과. 출력 hash 및 독립 CSV/JSONL/원 raw pointer 검증 결과는 [`planning/CLASSIFIER_RAW_DATA_INDEX.json`](planning/CLASSIFIER_RAW_DATA_INDEX.json)에 기록했다. 큰 CSV/JSONL 자체를 source tree에 게시한 것으로 오해하지 않는다.
