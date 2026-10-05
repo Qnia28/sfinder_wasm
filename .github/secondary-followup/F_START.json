@@ -1,0 +1,8 @@
+{
+  "confirm": "RUN_APPROVED_FOLLOWUP",
+  "dataset": "F",
+  "templateSha256": "668ad97bc2d68b171309a19029bb3c39c29798b6ff607eb4e8c56bc2668b8e93",
+  "sourceLock": "063435b29e98e74bcfb9e6a7854f75fcb15fa380f2164fd0b42270ed892ae6de",
+  "preparedCommit": "e7bcb501818762a5406e8e68eca6bcff06ae9b46",
+  "approval": "User explicitly requested checkpoint supplementation followed by execution; concurrent F8VM and A12VM"
+}
