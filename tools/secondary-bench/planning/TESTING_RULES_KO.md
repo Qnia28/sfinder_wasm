@@ -119,7 +119,7 @@ r_i  = median(q_ij)
 
 - **로컬:** 경량 정확성·회귀, fixture/하네스 검사, 원자료 분석.
 - **GitHub Actions:** 비교적 일정한 VM이 필요한 벤치마크와 연산량 있는 검사. `Qnia28/sfinder_wasm`의 별도 실험 branch에서 실행하며 원본 dev와 main은 변경하지 않는다.
-- public 표준 runner를 사용한다. 현재 허용 병렬 한도는 **동시 VM 16개**이며 해당 작업의 여러 workflow를 합산한다. 한 비교 pair는 같은 VM에 둔다.
+- public 표준 runner를 사용한다. 기본 병렬 한도는 **동시 VM 16개**이며 해당 작업의 여러 workflow를 합산한다. **2026-10-05 사용자 지정 F/A 보강 캠페인만 F8VM + A12VM =20VM 예외**를 적용한다([준비 계약](FOLLOWUP_PREPARATION_KO.md)). 과거 동결manifest의16VM 계약과 다른 후속단계의 예산을 소급변경하지 않는다. 한 비교 pair는 같은 VM에 둔다.
 - runner job들이 물리적으로 다른 서버임을 보장하지 않으므로 “독립 runner job”이라고 기록한다. CPU 모델을 골라 재시도하거나 불리한 host 결과를 삭제하지 않는다.
 - 동일 OS image·runtime·toolchain을 지정해도 CPU·주파수·배경 부하까지 같다고 가정하지 않는다. 실제 환경을 기록한다.
 

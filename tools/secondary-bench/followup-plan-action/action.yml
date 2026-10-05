@@ -1,0 +1,67 @@
+name: Plan followup stage from complete durable history
+description: No solving; exact backend-ID payload transport and paginated history
+inputs:
+  stage:
+    required: true
+    description: preflight, capture, basic or retest
+  lock-id:
+    required: true
+    description: campaign lock backend ID
+  lock-digest:
+    required: true
+    description: campaign lock digest
+outputs:
+  matrix:
+    description: chunk matrix
+    value: ${{ steps.publish.outputs.matrix }}
+  has_work:
+    description: whether chunks exist
+    value: ${{ steps.publish.outputs.has_work }}
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 24.13.0
+    - run: npm ci --ignore-scripts --no-audit --no-fund
+      shell: bash
+    - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      shell: bash
+    - uses: ./tools/secondary-bench/followup-artifact-action
+      with:
+        mode: download
+        artifact-id: ${{ inputs.lock-id }}
+        digest: ${{ inputs.lock-digest }}
+        path: campaign-lock
+    - name: Complete result inventory and checksum download
+      uses: ./tools/secondary-bench/artifact-action
+      env:
+        GH_TOKEN: ${{ github.token }}
+        FOLLOWUP_STORAGE_GUARD: '1'
+      with:
+        repository: ${{ github.repository }}
+        run-id: ${{ github.run_id }}
+        path: history
+        prefix: followup-results-
+    - name: Freeze stage schedule and independent per-chunk payloads
+      shell: bash
+      env:
+        STAGE: ${{ inputs.stage }}
+      run: node tools/secondary-bench/followup.mjs plan campaign-lock/campaign.json history bundle "$STAGE"
+    - id: publish
+      uses: ./tools/secondary-bench/followup-artifact-action
+      with:
+        mode: upload
+        path: bundle
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: followup-plan-${{ inputs.stage }}
+        path: |
+          bundle/WAVE_PLAN.json
+          bundle/PUBLISH_RECEIPT.json
+          bundle/STORAGE_*.json
+          bundle/FOLLOWUP_FAILURE.json
+          history/DOWNLOAD_*.json
+        if-no-files-found: warn
+        retention-days: 30

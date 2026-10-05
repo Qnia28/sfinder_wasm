@@ -1,0 +1,74 @@
+{
+  "kind": "OFFLINE_WORST_CASE_SCHEDULE_NOT_MEASUREMENTS",
+  "shape": {
+    "parts": 3,
+    "jobMs": 7500000,
+    "reserveMs": 300000,
+    "setupMs": 600000,
+    "checkpointMs": 120000,
+    "finalTransportMs": 900000,
+    "transportAuditMs": 180000,
+    "jobMinutes": 150,
+    "taskMinutes": 75,
+    "scopeOverheadMs": 20000
+  },
+  "assumptions": {
+    "setupMinutesPerJob": 10,
+    "checkpointMinutesPerPart": 2,
+    "finalTransportMinutesPerJob": 15,
+    "transportAuditMinutesPerJob": 3,
+    "plannerMinutesPerJob": 90,
+    "reportMinutes": 90,
+    "activationMinutes": 15,
+    "queueMinutes": "UNBOUNDED_NOT_GUARANTEED",
+    "schedulingBound": "work-conserving list bound including worst-case final flush on every job"
+  },
+  "F": {
+    "stages": {
+      "capture": {
+        "chunks": 37,
+        "maxJobMinutesWithTransport": 61.5,
+        "totalRunnerHoursWithTransport": 37.772222222222226,
+        "listSchedulingUpperHoursExcludingQueue": 5.618402777777778
+      },
+      "basic": {
+        "chunks": 58,
+        "maxJobMinutesWithTransport": 136,
+        "totalRunnerHoursWithTransport": 73.07222222222222,
+        "listSchedulingUpperHoursExcludingQueue": 11.11736111111111
+      },
+      "retest": {
+        "chunks": 45,
+        "maxJobMinutesWithTransport": 64,
+        "totalRunnerHoursWithTransport": 47.666666666666664,
+        "listSchedulingUpperHoursExcludingQueue": 6.891666666666667
+      }
+    },
+    "conservativeHoursExcludingQueue": 29.87743055555556,
+    "overallHours": 36
+  },
+  "A": {
+    "stages": {
+      "capture": {
+        "chunks": 184,
+        "maxJobMinutesWithTransport": 55.5,
+        "totalRunnerHoursWithTransport": 169.9611111111111,
+        "listSchedulingUpperHoursExcludingQueue": 15.011342592592593
+      },
+      "basic": {
+        "chunks": 184,
+        "maxJobMinutesWithTransport": 136,
+        "totalRunnerHoursWithTransport": 415.93333333333334,
+        "listSchedulingUpperHoursExcludingQueue": 36.73888888888889
+      },
+      "retest": {
+        "chunks": 184,
+        "maxJobMinutesWithTransport": 136,
+        "totalRunnerHoursWithTransport": 415.93333333333334,
+        "listSchedulingUpperHoursExcludingQueue": 36.73888888888889
+      }
+    },
+    "conservativeHoursExcludingQueue": 96.88912037037036,
+    "overallHours": 108
+  }
+}

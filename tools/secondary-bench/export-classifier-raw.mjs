@@ -24,6 +24,7 @@ export function originalStructure(fixture) {
     FSource: 'OFFLINE_ORIGINAL_SINGLETON_SCAN_NOT_PRIMARY_KERNEL' };
 }
 const META = ['fixtureId', 'commandId', 'setupId', 'fumen', 'pattern', 'family', 'save', 'mirrorGroup',
+  'commandKind', 'wantedSave', 'filterSemantics', 'primaryHard', 'primaryBackend', 'primaryKernelStats', 'tinyEligible',
   'clear', 'hold', 'piecesNeeded', 'queueLength', 'savedPieceCount', 'n', 'K', 'R', 'E', 'F', 'd', 'u',
   'capturedF', 'capturedD', 'capturedU', 'FSource', 'selectedForMeasurement', 'trivial', 'fixtureSha256', 'fixtureFile'];
 const CSV = value => {
@@ -42,6 +43,8 @@ function table(directory, name, columns) {
       bytes: fs.statSync(filename).size, sha256: hash(fs.readFileSync(filename)) })) }; } };
 }
 const commandMeta = c => ({ commandId: c.id, setupId: c.id.split('/')[0], fumen: c.sourceFumen,
+  commandKind: c.kind, wantedSave: c.wantedSave ?? null,
+  filterSemantics: c.kind === 'per-save' ? 'QUEUE_REMAINDER_ONE_PIECE_NOT_GENERIC_SAVES_EXPRESSION' : 'LAST_BAG_EXACT_MULTIPLICITY_EXPRESSION',
   pattern: c.pattern, family: c.family, mirrorGroup: c.mirrorGroup ?? null, clear: c.clear, hold: c.useHold,
   piecesNeeded: c.piecesNeeded, queueLength: c.queueLength, savedPieceCount: c.savedPieceCount });
 export function exportClassifierRaw(firstRoot, secondRoot, outputDir, { workspace = process.cwd(), databaseDir = 'tools/secondary-bench/setupdata' } = {}) {
@@ -68,6 +71,8 @@ export function exportClassifierRaw(firstRoot, secondRoot, outputDir, { workspac
     assert(command, 'foreign fixture command'); assert.deepEqual(fixture.origin.command, command);
     if (metadata.has(fixture.id)) { assert.equal(metadata.get(fixture.id).fixtureSha256, sha256); continue; }
     const row = { fixtureId: fixture.id, ...commandMeta(command), save: fixture.origin.filter,
+      primaryHard: fixture.primaryHard ?? null, primaryBackend: fixture.cardinalityProof.backend,
+      primaryKernelStats: fixture.cardinalityProof.kernelStats ?? null, tinyEligible: fixture.keys.length <= 48,
       ...originalStructure(fixture), selectedForMeasurement: selectedIds.has(fixture.id), trivial: fixture.trivial ?? null,
       fixtureSha256: sha256, fixtureFile: relative(filename) };
     metadata.set(fixture.id, row); fixtureTable.add(row);
@@ -78,7 +83,7 @@ export function exportClassifierRaw(firstRoot, secondRoot, outputDir, { workspac
   const calls = table(outputDir, 'calls', [...META, 'campaignId', 'runId', 'sourceLock', 'timeoutMs', 'phase', 'stage',
     'engine', 'repeat', 'callId', 'position', 'chunkId', 'runnerId', 'executed', 'status', 'ms', 'reaped',
     'cpLimitMs', 'childResponseMs', 'initMs', 'fixtureMs', 'packingMs', 'wrapperNativeAndSearchMs', 'modelAndSearchMs',
-    'auditMs', 'cleanupMs', 'cpuUserUs', 'cpuSystemUs', 'maxRssKiB', 'oomKillsBefore', 'oomKillsAfter',
+    'auditMs', 'cleanupMs', 'searchedStates', 'statesMeaning', 'cpuUserUs', 'cpuSystemUs', 'maxRssKiB', 'oomKillsBefore', 'oomKillsAfter',
     'runnerNode', 'runnerCpuModels', 'memoryMax', 'swapMax', 'scopeStartedUtc', 'scopeFinishedUtc',
     'rawFile', 'rawLine', 'eventsFile', 'stdoutFile', 'stderrFile', 'runnerFile']);
   const captures = table(outputDir, 'capture_commands', ['commandId', 'setupId', 'fumen', 'pattern', 'family', 'mirrorGroup',
@@ -117,7 +122,9 @@ export function exportClassifierRaw(firstRoot, secondRoot, outputDir, { workspac
           chunkId: raw.chunkId, runnerId: raw.runnerId, executed, status: raw.status, ms: raw.ms,
           reaped: raw.execution?.reaped ?? null, cpLimitMs: raw.engine === 'cpsat' ? plan.cpLimitMs : null,
           childResponseMs: result?.responseMs ?? null,
-          ...Object.fromEntries(['initMs', 'fixtureMs', 'packingMs', 'wrapperNativeAndSearchMs', 'modelAndSearchMs', 'auditMs', 'cleanupMs'].map(k => [k, timings[k] ?? null])),
+           ...Object.fromEntries(['initMs', 'fixtureMs', 'packingMs', 'wrapperNativeAndSearchMs', 'modelAndSearchMs', 'auditMs', 'cleanupMs'].map(k => [k, timings[k] ?? null])),
+          searchedStates: raw.engine === 'cpsat' ? null : result?.result?.searchedStates ?? null,
+          statesMeaning: raw.engine === 'cpsat' ? 'UNOBSERVED_CP_SEARCH_STATES_ZERO_IS_NOT_A_MEASUREMENT' : 'RETURNED_COMPLETED_OR_BOUNDED_RUST_STATES',
           cpuUserUs: result?.cpuUs?.user ?? null, cpuSystemUs: result?.cpuUs?.system ?? null, maxRssKiB: result?.maxRssKiB ?? null,
           oomKillsBefore: raw.execution?.memoryEvents?.beforeOom ?? null, oomKillsAfter: raw.execution?.memoryEvents?.afterOom ?? null,
           runnerNode: runner?.environment.node ?? null, runnerCpuModels: runner?.environment.cpuModels ?? null,
@@ -131,14 +138,19 @@ export function exportClassifierRaw(firstRoot, secondRoot, outputDir, { workspac
     }
   }
   assert.equal(captureIds.size, commands.size, 'capture command missing');
-  const decisions = table(outputDir, 'wave_decisions', [...META, 'campaignId', 'runId', 'stage', 'plannedUtc', 'eligible', 'reason', 'repeats', 'planFile']);
+  const decisions = table(outputDir, 'wave_decisions', [...META, 'campaignId', 'runId', 'engine', 'stage', 'plannedUtc', 'eligible', 'reason', 'repeats', 'planFile']);
+  const decisionKeys = new Set();
   for (const [root, plan] of [[firstRoot, first], [secondRoot, second]])
     for (const filename of filesUnder(path.join(root, 'all-wave-plans')).filter(f => path.basename(f) === 'WAVE_PLAN.json').sort()) {
       const wave = readJson(filename); inputFiles.push({ file: relative(filename), sha256: hash(fs.readFileSync(filename)), kind: 'ORIGINAL_WAVE_PLAN' });
       assert.equal(wave.campaignId, plan.campaignId);
-      for (const decision of wave.decisions) {
-        const f = metadata.get(decision.inputId); assert(f?.selectedForMeasurement);
-        decisions.add({ ...f, campaignId: plan.campaignId, runId: path.basename(root).replace('campaign-', ''), stage: wave.stage,
+       for (const decision of wave.decisions) {
+         const f = metadata.get(decision.inputId); assert(f?.selectedForMeasurement);
+         assert(['integrated', 'threshold', 'cpsat'].includes(decision.engine), 'wave decision engine missing');
+         const key = `${plan.campaignId}/${decision.inputId}/${decision.engine}/${wave.stage}`;
+         assert(!decisionKeys.has(key), 'duplicate engine/fixture/stage decision'); decisionKeys.add(key);
+         decisions.add({ ...f, campaignId: plan.campaignId, runId: path.basename(root).replace('campaign-', ''), stage: wave.stage,
+           engine: decision.engine,
           plannedUtc: wave.plannedUtc, eligible: decision.eligible, reason: decision.reason, repeats: decision.repeats ?? null, planFile: relative(filename) });
       }
     }

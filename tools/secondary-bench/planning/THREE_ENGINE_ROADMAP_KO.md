@@ -1,5 +1,7 @@
 # Minimals 3체제 분류 개선 — 로드맵과 작업 원칙
 
+> **사용자 제안 반영 — ALL 우선:** [MINIMALS_ALL_FIRST_PLAN_20261005_KO.md](MINIMALS_ALL_FIRST_PLAN_20261005_KO.md). 기존 per-save 정보는 필터 자료로 보완하고, 일반 minimals saves=ALL의 275group×두family에 대해 별도 광범위 세 엔진 측정을 수행하는 방향이다. 구현·실제 정책 검증은 일반 minimals부터, 이후 saves 필터와 per-save에 적용한다. 아래 및 이전 Astra 문서의 d17 후보 우선 구현 순서는 이 개정으로 대체한다.
+
 > **최신 단계 결정(2026-10-05):** 광범위 60초/300초 측정 이후 Astra의 해석·분류 방향은 [ASTRA_ROUTING_DIRECTION_20261005_KO.md](ASTRA_ROUTING_DIRECTION_20261005_KO.md)를 따른다. 아래 v1.4의 역할·계약 원칙은 유지하며, “측정 미시작” 등의 상태는 작성 당시 기록이다. 후속 구현·실험은 Sol 단계이며 현재는 계획·해석만 완료했다.
 
 - 문서 ID: SECONDARY-ROUTING-ROADMAP-001

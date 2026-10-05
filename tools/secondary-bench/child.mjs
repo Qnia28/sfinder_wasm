@@ -12,6 +12,14 @@ async function execute(job) {
   let solver, api;
   const started = performance.now(), cpuStart = process.cpuUsage(), timings = {};
   try {
+    if (job.action === 'collector-preflight') {
+      phase('init');
+      const { createWasmSolver } = await import('../../src/wasm-backend.mjs');
+      const { auditAllCollector } = await import('./collector-contract.mjs');
+      solver = await createWasmSolver(job.command.clear);
+      phase('enumeration');
+      return auditAllCollector(job.command, solver);
+    }
     if (job.action === 'capture') {
       phase('init');
       const { createWasmSolver } = await import('../../src/wasm-backend.mjs');
@@ -24,7 +32,11 @@ async function execute(job) {
         onPhase: phase,
         async onFixture(fixture, index) {
           const filename = path.join(job.outputDir, `${job.fixturePrefix ?? ''}${index}.json`);
-          writeJson(filename, fixture);
+          // OOM/cancellation can leave a partial write. Only complete, fsynced
+          // fixtures receive the final .json name; retain .partial as evidence.
+          const partial = filename + '.partial';
+          writeJson(partial, fixture);
+          fs.renameSync(partial, filename);
           const record = { id: fixture.id, path: filename, sha256: hash(fs.readFileSync(filename)), identity: fixture.contentIdentity };
           fixtures.push(record);
           await send({ event: 'fixture-saved', ...record });

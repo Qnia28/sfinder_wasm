@@ -7,6 +7,8 @@ import path from 'node:path';
 import { execFileSync, execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { hash, writeJson } from './contracts.mjs';
+import { DISK_RESERVE_BYTES, requireDisk } from './followup-storage.mjs';
+import { fileURLToPath } from 'node:url';
 const exec = promisify(execFile);
 const [repository, runId, outputDir, prefix = 'secondary-results-'] = process.argv.slice(2);
 assert(/^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/.test(repository)); assert(/^[0-9]+$/.test(runId));
@@ -21,6 +23,9 @@ writeJson(path.join(outputDir, 'DOWNLOAD_INDEX.json'), { repository, runId, list
 const directory = path.join(outputDir, '_archives'); fs.mkdirSync(directory, { recursive: true });
 const useBackend = process.env.ACTIONS_RUNTIME_TOKEN && String(process.env.GITHUB_RUN_ID) === runId;
 const artifactClient = useBackend ? (await import('./artifact-action/node_modules/@actions/artifact/lib/artifact.js')).default : null;
+// New F/A history only: serialize downloads and inspect exact uncompressed ZIP
+// sizes before extraction. Historical transports retain their frozen behavior.
+const guarded = process.env.FOLLOWUP_STORAGE_GUARD === '1';
 const completed = [], errors = []; let next = 0;
 const extractor = `import pathlib,sys,zipfile,stat
 root=pathlib.Path(sys.argv[2]).resolve()
@@ -37,11 +42,27 @@ async function worker() {
     const artifact = selected[next++];
     try {
       assert(/^[a-zA-Z0-9_.-]+$/.test(artifact.name), 'unsafe artifact name');
+      if (guarded) {
+        assert(/^sha256:[a-f0-9]{64}$/.test(artifact.digest), 'guarded history requires an immutable artifact digest');
+        requireDisk(outputDir, artifact.size_in_bytes);
+      }
       if (artifactClient) {
         const destination = path.join(outputDir, artifact.name);
-        const downloaded = await artifactClient.downloadArtifact(artifact.id, { path: destination, expectedHash: artifact.digest });
+        const staging = guarded ? path.join(directory, String(artifact.id)) : destination;
+        const downloaded = await artifactClient.downloadArtifact(artifact.id, { path: staging, expectedHash: artifact.digest,
+          ...(guarded ? { skipDecompress: true } : {}) });
         assert(!downloaded.digestMismatch, 'backend artifact digest mismatch');
-        completed.push({ id: artifact.id, name: artifact.name, digest: artifact.digest, bytes: artifact.size_in_bytes, transport: 'CURRENT_RUN_BACKEND_ID' });
+        let storage = null;
+        if (guarded) {
+          const members = fs.readdirSync(staging); assert.equal(members.length, 1, 'SDK raw ZIP download must contain exactly one file');
+          const archive = path.join(staging, members[0]); assert(fs.statSync(archive).isFile());
+          const { stdout } = await exec('python', [fileURLToPath(new URL('./followup-extract.py', import.meta.url)), archive,
+            destination, String(DISK_RESERVE_BYTES)], { timeout: 120000 });
+          storage = JSON.parse(stdout);
+          fs.unlinkSync(archive); fs.rmdirSync(staging); // Our single, fully verified temporary ZIP only.
+        }
+        completed.push({ id: artifact.id, name: artifact.name, digest: artifact.digest, bytes: artifact.size_in_bytes,
+          transport: 'CURRENT_RUN_BACKEND_ID', ...(guarded ? { storage } : {}) });
         continue;
       }
       const { stdout: bytes } = await exec('gh', ['api', `repos/${repository}/actions/artifacts/${artifact.id}/zip`],
@@ -50,13 +71,17 @@ async function worker() {
       if (artifact.digest) assert.equal('sha256:' + hash(bytes), artifact.digest, 'artifact digest mismatch');
       const archive = path.join(directory, `${artifact.id}.zip`); fs.writeFileSync(archive, bytes, { flag: 'wx' });
       const destination = path.join(outputDir, artifact.name);
-      await exec('python', ['-c', extractor, archive, destination], { timeout: 120000 });
+      if (guarded) {
+        await exec('python', [fileURLToPath(new URL('./followup-extract.py', import.meta.url)), archive, destination,
+          String(DISK_RESERVE_BYTES)], { timeout: 120000 });
+        fs.unlinkSync(archive);
+      } else await exec('python', ['-c', extractor, archive, destination], { timeout: 120000 });
       completed.push({ id: artifact.id, name: artifact.name, digest: 'sha256:' + hash(bytes), bytes: bytes.length });
     } catch (error) { errors.push({ id: artifact.id, name: artifact.name, error: error.message }); }
   }
 }
-await Promise.all(Array.from({ length: Math.min(artifactClient ? 5 : 3, selected.length) }, worker));
+await Promise.all(Array.from({ length: Math.min(guarded ? 1 : artifactClient ? 5 : 3, selected.length) }, worker));
 writeJson(path.join(outputDir, 'DOWNLOAD_COMPLETE.json'), { runId, listed: all.length, selected: selected.length,
-  downloaded: completed.length, completed, errors, finishedUtc: new Date().toISOString() });
+   downloaded: completed.length, completed, errors, storageGuard: guarded, finishedUtc: new Date().toISOString() });
 console.log(JSON.stringify({ runId, listed: all.length, selected: selected.length, downloaded: completed.length, errors: errors.length }));
 assert.equal(errors.length, 0, 'partial download is NOT valid history; retain index and retry missing archives');

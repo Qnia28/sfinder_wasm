@@ -2,6 +2,10 @@
 
 2026-10-05 · 역할: **Astra / Plan** · 상태: **후속 설계 방향 결정, 제품 적용·실험 실행 승인 아님**
 
+> **최신 방향:** [minimals ALL 우선 계획](MINIMALS_ALL_FIRST_PLAN_20261005_KO.md). 아래 수치는 per-save 잔여미노 필터 자료의 관찰로 보존한다. d≥17 생략은 ALL에서 미검증인 가설이며, 일반 ALL의 광범위 세 엔진 측정·Astra 재해석 전에는 구현 후보로 확정하지 않는다.
+
+> **후속 커버리지 확인:** [다음 실행 계획](FOLLOWUP_EXECUTION_PLAN_20261005_KO.md)에서 BOX와 전체 DB를 재감사했다. BOX geometry는 포함됐지만 일반 minimals `ALL`의 primary-hard 조건은 이번 per-save 캠페인 범위 밖이었다. 정적 gate 구현 전에 미capture55group·일반 행렬·BOX 미측정save를 보완하는 순서로 진행한다.
+
 근거: 60초 run `37222172267`, 300초 run `37226653891`, 원 capture/phase/states, `classifier-raw-20261005`의 개별 기록. 실행·export 기준 commit은 `68af2b0`이다. 이번 단계는 기존 파일의 오프라인 분석과 문서 작성만 수행했다. 구현·추가 solver 호출·Actions 성능 실험은 수행하지 않았다.
 
 수치와 입력별 근거는 [`ASTRA_ROUTING_EVIDENCE_20261005.json`](ASTRA_ROUTING_EVIDENCE_20261005.json)에 보존했다. 원 fumen/pattern/save, 특징, 최초 반복의 상태·중앙값, primary 경로, 입력 hash가 들어 있다. Python으로 집계한 뒤 별도 Node 원기록 대조로 2개 run×309행렬×3엔진=1,854개 조건의 기본 중앙값·완료 상태와 source hash를 확인했다. 새 solver 호출은0회다.

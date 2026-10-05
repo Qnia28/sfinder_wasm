@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "state": "APPROVED_FOR_LAUNCH_NOT_STARTED",
+  "date": "2026-10-05",
+  "localTests": 74,
+  "passed": 74,
+  "failed": 0,
+  "testLog": "benchmark-results/astra-interpretation-20261005/FOLLOWUP_LAUNCH_LOCAL_TESTS.txt",
+  "testLogSha256": "ae616364a3833d93d1c4ecc6eae4f7f448ef7157992d3ec8edc500f81596f162",
+  "actionlint": {
+    "version": "1.7.12",
+    "workflows": [
+      "secondary-bench-followup-f.yml",
+      "secondary-bench-all-a.yml"
+    ],
+    "status": "PASS",
+    "shellcheck": false,
+    "pyflakes": false
+  },
+  "sourceLock": "063435b29e98e74bcfb9e6a7854f75fcb15fa380f2164fd0b42270ed892ae6de",
+  "wasmSha256": "15bcd1171821d53c0e44d7b556d7d0680e957bbca5630643b34155c44b5923fd",
+  "combinedVmCap": 20,
+  "primaryCpsatWorkers": 2,
+  "secondaryCpsatWorkers": 1,
+  "inputs": {
+    "F": {
+      "VMs": 8,
+      "captureCommands": 110,
+      "supplementalFixtures": 23,
+      "importedFixtures": 45,
+      "recoveryCalls": 191,
+      "newBasicMaxCalls": 798,
+      "newRetestMaxCalls": 798
+    },
+    "A": {
+      "VMs": 12,
+      "captureCommands": 550,
+      "maxBasicCalls": 3300,
+      "maxRetestCalls": 3300,
+      "boxCommands": 2
+    }
+  },
+  "reusedBundleSha256": "ad63a51003764b77ae1a0cac055ecae6d390f744ea29170cb74d0021a89a7811",
+  "reusedBundleBytes": 16502960,
+  "linuxRealCallScopeContract": "PENDING_MANDATORY_AT_WORKFLOW_ACTIVATION",
+  "remoteTransport": "PENDING_GUARDED_RAW_ZIP_SDK_AND_DIAGNOSTIC_ARTIFACT_CHECKS_AT_FIRST_AUTHORIZED_RUN",
+  "productRoutingChanged": false,
+  "originalCheckoutChanged": false,
+  "originalRawChanged": false,
+  "actionsStarted": false,
+  "pushed": false,
+  "setupPerformanceBenchmarksExecuted": false,
+  "syntheticCorrectnessCallsOnly": true,
+  "wallHours": {
+    "F": 36,
+    "A": 108
+  },
+  "previousPreparationEvidence": {
+    "sourceLock": "80cbb3d1c1b9570ff90fc30a0bf8b7b9cd54716c2bb0d532e50cfe7b5ae5ce89",
+    "tests": 71,
+    "testLog": "benchmark-results/astra-interpretation-20261005/FOLLOWUP_LOCAL_TESTS_SUPPLEMENTED.txt",
+    "testLogSha256": "4a1bb91433730e042202e5cd2e9ec10a9624a2019e1f8052a2507f8290d76a19",
+    "wallHours": {
+      "F": 28,
+      "A": 90
+    }
+  },
+  "supplementation": {
+    "jobPacking": "SETUP10MIN_CHECKPOINT2MIN_PER_PART_RESERVED",
+    "jobSoftMinutes": 125,
+    "jobHardMinutes": 150,
+    "taskCapacityMinutes": 104,
+    "plannerReportHardMinutes": 90,
+    "storage": "SEQUENTIAL_DIGESTED_ZIP_EXACT_SIZE_GUARD_4G_RESERVE_AND_HARDLINKS",
+    "activationDiagnostics": "ALWAYS_ARTIFACT_INDEPENDENT_OF_CAMPAIGN_LOCK",
+    "remoteStorageAndScopeValidation": "PENDING",
+    "all550CompletionGuaranteed": false,
+    "finalTransportMinutes": 15,
+    "transportAuditMinutes": 3,
+    "checkpointRetries": "FAILED_OR_PENDING_ONLY_MAX_TWO_IMMUTABLE_BYTE_RETRIES_NO_SOLVER_CALLS"
+  },
+  "dryPlanLog": "benchmark-results/astra-interpretation-20261005/FOLLOWUP_SUPPLEMENTED_DRY_PLAN.json",
+  "dryPlanLogSha256": "c93a2c30962250b2571f294654f5a09939d2085914d09fd99ce84e2bb3dad87c",
+  "fullMockAllPlanner": {
+    "fixtures": 550,
+    "calls": 3300,
+    "chunks": 184,
+    "hardlinks": 550,
+    "fixtureCopiedBytes": 0,
+    "solverCalls": 0,
+    "notMeasurementEvidence": true
+  },
+  "newContracts": [
+    "three worst-case blocks fit setup/checkpoint/job admission",
+    "checked disk and hardlink/copy fallback",
+    "real Python ZIP admission rejects insufficient disk and traversal before extracting",
+    "planner failure diagnostics before wave plan exists"
+  ],
+  "remoteDiskCapacity": "UNKNOWN_GUARD_ABORTS_WITH_EVIDENCE_WITHOUT_SAMPLING"
+}

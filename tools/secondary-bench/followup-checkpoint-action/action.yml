@@ -1,0 +1,24 @@
+name: Durable followup checkpoint transport
+description: Record upload receipts and retry only immutable failed checkpoints, never solver calls
+inputs:
+  mode:
+    required: true
+    description: checkpoint or flush
+  path:
+    required: true
+    description: one part directory or results root
+  name:
+    required: true
+    description: exact checkpoint artifact name or results artifact prefix
+  state:
+    required: true
+    description: receipt file or receipt directory
+  stage:
+    required: false
+    description: stage for flush report
+  chunk:
+    required: false
+    description: chunk for flush report
+runs:
+  using: node24
+  main: index.mjs

@@ -1,0 +1,56 @@
+name: Followup completeness and witness audit
+description: Keep partial evidence and measurement validity separate from Actions success
+inputs:
+  lock-id:
+    required: true
+    description: campaign backend ID
+  lock-digest:
+    required: true
+    description: campaign digest
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 24.13.0
+    - run: npm ci --ignore-scripts --no-audit --no-fund
+      shell: bash
+    - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      shell: bash
+    - uses: ./tools/secondary-bench/followup-artifact-action
+      with:
+        mode: download
+        artifact-id: ${{ inputs.lock-id }}
+        digest: ${{ inputs.lock-digest }}
+        path: campaign-lock
+    - uses: ./tools/secondary-bench/artifact-action
+      env:
+        GH_TOKEN: ${{ github.token }}
+        FOLLOWUP_STORAGE_GUARD: '1'
+      with:
+        repository: ${{ github.repository }}
+        run-id: ${{ github.run_id }}
+        path: history
+        prefix: followup-results-
+    - uses: ./tools/secondary-bench/artifact-action
+      env:
+        GH_TOKEN: ${{ github.token }}
+        FOLLOWUP_STORAGE_GUARD: '1'
+      with:
+        repository: ${{ github.repository }}
+        run-id: ${{ github.run_id }}
+        path: plans
+        prefix: followup-plan-
+    - name: Original weighted rows, stable-ID witness and missing ledger
+      shell: bash
+      run: node tools/secondary-bench/followup.mjs report campaign-lock/campaign.json history plans REPORT
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: followup-final-report
+        path: |
+          REPORT
+          history/DOWNLOAD_*.json
+          plans/DOWNLOAD_*.json
+        if-no-files-found: warn
+        retention-days: 30

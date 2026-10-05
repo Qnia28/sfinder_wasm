@@ -1,5 +1,11 @@
 # Sol / Build 준비 상태
 
+> **사용자 승인 실행본:** [FOLLOWUP_PREPARATION_KO.md](FOLLOWUP_PREPARATION_KO.md). F8VM/A12VM의 source/입력lock·원fixture45개bundle·독립OOM격리·export-v2·job/disk/activate진단에 더해 실패checkpoint만final재전송과receipt/snapshot/alias검증을 보완했다. 로컬74개검사, 전송예산포함 wall F36h/A108h. CP primary2/secondary1 worker 유지. Linux scope는activate 필수검사이며 아직 원격PASS가아니다. 사용자가보완후실행을승인하여 게시후두workflow를같은ref로시작할예정이다. 아래문단은이전상태다.
+
+> **현재 인계 — ALL 우선 개정:** [MINIMALS_ALL_FIRST_PLAN_20261005_KO.md](MINIMALS_ALL_FIRST_PLAN_20261005_KO.md). 공통 하네스 보완 후 per-save 자료는 기존안의 필터 보완/결측회수로 유지하고, ALL550명령의 capture + 모든 eligible 행렬의 세 엔진 측정은 별도 캠페인으로 준비한다. ALL 해석 전 d17 후보 구현은 보류한다. 일반 minimals 우선 구현·검증 후 saves/per-save에 적용한다. 예산/manifest 미동결, 새 실행0회. 아래 인계 순서는 이전 상태다.
+
+> **후속 계획:** [FOLLOWUP_EXECUTION_PLAN_20261005_KO.md](FOLLOWUP_EXECUTION_PLAN_20261005_KO.md). BOX는 per-save14개 capture/2개측정으로 포함됐으나 ordinary ALL은 미측정이다. F0 export/격리 보완 뒤 F1 미capture55group과 일반 ALL 행렬을 먼저 확보한다. 이번 확인·계획 작성에서 새 solver 호출은0회다.
+
 > **최신 상태(2026-10-05):** 아래는 초기 준비 단계의 역사 기록이다. 현재는 두 광범위 run과 통합 보고서·raw join까지 완료했고, Astra가 [해석·분류 방향과 누락 작업](ASTRA_ROUTING_DIRECTION_20261005_KO.md)을 결정했다. 다음은 Sol의 S0 데이터/하네스 보완 및 S1 정적 고-d probe 생략 상세안이다. `wave_decisions` export의 engine 누락은 발견됐지만 아직 수정하지 않았다. 새 분류 구현·후속 성능 캠페인은 실행하지 않았다.
 
 2026-10-05. 작업 저장소 `D:/AI/sfinder-wasm/sol/secondary-routing-20261005`.

@@ -1,0 +1,217 @@
+name: Secondary A minimals saves=ALL (12 VMs)
+on:
+  push:
+    branches: [experiment/secondary-routing-20261005]
+    paths: [.github/secondary-followup/A_START.json]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: secondary-followup-A
+  cancel-in-progress: false
+jobs:
+  activate:
+    if: github.ref == 'refs/heads/experiment/secondary-routing-20261005' && github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      lock_id: ${{ steps.lock.outputs.artifact-id }}
+      lock_digest: ${{ steps.lock.outputs.artifact-digest }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Initialize activation diagnostics before setup
+        run: |
+          mkdir -p activation-diagnostics
+          node -e 'require("node:fs").writeFileSync("activation-diagnostics/ENV.json", JSON.stringify({runId:process.env.GITHUB_RUN_ID,attempt:process.env.GITHUB_RUN_ATTEMPT,commit:process.env.GITHUB_SHA,node:process.version},null,2))'
+          df -h > activation-diagnostics/disk.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Contracts including real per-call OOM containment (no setup benchmarks)
+        env:
+          FOLLOWUP_LINUX_SCOPE_EXPECTED: '1'
+          FOLLOWUP_SCOPE_DIAGNOSTICS: activation-diagnostics/scopes
+        run: |
+          set -o pipefail
+          node --experimental-wasm-stack-switching --test-isolation=none --test-concurrency=1 --test tests/secondary-bench.test.mjs tests/secondary-bench-campaign.test.mjs tests/secondary-bench-followup.test.mjs 2>&1 | tee activation-diagnostics/contracts.log
+      - name: Freeze A clock, ALL population and immutable source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail
+          {
+            origin=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" --jq .created_at) &&
+            node tools/secondary-bench/followup.mjs activate tools/secondary-bench/prepared-20261005/A_TEMPLATE.json "$origin" "$GITHUB_RUN_ID" campaign-lock
+          } 2>&1 | tee activation-diagnostics/activate.log
+      - id: lock
+        uses: actions/upload-artifact@v4
+        with:
+          name: followup-campaign-lock
+          path: campaign-lock
+          retention-days: 30
+      - name: Preserve activation diagnostics even without a campaign lock
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: followup-activation-diagnostics
+          path: activation-diagnostics
+          if-no-files-found: warn
+          retention-days: 30
+  preflight-plan:
+    needs: activate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      has_work: ${{ steps.plan.outputs.has_work }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: plan
+        uses: ./tools/secondary-bench/followup-plan-action
+        with:
+          stage: preflight
+          lock-id: ${{ needs.activate.outputs.lock_id }}
+          lock-digest: ${{ needs.activate.outputs.lock_digest }}
+  preflight:
+    needs: preflight-plan
+    if: needs.preflight-plan.outputs.has_work == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    continue-on-error: true
+    strategy:
+      max-parallel: 12
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.preflight-plan.outputs.matrix) }}
+    steps:
+      - id: clock
+        run: echo "started=$(node -p Date.now())" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/followup-run-action
+        with:
+          stage: preflight
+          chunk: ${{ matrix.chunk }}
+          artifact-id: ${{ matrix.artifactId }}
+          digest: ${{ matrix.digest }}
+          job-started-ms: ${{ steps.clock.outputs.started }}
+  capture-plan:
+    needs: [activate, preflight]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      has_work: ${{ steps.plan.outputs.has_work }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: plan
+        uses: ./tools/secondary-bench/followup-plan-action
+        with:
+          stage: capture
+          lock-id: ${{ needs.activate.outputs.lock_id }}
+          lock-digest: ${{ needs.activate.outputs.lock_digest }}
+  capture:
+    needs: capture-plan
+    if: needs.capture-plan.outputs.has_work == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    continue-on-error: true
+    strategy:
+      max-parallel: 12
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.capture-plan.outputs.matrix) }}
+    steps:
+      - id: clock
+        run: echo "started=$(node -p Date.now())" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/followup-run-action
+        with:
+          stage: capture
+          chunk: ${{ matrix.chunk }}
+          artifact-id: ${{ matrix.artifactId }}
+          digest: ${{ matrix.digest }}
+          job-started-ms: ${{ steps.clock.outputs.started }}
+  basic-plan:
+    needs: [activate, capture]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      has_work: ${{ steps.plan.outputs.has_work }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: plan
+        uses: ./tools/secondary-bench/followup-plan-action
+        with:
+          stage: basic
+          lock-id: ${{ needs.activate.outputs.lock_id }}
+          lock-digest: ${{ needs.activate.outputs.lock_digest }}
+  basic:
+    needs: basic-plan
+    if: needs.basic-plan.outputs.has_work == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    continue-on-error: true
+    strategy:
+      max-parallel: 12
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.basic-plan.outputs.matrix) }}
+    steps:
+      - id: clock
+        run: echo "started=$(node -p Date.now())" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/followup-run-action
+        with:
+          stage: basic
+          chunk: ${{ matrix.chunk }}
+          artifact-id: ${{ matrix.artifactId }}
+          digest: ${{ matrix.digest }}
+          job-started-ms: ${{ steps.clock.outputs.started }}
+  retest-plan:
+    needs: [activate, basic]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      has_work: ${{ steps.plan.outputs.has_work }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: plan
+        uses: ./tools/secondary-bench/followup-plan-action
+        with:
+          stage: retest
+          lock-id: ${{ needs.activate.outputs.lock_id }}
+          lock-digest: ${{ needs.activate.outputs.lock_digest }}
+  retest:
+    needs: retest-plan
+    if: needs.retest-plan.outputs.has_work == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    continue-on-error: true
+    strategy:
+      max-parallel: 12
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.retest-plan.outputs.matrix) }}
+    steps:
+      - id: clock
+        run: echo "started=$(node -p Date.now())" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/followup-run-action
+        with:
+          stage: retest
+          chunk: ${{ matrix.chunk }}
+          artifact-id: ${{ matrix.artifactId }}
+          digest: ${{ matrix.digest }}
+          job-started-ms: ${{ steps.clock.outputs.started }}
+  report:
+    needs: [activate, preflight-plan, preflight, capture-plan, capture, basic-plan, basic, retest-plan, retest]
+    if: always() && needs.activate.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/followup-report-action
+        with:
+          lock-id: ${{ needs.activate.outputs.lock_id }}
+          lock-digest: ${{ needs.activate.outputs.lock_digest }}

@@ -369,6 +369,10 @@ test('raw exporter joins fumen/pattern/save and individual calls without pooling
     assert(calls.every(r => r.rawLine >= 1 && r.fixtureSha256 === sha));
     assert(fs.readFileSync(path.join(out, 'calls.csv'), 'utf8').includes('"[ILJ]p3,*p4"'));
     assert.equal(manifest.runs['1'].executed, 1); assert.equal(manifest.runs['2'].executed, 1); assert.equal(manifest.runs['2'].notRun, 1);
+    const decisions = fs.readFileSync(path.join(out, 'wave_decisions.jsonl'), 'utf8').trim().split('\n').map(JSON.parse);
+    assert.equal(decisions.length, 2); assert(decisions.every(r => r.engine === 'integrated'));
+    assert(fs.readFileSync(path.join(out, 'wave_decisions.csv'), 'utf8').split('\n')[0].split(',').includes('engine'));
+    assert(calls.every(r => r.commandKind === 'per-save' && r.wantedSave === null));
     assert.throws(() => exportClassifierRaw(firstRoot, secondRoot, out, { databaseDir: db }), /NEW directory/);
   } finally { removeOwned(root); }
 });

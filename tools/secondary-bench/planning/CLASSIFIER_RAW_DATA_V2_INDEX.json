@@ -1,0 +1,134 @@
+{
+  "schema": 2,
+  "kind": "OFFLINE_EXPORT_REVISION_NOT_NEW_MEASUREMENTS",
+  "directory": "benchmark-results/classifier-raw-20261005-v2",
+  "previousRevision": "benchmark-results/classifier-raw-20261005",
+  "originalRevisionAndZipRetained": true,
+  "exporter": "tools/secondary-bench/export-classifier-raw.mjs",
+  "exporterSha256": "5cb4f3cd919c65aff806881fd499f7e826a6a3765b998ddaea22ddb76fee159c",
+  "manifestSha256": "0b7317ed786e20db7926f8dd1f2fd939567d8709a4344efc3fcfc7e9258b4b21",
+  "independentValidation": {
+    "kind": "INDEPENDENT_PYTHON_CSV_JSONL_HASH_AND_ORIGINAL_PLAN_AUDIT",
+    "tables": 5,
+    "waveDecisionsVerified": 9270,
+    "originalRawModified": false,
+    "originalV1Retained": true
+  },
+  "changes": [
+    "restore engine to9270 wave decisions, verify unique run/fixture/engine/stage",
+    "join commandKind/wantedSave/filter meaning, primaryHard/backend/kernel/tiny",
+    "Rust returned searchedStates, CP states UNOBSERVED rather than zero"
+  ],
+  "selectedFixtures": 309,
+  "allCapturedFixtures": 2685,
+  "captureCommands": 440,
+  "tables": [
+    {
+      "name": "fixtures",
+      "rows": 2685,
+      "files": [
+        {
+          "file": "fixtures.csv",
+          "bytes": 1605532,
+          "sha256": "6dedfcf8b0e44cdcbe9fc572e0b7231f545c39b05797c1b1bcf094e6e1287ebf"
+        },
+        {
+          "file": "fixtures.jsonl",
+          "bytes": 2743250,
+          "sha256": "8e787cbaebcb823c430469a8bf2a6f4bf8b2792ab27c322f34bbdfcaac24d0a7"
+        }
+      ]
+    },
+    {
+      "name": "calls",
+      "rows": 21778,
+      "files": [
+        {
+          "file": "calls.csv",
+          "bytes": 35804142,
+          "sha256": "80693024057539f58c6b460edae683d1c905d76f72f372bc54d067a373a3ffac"
+        },
+        {
+          "file": "calls.jsonl",
+          "bytes": 58117127,
+          "sha256": "ce3b87e43c857c914650dbba3ff0de3052e1ae2005ad8db741ab4805d4d0a996"
+        }
+      ]
+    },
+    {
+      "name": "capture_commands",
+      "rows": 440,
+      "files": [
+        {
+          "file": "capture_commands.csv",
+          "bytes": 541799,
+          "sha256": "58d30a85f197228041d02597666f30403d34f683826e70f862d9accebe4cdf08"
+        },
+        {
+          "file": "capture_commands.jsonl",
+          "bytes": 623800,
+          "sha256": "3a93e3ae574840c33477252b317b938474c6ebb996980252c8559562b1508c11"
+        }
+      ]
+    },
+    {
+      "name": "wave_decisions",
+      "rows": 9270,
+      "files": [
+        {
+          "file": "wave_decisions.csv",
+          "bytes": 7454540,
+          "sha256": "9b95bfc0f021c6106acc5273770f255871b1c657557b4b51f8d754ac2c2bad39"
+        },
+        {
+          "file": "wave_decisions.jsonl",
+          "bytes": 12341297,
+          "sha256": "0f6ac0514644d74f2626a3314985727963ad193e5898b74464f5c73a977bcc42"
+        }
+      ]
+    },
+    {
+      "name": "aliases",
+      "rows": 748,
+      "files": [
+        {
+          "file": "aliases.csv",
+          "bytes": 168301,
+          "sha256": "0917b977551f6f972da017f100d561e00ea5be3631c846b33031ca958a6f673f"
+        },
+        {
+          "file": "aliases.jsonl",
+          "bytes": 325931,
+          "sha256": "4c6969a3b5ab7f3490fd4eb258e1e18ba899aecc06e4d2c441eed30e53483ac7"
+        }
+      ]
+    }
+  ],
+  "runs": {
+    "37222172267": {
+      "executed": 5298,
+      "notRun": 0,
+      "statuses": {
+        "EXACT": 5118,
+        "TIMEOUT_CALL": 180
+      },
+      "initial": 1854,
+      "additional": 3444
+    },
+    "37226653891": {
+      "executed": 16244,
+      "notRun": 236,
+      "statuses": {
+        "EXACT": 15976,
+        "TIMEOUT_CALL": 253,
+        "OOM": 15,
+        "NOT_RUN_UNSAFE_OR_INVALID_RESULT": 152,
+        "NOT_RUN_EARLIER_CHUNK_PART_ERROR": 84
+      },
+      "initial": 3472,
+      "additional": 12772
+    }
+  },
+  "originalRawModified": false,
+  "newBenchmarkCalls": 0
+}

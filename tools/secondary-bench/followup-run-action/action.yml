@@ -1,0 +1,97 @@
+name: Run one bounded followup chunk
+description: Three checkpointed tasks with disposable per-call memory scopes
+inputs:
+  artifact-id:
+    required: true
+    description: chunk payload backend ID
+  digest:
+    required: true
+    description: payload SHA256
+  stage:
+    required: true
+    description: stage identifier
+  chunk:
+    required: true
+    description: chunk number
+  job-started-ms:
+    required: true
+    description: immutable job start including setup time
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 24.13.0
+    - run: npm ci --ignore-scripts --no-audit --no-fund
+      shell: bash
+    - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      shell: bash
+    - uses: ./tools/secondary-bench/followup-artifact-action
+      with:
+        mode: download
+        artifact-id: ${{ inputs.artifact-id }}
+        digest: ${{ inputs.digest }}
+        path: bundle
+    - name: Task 0, each call in a fresh owned memory scope
+      shell: bash
+      env:
+        JOB_STARTED_MS: ${{ inputs.job-started-ms }}
+      run: node tools/secondary-bench/followup.mjs run-part bundle results/part-0 0 "$JOB_STARTED_MS"
+    - uses: ./tools/secondary-bench/followup-checkpoint-action
+      if: always()
+      timeout-minutes: 2
+      continue-on-error: true
+      with:
+        mode: checkpoint
+        name: followup-results-${{ inputs.stage }}-${{ inputs.chunk }}-0-${{ github.run_attempt }}
+        path: results/part-0
+        state: transport/part-0.json
+    - name: Task 1
+      shell: bash
+      env:
+        JOB_STARTED_MS: ${{ inputs.job-started-ms }}
+      run: node tools/secondary-bench/followup.mjs run-part bundle results/part-1 1 "$JOB_STARTED_MS"
+    - uses: ./tools/secondary-bench/followup-checkpoint-action
+      if: always()
+      timeout-minutes: 2
+      continue-on-error: true
+      with:
+        mode: checkpoint
+        name: followup-results-${{ inputs.stage }}-${{ inputs.chunk }}-1-${{ github.run_attempt }}
+        path: results/part-1
+        state: transport/part-1.json
+    - name: Task 2
+      shell: bash
+      env:
+        JOB_STARTED_MS: ${{ inputs.job-started-ms }}
+      run: node tools/secondary-bench/followup.mjs run-part bundle results/part-2 2 "$JOB_STARTED_MS"
+    - uses: ./tools/secondary-bench/followup-checkpoint-action
+      if: always()
+      timeout-minutes: 2
+      continue-on-error: true
+      with:
+        mode: checkpoint
+        name: followup-results-${{ inputs.stage }}-${{ inputs.chunk }}-2-${{ github.run_attempt }}
+        path: results/part-2
+        state: transport/part-2.json
+    - name: Final flush of failed or unacknowledged checkpoints only
+      if: always()
+      timeout-minutes: 15
+      continue-on-error: true
+      uses: ./tools/secondary-bench/followup-checkpoint-action
+      with:
+        mode: flush
+        path: results
+        name: followup-results-${{ inputs.stage }}-${{ inputs.chunk }}
+        state: transport
+        stage: ${{ inputs.stage }}
+        chunk: ${{ inputs.chunk }}
+    - name: Preserve transport receipts independently of measurement artifacts
+      if: always()
+      timeout-minutes: 3
+      uses: actions/upload-artifact@v4
+      with:
+        name: followup-results-transport-${{ inputs.stage }}-${{ inputs.chunk }}-${{ github.run_attempt }}
+        path: transport
+        if-no-files-found: warn
+        retention-days: 30

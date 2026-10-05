@@ -1,0 +1,23 @@
+name: Followup immutable chunk transport
+description: Upload per-chunk payloads or download exact backend IDs, without listing-cap truncation
+inputs:
+  mode:
+    required: true
+    description: upload or download
+  path:
+    required: true
+    description: planner output directory or new download directory
+  artifact-id:
+    required: false
+    description: exact immutable artifact backend ID
+  digest:
+    required: false
+    description: required expected SHA256
+outputs:
+  matrix:
+    description: bounded chunks with exact artifact IDs and digests
+  has_work:
+    description: whether a matrix has work
+runs:
+  using: node24
+  main: index.mjs
