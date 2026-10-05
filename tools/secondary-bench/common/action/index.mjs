@@ -24,6 +24,9 @@ async function upload(name, directory, ms = 180000) {
 async function download(directory, id = Number(process.env['INPUT_ARTIFACT-ID']), hash = process.env.INPUT_DIGEST) {
   assert(Number.isSafeInteger(id) && id > 0); hash = artifactDigest(hash);
   const staging = directory + '-zip'; fs.mkdirSync(staging);
+  const metadata = JSON.parse(execFileSync('gh', ['api', `repos/${repository}/actions/artifacts/${id}`], { encoding: 'utf8', timeout: 120000 }));
+  assert.equal(metadata.id, id); assert.equal(artifactDigest(metadata.digest), hash); assert(!metadata.expired);
+  requireDisk(staging, metadata.size_in_bytes); // Admit compressed bytes BEFORE SDK writes the ZIP.
   const result = await client.downloadArtifact(id, { path: path.resolve(staging), expectedHash: hash, skipDecompress: true });
   assert(!result.digestMismatch, 'payload hash mismatch');
   const members = fs.readdirSync(staging); assert.equal(members.length, 1);

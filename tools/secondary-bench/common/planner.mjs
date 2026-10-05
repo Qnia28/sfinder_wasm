@@ -63,6 +63,7 @@ function reconcileContinuation(lock, stage, tasks) {
   const scheduled = new Set(parentPlans.flatMap(p => p.expectedCalls.map(c => c.logicalCallId)));
   return tasks.map(task => {
     const calls = task.calls.filter(call => {
+      if (history.rows.some(r => r.inputId === call.inputId && r.variant === call.variant && r.status === 'OOM')) return false;
       const old = history.rows.filter(r => r.logicalCallId === call.logicalCallId);
       if (!old.length) { assert(!scheduled.has(call.logicalCallId), 'missing parent raw is not proof of NOT_RUN'); return true; }
       return old.every(r => r.executionAttemptId === null && r.status.startsWith('NOT_RUN_'));

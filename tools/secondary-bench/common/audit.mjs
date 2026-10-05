@@ -72,8 +72,15 @@ export function audit(lock, historyDir, outputDir) {
       }
     } catch (error) { transportErrors.push({ stagePlanId: report.stagePlanId, chunk: report.chunk, error: error.message }); }
   }
-  const notRun = history.rows.filter(r => r.executionAttemptId === null).map(r => r.logicalCallId);
+  const notRunEvidence = history.rows.filter(r => r.executionAttemptId === null).map(r => r.logicalCallId);
+  const notRun = [...groups].filter(([, rows]) => rows.every(r => r.executionAttemptId === null)).map(([id]) => id);
   const missingCapture = lock.manifest.inputs.commands.filter(c => !history.rows.some(r => r.stage === 'acquire' && r.inputId === c.id)).map(c => c.id);
+  const captureLedger = lock.manifest.inputs.commands.map(c => {
+    const records = history.rows.filter(r => r.stage === 'acquire' && r.inputId === c.id);
+    return { commandId: c.id, statuses: records.map(r => r.status), captureComplete: records.some(r => r.status === 'CAPTURED'),
+      primaryUnproven: records.some(r => r.status.startsWith('TIMEOUT_PHASE_PRIMARY')),
+      provenFixtures: index.captured.filter(f => f.commandId === c.id).map(f => f.id) };
+  });
   const harnessErrors = filesUnder(historyDir).filter(f => path.basename(f) === 'FAILURE.json').map(readJson);
   const incomplete = missingStages.length || missingCalls.length || missingReceipts.length || history.unknown.length || history.warnings.length || missingCapture.length;
   const failed = errors.length || multipleExecutions.length || transportErrors.length || harnessErrors.length
@@ -85,7 +92,7 @@ export function audit(lock, historyDir, outputDir) {
     evidenceCompleteness: incomplete || transportErrors.length ? 'INCOMPLETE' : 'REMOTE_RECEIPT_VERIFIED',
     correctness: errors.length ? 'FAIL' : 'WITNESS_CHECKED_NOT_INDEPENDENT_OPTIMALITY',
     performance: 'NOT_APPLICABLE', validity: failed || incomplete ? 'FAIL' : 'PASS',
-    missingStages, missingCalls, missingCapture, missingReceipts, notRun, multipleExecutions,
+    missingStages, missingCalls, missingCapture, captureLedger, missingReceipts, notRun, notRunEvidence, multipleExecutions,
     unknownExecutions: history.unknown, errors, transportErrors, harnessErrors, warnings: history.warnings, aliases: history.aliases,
     freshValidation: false, originalRawModified: false, actionsSuccessIsNotPerformancePass: true };
   writeJson(path.join(outputDir, 'AUDIT.json'), result); return result;

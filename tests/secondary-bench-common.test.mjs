@@ -74,6 +74,42 @@ test('Actions upload outputs and backend inventories normalize to the same artif
   const sha = 'a'.repeat(64); assert.equal(artifactDigest(sha), 'sha256:' + sha); assert.equal(artifactDigest('sha256:' + sha), artifactDigest(sha));
   for (const bad of ['', undefined, 'md5:' + sha, 'sha256:' + sha + 'a', 'A'.repeat(64)]) assert.throws(() => artifactDigest(bad));
 });
+test('continuation recovers proven NOT_RUN without replaying completed calls or resetting origin', async t => {
+  const dir = temporary(t), m = manifest(dir), parent = lock(dir, m), parentHistory = path.join(dir, 'uploaded');
+  fs.mkdirSync(parentHistory); const c = client(dir);
+  for (const stage of STAGES) {
+    const dest = path.join(dir, 'parent-' + stage), p = planStage(parent, parentHistory, dest, stage);
+    fs.mkdirSync(path.join(parentHistory, stage)); fs.copyFileSync(path.join(dest, 'STAGE_PLAN.json'), path.join(parentHistory, stage, 'STAGE_PLAN.json'));
+    for (let n = 0; n < p.chunks; n++) await runChunk(path.join(dest, 'chunks', String(n)), path.join(dir, 'parent-run-' + stage + '-' + n), c,
+      { jobStartedMs: begin, now: () => begin + FOLLOWUP_JOB.jobMs, scope: () => { throw Error('budget refused scope must not execute'); } });
+  }
+  assert.equal(loadHistory(parentHistory, m.campaignId).rows.filter(r => r.executionAttemptId !== null).length, 0);
+  indexHistory(parentHistory, m.campaignId);
+  const continuation = { ...m, continuation: { parentLock: path.join(dir, 'contract-1', 'LOCK.json'),
+    parentLockSha256: sha256(fs.readFileSync(path.join(dir, 'contract-1', 'LOCK.json'))), history: parentHistory,
+    historyIndexSha256: sha256(fs.readFileSync(path.join(parentHistory, 'HISTORY_INDEX.json'))) } };
+  const next = lock(dir, continuation, 'contract-2', new Date(begin + 3600000).toISOString());
+  const currentHistory = path.join(dir, 'current'); fs.mkdirSync(currentHistory);
+  const nextTransport = client(path.join(dir, 'current-root'));
+  for (const stage of STAGES) {
+    const dest = path.join(dir, 'next-' + stage), p = planStage(next, currentHistory, dest, stage);
+    fs.mkdirSync(path.join(currentHistory, stage)); fs.copyFileSync(path.join(dest, 'STAGE_PLAN.json'), path.join(currentHistory, stage, 'STAGE_PLAN.json'));
+    for (let n = 0; n < p.chunks; n++) {
+      const rdir = path.join(dir, 'next-run-' + stage + '-' + n);
+      await runChunk(path.join(dest, 'chunks', String(n)), rdir, nextTransport, { jobStartedMs: begin + 3600000, now: () => begin + 3600000, scope: exactScope });
+    }
+    if (fs.existsSync(path.join(dir, 'current-root', 'uploaded'))) for (const entry of fs.readdirSync(path.join(dir, 'current-root', 'uploaded'))) {
+      const source = path.join(dir, 'current-root', 'uploaded', entry), target = path.join(currentHistory, entry);
+      if (!fs.existsSync(target)) fs.cpSync(source, target, { recursive: true, errorOnExist: true });
+    }
+  }
+  const result = audit(next, currentHistory, path.join(dir, 'continued-audit'));
+  assert.equal(result.validity, 'PASS'); assert.equal(result.executionCompleteness, 'COMPLETE');
+  assert.equal(result.notRunEvidence.length, 6); assert.equal(result.notRun.length, 0);
+  assert.equal(next.originUtc, parent.originUtc); assert.equal(next.endUtc, parent.endUtc);
+  // Parent index remains unchanged after hardlink/copy and recovery.
+  assert.equal(sha256(fs.readFileSync(path.join(parentHistory, 'HISTORY_INDEX.json'))), continuation.continuation.historyIndexSha256);
+});
 test('strict resolved manifest rejects unsupported lifecycle, fields, limits and primary-thread override', t => {
   const m = manifest(temporary(t)); assert.equal(capacity(m.budget.job), 104 * 60000);
   for (const change of [{ unknown: true }, { profile: 'warm' }, { analysis: 'PASS' }, { budget: { ...m.budget, maxParallel: 21 } },

@@ -22,7 +22,9 @@ export function prepareSmoke(directory) {
     const marker = readJson('.github/secondary-common/SMOKE_START.json');
     assert.equal(marker.confirm, 'RUN_COMMON_HARNESS'); assert.equal(marker.sourceLock, digest(sources), 'smoke marker source mismatch');
   }
-  const manifest = resolveManifest({ schemaVersion: 1, campaignId: 'common-synthetic-smoke', revision: 1, purpose: 'information',
+  // Each contract regression is an intentional new experiment, not a clock reset
+  // or recovery of an earlier measurement campaign.
+  const manifest = resolveManifest({ schemaVersion: 1, campaignId: 'common-synthetic-smoke-' + (process.env.GITHUB_RUN_ID ?? 'local'), revision: 1, purpose: 'information',
     approval: 'EXPLICIT_MANUAL_SYNTHETIC_SMOKE_ONLY', profile: PROFILE.id, sourceFiles: sources,
     inputs: { commands: [], diagnostics: [], recovery: [], fixtures: [{ id: fixture.id, file: input.replaceAll('\\', '/'),
       sha256: sha256(fs.readFileSync(input)), acquisition: 'SYNTHETIC', provenance: { role: 'development' } }] },
