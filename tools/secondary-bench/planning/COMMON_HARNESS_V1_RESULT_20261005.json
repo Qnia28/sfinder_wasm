@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "state": "COMMON_EXECUTION_V1_SYNTHETIC_VERIFIED_NOT_PERFORMANCE_PASS",
+  "implementationRevision": "0460391d3df0a6165a307e69f5b5d8f4d903ea07",
+  "smokeCommit": "92e9bb3ed190d5656323b495a64a77eefce84f50",
+  "sourceLock": "ecb5f0b6779d5db6e17982b35672e20c0394cfedff39f4bef092013ea81e1ce7",
+  "canonicalSourceFiles": 220,
+  "localTests": {
+    "passed": 100,
+    "failed": 0,
+    "existing": 77,
+    "common": 23,
+    "log": "benchmark-results/common-harness-20261005/LOCAL_FINAL_TESTS.txt",
+    "logSha256": "6b68bd672aacdc71f906e95638cc43b5b2861cba13040a32b4a6f121ca3711af"
+  },
+  "actionlint": { "passed": true, "workflowCount": 4, "shellcheck": false, "pyflakes": false, "actualBashClockTested": true },
+  "preflightRunId": "37301887872",
+  "smoke": {
+    "runId": "37302094137",
+    "url": "https://github.com/Qnia28/sfinder_wasm/actions/runs/37302094137",
+    "campaignId": "common-synthetic-smoke-37302094137",
+    "manifestHash": "8195a5bf04a5943f71faaa56987f946a06ea61dbcfeb46f9ecb4fed237fbc3da",
+    "originUtc": "2026-10-05T11:18:28Z",
+    "endUtc": "2026-10-05T12:18:28.000Z",
+    "peakVmIncludingControls": 1,
+    "initialCalls": 6,
+    "additionalCalls": 2,
+    "recordedCalls": 8,
+    "statuses": { "EXACT": 8 },
+    "missingCalls": 0,
+    "missingReceipts": 0,
+    "witnessErrors": 0,
+    "validity": "PASS",
+    "performance": "NOT_APPLICABLE",
+    "remoteAndIndependentAuditAgree": true,
+    "emptyStages": ["preflight", "acquire"],
+    "lockArtifact": { "id": "11341053966", "digest": "sha256:816e3869076086940c41cbc7cceb4435c5bdcb94233c832fe773cf9b2f066516" },
+    "auditArtifact": { "id": "11341649938", "digest": "sha256:50995e04ec464c061d82abcc2e438690102b0f56c741572e6610c3dcc06b6be5" }
+  },
+  "archive": {
+    "state": "ARCHIVE_VERIFIED",
+    "path": "benchmark-results/common-harness-20261005/smoke-37302094137",
+    "historyIndexSha256": "746b20a113b35317f59d98ed8d67b81a9a9d322fea1e76dd8327bb22d1b10e55",
+    "summarySha256": "1bcdd32c23b75d41d338c43799c284ff3b600de82fe6230a913bc3aa251f5be2"
+  },
+  "priorSmokeRuns": [
+    { "runId": "37299789888", "conclusion": "failure", "datasetCalls": 0, "reason": "BARE_ARTIFACT_DIGEST_REJECTED", "diagnosticArtifactId": "11341330936", "preserved": true },
+    { "runId": "37300246150", "conclusion": "success", "exactCalls": 6, "preserved": true }
+  ],
+  "compatibility": {
+    "scope": "F_A_OFFLINE_POLICY_AND_SCHEDULE_EQUIVALENCE_NOT_REAL_PERFORMANCE",
+    "ordinaryAllSyntheticBlocks": 550,
+    "ordinaryAllInitialCalls": 3300,
+    "ordinaryAllChunks": 184,
+    "filteredSyntheticNewCalls": 798,
+    "recoveryCalls": 191,
+    "explicitDifferences": ["DIAGNOSTIC_WORST_RESERVATION_160000_VS_150000", "CAMPAIGN_FINAL_TRANSPORT_ADMISSION_RESERVED", "LEGACY_CONTINUATION_REQUIRES_EXPLICIT_MIGRATION"]
+  },
+  "validationBoundaries": {
+    "remote": ["REAL_LINUX_OOM_CONTRACT", "NATIVE_ACTION_SDK_TRANSPORT", "REAL_THREE_ENGINE_TINY_FIXTURE", "INITIAL_AND_ADDITIONAL", "RECEIPT_AND_WITNESS_AUDIT"],
+    "localSyntheticFaults": ["ACK_LOSS_AND_ALIAS", "IMMUTABLE_RETRY", "UNKNOWN_EXECUTION", "POSITIVE_CONTINUATION", "OOM_QUARANTINE", "WORST_CASE_CHECKPOINT_CLOCK"],
+    "realSetupPopulationRerun": false,
+    "triageOrE2eAdaptersImplemented": false,
+    "freshValidation": false
+  },
+  "productChanged": false,
+  "legacyFAHarnessOrStartMarkersChanged": false,
+  "mainShaUnchanged": "03b637730c5b541f4f2934be613498fbe65327fd"
+}
