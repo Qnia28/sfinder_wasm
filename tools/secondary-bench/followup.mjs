@@ -152,7 +152,15 @@ export function activateFollowup(templateFile, originUtc, runId, outputDir) {
   }
   assert(Number.isFinite(Date.parse(originUtc))); assert(/^[0-9]+$/.test(runId));
   assert.equal(process.env.GITHUB_RUN_ATTEMPT ?? '1', '1', 'reruns are not new measurement clocks');
-  const plan = { ...template, state: 'ACTIVE', campaignId: template.campaignId + '-' + runId, originUtc, runId,
+  const invocationCreatedUtc = originUtc;
+  if (template.continuation) {
+    assert(/^[0-9]+$/.test(template.continuation.originalRunId));
+    assert.equal(template.continuation.originalOriginUtc, '2026-10-05T07:24:17Z');
+    assert.equal(template.continuation.executedDatasetCalls, 0, 'correction must not replay existing measurement calls');
+    assert(Date.parse(originUtc) >= Date.parse(template.continuation.originalOriginUtc));
+    originUtc = template.continuation.originalOriginUtc;
+  }
+  const plan = { ...template, state: 'ACTIVE', campaignId: template.campaignId + '-' + runId, originUtc, invocationCreatedUtc, runId,
     sourceCommit: process.env.GITHUB_SHA ?? null, templateSha256: hash(fs.readFileSync(templateFile)) };
   fs.mkdirSync(outputDir, { recursive: false }); writeJson(path.join(outputDir, 'campaign.json'), validateFollowup(plan, true));
   return plan;
@@ -434,7 +442,8 @@ export function reportFollowup(planFile, historyDir, plansDir, outputDir) {
   const transportReceiptsMissing = waves.flatMap(w => Array.from({ length: w.chunks ?? 0 }, (_, chunk) => ({ stage: w.stage, chunk })))
     .filter(c => !transport.some(r => r.stage === c.stage && r.chunk === c.chunk));
   const report = { schema: 1, dataset: plan.dataset, campaignId: plan.campaignId, sourceCommit: plan.sourceCommit,
-    originUtc: plan.originUtc, expectedCalls: expected.length, recordedCalls: history.rows.length, statuses,
+    originUtc: plan.originUtc, invocationCreatedUtc: plan.invocationCreatedUtc, continuation: plan.continuation ?? null,
+    expectedCalls: expected.length, recordedCalls: history.rows.length, statuses,
     plannedMissing: expected.filter(c => !actual.has(c.callId)), foreignCalls: history.rows.filter(c => !expected.some(e => e.callId === c.callId)).map(c => c.callId),
     captureCommands: plan.commands.length, captureRecorded: captureRows.length,
     captureMissing: plan.commands.filter(c => !captureRows.some(r => r.inputId === c.id)).map(c => c.id),

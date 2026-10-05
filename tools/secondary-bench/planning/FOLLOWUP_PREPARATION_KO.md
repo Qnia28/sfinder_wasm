@@ -2,6 +2,8 @@
 
 2026-10-05 · **checkpoint 재전송 보완 / 사용자 실행 승인 / 원격 사전검사 포함 실행 예정**
 
+> **첫 원격 실행의 clock Bash 오류 교정:** F `37277545146` / A `37277545174`의 실제 Linux OOM 계약은 통과했지만 matrix clock의 `node -p Date.now()`가 Bash syntax 오류로 실패했다. F59개/A1개 실자료 job 모두 checkout 전에 실패하여 dataset 호출은0이다. [교정 감사](CLOCKFIX_AUDIT_20261005.json)와 원run/log를 보존했다. 실행본은 `prepared-20261005-clockfix/{F_TEMPLATE.json,A_TEMPLATE.json}`이며 `node -p 'Date.now()'`로 수정했다. 실제 Bash에서7개clock명령을 실행하는 계약을 추가하여 로컬76/76 통과. 새run을 쓰되 원origin **2026-10-05T07:24:17Z**와 F36h/A108h, VM/threads/반복/timeout을 유지한다. 아래 준비 시점의 미실행 문구는 과거 상태다.
+
 현재 사용자 지시를 반영한 실행 계약이다. 새 분류기·제품 solver는 구현하지 않는다. 원본 `dev-branch`, GitHub `main`, 기존 측정 raw는 변경하지 않는다.
 
 ## 두 workflow와 자원 계약

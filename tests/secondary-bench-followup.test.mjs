@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { FOLLOWUP_POLICY, SHAPE, validateFollowup, selectFollowup, retestDecision, makeFollowupTasks, packFollowup,
-  runFollowupPart, followupHistory, fixtureMeta, lockedBytes, planFollowup, reportFollowup, taskCapacityMs } from '../tools/secondary-bench/followup.mjs';
+  runFollowupPart, followupHistory, fixtureMeta, lockedBytes, planFollowup, reportFollowup, taskCapacityMs, activateFollowup } from '../tools/secondary-bench/followup.mjs';
 import { hash, identity, writeJson } from '../tools/secondary-bench/contracts.mjs';
 import { ORTOOLS_PRIMARY_PARAMETERS } from '../src/ortools-min-cover.mjs';
 import { isolatedScope } from '../tools/secondary-bench/followup-scope.mjs';
@@ -226,6 +226,40 @@ test('two separate workflows support dispatch or dedicated absent start markers,
     assert(text.includes('FOLLOWUP_SCOPE_DIAGNOSTICS: activation-diagnostics/scopes'));
     assert([...text.matchAll(/timeout-minutes: (\d+)/g)].some(m => Number(m[1]) === SHAPE.jobMinutes));
   }
+});
+test('every matrix job clock executes in real Bash; unquoted Date.now() regression is rejected', () => {
+  const bash = process.platform === 'win32' ? path.resolve(execFileSync('git', ['--exec-path'], { encoding: 'utf8' }).trim(), '../../../bin/bash.exe') : '/bin/bash';
+  assert(fs.existsSync(bash), 'real Bash is required for workflow clock contracts');
+  const dir = temporary(), output = path.join(dir, 'GITHUB_OUTPUT');
+  const run = line => {
+    fs.writeFileSync(output, '');
+    execFileSync(bash, ['--noprofile', '--norc', '-e', '-o', 'pipefail', '-c', line],
+      { encoding: 'utf8', stdio: 'pipe', env: { ...process.env, GITHUB_OUTPUT: output.replaceAll('\\', '/') } });
+    return fs.readFileSync(output, 'utf8');
+  };
+  try {
+    assert.throws(() => run('echo "started=$(node -p Date.now())" >> "$GITHUB_OUTPUT"'), /syntax error/);
+    let count = 0;
+    for (const file of ['secondary-bench-followup-f.yml', 'secondary-bench-all-a.yml']) {
+      const text = fs.readFileSync('.github/workflows/' + file, 'utf8');
+      for (const match of text.matchAll(/run: (echo "started=.+)/g)) {
+        assert.match(run(match[1]), /^started=\d+\s*$/); count++;
+      }
+    }
+    assert.equal(count, 7);
+  } finally { removeOwned(dir); }
+});
+test('clock correction uses a new run without resetting the first invocation origin or budget', () => {
+  const dir = temporary(), template = { ...plan(), state: 'PREPARED_NOT_DISPATCHED',
+    continuation: { originalRunId: '37277545174', originalOriginUtc: '2026-10-05T07:24:17Z', executedDatasetCalls: 0 } };
+  const filename = path.join(dir, 'template.json'); writeJson(filename, template);
+  const event = process.env.GITHUB_EVENT_NAME; delete process.env.GITHUB_EVENT_NAME;
+  try {
+    const active = activateFollowup(filename, '2026-10-05T08:24:17Z', '9999', path.join(dir, 'active'));
+    assert.equal(active.originUtc, template.continuation.originalOriginUtc);
+    assert.equal(active.invocationCreatedUtc, '2026-10-05T08:24:17Z');
+    assert.equal(active.policy.overallMs, template.policy.overallMs);
+  } finally { if (event === undefined) delete process.env.GITHUB_EVENT_NAME; else process.env.GITHUB_EVENT_NAME = event; removeOwned(dir); }
 });
 test('planner payloads round-trip to calls and original-weighted witness report without ALL graph retention', async () => {
   const dir = temporary(), p = plan(), history = path.join(dir, 'history'), plans = path.join(dir, 'plans');

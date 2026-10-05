@@ -1,5 +1,7 @@
 # Sol / Build 준비 상태
 
+> **원격 clock 교정 진행:** F37277545146/A37277545174 activate의 실제Linux격리계약통과 후, 따옴표없는 `Date.now()` Bash 오류로 모든실자료job이checkout전실패했다(dataset호출0). [CLOCKFIX_AUDIT_20261005.json](CLOCKFIX_AUDIT_20261005.json)에60개job 경로/원loghash를보존했다. 실제Bash7개명령검사 포함76/76로컬PASS, 실행본은 `prepared-20261005-clockfix`이며 원origin07:24:17Z와기존36h/108h 예산을유지한다. 사용자가오류수정후재시도를승인했다. 아래는이전준비상태다.
+
 > **사용자 승인 실행본:** [FOLLOWUP_PREPARATION_KO.md](FOLLOWUP_PREPARATION_KO.md). F8VM/A12VM의 source/입력lock·원fixture45개bundle·독립OOM격리·export-v2·job/disk/activate진단에 더해 실패checkpoint만final재전송과receipt/snapshot/alias검증을 보완했다. 로컬74개검사, 전송예산포함 wall F36h/A108h. CP primary2/secondary1 worker 유지. Linux scope는activate 필수검사이며 아직 원격PASS가아니다. 사용자가보완후실행을승인하여 게시후두workflow를같은ref로시작할예정이다. 아래문단은이전상태다.
 
 > **현재 인계 — ALL 우선 개정:** [MINIMALS_ALL_FIRST_PLAN_20261005_KO.md](MINIMALS_ALL_FIRST_PLAN_20261005_KO.md). 공통 하네스 보완 후 per-save 자료는 기존안의 필터 보완/결측회수로 유지하고, ALL550명령의 capture + 모든 eligible 행렬의 세 엔진 측정은 별도 캠페인으로 준비한다. ALL 해석 전 d17 후보 구현은 보류한다. 일반 minimals 우선 구현·검증 후 saves/per-save에 적용한다. 예산/manifest 미동결, 새 실행0회. 아래 인계 순서는 이전 상태다.

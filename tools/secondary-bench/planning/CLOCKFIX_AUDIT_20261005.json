@@ -1,0 +1,65 @@
+{
+  "kind": "FIRST_INVOCATION_CLOCK_SYNTAX_FAILURE",
+  "originUtc": "2026-10-05T07:24:17Z",
+  "datasetCallsExecuted": 0,
+  "runs": {
+    "F": {
+      "runId": "37277545146",
+      "conclusion": "cancelled",
+      "measurementJobs": 59,
+      "allFailedBeforeCheckout": true,
+      "executedDatasetCalls": 0,
+      "sourceCommit": "8a079b10638132fe1f1fc872182e7feeb141fe7c"
+    },
+    "A": {
+      "runId": "37277545174",
+      "conclusion": "failure",
+      "measurementJobs": 1,
+      "allFailedBeforeCheckout": true,
+      "executedDatasetCalls": 0,
+      "sourceCommit": "8a079b10638132fe1f1fc872182e7feeb141fe7c"
+    }
+  },
+  "correction": {
+    "preserveOriginUtc": true,
+    "preserveCallLimitsAndRepeats": true,
+    "preserveThreadAndVmCounts": true,
+    "newTemplateDirectory": "tools/secondary-bench/prepared-20261005-clockfix",
+    "sourceLock": "c848a6aef09989ea6fb33e306a71d91fb4640b1af0de5a9eb030582f68698d5b"
+  },
+  "evidenceFiles": [
+    {
+      "file": "benchmark-results/followup-launch-20261005/F_FIRST_RUN.json",
+      "sha256": "12173943dd5eaae4fdc38418d1a7d6b7cca362517c7309ad4737b6a4e1cfe23e"
+    },
+    {
+      "file": "benchmark-results/followup-launch-20261005/F_FIRST_JOBS.json",
+      "sha256": "7c944a767d4e1c86185e2b2c5dfe9692cbacba9458776e1cd544fdad51b8359a"
+    },
+    {
+      "file": "benchmark-results/followup-launch-20261005/F_FIRST_CLOCK_FAILURE.log",
+      "sha256": "3bbb77aa499668d3026d1d3ad9e6c5218b9330ca11619ab7cbbcab306b8059d0"
+    },
+    {
+      "file": "benchmark-results/followup-launch-20261005/A_FIRST_RUN.json",
+      "sha256": "397ef2c5586811ab3a15c1ea5d8b0843d0cf2b79b00e07bac7937e3978e4f334"
+    },
+    {
+      "file": "benchmark-results/followup-launch-20261005/A_FIRST_JOBS.json",
+      "sha256": "f6488bbb5019ef660fa089fcf4f62b0b49eaf6ef8a3794ee42487a3162488100"
+    },
+    {
+      "file": "benchmark-results/followup-launch-20261005/A_FIRST_CLOCK_FAILURE.log",
+      "sha256": "3add822608f406f971acf7d10158129ec395b28883988157582ece17726ce145"
+    }
+  ],
+  "localTests": {
+    "passed": 76,
+    "failed": 0,
+    "log": "benchmark-results/followup-launch-20261005/CLOCKFIX_LOCAL_TESTS.txt",
+    "sha256": "53e20d1f3f1062582e32b6d4489f5465bfc1cc9e97d7b68c2fb74dd7b05a0ead"
+  },
+  "actualBashClockCommandsChecked": 7,
+  "linuxOomContractPreviouslyPassedBoth": true,
+  "productChanged": false
+}
