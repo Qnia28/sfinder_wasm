@@ -11,7 +11,7 @@ import { isolatedScope } from '../tools/secondary-bench/followup-scope.mjs';
 import { auditAllCollector } from '../tools/secondary-bench/collector-contract.mjs';
 import { diskAdmission, requireDisk, materializeFixture } from '../tools/secondary-bench/followup-storage.mjs';
 import { execFileSync } from 'node:child_process';
-import { checkpoint, flushCheckpoints } from '../tools/secondary-bench/followup-checkpoint.mjs';
+import { checkpoint, flushCheckpoints, transportDeadline } from '../tools/secondary-bench/followup-checkpoint.mjs';
 
 const begin = Date.parse('2026-10-05T00:00:00Z');
 const command = () => ({ id: 'synthetic/all/bag', kind: 'minimals', wantedSave: 'ALL', family: 'bag', pattern: '*!',
@@ -77,6 +77,18 @@ test('final flush retries failed checkpoints only, records backend receipts and 
     assert.equal(report.parts[1].attempts[1].artifactId, 4);
     assert.equal(report.parts[0].attempts.length, 1);
   } finally { removeOwned(dir); }
+});
+test('composite steps use native transport deadlines instead of unsupported timeout-minutes', () => {
+  const text = fs.readFileSync('tools/secondary-bench/followup-run-action/action.yml', 'utf8');
+  assert(!/^\s+timeout-minutes:/m.test(text));
+  assert.equal([...text.matchAll(/timeout-seconds: '120'/g)].length, 3);
+  assert(text.includes("timeout-seconds: '900'")); assert(text.includes("timeout-seconds: '180'"));
+  for (const seconds of [120, 180, 900]) {
+    let callback, ms, unref = false, exitCode;
+    transportDeadline(seconds, { schedule: (fn, value) => { callback = fn; ms = value; return { unref: () => { unref = true; } }; }, exit: value => { exitCode = value; } });
+    assert.equal(ms, seconds * 1000); assert(unref); callback(); assert.equal(exitCode, 1);
+  }
+  assert.throws(() => transportDeadline(0));
 });
 test('identical acknowledged-late upload copies retain alias pointers but do not duplicate measured calls', async () => {
   const dir = temporary(), p = plan(), source = path.join(dir, 'first'), retry = path.join(dir, 'retry'); fs.mkdirSync(source);
@@ -286,6 +298,7 @@ test('planner payloads round-trip to calls and original-weighted witness report 
     assert.equal(r.witnessErrors.length, 0); assert.equal(r.plannedMissing.length, 0); assert.equal(r.missingStagePlans.length, 0);
     assert.equal(r.statuses.EXACT, 6); assert.equal(r.provenFixtures, 1);
     assert.equal(r.performancePass, 'NOT_APPLICABLE_INFORMATION_COLLECTION');
+    assert.equal(r.auditStatus, 'INCOMPLETE'); // Mock history intentionally has no transport audit receipt.
     const record = fs.readFileSync(path.join(history, 'basic', 'part-0', 'raw.jsonl'), 'utf8').trim().split('\n').map(JSON.parse);
     record[0].execution.result.result.qualityVector = [1];
     fs.writeFileSync(path.join(history, 'basic', 'part-0', 'raw.jsonl'), record.map(JSON.stringify).join('\n') + '\n');

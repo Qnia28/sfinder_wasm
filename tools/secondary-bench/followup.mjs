@@ -453,7 +453,9 @@ export function reportFollowup(planFile, historyDir, plansDir, outputDir) {
     transport, transportErrors, transportReceiptsMissing,
     rawDurabilityVerified: transportErrors.length === 0 && transportReceiptsMissing.length === 0 && missingStagePlans.length === 0,
     allScheduledCallsExecuted: missingStagePlans.length === 0 && expected.every(c => actual.get(c.callId)?.execution !== undefined),
-    auditStatus: errors.length || harnessErrors.length || statuses.MISMATCH || transportErrors.length ? 'FAIL' : 'WITNESS_CHECKED_NOT_PERFORMANCE_PASS',
+    auditStatus: errors.length || harnessErrors.length || statuses.MISMATCH || transportErrors.length ? 'FAIL'
+      : missingStagePlans.length || transportReceiptsMissing.length || expected.some(c => !actual.has(c.callId))
+        ? 'INCOMPLETE' : 'WITNESS_CHECKED_NOT_PERFORMANCE_PASS',
     originalRawModified: false, freshValidation: false, performancePass: 'NOT_APPLICABLE_INFORMATION_COLLECTION',
     actionsSuccessIsNotMeasurementPass: true };
   fs.mkdirSync(outputDir, { recursive: false }); writeJson(path.join(outputDir, 'REPORT.json'), report);

@@ -6,6 +6,12 @@ import { createHash, randomUUID } from 'node:crypto';
 import { filesUnder } from './plan-wave.mjs';
 import { readJson, writeJson } from './contracts.mjs';
 
+export function transportDeadline(seconds, { schedule = setTimeout, exit = code => process.exit(code) } = {}) {
+  assert([120, 180, 900].includes(seconds), 'finite checkpoint/flush/audit deadline required');
+  const timer = schedule(() => { console.error('Transport action deadline reached; pending receipt retained for recovery'); exit(1); }, seconds * 1000);
+  timer.unref(); return () => clearTimeout(timer);
+}
+
 const digestFile = async filename => {
   const digest = createHash('sha256');
   for await (const bytes of fs.createReadStream(filename)) digest.update(bytes);

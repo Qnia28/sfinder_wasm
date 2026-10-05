@@ -39,13 +39,13 @@ runs:
       run: node tools/secondary-bench/followup.mjs run-part bundle results/part-0 0 "$JOB_STARTED_MS"
     - uses: ./tools/secondary-bench/followup-checkpoint-action
       if: always()
-      timeout-minutes: 2
       continue-on-error: true
       with:
         mode: checkpoint
         name: followup-results-${{ inputs.stage }}-${{ inputs.chunk }}-0-${{ github.run_attempt }}
         path: results/part-0
         state: transport/part-0.json
+        timeout-seconds: '120'
     - name: Task 1
       shell: bash
       env:
@@ -53,13 +53,13 @@ runs:
       run: node tools/secondary-bench/followup.mjs run-part bundle results/part-1 1 "$JOB_STARTED_MS"
     - uses: ./tools/secondary-bench/followup-checkpoint-action
       if: always()
-      timeout-minutes: 2
       continue-on-error: true
       with:
         mode: checkpoint
         name: followup-results-${{ inputs.stage }}-${{ inputs.chunk }}-1-${{ github.run_attempt }}
         path: results/part-1
         state: transport/part-1.json
+        timeout-seconds: '120'
     - name: Task 2
       shell: bash
       env:
@@ -67,16 +67,15 @@ runs:
       run: node tools/secondary-bench/followup.mjs run-part bundle results/part-2 2 "$JOB_STARTED_MS"
     - uses: ./tools/secondary-bench/followup-checkpoint-action
       if: always()
-      timeout-minutes: 2
       continue-on-error: true
       with:
         mode: checkpoint
         name: followup-results-${{ inputs.stage }}-${{ inputs.chunk }}-2-${{ github.run_attempt }}
         path: results/part-2
         state: transport/part-2.json
+        timeout-seconds: '120'
     - name: Final flush of failed or unacknowledged checkpoints only
       if: always()
-      timeout-minutes: 15
       continue-on-error: true
       uses: ./tools/secondary-bench/followup-checkpoint-action
       with:
@@ -86,12 +85,13 @@ runs:
         state: transport
         stage: ${{ inputs.stage }}
         chunk: ${{ inputs.chunk }}
+        timeout-seconds: '900'
     - name: Preserve transport receipts independently of measurement artifacts
       if: always()
-      timeout-minutes: 3
-      uses: actions/upload-artifact@v4
+      uses: ./tools/secondary-bench/followup-checkpoint-action
       with:
+        mode: audit
         name: followup-results-transport-${{ inputs.stage }}-${{ inputs.chunk }}-${{ github.run_attempt }}
         path: transport
-        if-no-files-found: warn
-        retention-days: 30
+        state: transport-audit.json
+        timeout-seconds: '180'

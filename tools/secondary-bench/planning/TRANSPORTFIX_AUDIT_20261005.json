@@ -1,0 +1,60 @@
+{
+  "kind": "SECOND_INVOCATION_COMPOSITE_SCHEMA_FAILURE",
+  "originUtc": "2026-10-05T07:24:17Z",
+  "datasetCallsExecuted": 0,
+  "runs": {
+    "F": {
+      "runId": "37278864563",
+      "conclusion": "success",
+      "measurementJobs": 59,
+      "allBodiesRejectedBeforeExecution": true,
+      "executedDatasetCalls": 0,
+      "sourceCommit": "f794bc08c1fc9155b91ff97594ea7e76704e9075"
+    },
+    "A": {
+      "runId": "37278864596",
+      "conclusion": "failure",
+      "measurementJobs": 1,
+      "allBodiesRejectedBeforeExecution": true,
+      "executedDatasetCalls": 0,
+      "sourceCommit": "f794bc08c1fc9155b91ff97594ea7e76704e9075"
+    }
+  },
+  "sourceLock": "136b9da2efa9f506b2f3e12ac6b4ddcd0d18763f26bc07f5b32f22fc8a9980c1",
+  "newTemplateDirectory": "tools/secondary-bench/prepared-20261005-transportfix",
+  "originPreserved": true,
+  "conditionsPreserved": true,
+  "nativeTimeoutSeconds": [
+    120,
+    900,
+    180
+  ],
+  "compositeTimeoutFieldsRemoved": 5,
+  "evidenceFiles": [
+    {
+      "file": "benchmark-results/followup-launch-20261005/F_SECOND_RUN.json",
+      "sha256": "c38974acd17616da1ac019b476c2c3caf94dd4909cbd1b4bf08931625be11cbe"
+    },
+    {
+      "file": "benchmark-results/followup-launch-20261005/F_SECOND_JOBS.json",
+      "sha256": "abafd3e5f5cda1b661bd8749932a0560d32ecb280a54ff33ac591eb86da807fb"
+    },
+    {
+      "file": "benchmark-results/followup-launch-20261005/F_SECOND_SCHEMA_FAILURE.log",
+      "sha256": "342c930e52c9f05fa734a24212fbb3106310dc8bb6ff027a00627672be46d282"
+    },
+    {
+      "file": "benchmark-results/followup-launch-20261005/A_SECOND_RUN.json",
+      "sha256": "806bf3f4edaeaa96449694ca60886871274bf550b1c720ca656520e5da3e43da"
+    },
+    {
+      "file": "benchmark-results/followup-launch-20261005/A_SECOND_JOBS.json",
+      "sha256": "bb1585874f9d2f2b00d71d83d40b09700e6d8ce4c1845db6c13b68470e3db8dc"
+    },
+    {
+      "file": "benchmark-results/followup-launch-20261005/A_SECOND_SCHEMA_FAILURE.log",
+      "sha256": "d2105ec54dea871ac20f150b88c6466ca50fa8bd715f58253c56245370140333"
+    }
+  ],
+  "productChanged": false
+}

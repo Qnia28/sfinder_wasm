@@ -1,0 +1,325 @@
+{
+  "schema": 1,
+  "state": "APPROVED_NATIVE_DEADLINE_CORRECTION_NOT_STARTED",
+  "combinedVmCap": 20,
+  "datasets": {
+    "F": {
+      "VMs": 8,
+      "captureCommands": 110,
+      "supplementalFixtures": 23,
+      "importedFixtures": 45,
+      "recoveryCalls": 191,
+      "newBasicMaxCalls": 798,
+      "newRetestMaxCalls": 798
+    },
+    "A": {
+      "VMs": 12,
+      "captureCommands": 550,
+      "maxBasicCalls": 3300,
+      "maxRetestCalls": 3300,
+      "boxCommands": 2
+    }
+  },
+  "sourceLock": "136b9da2efa9f506b2f3e12ac6b4ddcd0d18763f26bc07f5b32f22fc8a9980c1",
+  "wasmSha256": "15bcd1171821d53c0e44d7b556d7d0680e957bbca5630643b34155c44b5923fd",
+  "reusedBundle": {
+    "file": "tools/secondary-bench/prepared-20261005/F_ORIGINAL_FIXTURES.json.gz",
+    "sha256": "ad63a51003764b77ae1a0cac055ecae6d390f744ea29170cb74d0021a89a7811",
+    "bytes": 16502960,
+    "fixtures": [
+      {
+        "id": "cycle1-pcinfo-033/restricted-split/I",
+        "sha256": "793903f292d17cd0ab9876f4852c8c378256e9ef281ae91bca00e25af6e420fc",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-102-0-1/data/fixtures/1b11639fe6fed4347f80-1.json"
+      },
+      {
+        "id": "cycle1-pcinfo-033/restricted-split/L",
+        "sha256": "e5b499a04d79ab7acacfb58a9ab144b6e90ca468a19679bd399e76ac1e9c7b6e",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-102-0-1/data/fixtures/1b11639fe6fed4347f80-2.json"
+      },
+      {
+        "id": "cycle1-pcinfo-033/restricted-split/J",
+        "sha256": "140c4130a43e3fb4670e94e48f16c729d00f88f019c69200f94dc9d4563765b2",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-102-0-1/data/fixtures/1b11639fe6fed4347f80-3.json"
+      },
+      {
+        "id": "cycle1-pcinfo-033/restricted-split/S",
+        "sha256": "f1394fc96ec63f32a030bf849a9d2b514bf54356a1865a47ef28a7ad9dfaa3a7",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-102-0-1/data/fixtures/1b11639fe6fed4347f80-4.json"
+      },
+      {
+        "id": "cycle1-pcinfo-033/restricted-split/Z",
+        "sha256": "f97c7e87c6abda1fd78b41aa19625e8eb1c6c8613e6aab64d4e67c63c5d9a392",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-102-0-1/data/fixtures/1b11639fe6fed4347f80-5.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-201/restricted-split/J",
+        "sha256": "d866ed6237a097d458132c65a09e08e574036ad7df6f03831753986d0b7c09aa",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-103-0-1/data/fixtures/f111f5fb2ea4523038d0-3.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-346/restricted-split/I",
+        "sha256": "1a7ad2cdf23470516ca5e1d55cf4dbdc8c8c4d89de0825a4a93937cc4bd0838d",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-104-0-1/data/fixtures/2310b724e8fdcf7ebc1f-1.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-298/bag/S",
+        "sha256": "f71b09f877bc5c20c1107343e8c2aa6a5dc8c30c537a974898ab960fb18de96b",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-105-2-1/data/fixtures/867f1db3837e844d318e-3.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-136/bag/S",
+        "sha256": "513578a5d212ac2ef3c5a3eeb1a13f93d2d260a82d8541ca8909c5eabee4fdc9",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-11-0-1/data/fixtures/917050741b1fcc7c28e4-1.json"
+      },
+      {
+        "id": "cycle1-pcinfo-039/restricted-split/L",
+        "sha256": "44dc548da21e056be2f41e0d6409e0cfc480f4599173868732212c399938d392",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-17-1-1/data/fixtures/e520ffa0f98c2851058d-2.json"
+      },
+      {
+        "id": "cycle1-pcinfo-015/restricted-split/I",
+        "sha256": "dad93034730764fc92f480ac670bacdb42ff3ffdebe131f386cc992f4a27f7fe",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-22-0-1/data/fixtures/7d6df417158bd086221b-1.json"
+      },
+      {
+        "id": "cycle1-pcinfo-015/restricted-split/L",
+        "sha256": "58cd66c8a741b2bbb237ef5d664a02d910b3277419c2780446aebea82aebaf09",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-22-0-1/data/fixtures/7d6df417158bd086221b-2.json"
+      },
+      {
+        "id": "cycle1-pcinfo-015/restricted-split/J",
+        "sha256": "bd33440347e578d893c612f02b653dc2ae0c42f449926b7bbe1417ebe6fb5fe4",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-22-0-1/data/fixtures/7d6df417158bd086221b-3.json"
+      },
+      {
+        "id": "cycle1-pcinfo-015/restricted-split/S",
+        "sha256": "be3de460f90044d00624362f1c562dec3211b3f190add0cac6a40096fde54a0f",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-22-0-1/data/fixtures/7d6df417158bd086221b-4.json"
+      },
+      {
+        "id": "cycle1-pcinfo-015/restricted-split/Z",
+        "sha256": "897786e0f63ed7e594c3c7103962785f910334277e4fe15ff1e397f6a1f57a93",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-22-0-1/data/fixtures/7d6df417158bd086221b-5.json"
+      },
+      {
+        "id": "cycle1-pcinfo-015/restricted-split/O",
+        "sha256": "d7cc7cb6c4f7662b0e4ccb733a8da81b53aece44005fb069c3a7147fcdfb7dc9",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-22-0-1/data/fixtures/7d6df417158bd086221b-6.json"
+      },
+      {
+        "id": "cycle1-pcinfo-015/bag/T",
+        "sha256": "db5b7019291655a197bcde3492b0598410c16f3f00978127f56cea347a81505e",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-24-3-1/data/fixtures/c6e06ebd6650c4c2efbb-0.json"
+      },
+      {
+        "id": "cycle1-pcinfo-015/bag/Z",
+        "sha256": "8bc606056c60ad5d3da9b981491c3baec636c7fb1f84a949225dbacfa8d9973d",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-24-3-1/data/fixtures/c6e06ebd6650c4c2efbb-5.json"
+      },
+      {
+        "id": "cycle1-pcinfo-015/bag/O",
+        "sha256": "3a45b919fef14088bd542a6d678a637cd09f7ce80c3e774f81a35b45e5122033",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-24-3-1/data/fixtures/c6e06ebd6650c4c2efbb-6.json"
+      },
+      {
+        "id": "cycle1-pcinfo-031/bag-plus-next-draw/S",
+        "sha256": "b3db0c8843eb6010e382aaa2f78c0d86e6b4859968662958288589fecac16dcd",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-26-2-1/data/fixtures/e71450c0be8df339f9fe-4.json"
+      },
+      {
+        "id": "cycle1-pcinfo-031/bag-plus-next-draw/Z",
+        "sha256": "fbf61a8ba351797ec77dacf3c5e44f0f39176473a32514299c18d6fed9ed8ff4",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-26-2-1/data/fixtures/e71450c0be8df339f9fe-5.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-022/restricted-split/I",
+        "sha256": "62259f6a67d564c068bf3a85626394a0ccf41a2f5fdbc319aa98d734ed955e3d",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-3-3-1/data/fixtures/2fc82b82ebea35b3468b-1.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-040/restricted-split/Z",
+        "sha256": "c7fa490747a6288fa4e1fa44f2c7816f9be251dc8668c4cff2534604db7cb07d",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-33-3-1/data/fixtures/c2e837ce8cd33b80daaf-4.json"
+      },
+      {
+        "id": "cycle1-jaws-a/restricted-split/J",
+        "sha256": "e6301a67d310ea68e2e15d88b8c3f27bbca313fe0b13b3ff5a359be5d7cbc27e",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-34-1-1/data/fixtures/06370a324eda64928c35-3.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-091/restricted-split/L",
+        "sha256": "8c7c0e64e48cd726a2763b15eb9aaf45d8060f5645e4fbc122b89106cb21952e",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-34-3-1/data/fixtures/db08e6154313808106b9-2.json"
+      },
+      {
+        "id": "cycle1-pcinfo-035/restricted-split/Z",
+        "sha256": "5d2b09eb5b9bdd390dc87a24e93c369b2619fc0e0a488215369736ab43673278",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-38-1-1/data/fixtures/9f6b79867fe5588fced7-5.json"
+      },
+      {
+        "id": "cycle1-pcinfo-030/restricted-split/I",
+        "sha256": "42279624c90c838f50acb8e3a3a51918617af2330ad3ab097a330e5b316a02e5",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-4-0-1/data/fixtures/fffc8b4d5670f39293b0-1.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-076/restricted-split/J",
+        "sha256": "2a8fced0d17209692a8c43331f630aaac93d4c8dd9ba3ea60e95f11154766416",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-43-1-1/data/fixtures/98fd370b3a31ec83f7c8-3.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-013/restricted-split/I",
+        "sha256": "036d3f4512dc720c0a5199169b69e251a3c4257a88bd403b1cd1087ab4930772",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-49-1-1/data/fixtures/85c12bcd205664896094-1.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-142/restricted-split/J",
+        "sha256": "3814e9f60ef1b7ad348601fc74dd909af14c21b6e31a4ae63045cb3c02197fe3",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-6-2-1/data/fixtures/793e6e699f1815920fc5-3.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-074/restricted-split/O",
+        "sha256": "ad7fcac43274a52838759e9ed877a198a7e93c9bf5f7b59093f8a359042e7e53",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-60-1-1/data/fixtures/ea5de26e291a5fcd068a-6.json"
+      },
+      {
+        "id": "cycle1-pcinfo-031/restricted-split/I",
+        "sha256": "0944c8139bddc1b7a9771c8e8e980cf3384bad43e974962c3cc12902ae247a36",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-63-2-1/data/fixtures/9fe39d9589e380dda3cf-1.json"
+      },
+      {
+        "id": "cycle1-pcinfo-031/restricted-split/L",
+        "sha256": "ea8b706fe5ed3aea937f943b1a939440bf923aa20321bd5feeb672454f4b49ce",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-63-2-1/data/fixtures/9fe39d9589e380dda3cf-2.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-035/restricted-split/S",
+        "sha256": "5ee6d492841f09dccd7cbca841afd069bf28c9f822b6c650f497bfc7b1b4fb10",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-7-3-1/data/fixtures/bd8c3b39b42185b79a78-4.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-079/restricted-split/J",
+        "sha256": "7afd607a08788ace12f1966cb7530218967ec181ba8551b33bab24a9da14f11e",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-77-2-1/data/fixtures/5471b055a3c9ea2b92f3-3.json"
+      },
+      {
+        "id": "cycle1-pcinfo-032/restricted-split/L",
+        "sha256": "37b596cd24f0e3c5ead2371077ba914f7643e617376fc366a3a9a4c4832bf70b",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-78-0-1/data/fixtures/a4f04704faf277a076e5-2.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-275/restricted-split/T",
+        "sha256": "d9e0d41243c88dbd0cd9ef1dc8550aed4637b1a71ae25510b8c1ce0c72ea3f10",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-78-1-1/data/fixtures/e97701e5c6967a328eba-0.json"
+      },
+      {
+        "id": "cycle1-elephant-a/restricted-split/J",
+        "sha256": "d28f44be151f9544e4acc87e00436f4fbad739e4bc7ba6b7211dd44a7a4d581c",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-8-2-1/data/fixtures/768f903228381943b3f5-3.json"
+      },
+      {
+        "id": "cycle1-pcinfo-019/restricted-split/J",
+        "sha256": "570a9efca9a95866d28d44a40a1f0f1ebf58534ab2c027bf9a63f9f71fd70ff0",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-8-3-1/data/fixtures/5c983ecc09939d5c3d1a-3.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-020/restricted-split/I",
+        "sha256": "6213ec45e31ae1aef9f6a250c55c782f7a8777610c2fcda47721a66a6158ae88",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-80-2-1/data/fixtures/dd62dfe6bd5115d99551-1.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-020/restricted-split/J",
+        "sha256": "e5760dd2da093d324e3704cf27d02fc39a09787f1312ee29aeda8a43b0c0d5e4",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-80-2-1/data/fixtures/dd62dfe6bd5115d99551-3.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-150/bag/S",
+        "sha256": "519860b8c91cc7d0b29cd31d1ed0f409269e900ecc7ee5f5502bff68f177911a",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-84-3-1/data/fixtures/cc90e88de8be30770aae-4.json"
+      },
+      {
+        "id": "cycle1-pcinfo-007/restricted-split/I",
+        "sha256": "c6347d3dc0ea89c0b84cdfb323d1cd5fd6439dab3d02c3e5b172f86273232922",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-87-0-1/data/fixtures/e275993672842e4b6475-1.json"
+      },
+      {
+        "id": "cycle1-alt-jaws-a/restricted-split/I",
+        "sha256": "806db39993cd88923e5e0df569d716b1bfa67820a792af10aa03175588bbb1a0",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-9-1-1/data/fixtures/88986ab887f6fbf441ef-1.json"
+      },
+      {
+        "id": "c7-2plus2-qb-row-228/restricted-split/J",
+        "sha256": "4541595df1e8f6928e5f9d7532eb66a217e0652248b34cc5b8569297b2c18ef4",
+        "originalFile": "benchmark-results/campaign-37222172267/full-history/secondary-results-capture-93-1-1/data/fixtures/42d104879b8098a94a42-3.json"
+      }
+    ],
+    "originalCaptureSourceLock": "f084feca6468569e3a46b1383eda00f549d4e98002a587ca375334346d6f0579"
+  },
+  "oldSolverSourceVerified": true,
+  "originalRawModified": false,
+  "actionsStarted": true,
+  "launchRequires": [
+    "commit/publish exact prepared source on experiment branch",
+    "after authorization, two explicit workflow_dispatch events OR one marker-only commit containing both validated F_START/A_START files",
+    "no legacy measurement workflow runs during the F8VM/A12VM campaigns"
+  ],
+  "wallHours": {
+    "F": 36,
+    "A": 108
+  },
+  "previousPreparationSourceLock": "80cbb3d1c1b9570ff90fc30a0bf8b7b9cd54716c2bb0d532e50cfe7b5ae5ce89",
+  "supplementation": {
+    "jobPacking": "SETUP10MIN_CHECKPOINT2MIN_PER_PART_RESERVED",
+    "jobSoftMinutes": 125,
+    "jobHardMinutes": 150,
+    "taskCapacityMinutes": 104,
+    "plannerReportHardMinutes": 90,
+    "storage": "SEQUENTIAL_DIGESTED_ZIP_EXACT_SIZE_GUARD_4G_RESERVE_AND_HARDLINKS",
+    "activationDiagnostics": "ALWAYS_ARTIFACT_INDEPENDENT_OF_CAMPAIGN_LOCK",
+    "remoteStorageAndScopeValidation": "PENDING",
+    "all550CompletionGuaranteed": false,
+    "finalTransportMinutes": 15,
+    "transportAuditMinutes": 3,
+    "checkpointRetries": "FAILED_OR_PENDING_ONLY_MAX_TWO_IMMUTABLE_BYTE_RETRIES_NO_SOLVER_CALLS"
+  },
+  "parentPreparedDirectory": "tools/secondary-bench/prepared-20261005-clockfix",
+  "originUtc": "2026-10-05T07:24:17Z",
+  "previousInvocations": {
+    "F": {
+      "runId": "37277545146",
+      "conclusion": "cancelled",
+      "measurementJobs": 59,
+      "allFailedBeforeCheckout": true,
+      "executedDatasetCalls": 0,
+      "sourceCommit": "8a079b10638132fe1f1fc872182e7feeb141fe7c"
+    },
+    "A": {
+      "runId": "37277545174",
+      "conclusion": "failure",
+      "measurementJobs": 1,
+      "allFailedBeforeCheckout": true,
+      "executedDatasetCalls": 0,
+      "sourceCommit": "8a079b10638132fe1f1fc872182e7feeb141fe7c"
+    }
+  },
+  "correctiveInvocationStarted": false,
+  "localTests": 77,
+  "previousCorrectionInvocations": {
+    "F": {
+      "runId": "37278864563",
+      "conclusion": "success",
+      "measurementJobs": 59,
+      "allBodiesRejectedBeforeExecution": true,
+      "executedDatasetCalls": 0,
+      "sourceCommit": "f794bc08c1fc9155b91ff97594ea7e76704e9075"
+    },
+    "A": {
+      "runId": "37278864596",
+      "conclusion": "failure",
+      "measurementJobs": 1,
+      "allBodiesRejectedBeforeExecution": true,
+      "executedDatasetCalls": 0,
+      "sourceCommit": "f794bc08c1fc9155b91ff97594ea7e76704e9075"
+    }
+  }
+}

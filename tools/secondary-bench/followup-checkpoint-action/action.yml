@@ -19,6 +19,9 @@ inputs:
   chunk:
     required: false
     description: chunk for flush report
+  timeout-seconds:
+    required: true
+    description: Native action deadline; composite uses steps do not support timeout-minutes
 runs:
   using: node24
   main: index.mjs
