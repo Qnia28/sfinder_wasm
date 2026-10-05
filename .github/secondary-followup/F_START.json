@@ -1,8 +1,8 @@
 {
   "confirm": "RUN_APPROVED_FOLLOWUP",
   "dataset": "F",
-  "templateSha256": "668ad97bc2d68b171309a19029bb3c39c29798b6ff607eb4e8c56bc2668b8e93",
-  "sourceLock": "063435b29e98e74bcfb9e6a7854f75fcb15fa380f2164fd0b42270ed892ae6de",
-  "preparedCommit": "e7bcb501818762a5406e8e68eca6bcff06ae9b46",
-  "approval": "User explicitly requested checkpoint supplementation followed by execution; concurrent F8VM and A12VM"
+  "templateSha256": "82be55a0481ca57466a5fa187dc7c43e01465bcc01c3d1e4449e8e77b8540a89",
+  "sourceLock": "c848a6aef09989ea6fb33e306a71d91fb4640b1af0de5a9eb030582f68698d5b",
+  "preparedCommit": "75b7981d7af870560fe52cc8ce5bd29b18c5bc77",
+  "approval": "User explicitly requested correction and retry of both failed workflows; original 07:24:17Z origins and budgets retained"
 }
