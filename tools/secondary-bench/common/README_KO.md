@@ -2,7 +2,7 @@
 
 확정 계약: [설계 문서](../planning/COMMON_HARNESS_DESIGN_20261005_KO.md).
 
-기존 `followup.mjs`·F/A workflow·prepared template·원자료·제품은 수정하지 않는다. 이 디렉터리는 그 실행 부품을 재사용하는 새 manifest-driven 실행 기반이다. 실제 triage/제품 end-to-end 어댑터(M5)는 아직 지원하지 않으며, 해당 명세는 실행 전에 거부한다.
+기존 `followup.mjs`·F/A workflow·prepared template·원자료·제품은 수정하지 않는다. 기존 information profile 의미를 유지하면서 M5의 `triage-fixture` / `triage-cold-v1` 명시적 performance profile을 추가했다. 제품 end-to-end는 여전히 지원하지 않는다.
 
 ## 구성
 
@@ -40,6 +40,15 @@
 현재 코드는 성능 PASS·fresh 검증을 발행하지 않는다. 새로운 lifecycle/triage/e2e 지원은 별도 어댑터·profile·계약 검증이 필요하고, workflow/저장/복구를 다시 만들지 않는다.
 
 ## 명세와 CLI
+
+### M5 triage performance 확장
+
+- `common/action`의 명시적 `protocol: triage`가 paired phase compiler / development gate / 독립 Python 감사를 선택한다. 인증·SDK 호출은 기존 JavaScript action에서 준비한 pinned Node runtime에 전달한다. 일반 information 실행에 performance manifest를 묵시적으로 섞지 않는다.
+- 실행 루프·admission·scope·OOM 격리·회수·immutable checkpoint/transport는 **기존 `common/executor.mjs` 하나**다. `triage/executor.mjs`는 이전 호출자용 얇은 연결부이며 별도 실행 루프가 없다. 제품 adapter는 `common/adapters.mjs`에 등록한다.
+- performance lock의 activation·parent lock/history SHA256·source/input/condition 관계·origin/end 유지에는 **기존 `common/manifest.mjs` continuation**을 사용한다. 이전 triage immutable lock은 읽기 전용 호환 검증하며 소급 변환하지 않는다.
+- 교정된 하네스의 의도적 새 prerequisite 측정은 `measurementEpoch`로 논리 ID를 구분한다. parent의 원 raw/status/unknown/alias/index를 보존하고 현재 성능·선정에 pooling하지 않는다. 이미 계획된 parent 슬롯은 NOT_RUN/unknown까지 전부 차감한다. 필수 confirmation이 잔여 cap을 초과하면 fail-closed; 표본 축소로 통과시키지 않는다.
+- Astra의 frozen `TASKS.jsonl` 인접 pair / seed trial / canary / calibration / initial / selected confirmation을 사용한다. timing은 `policySettledMs`, 초기/확인/ALL/per-save/진단 국면은 분리한다. CP 60s/120s, T/CP 공유 seed, 전체 tree 3GiB/swap0, secondary1 thread는 그대로다.
+- 현재 campaign/stage workflow는 triage phase의 단계를 표현하는 protocol wrapper이며, 범용 information CLI의 4단계와 같은 의미로 취급하지 않는다. command-e2e/fresh 검증/전체 제품 PASS를 발행하지 않는다.
 
 ```powershell
 # 새 출력 위치만 사용. 기존 승인 template와 raw는 수정하지 않는다.

@@ -10,6 +10,7 @@ export const ADAPTERS = Object.freeze({
   'capture-minimals': { version: 1, action: 'capture', success: 'CAPTURED' },
   'collector-diagnostic': { version: 1, action: 'collector-preflight', success: 'COLLECTOR_MATCH' },
   'secondary-fixture': { version: 1, action: 'secondary', success: 'EXACT' },
+  'triage-fixture': { version: 1, action: 'triage', success: 'EXACT' },
 });
 export const captureAdapter = c => c.kind === 'per-save' ? 'capture-per-save' : 'capture-minimals';
 export function fixtureMetadata(fixture) {
@@ -30,8 +31,15 @@ export function describeFixture(file, reference = {}) {
     commandId: fixture.origin.command.id, commandHash: digest(fixture.origin.command), trivial: Boolean(fixture.trivial),
     acquisition: reference.acquisition ?? 'NEW_CAPTURE', provenance: reference.provenance ?? { file }, metadata: JSON.parse(JSON.stringify(fixtureMetadata(fixture))) };
 }
-export function requestFor(call, task, bundle, outputDir) {
+export function requestFor(call, task, bundle, outputDir, { input = null, probeSeed = null } = {}) {
   assert(ADAPTERS[task.adapter], 'unsupported adapter');
+  if (task.adapter === 'triage-fixture') {
+    assert(input && input.id===call.inputId);
+    const file=safePath(bundle,input.member);assert.equal(sha256(fs.readFileSync(file)),call.inputHash);
+    return { action:'triage',variant:call.variant,fixturePath:file,fixtureSha256:call.inputHash,
+      exactHumanQuality:'true',baselineRoot:path.resolve('triage-baseline'),expectedWitness:input.expectedWitness??null,
+      ...(call.variant==='T_PROBE_SEED'?{probeSeed}: {}) };
+  }
   if (task.adapter === 'secondary-fixture') {
     const file = safePath(bundle, task.fixture.path); assert.equal(sha256(fs.readFileSync(file)), task.fixture.sha256);
     validateFixture(readJson(file));

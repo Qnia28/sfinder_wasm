@@ -4,6 +4,7 @@ import hashlib
 import json
 import subprocess
 import sqlite3
+import shutil
 import zipfile
 from pathlib import Path
 
@@ -20,9 +21,29 @@ def normalized_hash(path, product):
         except UnicodeDecodeError:pass
     return hashlib.sha256(data).hexdigest()
 
+def audit_original_all_witnesses(base, archive):
+    """Read original DB/raw bytes, never run a solver or rewrite evidence."""
+    db=base/'minimals-all/ALL.sqlite';c=sqlite3.connect(db.as_uri()+'?mode=ro',uri=True);c.row_factory=sqlite3.Row
+    grouped={}
+    for row in c.execute("SELECT fixtureId,rawFile,rawLine,rawFileSha256,rawLineSha256,exactWitnessSha256 FROM calls WHERE status='EXACT'"):
+        grouped.setdefault(row['rawFile'],[]).append(dict(row))
+    c.close();count=0;consensus={}
+    with zipfile.ZipFile(archive) as z:
+        for name,rows in grouped.items():
+            data=z.read(name);assert hashlib.sha256(data).hexdigest()==rows[0]['rawFileSha256'];lines=data.decode('utf-8').splitlines()
+            for row in rows:
+                line=lines[row['rawLine']-1];assert hashlib.sha256(line.encode()).hexdigest()==row['rawLineSha256'];raw=json.loads(line)
+                assert raw['inputId']==row['fixtureId'];record=raw['execution']['result'];v=record['verified']
+                assert v['qualityVector']==record['result']['qualityVector']
+                h=hashlib.sha256(json.dumps(dict(selected=v['selected'],quality=v['qualityVector']),separators=(',',':')).encode()).hexdigest()
+                assert h==row['exactWitnessSha256'];assert consensus.setdefault(row['fixtureId'],h)==h;count+=1
+    return dict(status='PASS',contract='INSERTION_SELECTED_QUALITY',exactRecordsChecked=count,rawFilesChecked=len(grouped),
+        fixtures=len(consensus),databaseSha256=sha(db),solverCalls=0,originalEvidenceUnmodified=True)
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--analysis',default=r'D:\AI\sfinder-wasm\triage-analysis\Astra')
-    parser.add_argument('--out',required=True);parser.add_argument('--activation-recovery');parser.add_argument('--startup-continuation');args=parser.parse_args()
+    parser.add_argument('--out',required=True);parser.add_argument('--activation-recovery');parser.add_argument('--startup-continuation')
+    parser.add_argument('--common-continuation');args=parser.parse_args()
     work=Path.cwd();analysis=Path(args.analysis);out=Path(args.out);out.mkdir(parents=True,exist_ok=False)
     design=json.loads((analysis/'next-experiment/PLAN.json').read_text(encoding='utf-8'))
     targets=[json.loads(s) for s in (analysis/'next-experiment/TARGETS.jsonl').read_text(encoding='utf-8').splitlines()]
@@ -78,6 +99,23 @@ def main():
         assert manifest['activationRecovery']['populationCalls']==0
     if args.startup_continuation:
         manifest['startupContinuation']=json.loads(Path(args.startup_continuation).read_text(encoding='utf-8'))
+    if args.common_continuation:
+        assert not args.startup_continuation,'do not mix dedicated r4 repair with common continuation'
+        prior=Path(args.common_continuation)
+        shutil.copytree(prior,out/'continuation');prior=out/'continuation'
+        manifest.update(revision=5,approval='USER_ASTRA_ANALYSIS_FIX_AND_RESUME',analysis='DEVELOPMENT_KEEP_HOLD_REJECT',
+            measurement=dict(adapter='triage-fixture',variants=['BASELINE','A','B']),
+            budget=dict(maxParallel=16,overallMs=manifest['overallMs'],maxCalls=8479,job=job),
+            evidence=dict(schemaVersion=1,retentionDays=30,retries=2,diskReserveBytes=4*1024**3),
+            continuation=dict(parentLock='config/continuation/PARENT_LOCK.json',parentLockSha256=sha(prior/'PARENT_LOCK.json'),
+                history='config/continuation/history',historyIndexSha256=sha(prior/'history/HISTORY_INDEX.json')))
+        backend=json.loads((prior/'PARENT_BACKEND.json').read_text(encoding='utf-8'))
+        manifest['provenance'].update(parentLockArtifact=dict(id=backend['id'],digest=backend['digest']),
+            priorReservedRunnerHours=14,priorCpSyntheticCalls=4,priorEvidencePooled=False,measurementEpoch=5,
+            approval='USER_ASTRA_ANALYSIS_FIX_AND_RESUME',exposures=['ALL','PER_SAVE','FAILED_CANARY_R3'])
+        proof=audit_original_all_witnesses(base,Path(r'D:\AI\sfinder-wasm\files\evidence\A_ASTRA_HANDOFF_37280034634.zip'))
+        (out/'ORIGINAL_WITNESS_AUDIT.json').write_text(canonical(proof)+'\n',encoding='utf-8')
+        manifest['provenance']['originalWitnessAuditSha256']=sha(out/'ORIGINAL_WITNESS_AUDIT.json')
     manifest['design']['budget']['max_parallel_vm']=16
     manifest['design']['budget']['runtime_reserved_control_jobs']=36
     manifest['design']['state']='PREPARED_REMOTE_GATES_REQUIRED'
@@ -88,6 +126,10 @@ def main():
     archive=out/'TRIAGE_16VM_INPUTS.zip';written=set();total=0
     with zipfile.ZipFile(archive,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=1,allowZip64=True) as z:
         z.write(out/'MANIFEST.json','MANIFEST.json');z.write(out/'TASKS.jsonl','TASKS.jsonl')
+        if args.common_continuation:
+            z.write(out/'ORIGINAL_WITNESS_AUDIT.json','ORIGINAL_WITNESS_AUDIT.json')
+            for p in sorted(prior.rglob('*')):
+                if p.is_file():z.write(p,'continuation/'+p.relative_to(prior).as_posix())
         for ref in baseline:z.write(snapshot/Path(ref['member']).name,ref['member'])
         for f in targets:
             source=work/f['source_locator'];expected=f['fixture_sha256']

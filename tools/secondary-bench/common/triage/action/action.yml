@@ -46,12 +46,13 @@ runs:
     - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
       shell: bash
     - id: native
-      uses: ./tools/secondary-bench/common/triage/native-action
-      env:
-        INPUT_MODE: ${{ inputs.mode }}
-        INPUT_PHASE: ${{ inputs.phase }}
-        INPUT_ARTIFACT_ID: ${{ inputs.artifact-id }}
-        INPUT_DIGEST: ${{ inputs.digest }}
-        INPUT_ASSET_ID: ${{ inputs.asset-id }}
-        INPUT_CONFIRM: ${{ inputs.confirm }}
-        INPUT_JOB_STARTED_MS: ${{ inputs.job-started-ms }}
+      uses: ./tools/secondary-bench/common/action
+      with:
+        protocol: triage
+        mode: ${{ inputs.mode }}
+        phase: ${{ inputs.phase }}
+        artifact-id: ${{ inputs.artifact-id }}
+        digest: ${{ inputs.digest }}
+        asset-id: ${{ inputs.asset-id }}
+        confirm: ${{ inputs.confirm }}
+        job-started-ms: ${{ inputs.job-started-ms }}

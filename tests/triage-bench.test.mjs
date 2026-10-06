@@ -10,7 +10,8 @@ import { selectConfirmation, prerequisiteGate, pairedInputs, developmentReport }
 import { executeTask, runChunk } from '../tools/secondary-bench/common/triage/executor.mjs';
 import { digest, writeJson, filesUnder, canonical } from '../tools/secondary-bench/common/contracts.mjs';
 import { FOLLOWUP_JOB } from '../tools/secondary-bench/common/budget.mjs';
-import { verifySnapshot } from '../tools/secondary-bench/common/evidence.mjs';
+import { verifySnapshot, seal, indexHistory, historyReservation } from '../tools/secondary-bench/common/evidence.mjs';
+import { activate as activateCommon, validateLock as validateCommonLock } from '../tools/secondary-bench/common/manifest.mjs';
 import { runIsolated } from '../tools/secondary-bench/isolation.mjs';
 import { hash } from '../tools/secondary-bench/contracts.mjs';
 import { sha256 } from '../tools/secondary-bench/common/contracts.mjs';
@@ -214,9 +215,10 @@ test('phase workflow is branch-limited, opt-in and reserves 16 matrix VMs',()=>{
 });
 test('artifact operations run through a JavaScript action, never a bare composite shell',()=>{
   const composite=fs.readFileSync('tools/secondary-bench/common/triage/action/action.yml','utf8');
-  const native=fs.readFileSync('tools/secondary-bench/common/triage/native-action/action.yml','utf8');
-  const bootstrap=fs.readFileSync('tools/secondary-bench/common/triage/native-action/index.mjs','utf8');
-  assert(composite.includes('uses: ./tools/secondary-bench/common/triage/native-action'));
+  const native=fs.readFileSync('tools/secondary-bench/common/action/action.yml','utf8');
+  const bootstrap=fs.readFileSync('tools/secondary-bench/common/action/index.mjs','utf8');
+  assert(composite.includes('uses: ./tools/secondary-bench/common/action'));
+  assert(composite.includes('protocol: triage'));
   assert(!composite.includes('run: node tools/secondary-bench/common/triage/action.mjs'));
   assert(native.includes('using: node24'));assert(bootstrap.includes('ACTIONS_RUNTIME_TOKEN'));
   assert(bootstrap.includes("spawnSync('node'"));
@@ -275,4 +277,34 @@ test('triage chunk checkpoints and immutable transport retry never re-execute po
   const out=path.join(dir,'out'),report=await runChunk(bundle,out,client,{scope,now:()=>now,jobStartedMs:now});
   assert.equal(scopeCalls,2);assert.equal(report.status,'ALL_DURABLE');assert.equal(report.solverCallsInTransport,0);
   assert.equal(verifySnapshot(path.join(out,'part-0')).members.filter(r=>r.path==='raw.jsonl').length,1);
+});
+test('common performance profile resumes an indexed immutable legacy parent without resetting clock or reusing IDs',async t=>{
+  const dir=temp(t),now=Date.now(),inputHash='a'.repeat(64),source='tools/secondary-bench/common/contracts.mjs';
+  const old={schemaVersion:1,campaignId:'profile-contract',profile:PROFILE.id,profileContract:PROFILE,purpose:'development-policy-ab',
+    auditContract:AUDIT_CONTRACT,cpPreflightContract:CP_PREFLIGHT_CONTRACT,freshValidation:false,maxParallel:16,maxCalls:8479,
+    maxRunnerHours:1400,overallMs:120*3600000,job:FOLLOWUP_JOB,baselineFiles:[],tasksHash:'frozen-tasks',
+    sourceFiles:{product:{[source]:sha256(fs.readFileSync(source))},harness:{[source]:sha256(fs.readFileSync(source))}},
+    inputs:Array.from({length:580},(_,i)=>({id:i?'f'+i:'f',sha256:inputHash,member:`fixtures/${inputHash}.json`,metadata,
+      expectedWitness:{contract:'SORTED_QUALITY_SELECTED',sha256:'b'.repeat(64)}})),design:{gates:{correctness_disagreements_allowed:0}}};
+  const parent={manifest:old,manifestHash:digest(old),profileHash:digest(PROFILE),invocationId:'parent',originMs:now,endMs:now+old.overallMs};
+  const parentFile=path.join(dir,'PARENT_LOCK.json');writeJson(parentFile,parent);
+  const history=path.join(dir,'history');fs.mkdirSync(history);
+  const template={phase:'CANARY',task_id:'CANARY/f',fixture_ids:['f'],variants:['PRECHANGE_BASELINE','BASELINE','A','B'],calls:4};
+  const before=compileTasks(old,[template],'CANARY')[0].calls;
+  writeJson(path.join(history,'plan/STAGE_PLAN.json'),{expectedCalls:before});await seal(path.join(history,'plan'),{campaignId:old.campaignId});
+  indexHistory(history,old.campaignId);
+  const m={...old,revision:5,approval:'SYNTHETIC_ONLY',analysis:'DEVELOPMENT_KEEP_HOLD_REJECT',measurement:{adapter:'triage-fixture',variants:['BASELINE','A','B']},
+    budget:{maxParallel:16,maxCalls:8479,overallMs:old.overallMs,job:FOLLOWUP_JOB},evidence:{schemaVersion:1,retentionDays:30,retries:2,diskReserveBytes:4*1024**3},
+    inputs:old.inputs.map(f=>({...f,expectedWitness:{...f.expectedWitness,contract:'INSERTION_SELECTED_QUALITY'}})),
+    continuation:{parentLock:parentFile,parentLockSha256:sha256(fs.readFileSync(parentFile)),history,historyIndexSha256:sha256(fs.readFileSync(path.join(history,'HISTORY_INDEX.json')))}};
+  const next=activateCommon(m,path.join(dir,'new-lock'),{createdUtc:new Date(now+1000).toISOString(),invocationId:'new',confirm:true});
+  assert.equal(next.originMs,parent.originMs);assert.equal(next.endMs,parent.endMs);validateCommonLock(next);
+  assert.equal(historyReservation(m).calls,4);
+  const after=compileTasks(m,[template],'CANARY')[0].calls;
+  assert(after.every(c=>c.measurementEpoch===5&&!before.some(old=>old.callId===c.callId)));
+  assert.equal(sha256(fs.readFileSync(parentFile)),m.continuation.parentLockSha256);
+  assert.throws(()=>activateCommon({...m,inputs:m.inputs.map((f,i)=>i?f:{...f,sha256:'c'.repeat(64)})},path.join(dir,'bad'),
+    {createdUtc:new Date(now+1000).toISOString(),invocationId:'bad',confirm:true}));
+  assert.throws(()=>activateCommon({...m,measurement:{adapter:'secondary-fixture',variants:['integrated']}},path.join(dir,'bad2'),
+    {createdUtc:new Date(now+1000).toISOString(),invocationId:'bad2',confirm:true}));
 });

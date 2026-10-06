@@ -84,6 +84,7 @@ def compile_calls(m, templates, phase, selected=None):
         def add(fid, variant, repeat, extra=None):
             ident = dict(campaignId=m['campaignId'], phase=phase, taskId=t['task_id'], inputId=fid,
                          inputHash=refs[fid]['sha256'], variant=variant, repeat=repeat, **(extra or {}))
+            if m.get('continuation'):ident['measurementEpoch']=m['revision']
             calls.append(dict(**ident, callId=digest(ident), limits=dict(startupMs=10000,
                 callMs=30000 if phase == 'TRIVIAL_CONTRACT' else 300000, reapMs=5000)))
         if 'pairs' in t:
@@ -244,6 +245,74 @@ def continuation_check(m, config=None, lock=None):
         require(validation['status']=='PASS' and validation['solverCalls']==0, 'continuation validation')
     return 32
 
+def common_parent_check(m, config, lock=None):
+    c=m.get('continuation')
+    if not c:return 0
+    require(not m.get('startupContinuation'),'dedicated r4 path mixed with common continuation')
+    root=config/'continuation';p=root/'PARENT_LOCK.json';history=root/'history'
+    require(sha(p)==c['parentLockSha256'],'parent lock bytes');parent=read(p);old=parent['manifest']
+    if (root/'PARENT_LOCK_SNAPSHOT.json').exists():
+        s=read(root/'PARENT_LOCK_SNAPSHOT.json');require(s['checkpointId']==digest(dict(identity=s['identity'],members=s['members'])),'parent lock snapshot')
+        require(next(v for v in s['members'] if v['path']=='LOCK.json')['sha256']==sha(p),'parent original sealed lock')
+    require(parent['manifestHash']==digest(old),'parent manifest hash')
+    require(old['campaignId']==m['campaignId'] and old['profileContract']==m['profileContract'],'parent campaign/profile')
+    require(old['sourceFiles']['product']==m['sourceFiles']['product'],'parent product changed')
+    require(old['tasksHash']==m['tasksHash'] and old['baselineFiles']==m['baselineFiles'],'parent schedule/baseline changed')
+    before={f['id']:f for f in old['inputs']};require(len(before)==len(m['inputs']),'parent input population')
+    for f in m['inputs']:
+        previous=before[f['id']]
+        require({k:v for k,v in f.items() if k!='expectedWitness'}=={k:v for k,v in previous.items() if k!='expectedWitness'},'original input/seed metadata changed')
+        require((f.get('expectedWitness') or {}).get('sha256')==(previous.get('expectedWitness') or {}).get('sha256'),'original witness hash changed')
+        if f.get('expectedWitness'):require(f['expectedWitness']['contract']=='INSERTION_SELECTED_QUALITY','historical witness contract')
+    require(sha(history/'HISTORY_INDEX.json')==c['historyIndexSha256'],'parent history index bytes')
+    index=read(history/'HISTORY_INDEX.json');require(index['campaignId']==m['campaignId'],'parent history campaign')
+    for v in index['members']:
+        file=member(history,v['path']);require(sha(file)==v['sha256'] and file.stat().st_size==v['bytes'],'parent history changed')
+    require({p.relative_to(history).as_posix() for p in history.rglob('*') if p.is_file()}=={v['path'] for v in index['members']}|{'HISTORY_INDEX.json'},'unindexed parent history')
+    ids=set()
+    templates=[json.loads(l) for l in (config/'TASKS.jsonl').read_text(encoding='utf-8').splitlines()]
+    for file in history.rglob('SNAPSHOT.json'):snapshot(file.parent)
+    for file in history.rglob('STAGE_PLAN.json'):
+        plan=read(file);require(plan['manifestHash']==parent['manifestHash'],'parent stage lock')
+        selected={f['id'] for f in old['inputs']}
+        expected=[call for task in compile_calls(old,templates,plan['phase'],selected) for call in task]
+        require(plan['expectedCalls']==expected,'parent independent schedule')
+        ids.update(call['callId'] for call in expected)
+    starts={};rows={}
+    for file in history.rglob('starts.jsonl'):
+        for line in file.read_text(encoding='utf-8').splitlines():
+            row=json.loads(line);require(row['invocationId']==parent['invocationId'] and row['manifestHash']==parent['manifestHash'],'parent start invocation/lock')
+            ids.add(row['callId']);attempt=row['executionAttemptId']
+            require(attempt not in starts or starts[attempt]==row,'different duplicate parent starts');starts[attempt]=row
+    for file in history.rglob('raw.jsonl'):
+        for line in file.read_text(encoding='utf-8').splitlines():
+            row=json.loads(line);require(row['invocationId']==parent['invocationId'] and row['manifestHash']==parent['manifestHash'],'parent raw invocation/lock')
+            key=row['callId'];ids.add(key);require(key not in rows or rows[key]==row,'different duplicate parent raw');rows[key]=row
+    statuses=dict(collections.Counter(r['status'] for r in rows.values()))
+    finished={r['executionAttemptId'] for r in rows.values() if r.get('executionAttemptId')}
+    unknown=set(starts)-finished
+    proof=read(config/'ORIGINAL_WITNESS_AUDIT.json')
+    require(sha(config/'ORIGINAL_WITNESS_AUDIT.json')==m['provenance']['originalWitnessAuditSha256'] and proof['status']=='PASS'
+        and proof['contract']=='INSERTION_SELECTED_QUALITY' and proof['exactRecordsChecked']==2508 and proof['solverCalls']==0,'original witness bytes audit')
+    require(m['provenance']['priorReservedRunnerHours']+13*2.5<=36*2.5,'cumulative runner allocation')
+    if (root/'PRIOR_JOBS.json').exists():
+        jobs=read(root/'PRIOR_JOBS.json')['jobs'];reserved=(m.get('activationRecovery') or {}).get('priorActivationReservedHours',0)
+        for j in jobs:
+            if j['conclusion']=='skipped':continue
+            name=j['name'];reserved+=.5 if name=='activate' else 1.5 if name=='audit' or name.endswith(' / plan') else 2 if 'audit' in name else 2.5
+        require(reserved<=m['provenance']['priorReservedRunnerHours'],'prior runner-hours underreserved')
+    if lock:
+        require(lock['originMs']==parent['originMs'] and lock['endMs']==parent['endMs'],'original campaign clock reset')
+        require(lock['originMs']<int(__import__('datetime').datetime.fromisoformat(lock['createdUtc'].replace('Z','+00:00')).timestamp()*1000),'fresh invocation reset origin')
+        validation=read(config/'PARENT_VALIDATION.json');backend=m['provenance']['parentLockArtifact']
+        require(validation['status']=='PASS' and validation['solverCalls']==0 and validation['reservedCalls']==len(ids),'parent reservation validation')
+        require(validation['priorStatuses']==statuses and {v['executionAttemptId'] for v in validation['priorUnknown']}==unknown,'parent censored/unknown statuses not retained')
+        require(validation['parentArtifact']['id']==backend['id'] and validation['parentArtifact']['digest']==backend['digest']
+            and validation['parentArtifact']['workflow_run']['id']==int(parent['invocationId']),'parent backend receipt')
+        require(validation['parentRun']['status']=='completed' and validation['parentRun']['conclusion']=='failure'
+            and validation['parentRun']['head_sha']==parent['commit'],'parent failed run/source')
+    return len(ids)
+
 def audit(config, history, output, phase=None, inputs_only=False):
     output.mkdir(parents=True, exist_ok=False)
     errors = []; missing = []; statuses = collections.Counter(); checked = 0; fixtures = 0
@@ -277,7 +346,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
         try: cp_check(read(config / 'CP_PREFLIGHT.json'))
         except Exception as exc: error('CP_PREFLIGHT', exc)
     elif not inputs_only: raise ValueError('activation lock missing')
-    prior_reserved=continuation_check(m,config,lock)
+    prior_reserved=common_parent_check(m,config,lock) if m.get('continuation') else continuation_check(m,config,lock)
     db = sqlite3.connect(output / 'AUDIT_INDEX.sqlite')
     db.executescript('CREATE TABLE records(call_id TEXT PRIMARY KEY, input_id TEXT, phase TEXT, raw TEXT, checkpoint TEXT);'
                      'CREATE TABLE starts(attempt TEXT PRIMARY KEY, raw TEXT, checkpoint TEXT);')

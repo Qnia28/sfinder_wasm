@@ -4,7 +4,7 @@ import path from 'node:path';
 import { readJson, digest, verifySources, sha256 } from '../contracts.mjs';
 import { validateFixture, fixtureIdentity } from '../../contracts.mjs';
 import { validateManifest, PHASES, compileTasks, chunksFor } from './protocol.mjs';
-import { continuationContract, assertStageBudget } from './continuation.mjs';
+import { historyReservation } from '../evidence.mjs';
 
 const [prepared, targetFile] = process.argv.slice(2);
 assert(prepared&&targetFile,'verify-prepared <prepared-dir> <analysis TARGETS.jsonl>');
@@ -18,8 +18,11 @@ for(const phase of PHASES){const selected=targets.map(f=>f.id),ts=compileTasks(m
   const ids=ts.flatMap(t=>t.calls.map(c=>c.callId));assert.equal(new Set(ids).size,ids.length);
 }
 assert.equal(maxCalls,8479);assert.equal(jobs,523);assert((jobs+36)*2.5<=1400);
-const continuation=continuationContract(m),currentCallCap=maxCalls-continuation.reservedCalls;
-assertStageBudget(m,currentCallCap,jobs);
+const continuation=m.continuation?{reservedCalls:historyReservation({...m,continuation:{...m.continuation,
+  history:path.join(prepared,'continuation/history')}}).calls,reservedRunnerHours:m.provenance.priorReservedRunnerHours,
+  reservedCpSyntheticCalls:m.provenance.priorCpSyntheticCalls}:{reservedCalls:0,reservedRunnerHours:0,reservedCpSyntheticCalls:0};
+const currentCallCap=maxCalls-continuation.reservedCalls;
+assert(currentCallCap+continuation.reservedCalls<=m.maxCalls);
 let verified=0;
 for(const target of targets){const bytes=fs.readFileSync(target.source_locator);assert.equal(sha256(bytes),target.fixture_sha256);
   const fixture=validateFixture(JSON.parse(bytes));assert.equal(fixture.id,target.id);assert.equal(fixture.K,target.K);

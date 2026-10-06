@@ -1,6 +1,16 @@
 name: Common benchmark operation
 description: Native manifest-driven planner, executor, transport and auditor
 inputs:
+  protocol:
+    description: Explicit information or triage performance protocol
+    required: false
+    default: information
+  phase:
+    description: Frozen paired-policy phase
+    required: false
+  asset-id:
+    description: Immutable prepared release asset ID
+    required: false
   mode:
     description: activate, plan, run or audit
     required: true

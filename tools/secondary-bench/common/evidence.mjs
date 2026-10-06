@@ -115,6 +115,21 @@ export function mergeContinuationHistory(lock, directory) {
     else materializeFixture(file, destination, { size: fs.statSync(file).size, bytes: () => fs.readFileSync(file) });
   }
 }
+// Reserve every previously scheduled slot, including NOT_RUN and unknowns.
+// Callers may retain parent evidence separately when a changed harness epoch
+// is an intentional new measurement rather than a replay/reclassification.
+export function historyReservation(manifest) {
+  const c=manifest.continuation;
+  if(!c)return {calls:0,unknown:[],warnings:[],statuses:{}};
+  verifyHistoryIndex(c.history,c.historyIndexSha256,manifest.campaignId);
+  const history=loadHistory(c.history,manifest.campaignId),ids=new Set();
+  for(const file of filesUnder(c.history).filter(f=>path.basename(f)==='STAGE_PLAN.json'))
+    for(const call of readJson(file).expectedCalls)ids.add(call.logicalCallId??call.callId);
+  for(const row of [...history.rows,...history.starts])ids.add(row.logicalCallId??row.callId);
+  assert(!ids.has(undefined),'unidentified parent execution');
+  const statuses={};for(const r of history.rows)statuses[r.status]=(statuses[r.status]??0)+1;
+  return {calls:ids.size,unknown:history.unknown,warnings:history.warnings,statuses};
+}
 export function readLegacy(directory) {
   // Read-only: retain raw bytes and legacy hash rules rather than reidentify calls.
   const rows = [];

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { readJson, writeJson, filesUnder, digest, safePath, sha256, strict, artifactDigest } from '../contracts.mjs';
 import { activate, validateLock } from '../manifest.mjs';
@@ -13,6 +13,18 @@ import { requireDisk, materializeFixture } from '../../followup-storage.mjs';
 import { resolveManifest } from '../manifest.mjs';
 import { validateLaunchGroup } from '../budget.mjs';
 import { checkAllocation } from '../allocation.mjs';
+
+// A separate explicit performance profile; information profile semantics stay
+// unchanged. Both use this established JavaScript action's SDK credentials.
+if(process.env.INPUT_PROTOCOL==='triage') {
+  process.env.INPUT_ARTIFACT_ID=process.env['INPUT_ARTIFACT-ID'];
+  process.env.INPUT_ASSET_ID=process.env['INPUT_ASSET-ID'];
+  process.env.INPUT_JOB_STARTED_MS=process.env['INPUT_JOB-STARTED-MS'];
+  assert(process.env.ACTIONS_RUNTIME_TOKEN&&process.env.ACTIONS_RESULTS_URL,'Actions artifact runtime credentials required');
+  const result=spawnSync('node',[fileURLToPath(new URL('../triage/action.mjs',import.meta.url))],{stdio:'inherit',env:process.env});
+  if(result.error)throw result.error;
+  process.exit(result.status??1);
+}
 
 const client = (await import('../../artifact-action/node_modules/@actions/artifact/lib/artifact.js')).default;
 const mode = process.env.INPUT_MODE, stage = process.env.INPUT_STAGE;
@@ -67,6 +79,7 @@ try {
     if (process.env['INPUT_CONFIG-ARTIFACT-ID']) await download(path.dirname(process.env.INPUT_MANIFEST),
       Number(process.env['INPUT_CONFIG-ARTIFACT-ID']), process.env['INPUT_CONFIG-DIGEST']);
     const authored = readJson(safePath(process.cwd(), process.env.INPUT_MANIFEST)); campaignId = authored.campaignId;
+    assert.equal(authored.profile,'exact-cold-v1','performance requires explicit protocol: triage');
     // Include queued/waiting runs: they may consume their frozen reservation later.
     const active = ['in_progress', 'queued', 'waiting', 'requested', 'pending'].flatMap(status => {
       const pages = JSON.parse(execFileSync('gh', ['api', '--paginate', '--slurp', `repos/${repository}/actions/runs?status=${status}&per_page=100`], { encoding: 'utf8', timeout: 120000 }));

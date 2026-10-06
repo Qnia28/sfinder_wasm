@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
-import { digest, integer } from '../contracts.mjs';
-import { FOLLOWUP_JOB, worstCall, packTasks } from '../budget.mjs';
+import { digest, integer, strict } from '../contracts.mjs';
+import { FOLLOWUP_JOB, worstCall, packTasks, validateBudget } from '../budget.mjs';
 import { continuationContract } from './continuation.mjs';
 
 export const PROFILE = Object.freeze({ id: 'triage-cold-v1', lifecycle: 'fresh-process-cold',
@@ -15,6 +15,10 @@ export const AUDIT_CONTRACT = Object.freeze({ id: 'independent-python-evidence-v
 export const CP_PREFLIGHT_CONTRACT = Object.freeze({ id: 'scoped-cpsat-weighted-tie-v1', activationCalls: 1,
   maxCanaryVmCalls: 3, callMs: 30000, populationCalls: 0 });
 export function validateManifest(m) {
+  strict(m,['schemaVersion','campaignId','purpose','freshValidation','profile','profileContract','maxParallel','maxCalls',
+    'maxRunnerHours','overallMs','job','inputs','baselineFiles','sourceFiles','tasksHash','design','provenance','runtime',
+    'auditContract','cpPreflightContract','activationRecovery','startupContinuation','revision','approval','analysis',
+    'measurement','budget','evidence','continuation'],'triage manifest');
   assert.equal(m.schemaVersion, 1); assert.equal(m.profile, PROFILE.id);
   assert.equal(m.purpose, 'development-policy-ab'); assert.equal(m.freshValidation, false);
   assert.equal(m.maxParallel, 16); assert.equal(m.maxCalls, 8479);
@@ -26,6 +30,19 @@ export function validateManifest(m) {
   for (const f of m.inputs) { assert(/^[a-f0-9]{64}$/.test(f.sha256)); assert.equal(f.member, `fixtures/${f.sha256}.json`); }
   assert.equal(m.design.gates.correctness_disagreements_allowed, 0);
   continuationContract(m);
+  if (m.measurement) {
+    assert.equal(m.measurement.adapter, 'triage-fixture');
+    assert.deepEqual(m.measurement.variants, ['BASELINE','A','B']);
+    assert.equal(m.analysis, 'DEVELOPMENT_KEEP_HOLD_REJECT'); integer(m.revision);
+    assert(typeof m.approval === 'string' && m.approval.length);
+    validateBudget(m.budget);
+    assert.deepEqual(m.budget, { maxParallel:m.maxParallel,overallMs:m.overallMs,maxCalls:m.maxCalls,job:m.job });
+    assert.equal(m.evidence.retentionDays,30);assert.equal(m.evidence.retries,2);
+    assert.equal(m.evidence.diskReserveBytes,4*1024**3);
+    strict(m.measurement,['adapter','variants'],'triage measurement');
+    strict(m.evidence,['schemaVersion','retentionDays','retries','diskReserveBytes'],'triage evidence');
+    assert.equal(m.evidence.schemaVersion,1);
+  }
   return m;
 }
 export function validateLock(lock) {
@@ -42,7 +59,8 @@ export function compileTasks(m, templates, phase, selected = null) {
     const add = (inputId, variant, repeat, extra = {}) => {
       const input = index.get(inputId); assert(input);
       const limits = { startupMs: 10000, callMs: phase === 'TRIVIAL_CONTRACT' ? 30000 : 300000, reapMs: 5000 };
-      const identity = { campaignId: m.campaignId, phase, taskId: t.task_id, inputId, inputHash: input.sha256, variant, repeat, ...extra };
+      const identity = { campaignId: m.campaignId, phase, taskId: t.task_id, inputId, inputHash: input.sha256, variant, repeat, ...extra,
+        ...(m.continuation ? { measurementEpoch:m.revision } : {}) };
       calls.push({ ...identity, callId: digest(identity), limits });
     };
     if (t.pairs) for (const pair of t.pairs) for (const variant of pair.order)
@@ -52,7 +70,7 @@ export function compileTasks(m, templates, phase, selected = null) {
       add(t.fixture_ids[0], variant, trial.repeat, { trialId: `${t.task_id}/${trial.repeat}` });
     else for (const id of t.fixture_ids) for (const variant of t.variants) add(id, variant, 1);
     assert.equal(calls.length, t.calls);
-    return { id: t.task_id, phase, calls, worstMs: calls.reduce((sum, c) => sum + worstCall(c.limits, m.job), 0) };
+    return { id: t.task_id, adapter:'triage-fixture', phase, calls, worstMs: calls.reduce((sum, c) => sum + worstCall(c.limits, m.job), 0) };
   });
 }
 export function chunksFor(m, templates, phase, selected = null) {

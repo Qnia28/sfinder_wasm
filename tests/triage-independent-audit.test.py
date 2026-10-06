@@ -62,7 +62,7 @@ def campaign(base):
                 if phase=='CALIBRATION':templates[-1]['baseline_variant']='TRACE_OFF_BASELINE'
     tasks_file=config/'TASKS.jsonl';tasks_file.write_text(''.join(json.dumps(t)+'\n' for t in templates),encoding='utf-8')
     m=dict(schemaVersion=1,campaignId='synthetic',inputs=refs,job=job,profileContract=profile,maxCalls=8479,
-        maxParallel=16,maxRunnerHours=1400,overallMs=120*3600000,tasksHash=audit.sha(tasks_file))
+        maxParallel=16,maxRunnerHours=1400,overallMs=120*3600000,tasksHash=audit.sha(tasks_file),sourceFiles=dict(product={},harness={}),baselineFiles=[])
     m['auditContract']=dict(id='independent-python-evidence-v1',runtime='Python3-stdlib',solverReplay=False,
         prerequisiteJobs=['CANARY','CALIBRATION'],finalDedicatedVm=True,performancePass=False,independentOptimality=False)
     m['cpPreflightContract']=dict(id='scoped-cpsat-weighted-tie-v1',activationCalls=1,maxCanaryVmCalls=3,callMs=30000,populationCalls=0)
@@ -180,6 +180,33 @@ class IndependentAudit(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'clock'):audit.continuation_check(m,config,dict(originMs=1,endMs=m['overallMs']+1))
         m['sourceFiles']['product']={'changed':'solver'}
         with self.assertRaisesRegex(ValueError,'solver/product'):audit.continuation_check(m,config,lock)
+    def test_standard_common_parent_preserves_all_bytes_statuses_schedule_and_new_epoch(self):
+        import shutil
+        config,history=campaign(self.root);old=audit.read(config/'MANIFEST.json');parent=audit.read(config/'LOCK.json')
+        root=config/'continuation';root.mkdir();shutil.copytree(history,root/'history')
+        write(root/'PARENT_LOCK.json',parent);h=root/'history'
+        members=[dict(path=p.relative_to(h).as_posix(),sha256=audit.sha(p),bytes=p.stat().st_size) for p in sorted(h.rglob('*')) if p.is_file()]
+        write(h/'HISTORY_INDEX.json',dict(schemaVersion=1,campaignId=old['campaignId'],members=members))
+        proof=dict(status='PASS',contract='INSERTION_SELECTED_QUALITY',exactRecordsChecked=2508,solverCalls=0)
+        write(config/'ORIGINAL_WITNESS_AUDIT.json',proof)
+        m=copy.deepcopy(old);m.update(revision=5,continuation=dict(parentLock='config/continuation/PARENT_LOCK.json',
+            parentLockSha256=audit.sha(root/'PARENT_LOCK.json'),history='config/continuation/history',historyIndexSha256=audit.sha(h/'HISTORY_INDEX.json')),
+            provenance=dict(originalWitnessAuditSha256=audit.sha(config/'ORIGINAL_WITNESS_AUDIT.json'),priorReservedRunnerHours=14,
+                parentLockArtifact=dict(id=10,digest='sha256:'+'a'*64)))
+        self.assertEqual(audit.common_parent_check(m,config),32)
+        validation=dict(status='PASS',solverCalls=0,reservedCalls=32,priorStatuses=dict(EXACT=32),priorUnknown=[],
+            parentArtifact=dict(id=10,digest='sha256:'+'a'*64,workflow_run=dict(id=1)),
+            parentRun=dict(status='completed',conclusion='failure',head_sha='abc'))
+        write(config/'PARENT_VALIDATION.json',validation)
+        lock=dict(originMs=0,endMs=m['overallMs'],createdUtc='2026-10-06T00:00:00Z')
+        self.assertEqual(audit.common_parent_check(m,config,lock),32)
+        templates=[json.loads(l) for l in (config/'TASKS.jsonl').read_text().splitlines()]
+        before={v['callId'] for task in audit.compile_calls(old,templates,'CANARY') for v in task}
+        after={v['callId'] for task in audit.compile_calls(m,templates,'CANARY') for v in task}
+        self.assertFalse(before&after)
+        with self.assertRaisesRegex(ValueError,'clock'):audit.common_parent_check(m,config,dict(lock,originMs=1))
+        (h/'part-0-0/raw.jsonl').write_text('{}\n')
+        with self.assertRaisesRegex(ValueError,'history changed'):audit.common_parent_check(m,config)
     def test_final_empty_remaining_phases_never_earns_pass(self):
         config,history=campaign(self.root);r=audit.audit(config,history,self.root/'audit')
         self.assertEqual(r['status'],'INCOMPLETE');self.assertIn('plan/ALL_INITIAL',r['missing'])

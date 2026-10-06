@@ -7,10 +7,10 @@ import { pipeline } from 'node:stream/promises';
 import { Readable } from 'node:stream';
 import { createHash } from 'node:crypto';
 import { digest, readJson, writeJson, filesUnder, safePath, sha256, verifySources, artifactDigest } from '../contracts.mjs';
-import { seal, verifySnapshot, loadHistory, deadlineClient } from '../evidence.mjs';
+import { seal, verifySnapshot, loadHistory, deadlineClient, historyReservation } from '../evidence.mjs';
+import { activate as activateCommon, validateLock as validateCommonLock } from '../manifest.mjs';
 import { requireDisk } from '../../followup-storage.mjs';
 import { validateManifest, validateLock, PROFILE, PHASES, chunksFor, compileTasks } from './protocol.mjs';
-import { continuationContract, assertStageBudget, verifyPriorCanary } from './continuation.mjs';
 import { prerequisiteGate, selectConfirmation, developmentReport } from './analysis.mjs';
 import { runChunk } from './executor.mjs';
 import { isolatedScope } from '../../followup-scope.mjs';
@@ -84,35 +84,23 @@ try {
     execFileSync('python',[tool('../../followup-extract.py'),'config.zip','config',String(4*1024**3)],{timeout:120000}); fs.unlinkSync('config.zip');
     const m=validateManifest(readJson('config/MANIFEST.json')); verifySources(m.sourceFiles);
     const priorLocks=gh(['--paginate','--slurp',`repos/${repo}/actions/artifacts?name=triage-lock-${m.campaignId}&per_page=100`]).flatMap(p=>p.artifacts);
-    const continuation=m.startupContinuation;
-    assert(!priorLocks.some(a=>a.name===`triage-lock-${m.campaignId}`&&a.id!==continuation?.priorLock.artifactId),
+    assert(!m.startupContinuation,'r4 dedicated repair route is superseded; use indexed common continuation');
+    const continuation=m.continuation;
+    const parent=continuation?validateCommonLock(readJson(continuation.parentLock)):null;
+    const parentArtifact=m.provenance.parentLockArtifact;
+    assert(!priorLocks.some(a=>a.name===`triage-lock-${m.campaignId}`&&a.id!==parentArtifact?.id),
       'campaign already activated; never reset its origin with another dispatch');
     if(continuation) {
-      continuationContract(m);
-      const prior=gh([`repos/${repo}/actions/runs/${continuation.priorRunId}`]);
+      const prior=gh([`repos/${repo}/actions/runs/${parent.invocationId}`]);
       assert.equal(prior.status,'completed');assert.equal(prior.conclusion,'failure');assert.equal(prior.run_attempt,1);
-      const jobs=gh(['--paginate','--slurp',`repos/${repo}/actions/runs/${prior.id}/jobs?per_page=100`]).flatMap(p=>p.jobs);
-      const allocated=jobs.filter(j=>j.conclusion!=='skipped');
-      assert(allocated.length<=7&&allocated.every(j=>/^(activate|canary \/ (plan|run \(.+\))|audit|independent-audit)$/.test(j.name)),
-        'only a failed CANARY-stage campaign is eligible');
-      assert(jobs.some(j=>j.name.startsWith('canary / run')&&j.conclusion==='failure'));
-      const artifacts=gh(['--paginate','--slurp',`repos/${repo}/actions/runs/${prior.id}/artifacts?per_page=100`]).flatMap(p=>p.artifacts);
-      for(const receipt of [continuation.priorLock,continuation.priorPlan])
-        assert(artifacts.some(a=>a.id===receipt.artifactId&&a.digest===receipt.digest&&!a.expired),'prior immutable receipt missing');
-      assert(!artifacts.some(a=>/-(CALIBRATION|ALL_INITIAL|PER_SAVE_INITIAL|SEED_DIAGNOSTIC|TRIVIAL_CONTRACT|ALL_CONFIRMATION|PER_SAVE_CONFIRMATION)-/.test(a.name)),
-        'prior post-canary population evidence forbids this continuation');
-      await download(continuation.priorLock.artifactId,continuation.priorLock.digest,'continuation-lock');
-      await download(continuation.priorPlan.artifactId,continuation.priorPlan.digest,'continuation-plan');
-      const previous=validateLock(readJson('continuation-lock/LOCK.json'));
-      assert.equal(previous.commit,prior.head_sha);
-      const templates=fs.readFileSync('config/TASKS.jsonl','utf8').trim().split('\n').map(JSON.parse);
-      const validation=verifyPriorCanary(m,previous,readJson('continuation-plan/STAGE_PLAN.json'),
-        compileTasks(previous.manifest,templates,'CANARY').flatMap(t=>t.calls));
-      for(const [from,to] of [['continuation-lock/LOCK.json','CONTINUATION_PRIOR_LOCK.json'],
-        ['continuation-lock/SNAPSHOT.json','CONTINUATION_LOCK_SNAPSHOT.json'],
-        ['continuation-plan/STAGE_PLAN.json','CONTINUATION_PRIOR_PLAN.json'],
-        ['continuation-plan/SNAPSHOT.json','CONTINUATION_PLAN_SNAPSHOT.json']])fs.copyFileSync(from,'config/'+to);
-      writeJson('config/CONTINUATION_VALIDATION.json',{...validation,priorRun:prior,priorJobs:jobs,priorArtifacts:artifacts});
+      assert.equal(parent.commit,prior.head_sha);
+      const backend=gh([`repos/${repo}/actions/artifacts/${parentArtifact.id}`]);
+      assert.equal(artifactDigest(backend.digest),parentArtifact.digest);assert.equal(backend.workflow_run.id,prior.id);assert(!backend.expired);
+      const reservation=historyReservation(m);
+      assert(m.provenance.priorReservedRunnerHours+13*2.5<=36*2.5,'prior runner allocations exceed original control reserve');
+      writeJson('config/PARENT_VALIDATION.json',{status:'PASS',parentArtifact:backend,parentRun:prior,
+        reservedCalls:reservation.calls,priorUnknown:reservation.unknown,priorWarnings:reservation.warnings,priorStatuses:reservation.statuses,
+        priorEvidencePooled:false,priorEvidenceReclassified:false,solverCalls:0});
     }
     assert.equal(digest(m),marker.manifestHash); assert.equal(m.tasksHash,sha256(fs.readFileSync('config/TASKS.jsonl')));
     assert.equal(process.version,'v24.13.0','runtime lock');
@@ -129,9 +117,9 @@ try {
       }
       assert.equal(recovery.originUtc,gh([`repos/${repo}/actions/runs/${recovery.priorRunIds[0]}`]).created_at);
     }
-    const originMs=Date.parse(recovery?.originUtc??run.created_at);
-    const lock=validateLock({manifest:m,manifestHash:digest(m),profileHash:digest(PROFILE),originMs,endMs:originMs+m.overallMs,
-      invocationId:runId,commit:process.env.GITHUB_SHA,repository:repo}); writeJson('config/LOCK.json',lock);
+    assert(continuation,'resumption requires an immutable indexed parent lock/history');
+    const lock=activateCommon(m,'common-activation',{createdUtc:run.created_at,invocationId:runId,commit:process.env.GITHUB_SHA,confirm:true});
+    fs.copyFileSync('common-activation/LOCK.json','config/LOCK.json');
     execFileSync(process.execPath,['--test','tests/triage-bench.test.mjs'],{stdio:'inherit',timeout:120000});
     execFileSync('python',['-B','tests/triage-independent-audit.test.py'],{stdio:'inherit',timeout:120000});
     writeJson('config/SYNTHETIC_GATE.json',{status:'PASS',populationCalls:0,solverCalls:'LIGHTWEIGHT_SYNTHETIC_TESTS_ONLY'});
@@ -168,7 +156,10 @@ try {
     const reserved=prior.reduce((n,p)=>n+p.chunks,0)+chunks.length;
     assert(Date.now()<lock.endMs-lock.manifest.job.finalTransportMs,'campaign deadline expired');
     const expectedCalls=chunks.flatMap(c=>c.tasks.flatMap(t=>t.calls));
-    assertStageBudget(lock.manifest,prior.reduce((n,p)=>n+p.expectedCalls.length,0)+expectedCalls.length,reserved);
+    const parentReservation=historyReservation(lock.manifest);
+    assert((reserved+36)*2.5<=lock.manifest.maxRunnerHours,'runner-hour reservation exceeded');
+    assert(parentReservation.calls+prior.reduce((n,p)=>n+p.expectedCalls.length,0)+expectedCalls.length<=lock.manifest.maxCalls,
+      'cumulative call cap exceeded; required confirmation selection may not be silently reduced');
     const matrix=[];
     for(const [index,chunk] of chunks.entries()) {
       const dir=`payload-${index}`;fs.mkdirSync(dir);writeJson(dir+'/LOCK.json',lock);
@@ -223,7 +214,8 @@ try {
     assert.equal(new Set(history.rows.map(r=>r.callId)).size,history.rows.length,'execution duplicates');
     assert(history.rows.every(r=>r.manifestHash===lock.manifestHash));
     const report=developmentReport(lock.manifest,history.rows);
-    report.startupContinuation=lock.manifest.startupContinuation??null;
+    report.continuation=lock.manifest.continuation??null;
+    report.priorReservation=historyReservation(lock.manifest);
     report.priorExecutionPooling=false;
     report.missing=missing;report.transportAliases=history.aliases;report.rawValidity=missing.length?'INCOMPLETE':'PASS';
     report.unknownExecution=history.unknown;report.evidenceWarnings=history.warnings;
