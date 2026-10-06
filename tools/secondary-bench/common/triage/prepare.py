@@ -22,7 +22,7 @@ def normalized_hash(path, product):
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--analysis',default=r'D:\AI\sfinder-wasm\triage-analysis\Astra')
-    parser.add_argument('--out',required=True);parser.add_argument('--activation-recovery');args=parser.parse_args()
+    parser.add_argument('--out',required=True);parser.add_argument('--activation-recovery');parser.add_argument('--startup-continuation');args=parser.parse_args()
     work=Path.cwd();analysis=Path(args.analysis);out=Path(args.out);out.mkdir(parents=True,exist_ok=False)
     design=json.loads((analysis/'next-experiment/PLAN.json').read_text(encoding='utf-8'))
     targets=[json.loads(s) for s in (analysis/'next-experiment/TARGETS.jsonl').read_text(encoding='utf-8').splitlines()]
@@ -50,7 +50,7 @@ def main():
     base=Path(r'D:\AI\sfinder-wasm\files\triage-database')
     expected={}
     for rel,query,contract in [
-        ('minimals-all/ALL.sqlite',"SELECT fixtureId,exactWitnessSha256 FROM calls WHERE status='EXACT'",'SORTED_QUALITY_SELECTED'),
+        ('minimals-all/ALL.sqlite',"SELECT fixtureId,exactWitnessSha256 FROM calls WHERE status='EXACT'",'INSERTION_SELECTED_QUALITY'),
         ('per-save/per-save.sqlite',"SELECT fixture_id,witness_sha256 FROM calls WHERE status='EXACT'",'INSERTION_SELECTED_QUALITY')]:
         c=sqlite3.connect((base/rel).as_uri()+'?mode=ro',uri=True)
         for fid,h in c.execute(query):
@@ -76,6 +76,8 @@ def main():
     if args.activation_recovery:
         manifest['activationRecovery']=json.loads(Path(args.activation_recovery).read_text(encoding='utf-8'))
         assert manifest['activationRecovery']['populationCalls']==0
+    if args.startup_continuation:
+        manifest['startupContinuation']=json.loads(Path(args.startup_continuation).read_text(encoding='utf-8'))
     manifest['design']['budget']['max_parallel_vm']=16
     manifest['design']['budget']['runtime_reserved_control_jobs']=36
     manifest['design']['state']='PREPARED_REMOTE_GATES_REQUIRED'

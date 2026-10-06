@@ -7,6 +7,13 @@ import { performance } from 'node:perf_hooks';
 import { hash, validateFixture, packedView, selectedVector, verifyResult } from '../../contracts.mjs';
 
 const send = message => new Promise((resolve, reject) => process.send(message, e => e ? reject(e) : resolve()));
+export function historicalWitnessHash(verified, expected) {
+  assert(['SORTED_QUALITY_SELECTED', 'INSERTION_SELECTED_QUALITY'].includes(expected.contract), 'unknown historical witness contract');
+  const value = expected.contract === 'SORTED_QUALITY_SELECTED'
+    ? { quality: verified.qualityVector, selected: verified.selected }
+    : { selected: verified.selected, quality: verified.qualityVector };
+  return hash(JSON.stringify(value));
+}
 export async function executeTriage(job) {
   assert.equal(job.exactHumanQuality, 'true');
   assert(['PRECHANGE_BASELINE','BASELINE','A','B','TRACE_OFF_BASELINE','TRACE_ON_BASELINE',
@@ -68,10 +75,7 @@ export async function executeTriage(job) {
     const verified = verifyResult(fixture, result, { engine: result.secondaryResolved ?? 'rust' });
     let historicalWitness = null;
     if (verified.completed && job.expectedWitness) {
-      const value = job.expectedWitness.contract === 'SORTED_QUALITY_SELECTED'
-        ? { quality: verified.qualityVector, selected: verified.selected }
-        : { selected: verified.selected, quality: verified.qualityVector };
-      historicalWitness = hash(JSON.stringify(value));
+      historicalWitness = historicalWitnessHash(verified, job.expectedWitness);
       assert.equal(historicalWitness,job.expectedWitness.sha256,'historical weighted-quality/stable-ID witness changed');
     }
     if (job.variant === 'I100K_SEED_CAPTURE') probeSeed = verified.selected;

@@ -4,6 +4,7 @@ import path from 'node:path';
 import { readJson, digest, verifySources, sha256 } from '../contracts.mjs';
 import { validateFixture, fixtureIdentity } from '../../contracts.mjs';
 import { validateManifest, PHASES, compileTasks, chunksFor } from './protocol.mjs';
+import { continuationContract, assertStageBudget } from './continuation.mjs';
 
 const [prepared, targetFile] = process.argv.slice(2);
 assert(prepared&&targetFile,'verify-prepared <prepared-dir> <analysis TARGETS.jsonl>');
@@ -17,6 +18,8 @@ for(const phase of PHASES){const selected=targets.map(f=>f.id),ts=compileTasks(m
   const ids=ts.flatMap(t=>t.calls.map(c=>c.callId));assert.equal(new Set(ids).size,ids.length);
 }
 assert.equal(maxCalls,8479);assert.equal(jobs,523);assert((jobs+36)*2.5<=1400);
+const continuation=continuationContract(m),currentCallCap=maxCalls-continuation.reservedCalls;
+assertStageBudget(m,currentCallCap,jobs);
 let verified=0;
 for(const target of targets){const bytes=fs.readFileSync(target.source_locator);assert.equal(sha256(bytes),target.fixture_sha256);
   const fixture=validateFixture(JSON.parse(bytes));assert.equal(fixture.id,target.id);assert.equal(fixture.K,target.K);
@@ -31,7 +34,10 @@ for(const target of targets){const bytes=fs.readFileSync(target.source_locator);
   global.gc?.();
 }
 const report={status:'PREPARED_MANIFEST_INPUT_PROOF_SEED_PAIR_BUDGET_SOURCE_PASS',verifiedFixtureFiles:verified,maxCalls,maxMatrixJobs:jobs,
-  reservedControlJobs:36,conservativeRunnerHours:(jobs+36)*2.5,phaseCounts,solverCalls:0,maxRemoteCpSyntheticCalls:4,
+  currentCallCap,priorReservedCalls:continuation.reservedCalls,conditionalScheduleMayExceedRemainingCap:continuation.reservedCalls>0,
+  oversubscriptionBehavior:'FAIL_CLOSED_NO_REQUIRED_CONFIRMATION_DROPPED',
+  reservedControlJobs:36,priorReservedRunnerHours:continuation.reservedRunnerHours,conservativeRunnerHours:(jobs+36)*2.5,
+  phaseCounts,solverCalls:0,maxRemoteCpSyntheticCalls:4+continuation.reservedCpSyntheticCalls,
   remoteGatesPending:['CP_SYNTHETIC_PREFLIGHT','CANARY','CANARY_INDEPENDENT_AUDIT','CALIBRATION','CALIBRATION_INDEPENDENT_AUDIT'],
   notPerformancePass:true};
 fs.writeFileSync(path.join(prepared,'LOCAL_VERIFICATION.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));

@@ -148,6 +148,38 @@ class IndependentAudit(unittest.TestCase):
     def test_actual_cp_proof_and_reaping_required(self):
         cp=preflight();audit.cp_check(cp);cp['result']['result']['tieComplete']=False
         with self.assertRaises(ValueError):audit.cp_check(cp)
+    def test_continuation_conservatively_debits_all_prior_canary_slots(self):
+        c=dict(id='canary-witness-serialization-repair-v1',reservedCalls=32,reservedCpSyntheticCalls=4,reservedRunnerHours=14,
+            originUtc='2026-10-06T11:51:03Z',priorEvidencePooled=False,priorEvidenceReclassified=False)
+        m=dict(startupContinuation=c,activationRecovery=dict(originUtc=c['originUtc']))
+        self.assertEqual(audit.continuation_check(m),32)
+        c['reservedCalls']=0
+        with self.assertRaisesRegex(ValueError,'reservation'):audit.continuation_check(m)
+    def test_continuation_independently_binds_sealed_prior_lock_plan_source_and_clock(self):
+        config,_=campaign(self.root);m=audit.read(config/'MANIFEST.json')
+        m['sourceFiles']=dict(product={});m['baselineFiles']=[]
+        previous=dict(manifest=copy.deepcopy(m),manifestHash=audit.digest(m),profileHash=audit.digest(m['profileContract']),
+            originMs=0,endMs=m['overallMs'],invocationId='99',commit='abc')
+        templates=[json.loads(l) for l in (config/'TASKS.jsonl').read_text().splitlines()]
+        plan=dict(phase='CANARY',chunks=3,manifestHash=previous['manifestHash'],
+            expectedCalls=[v for task in audit.compile_calls(m,templates,'CANARY') for v in task])
+        c=dict(id='canary-witness-serialization-repair-v1',reservedCalls=32,reservedCpSyntheticCalls=4,reservedRunnerHours=14,
+            originUtc='1970-01-01T00:00:00Z',priorEvidencePooled=False,priorEvidenceReclassified=False,priorRunId=99,
+            priorLock=dict(artifactId=10,digest='sha256:'+'a'*64),priorPlan=dict(artifactId=11,digest='sha256:'+'b'*64))
+        m['startupContinuation']=c;m['activationRecovery']=dict(originUtc=c['originUtc'])
+        for filename,snapname,original,value in [('CONTINUATION_PRIOR_LOCK.json','CONTINUATION_LOCK_SNAPSHOT.json','LOCK.json',previous),
+                ('CONTINUATION_PRIOR_PLAN.json','CONTINUATION_PLAN_SNAPSHOT.json','STAGE_PLAN.json',plan)]:
+            directory=self.root/original;write(directory/original,value);s=seal(directory,dict(campaignId='synthetic',runId='99',name=original))
+            (config/filename).write_bytes((directory/original).read_bytes());write(config/snapname,s)
+        validation=dict(status='PASS',solverCalls=0,priorRun=dict(id=99,status='completed',conclusion='failure',run_attempt=1,head_sha='abc'),
+            priorArtifacts=[dict(id=r['artifactId'],digest=r['digest'],expired=False,name='prior-CANARY') for r in [c['priorLock'],c['priorPlan']]],
+            priorJobs=[dict(name='canary / run (0)',conclusion='failure')])
+        write(config/'CONTINUATION_VALIDATION.json',validation)
+        lock=dict(originMs=0,endMs=m['overallMs'])
+        self.assertEqual(audit.continuation_check(m,config,lock),32)
+        with self.assertRaisesRegex(ValueError,'clock'):audit.continuation_check(m,config,dict(originMs=1,endMs=m['overallMs']+1))
+        m['sourceFiles']['product']={'changed':'solver'}
+        with self.assertRaisesRegex(ValueError,'solver/product'):audit.continuation_check(m,config,lock)
     def test_final_empty_remaining_phases_never_earns_pass(self):
         config,history=campaign(self.root);r=audit.audit(config,history,self.root/'audit')
         self.assertEqual(r['status'],'INCOMPLETE');self.assertIn('plan/ALL_INITIAL',r['missing'])

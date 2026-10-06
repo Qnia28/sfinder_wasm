@@ -199,6 +199,51 @@ def required_confirmation(db, m, phase):
     selected.update(fid for fid in m['design']['retest']['always_include_fixture_ids'] if any(i['id']==fid for i in inputs.values()))
     return selected
 
+def continuation_check(m, config=None, lock=None):
+    c=m.get('startupContinuation')
+    if not c:return 0
+    require(c['id']=='canary-witness-serialization-repair-v1', 'unsupported continuation')
+    require(c['reservedCalls']==32 and c['reservedCpSyntheticCalls']==4 and c['reservedRunnerHours']==14, 'prior reservation changed')
+    require(c['originUtc']==m['activationRecovery']['originUtc'], 'continuation origin reset')
+    require(c['priorEvidencePooled'] is False and c['priorEvidenceReclassified'] is False, 'prior evidence pooled/reclassified')
+    require(14+13*2.5<=36*2.5, 'prior runner reservation')
+    if lock:
+        old=read(config/'CONTINUATION_PRIOR_LOCK.json');plan=read(config/'CONTINUATION_PRIOR_PLAN.json')
+        validation=read(config/'CONTINUATION_VALIDATION.json')
+        for filename,snapshot_name,original_name in [('CONTINUATION_PRIOR_LOCK.json','CONTINUATION_LOCK_SNAPSHOT.json','LOCK.json'),
+                ('CONTINUATION_PRIOR_PLAN.json','CONTINUATION_PLAN_SNAPSHOT.json','STAGE_PLAN.json')]:
+            s=read(config/snapshot_name)
+            require(s['checkpointId']==digest(dict(identity=s['identity'],members=s['members'])), 'prior snapshot identity')
+            proof=next(v for v in s['members'] if v['path']==original_name)
+            require(proof['sha256']==sha(config/filename) and proof['bytes']==(config/filename).stat().st_size, 'prior sealed lock/plan bytes')
+        previous=old['manifest'];run=validation['priorRun']
+        require(run['id']==c['priorRunId'] and run['status']=='completed' and run['conclusion']=='failure' and run['run_attempt']==1, 'prior failed run')
+        require(old['invocationId']==str(c['priorRunId']) and old['manifestHash']==digest(previous) and old['commit']==run['head_sha'], 'prior lock/run binding')
+        require(old['originMs']==lock['originMs'] and old['endMs']==lock['endMs'], 'original campaign clock not retained')
+        require(not previous.get('startupContinuation'), 'recursive continuation forbidden')
+        for k in ['profileContract','baselineFiles','tasksHash']:
+            require(previous[k]==m[k], 'prior condition changed: '+k)
+        require(previous['sourceFiles']['product']==m['sourceFiles']['product'], 'solver/product changed')
+        before={f['id']:f for f in previous['inputs']}
+        for f in m['inputs']:
+            old_input=before[f['id']]
+            require({k:v for k,v in f.items() if k!='expectedWitness'}=={k:v for k,v in old_input.items() if k!='expectedWitness'}, 'prior original fixture changed')
+            require((f.get('expectedWitness') or {}).get('sha256')==(old_input.get('expectedWitness') or {}).get('sha256'), 'prior witness hash changed')
+            if f.get('expectedWitness'):require(f['expectedWitness']['contract']=='INSERTION_SELECTED_QUALITY','corrected witness contract')
+        require(plan['phase']=='CANARY' and plan['chunks']==3 and plan['manifestHash']==old['manifestHash'], 'prior phase/plan')
+        require(len(plan['expectedCalls'])==32 and len({v['callId'] for v in plan['expectedCalls']})==32, 'prior conservative call debit')
+        require(all(v['phase']=='CANARY' and v['limits']['callMs']==300000 for v in plan['expectedCalls']), 'prior non-canary execution')
+        templates=[json.loads(l) for l in (config/'TASKS.jsonl').read_text(encoding='utf-8').splitlines()]
+        require(plan['expectedCalls']==[v for task in compile_calls(previous,templates,'CANARY') for v in task], 'prior independent schedule')
+        artifacts=validation['priorArtifacts']
+        for receipt in [c['priorLock'],c['priorPlan']]:
+            require(any(a['id']==receipt['artifactId'] and a['digest']==receipt['digest'] and not a['expired'] for a in artifacts), 'prior backend receipt')
+        require(not any(any('-'+p+'-' in a['name'] for p in PHASES if p!='CANARY') for a in artifacts), 'prior post-canary artifacts')
+        allocated=[j for j in validation['priorJobs'] if j['conclusion']!='skipped']
+        require(len(allocated)<=7 and all(j['name'] in ['activate','canary / plan','audit','independent-audit'] or j['name'].startswith('canary / run (') for j in allocated), 'prior job reservation')
+        require(validation['status']=='PASS' and validation['solverCalls']==0, 'continuation validation')
+    return 32
+
 def audit(config, history, output, phase=None, inputs_only=False):
     output.mkdir(parents=True, exist_ok=False)
     errors = []; missing = []; statuses = collections.Counter(); checked = 0; fixtures = 0
@@ -232,6 +277,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
         try: cp_check(read(config / 'CP_PREFLIGHT.json'))
         except Exception as exc: error('CP_PREFLIGHT', exc)
     elif not inputs_only: raise ValueError('activation lock missing')
+    prior_reserved=continuation_check(m,config,lock)
     db = sqlite3.connect(output / 'AUDIT_INDEX.sqlite')
     db.executescript('CREATE TABLE records(call_id TEXT PRIMARY KEY, input_id TEXT, phase TEXT, raw TEXT, checkpoint TEXT);'
                      'CREATE TABLE starts(attempt TEXT PRIMARY KEY, raw TEXT, checkpoint TEXT);')
@@ -287,6 +333,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
                 for part, task in enumerate(chunk):
                     for c in task: expected[c['callId']] = (c, dict(phase=p, chunk=index, part=part))
         except Exception as exc: error('plan/'+p, exc)
+    require(len(expected)+prior_reserved<=m['maxCalls'], 'cumulative prior/current scheduled call cap')
     for p in ['ALL_CONFIRMATION','PER_SAVE_CONFIRMATION']:
         if p in plans:
             try:
@@ -389,6 +436,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
                     require(ref['id'] not in consensus or consensus[ref['id']]==h, 'cross-variant/repeat witness disagreement'); consensus[ref['id']]=h
                     old = ref.get('expectedWitness')
                     if old:
+                        require(old['contract'] in ['SORTED_QUALITY_SELECTED','INSERTION_SELECTED_QUALITY'], 'unknown historical witness contract')
                         expected_hash = digest(witness) if old['contract']=='SORTED_QUALITY_SELECTED' else h
                         require(expected_hash==old['sha256'] and record['historicalWitness']==expected_hash, 'historical witness mismatch')
                 checked += 1
@@ -411,6 +459,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
         statusCounts=dict(statuses), errors=errors, missing=missing, notRun=not_run, solverCalls=0,
         populationCalls=0, freshValidation=False, performancePass=False, independentOptimality=False,
         prerequisiteGates=gates, canaryVmPreflights=runner_preflights,
+        priorReservedCalls=prior_reserved,currentCallCap=m['maxCalls']-prior_reserved,priorEvidencePooled=False,
         scope='BYTE_HASH_SCHEDULE_START_RECEIPT_K_SEED_ORIGINAL_WEIGHTED_WITNESS_AND_NATIVE_PROOF_FLAGS',
         limitation='Witness/proof-flag audit is not an independent optimality proof or fresh performance validation.')
     (output/'INDEPENDENT_AUDIT.json').write_text(json.dumps(report,ensure_ascii=False,indent=2,allow_nan=False)+'\n',encoding='utf-8')

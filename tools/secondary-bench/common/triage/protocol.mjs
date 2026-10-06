@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { digest, integer } from '../contracts.mjs';
 import { FOLLOWUP_JOB, worstCall, packTasks } from '../budget.mjs';
+import { continuationContract } from './continuation.mjs';
 
 export const PROFILE = Object.freeze({ id: 'triage-cold-v1', lifecycle: 'fresh-process-cold',
   exactHumanQuality: 'true', timingContract: 'post-primary-policy-settled-v1',
@@ -24,6 +25,7 @@ export function validateManifest(m) {
   assert.equal(m.inputs.length, 580); assert.equal(new Set(m.inputs.map(f => f.id)).size, 580);
   for (const f of m.inputs) { assert(/^[a-f0-9]{64}$/.test(f.sha256)); assert.equal(f.member, `fixtures/${f.sha256}.json`); }
   assert.equal(m.design.gates.correctness_disagreements_allowed, 0);
+  continuationContract(m);
   return m;
 }
 export function validateLock(lock) {

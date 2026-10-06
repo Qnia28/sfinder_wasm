@@ -14,6 +14,7 @@ import { verifySnapshot } from '../tools/secondary-bench/common/evidence.mjs';
 import { runIsolated } from '../tools/secondary-bench/isolation.mjs';
 import { hash } from '../tools/secondary-bench/contracts.mjs';
 import { sha256 } from '../tools/secondary-bench/common/contracts.mjs';
+import { continuationContract, assertStageBudget, verifyPriorCanary } from '../tools/secondary-bench/common/triage/continuation.mjs';
 import { raceSecondaryEngines } from '../src/secondary-engine-runner.mjs';
 
 const structure=(n,k,f)=>({candidateCount:n,count:k,forcedCount:f});
@@ -221,6 +222,38 @@ test('artifact operations run through a JavaScript action, never a bare composit
   assert(bootstrap.includes("spawnSync('node'"));
   const scope=fs.readFileSync('tools/secondary-bench/followup-scope.mjs','utf8');
   assert(!scope.includes('ACTIONS_RUNTIME_TOKEN'),'runtime credential must stay outside policy tree');
+});
+test('original ALL and per-save witness contracts preserve selected-before-quality bytes',async()=>{
+  const { historicalWitnessHash } = await import('../tools/secondary-bench/common/triage/child.mjs');
+  const { hash } = await import('../tools/secondary-bench/contracts.mjs');
+  const verified = { selected: [1, 3], qualityVector: [2, 4] };
+  const insertion = historicalWitnessHash(verified, { contract: 'INSERTION_SELECTED_QUALITY' });
+  const sorted = historicalWitnessHash(verified, { contract: 'SORTED_QUALITY_SELECTED' });
+  assert.equal(insertion, hash('{"selected":[1,3],"quality":[2,4]}'));
+  assert.equal(sorted, hash('{"quality":[2,4],"selected":[1,3]}'));
+  assert.notEqual(insertion, sorted);
+  assert.throws(()=>historicalWitnessHash(verified, { contract: 'unknown' }));
+  const prepare=fs.readFileSync('tools/secondary-bench/common/triage/prepare.py','utf8');
+  assert(prepare.includes("('minimals-all/ALL.sqlite',\"SELECT fixtureId,exactWitnessSha256 FROM calls WHERE status='EXACT'\",'INSERTION_SELECTED_QUALITY')"));
+});
+test('canary-only repair debits prior slots and preserves product, witnesses and original clock',()=>{
+  const c={id:'canary-witness-serialization-repair-v1',reservedCalls:32,reservedCpSyntheticCalls:4,reservedRunnerHours:14,
+    priorRunId:2,priorLock:{artifactId:10,digest:'sha256:'+'a'.repeat(64)},priorPlan:{artifactId:11,digest:'sha256:'+'b'.repeat(64)},
+    originUtc:'2026-10-06T11:51:03Z',priorEvidencePooled:false,priorEvidenceReclassified:false};
+  const old={sourceFiles:{product:{'src/solver.mjs':'original'}},profileContract:PROFILE,baselineFiles:[],tasksHash:'fixed',
+    inputs:[{id:'x',sha256:'fixture',expectedWitness:{contract:'SORTED_QUALITY_SELECTED',sha256:'original-witness'}}]};
+  const m={...old,maxCalls:8479,maxRunnerHours:1400,startupContinuation:c,activationRecovery:{originUtc:c.originUtc},
+    inputs:[{...old.inputs[0],expectedWitness:{...old.inputs[0].expectedWitness,contract:'INSERTION_SELECTED_QUALITY'}}]};
+  assert.equal(continuationContract(m).reservedCalls,32);
+  assertStageBudget(m,8447,523);assert.throws(()=>assertStageBudget(m,8448,523),/cumulative/);
+  assert.throws(()=>assertStageBudget(m,10,525),/runner-hour/);
+  const previous={manifest:old,manifestHash:digest(old),originMs:Date.parse(c.originUtc),invocationId:'2'};
+  const calls=Array.from({length:32},(_,i)=>({callId:String(i),phase:'CANARY'}));
+  const plan={phase:'CANARY',chunks:3,manifestHash:previous.manifestHash,expectedCalls:calls};
+  assert.equal(verifyPriorCanary(m,previous,plan,calls).solverCalls,0);
+  assert.throws(()=>verifyPriorCanary({...m,sourceFiles:{product:{changed:'solver'}}},previous,plan,calls),/source changed/);
+  assert.throws(()=>verifyPriorCanary(m,{...previous,originMs:0},plan,calls));
+  assert.throws(()=>continuationContract({...m,startupContinuation:{...c,reservedCalls:0}}));
 });
 test('triage chunk checkpoints and immutable transport retry never re-execute policy calls',async t=>{
   const dir=temp(t),bundle=path.join(dir,'bundle');fs.mkdirSync(bundle);fs.mkdirSync(path.join(bundle,'fixtures'));
