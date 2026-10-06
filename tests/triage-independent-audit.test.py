@@ -25,7 +25,7 @@ def preflight():
         result=dict(cpPreflight='PASS',qualityComplete=True,tieComplete=True,result=dict(completed=True,
             qualityComplete=True,tieComplete=True,count=1,keys=['b'],qualityVector=[2])))
 
-def campaign(base):
+def campaign(base, gate_contract=None):
     config=base/'config';history=base/'history';config.mkdir();history.mkdir()
     job=dict(parts=3,jobMs=7500000,reserveMs=300000,setupMs=600000,checkpointMs=120000,finalTransportMs=900000,
         transportAuditMs=180000,jobMinutes=150,scopeOverheadMs=20000)
@@ -66,6 +66,7 @@ def campaign(base):
     m['auditContract']=dict(id='independent-python-evidence-v1',runtime='Python3-stdlib',solverReplay=False,
         prerequisiteJobs=['CANARY','CALIBRATION'],finalDedicatedVm=True,performancePass=False,independentOptimality=False)
     m['cpPreflightContract']=dict(id='scoped-cpsat-weighted-tie-v1',activationCalls=1,maxCanaryVmCalls=3,callMs=30000,populationCalls=0)
+    if gate_contract:m.update(gateContract=gate_contract,revision=6,measurement=dict(adapter='triage-fixture'))
     lock=dict(manifest=m,manifestHash=audit.digest(m),profileHash=audit.digest(profile),originMs=0,endMs=m['overallMs'],invocationId='1',commit='abc')
     write(config/'MANIFEST.json',m);write(config/'LOCK.json',lock);write(config/'CP_PREFLIGHT.json',preflight());seal(config,dict(campaignId='synthetic',runId='1',name='activation'))
     cs=audit.chunks(audit.compile_calls(m,templates,'CANARY'),job);expected=[c for chunk in cs for task in chunk for c in task]
@@ -111,6 +112,13 @@ class IndependentAudit(unittest.TestCase):
         result=audit.audit(config,history,self.root/'audit','CANARY')
         self.assertEqual(result['status'],'PASS',result['errors']);self.assertEqual(result['witnessRecordsChecked'],32)
         self.assertEqual(result['solverCalls'],0);self.assertFalse(result['independentOptimality'])
+    def test_v2_full_audit_separates_valid_evidence_from_candidate_promotion(self):
+        config,history=campaign(self.root,audit.GATE_CONTRACT)
+        result=audit.audit(config,history,self.root/'audit','CANARY')
+        self.assertEqual(result['status'],'PASS',result['errors']);self.assertEqual(result['evidenceStatus'],'PASS')
+        self.assertTrue(result['collectionAllowed']);self.assertFalse(result['performancePass'])
+        self.assertEqual(result['decisionStatus'],'REVIEW_REQUIRED')
+        self.assertEqual(result['prerequisiteAssessments']['CANARY']['evidenceStatus'],'PASS')
     def test_resealed_false_weighted_witness_is_rejected(self):
         config,history=campaign(self.root);directory=history/'part-0-0';rows=[json.loads(l) for l in (directory/'raw.jsonl').read_text().splitlines()]
         rows[2]['execution']['result']['result']['qualityVector']=[1]
@@ -137,6 +145,40 @@ class IndependentAudit(unittest.TestCase):
         self.assertTrue(audit.cp_failure(dict(execution=dict(policyTrace=[dict(name='cp-end',kind='ERROR')]))))
         self.assertFalse(audit.cp_failure(dict(execution=dict(result=dict(result=dict(secondaryCpFailure='Error: CP secondary time limit reached'))))))
         db.close()
+    def test_v2_screen_is_diagnostic_legacy_verdict_and_integrity_checks_remain(self):
+        import sqlite3
+        db=sqlite3.connect(':memory:');self.addCleanup(db.close);db.execute('CREATE TABLE records(phase TEXT,raw TEXT)')
+        for i in range(17):
+            for repeat in [1,2]:
+                for variant in ['TRACE_OFF_BASELINE','TRACE_ON_BASELINE']:
+                    ms=30+((10.505 if repeat==1 else 1.303) if i==0 and variant=='TRACE_ON_BASELINE' else 0)
+                    r=dict(inputId=f'c{i}',variant=variant,status='EXACT',ms=ms,repeat=repeat,
+                        pairId=f'CALIBRATION/c{i}/TRACE_ON_BASELINE/{repeat}',
+                        execution=dict(reaped=True,result=dict(verified={},result=dict(qualitySearchedStates=3))))
+                    db.execute('INSERT INTO records VALUES(?,?)',('CALIBRATION',json.dumps(r)))
+        with self.assertRaisesRegex(ValueError,'per-input overhead'):audit.phase_gate(db,'CALIBRATION')
+        result=audit.phase_gate(db,'CALIBRATION',audit.GATE_CONTRACT)
+        self.assertTrue(result['collectionAllowed']);cal=result['calibration'];self.assertEqual(cal['status'],'REVIEW_REQUIRED')
+        self.assertFalse(cal['confirmedOverhead']);self.assertEqual(cal['automaticExtraCalls'],0)
+        signal=next(r for r in cal['observations'] if r['exceedsScreen'])
+        self.assertEqual(signal['inputId'],'c0');self.assertAlmostEqual(signal['addedMedianMs'],5.904);self.assertEqual(signal['limitMs'],5)
+        text=db.execute('SELECT raw FROM records WHERE rowid=2').fetchone()[0];row=json.loads(text)
+        row['execution']['result']['result']['qualitySearchedStates']=4
+        db.execute('UPDATE records SET raw=? WHERE rowid=2',(json.dumps(row),))
+        with self.assertRaisesRegex(ValueError,'states drift'):audit.phase_gate(db,'CALIBRATION',audit.GATE_CONTRACT)
+        db.execute('DELETE FROM records WHERE rowid=2')
+        with self.assertRaisesRegex(ValueError,'partial pair'):audit.phase_gate(db,'CALIBRATION',audit.GATE_CONTRACT)
+    def test_v2_canary_censored_outcomes_are_data_but_reclamation_and_witness_are_mandatory(self):
+        import sqlite3
+        db=sqlite3.connect(':memory:');self.addCleanup(db.close);db.execute('CREATE TABLE records(phase TEXT,raw TEXT)')
+        for variant in ['PRECHANGE_BASELINE','BASELINE','A','B']:
+            r=dict(inputId='f',variant=variant,status='OOM' if variant=='A' else 'EXACT',ms=None if variant=='A' else 10,
+                execution=dict(reaped=True,memoryScope=dict(memoryMax=3221225472,swapMax=0),result=dict(verified={},result={})))
+            db.execute('INSERT INTO records VALUES(?,?)',('CANARY',json.dumps(r)))
+        self.assertTrue(audit.phase_gate(db,'CANARY',audit.GATE_CONTRACT)['collectionAllowed'])
+        r['execution']['reaped']=False;db.execute('UPDATE records SET raw=? WHERE rowid=4',(json.dumps(r),))
+        with self.assertRaisesRegex(ValueError,'execution'):audit.phase_gate(db,'CANARY',audit.GATE_CONTRACT)
+        with self.assertRaisesRegex(ValueError,'unsupported gate'):audit.phase_gate(db,'CANARY',dict(id='unknown'))
     def test_schedule_independently_binds_pair_order_and_disallows_unknown_ids(self):
         m=dict(campaignId='x',inputs=[dict(id='f',sha256='a'*64)])
         t=dict(phase='ALL_INITIAL',task_id='task',fixture_ids=['f'],conditional=False,calls=4,pairs=[

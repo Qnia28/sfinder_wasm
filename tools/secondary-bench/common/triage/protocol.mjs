@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { digest, integer, strict } from '../contracts.mjs';
 import { FOLLOWUP_JOB, worstCall, packTasks, validateBudget } from '../budget.mjs';
 import { continuationContract } from './continuation.mjs';
+import { evidenceFirst } from './gates.mjs';
 
 export const PROFILE = Object.freeze({ id: 'triage-cold-v1', lifecycle: 'fresh-process-cold',
   exactHumanQuality: 'true', timingContract: 'post-primary-policy-settled-v1',
@@ -18,7 +19,15 @@ export function validateManifest(m) {
   strict(m,['schemaVersion','campaignId','purpose','freshValidation','profile','profileContract','maxParallel','maxCalls',
     'maxRunnerHours','overallMs','job','inputs','baselineFiles','sourceFiles','tasksHash','design','provenance','runtime',
     'auditContract','cpPreflightContract','activationRecovery','startupContinuation','revision','approval','analysis',
-    'measurement','budget','evidence','continuation'],'triage manifest');
+    'measurement','budget','evidence','continuation','gateContract','prerequisiteReuse'],'triage manifest');
+  if (evidenceFirst(m.gateContract)) {
+    integer(m.revision,6,2147483647);
+    assert.equal(m.measurement?.adapter,'triage-fixture','new gate contract requires explicit performance manifest');
+  }
+  if(m.prerequisiteReuse) {
+    assert(evidenceFirst(m.gateContract)&&m.continuation,'reuse requires explicit adjudication continuation');
+    assert.deepEqual(m.prerequisiteReuse,{id:'adjudication-only-prerequisites-v1',phases:['CANARY','CALIBRATION']});
+  }
   assert.equal(m.schemaVersion, 1); assert.equal(m.profile, PROFILE.id);
   assert.equal(m.purpose, 'development-policy-ab'); assert.equal(m.freshValidation, false);
   assert.equal(m.maxParallel, 16); assert.equal(m.maxCalls, 8479);

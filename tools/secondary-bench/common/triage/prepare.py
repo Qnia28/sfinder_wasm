@@ -43,7 +43,11 @@ def audit_original_all_witnesses(base, archive):
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--analysis',default=r'D:\AI\sfinder-wasm\triage-analysis\Astra')
     parser.add_argument('--out',required=True);parser.add_argument('--activation-recovery');parser.add_argument('--startup-continuation')
-    parser.add_argument('--common-continuation');args=parser.parse_args()
+    parser.add_argument('--common-continuation')
+    parser.add_argument('--gate-contract',choices=['evidence-first-v2'])
+    parser.add_argument('--revision',type=int);args=parser.parse_args()
+    if args.gate_contract:
+        assert args.revision is not None and args.revision>5,'new adjudication requires an explicit new revision (>5)'
     work=Path.cwd();analysis=Path(args.analysis);out=Path(args.out);out.mkdir(parents=True,exist_ok=False)
     design=json.loads((analysis/'next-experiment/PLAN.json').read_text(encoding='utf-8'))
     targets=[json.loads(s) for s in (analysis/'next-experiment/TARGETS.jsonl').read_text(encoding='utf-8').splitlines()]
@@ -94,6 +98,9 @@ def main():
         prerequisiteJobs=['CANARY','CALIBRATION'],finalDedicatedVm=True,performancePass=False,independentOptimality=False)
     manifest['cpPreflightContract']=dict(id='scoped-cpsat-weighted-tie-v1',activationCalls=1,maxCanaryVmCalls=3,
         callMs=30000,populationCalls=0)
+    if args.gate_contract:
+        manifest['gateContract']=json.loads(subprocess.check_output(['node','--input-type=module','-e',
+            "import {GATE_CONTRACT} from './tools/secondary-bench/common/triage/gates.mjs'; console.log(JSON.stringify(GATE_CONTRACT))"],text=True))
     if args.activation_recovery:
         manifest['activationRecovery']=json.loads(Path(args.activation_recovery).read_text(encoding='utf-8'))
         assert manifest['activationRecovery']['populationCalls']==0
@@ -102,8 +109,15 @@ def main():
     if args.common_continuation:
         assert not args.startup_continuation,'do not mix dedicated r4 repair with common continuation'
         prior=Path(args.common_continuation)
+        parent=json.loads((prior/'PARENT_LOCK.json').read_text(encoding='utf-8'))
+        # r3 is a new measurement epoch; r5 supplies completed prerequisites.
+        # Both require immutable scheduled history including every ancestor debit.
+        reuse=parent['invocationId']=='37467543995' and args.gate_contract=='evidence-first-v2'
+        assert parent['invocationId']=='37460239102' or reuse,'unsupported parent: immutable cumulative accounting required'
+        if args.gate_contract:assert args.revision>parent['manifest'].get('revision',0)
         shutil.copytree(prior,out/'continuation');prior=out/'continuation'
-        manifest.update(revision=5,approval='USER_ASTRA_ANALYSIS_FIX_AND_RESUME',analysis='DEVELOPMENT_KEEP_HOLD_REJECT',
+        revision=args.revision if args.gate_contract else 5
+        manifest.update(revision=revision,approval='USER_ASTRA_ANALYSIS_FIX_AND_RESUME',analysis='DEVELOPMENT_KEEP_HOLD_REJECT',
             measurement=dict(adapter='triage-fixture',variants=['BASELINE','A','B']),
             budget=dict(maxParallel=16,overallMs=manifest['overallMs'],maxCalls=8479,job=job),
             evidence=dict(schemaVersion=1,retentionDays=30,retries=2,diskReserveBytes=4*1024**3),
@@ -111,8 +125,16 @@ def main():
                 history='config/continuation/history',historyIndexSha256=sha(prior/'history/HISTORY_INDEX.json')))
         backend=json.loads((prior/'PARENT_BACKEND.json').read_text(encoding='utf-8'))
         manifest['provenance'].update(parentLockArtifact=dict(id=backend['id'],digest=backend['digest']),
-            priorReservedRunnerHours=14,priorCpSyntheticCalls=4,priorEvidencePooled=False,measurementEpoch=5,
+            priorReservedRunnerHours=14,priorCpSyntheticCalls=4,priorEvidencePooled=False,measurementEpoch=revision,
             approval='USER_ASTRA_ANALYSIS_FIX_AND_RESUME',exposures=['ALL','PER_SAVE','FAILED_CANARY_R3'])
+        if reuse:
+            ledger=json.loads((prior/'PRIOR_JOBS.json').read_text(encoding='utf-8'))
+            assert ledger['cumulativeReservedRunnerHours']==52.5
+            ancestor=json.loads((prior/'ANCESTOR_BACKEND.json').read_text(encoding='utf-8'))
+            manifest['prerequisiteReuse']=dict(id='adjudication-only-prerequisites-v1',phases=['CANARY','CALIBRATION'])
+            manifest['provenance'].update(priorReservedRunnerHours=52.5,priorCpSyntheticCalls=8,
+                ancestorLockArtifacts=[dict(id=ancestor['id'],digest=ancestor['digest'])],
+                approval='USER_RUN_REVISED_PURPOSE_ALIGNED_PLAN',exposures=['ALL','PER_SAVE','FAILED_CANARY_R3','R5_PREREQUISITES'])
         proof=audit_original_all_witnesses(base,Path(r'D:\AI\sfinder-wasm\files\evidence\A_ASTRA_HANDOFF_37280034634.zip'))
         (out/'ORIGINAL_WITNESS_AUDIT.json').write_text(canonical(proof)+'\n',encoding='utf-8')
         manifest['provenance']['originalWitnessAuditSha256']=sha(out/'ORIGINAL_WITNESS_AUDIT.json')

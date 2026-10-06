@@ -14,6 +14,7 @@ import { validateManifest, validateLock, PROFILE, PHASES, chunksFor, compileTask
 import { prerequisiteGate, selectConfirmation, developmentReport } from './analysis.mjs';
 import { runChunk } from './executor.mjs';
 import { isolatedScope } from '../../followup-scope.mjs';
+import { verifyReuse, collectedHistory } from './reuse.mjs';
 
 const tool = file => fileURLToPath(new URL(file, import.meta.url));
 const client = (await import('../../artifact-action/node_modules/@actions/artifact/lib/artifact.js')).default;
@@ -21,6 +22,16 @@ const mode = process.env.INPUT_MODE, phase = process.env.INPUT_PHASE;
 const repo = process.env.GITHUB_REPOSITORY, runId = process.env.GITHUB_RUN_ID;
 const output = (name,value) => fs.appendFileSync(process.env.GITHUB_OUTPUT, `${name}=${value}\n`);
 const gh = args => JSON.parse(execFileSync('gh', ['api', ...args], { encoding:'utf8',timeout:120000,maxBuffer:64*1024**2 }));
+function summarize(title, report) {
+  const calibration=report.calibration??report.prerequisiteAssessments?.CALIBRATION?.calibration;
+  const summary={status:report.status,evidenceStatus:report.evidenceStatus,executionCompleteness:report.executionCompleteness,
+    decisionStatus:report.decisionStatus,performancePass:report.performancePass,reason:report.reason,
+    errors:report.errors,missing:report.missing,phaseCompleteness:report.phaseCompleteness,
+    ...(calibration?{calibration:{...calibration,observations:calibration.observations.filter(i=>i.exceedsScreen||i.issues.length)}}:{})};
+  console.log(title,JSON.stringify(summary));
+  if(process.env.GITHUB_STEP_SUMMARY)fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+    `## ${title}\n\n\`\`\`json\n${JSON.stringify(summary,null,2)}\n\`\`\`\n`);
+}
 async function fileHash(file) { const h=createHash('sha256'); for await(const b of fs.createReadStream(file))h.update(b); return h.digest('hex'); }
 async function upload(name,dir,limit=180000) {
   await seal(dir,{campaignId:'TRIAGE_PROBE_SEED_AB_20261006_R1',runId,name});
@@ -43,7 +54,8 @@ function downloadHistory(campaignId) {
 function getHistory(campaignId, strict = true) {
   downloadHistory(campaignId);
   const history=loadHistory('history',campaignId);
-  if (strict) assert(!history.warnings.length&&!history.unknown.length,'incomplete execution history'); return history;
+  if (strict) assert(!history.warnings.length&&!history.unknown.length,'incomplete execution history');
+  return collectedHistory(validateLock(readJson('config/LOCK.json')),history);
 }
 async function cpPreflight(directory, identity) {
   const callId = digest({ runId, identity, check: 'CP_SYNTHETIC_PREFLIGHT_V1' });
@@ -88,7 +100,8 @@ try {
     const continuation=m.continuation;
     const parent=continuation?validateCommonLock(readJson(continuation.parentLock)):null;
     const parentArtifact=m.provenance.parentLockArtifact;
-    assert(!priorLocks.some(a=>a.name===`triage-lock-${m.campaignId}`&&a.id!==parentArtifact?.id),
+    const allowedLocks=new Set([parentArtifact?.id,...(m.provenance.ancestorLockArtifacts??[]).map(a=>a.id)]);
+    assert(!priorLocks.some(a=>a.name===`triage-lock-${m.campaignId}`&&!allowedLocks.has(a.id)),
       'campaign already activated; never reset its origin with another dispatch');
     if(continuation) {
       const prior=gh([`repos/${repo}/actions/runs/${parent.invocationId}`]);
@@ -96,6 +109,11 @@ try {
       assert.equal(parent.commit,prior.head_sha);
       const backend=gh([`repos/${repo}/actions/artifacts/${parentArtifact.id}`]);
       assert.equal(artifactDigest(backend.digest),parentArtifact.digest);assert.equal(backend.workflow_run.id,prior.id);assert(!backend.expired);
+      for(const ancestor of m.provenance.ancestorLockArtifacts??[]) {
+        const a=gh([`repos/${repo}/actions/artifacts/${ancestor.id}`]);
+        assert.equal(artifactDigest(a.digest),ancestor.digest);assert(!a.expired);
+        assert(parent.ancestorLocks.some(l=>l.invocationId===String(a.workflow_run.id)),'foreign ancestor backend');
+      }
       const reservation=historyReservation(m);
       assert(m.provenance.priorReservedRunnerHours+13*2.5<=36*2.5,'prior runner allocations exceed original control reserve');
       writeJson('config/PARENT_VALIDATION.json',{status:'PASS',parentArtifact:backend,parentRun:prior,
@@ -123,7 +141,11 @@ try {
     execFileSync(process.execPath,['--test','tests/triage-bench.test.mjs'],{stdio:'inherit',timeout:120000});
     execFileSync('python',['-B','tests/triage-independent-audit.test.py'],{stdio:'inherit',timeout:120000});
     writeJson('config/SYNTHETIC_GATE.json',{status:'PASS',populationCalls:0,solverCalls:'LIGHTWEIGHT_SYNTHETIC_TESTS_ONLY'});
-    const cp = await cpPreflight('config/cp-preflight', 'activation');
+    const reuse=verifyReuse(m);
+    const cp = reuse ? readJson('config/continuation/PARENT_CP_PREFLIGHT.json') : await cpPreflight('config/cp-preflight', 'activation');
+    if(reuse) writeJson('config/PREREQUISITE_REUSE.json',{status:'PASS',parentInvocationId:reuse.parent.invocationId,
+      originalManifestHash:reuse.parent.manifestHash,phases:m.prerequisiteReuse.phases,
+      reusedCalls:reuse.rows.length,solverCalls:0,newCpSyntheticCalls:0,priorCpSyntheticCalls:m.provenance.priorCpSyntheticCalls});
     writeJson('config/CP_PREFLIGHT.json',cp);
     const receipt=await upload('triage-lock-'+m.campaignId,'config',15*60000);
     output('artifact-id',receipt.artifactId);output('digest',receipt.digest);
@@ -131,14 +153,22 @@ try {
     await download(process.env.INPUT_ARTIFACT_ID,process.env.INPUT_DIGEST,'config');
     const lock=validateLock(readJson('config/LOCK.json')); verifySources(lock.manifest.sourceFiles);
     const templates=fs.readFileSync('config/TASKS.jsonl','utf8').trim().split('\n').map(JSON.parse);
+    const reuse=verifyReuse(lock.manifest);
+    if(reuse&&lock.manifest.prerequisiteReuse.phases.includes(phase)) {
+      summarize(phase+' reused immutable prerequisites',{status:'PASS',performancePass:false,
+        originalInvocationId:reuse.parent.invocationId,solverCalls:0});
+      output('matrix',JSON.stringify({include:[]}));output('has-work','false');
+      process.exit(0);
+    }
     let history={rows:[]}, selected=null;
     if(phase!=='CANARY') history=getHistory(lock.manifest.campaignId);
     const required=phase==='CALIBRATION'?'CANARY':phase==='ALL_INITIAL'?'CALIBRATION':null;
     if(required) {
       const expected=templates.filter(t=>t.phase===required).reduce((n,t)=>n+t.calls,0);
       const rows=history.rows.filter(r=>r.phase===required); assert.equal(rows.length,expected);
-      const gate=prerequisiteGate(rows,required,{cpPreflight:readJson('config/CP_PREFLIGHT.json')});
+      const gate=prerequisiteGate(rows,required,{cpPreflight:readJson('config/CP_PREFLIGHT.json'),gateContract:lock.manifest.gateContract});
       writeJson('gate/GATE.json',gate);
+      summarize(required+' execution validity',gate);
       await upload(`triage-data-${lock.manifest.campaignId}-${required}-gate`,'gate');
       assert.equal(gate.status,'PASS',JSON.stringify(gate));
     }
@@ -203,26 +233,33 @@ try {
     if (!fs.existsSync('independent/INDEPENDENT_AUDIT.json')) writeJson('independent/INDEPENDENT_AUDIT.json',{
       status:'FAIL',reason:'AUDITOR_DID_NOT_FINISH',auditExit,solverCalls:0,performancePass:false });
     const report=readJson('independent/INDEPENDENT_AUDIT.json');
+    summarize('Independent evidence audit (not candidate promotion)',report);
     await upload(`triage-independent-${lock.manifest.campaignId}-${phase||'FINAL'}`,'independent',5*60000);
     if(auditExit||report.status!=='PASS')process.exitCode=1;
   } else if(mode==='audit') {
     await download(process.env.INPUT_ARTIFACT_ID,process.env.INPUT_DIGEST,'config');
     const lock=validateLock(readJson('config/LOCK.json')),history=getHistory(lock.manifest.campaignId,false);
-    const plans=filesUnder('history').filter(f=>path.basename(f)==='STAGE_PLAN.json').map(readJson);
+    const reuse=verifyReuse(lock.manifest);
+    const plans=[...(reuse?.plans??[]),...filesUnder('history').filter(f=>path.basename(f)==='STAGE_PLAN.json').map(readJson)];
     const expected=plans.flatMap(p=>p.expectedCalls),ids=new Set(history.rows.map(r=>r.callId));
     const missing=expected.filter(c=>!ids.has(c.callId));
     assert.equal(new Set(history.rows.map(r=>r.callId)).size,history.rows.length,'execution duplicates');
-    assert(history.rows.every(r=>r.manifestHash===lock.manifestHash));
+    assert(history.rows.every(r=>r.manifestHash===(reuse&&lock.manifest.prerequisiteReuse.phases.includes(r.phase)
+      ?reuse.parent.manifestHash:lock.manifestHash)));
     const report=developmentReport(lock.manifest,history.rows);
     report.continuation=lock.manifest.continuation??null;
     report.priorReservation=historyReservation(lock.manifest);
     report.priorExecutionPooling=false;
+    report.reusedPrerequisites=reuse?{phases:lock.manifest.prerequisiteReuse.phases,
+      invocationId:reuse.parent.invocationId,manifestHash:reuse.parent.manifestHash,calls:reuse.rows.length,
+      newSolverCalls:0,performanceSamplesPooled:false}:null;
     report.missing=missing;report.transportAliases=history.aliases;report.rawValidity=missing.length?'INCOMPLETE':'PASS';
     report.unknownExecution=history.unknown;report.evidenceWarnings=history.warnings;
     report.phaseCompleteness=PHASES.map(phase=>({phase,planned:plans.some(p=>p.phase===phase),
       scheduled:expected.filter(c=>c.phase===phase).length,observed:history.rows.filter(r=>r.phase===phase).length}));
     report.executionCompleteness=report.phaseCompleteness.every(p=>p.planned&&p.scheduled===p.observed)
       &&!history.rows.some(r=>r.status.startsWith('NOT_RUN_'))&&!missing.length?'COMPLETE':'INCOMPLETE';
+    summarize('Collection completeness and candidate review',report);
     writeJson('report/REPORT.json',report);await upload(`triage-final-${lock.manifest.campaignId}`,'report',180000);
     if(missing.length||history.unknown.length||history.warnings.length||report.executionCompleteness!=='COMPLETE')process.exitCode=1;
   } else throw Error('unsupported triage action');

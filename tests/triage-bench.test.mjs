@@ -17,6 +17,8 @@ import { hash } from '../tools/secondary-bench/contracts.mjs';
 import { sha256 } from '../tools/secondary-bench/common/contracts.mjs';
 import { continuationContract, assertStageBudget, verifyPriorCanary } from '../tools/secondary-bench/common/triage/continuation.mjs';
 import { raceSecondaryEngines } from '../src/secondary-engine-runner.mjs';
+import { GATE_CONTRACT } from '../tools/secondary-bench/common/triage/gates.mjs';
+import { verifyReuse, collectedHistory } from '../tools/secondary-bench/common/triage/reuse.mjs';
 
 const structure=(n,k,f)=>({candidateCount:n,count:k,forcedCount:f});
 test('A/B valid structure gates; primaryHard remains provenance rather than overwritten',()=>{
@@ -130,6 +132,44 @@ test('calibration rejects status drift, OOM, state drift and excessive trace cos
   rows[1].status='OOM';assert.equal(prerequisiteGate(rows,'CALIBRATION',{cpPreflight}).status,'HOLD');
   rows[1].status='EXACT';rows[1].ms=100;
   assert.equal(prerequisiteGate(rows,'CALIBRATION',{cpPreflight}).reason,'TRACE_OVERHEAD');
+});
+function calibrationRows() {
+  return Array.from({length:17},(_,i)=>[1,2].flatMap(repeat=>['TRACE_OFF_BASELINE','TRACE_ON_BASELINE'].map(variant=>({
+    inputId:'c'+i,variant,phase:'CALIBRATION',pairId:`CALIBRATION/c${i}/TRACE_ON_BASELINE/${repeat}`,
+    comparator:'TRACE_ON_BASELINE',repeat,order:repeat===1?['BASELINE','TRACE_ON_BASELINE']:['TRACE_ON_BASELINE','BASELINE'],metadata,
+    status:'EXACT',ms:30+(i===0&&variant==='TRACE_ON_BASELINE'?(repeat===1?10.505:1.303):0),
+    execution:{reaped:true,result:{verified:{selected:[0],qualityVector:[1],completed:true},result:{qualitySearchedStates:3}}}
+  })))).flat();
+}
+test('v2 records a two-pair overhead signal without blocking collection or changing the legacy verdict',()=>{
+  const rows=calibrationRows(),options={cpPreflight,gateContract:GATE_CONTRACT};
+  assert.equal(prerequisiteGate(rows,'CALIBRATION',{cpPreflight}).reason,'TRACE_OVERHEAD');
+  const result=prerequisiteGate(rows,'CALIBRATION',options);
+  assert.equal(result.status,'PASS');assert.equal(result.collectionAllowed,true);assert.equal(result.performancePass,false);
+  assert.equal(result.calibration.status,'REVIEW_REQUIRED');assert.equal(result.calibration.confirmedOverhead,false);
+  const signal=result.calibration.observations.find(r=>r.exceedsScreen);
+  assert.equal(signal.inputId,'c0');assert(Math.abs(signal.addedMedianMs-5.904)<1e-9);assert.equal(signal.limitMs,5);
+  assert.equal(signal.pairs.length,2);assert.equal(result.calibration.automaticExtraCalls,0);
+  const report=developmentReport({gateContract:GATE_CONTRACT,design:{gates:{}}},rows);
+  assert.equal(report.calibration.status,'REVIEW_REQUIRED');assert.equal(report.performancePass,false);
+  rows[1].execution.result.result.qualitySearchedStates=4;
+  assert.equal(prerequisiteGate(rows,'CALIBRATION',options).reason,'TRACE_NATIVE_STATES_DRIFT');
+});
+test('v2 continues collecting censored/regressing outcomes but rejects invalid evidence and unsafe scopes',()=>{
+  const options={cpPreflight,gateContract:GATE_CONTRACT};
+  const rows=canary();rows[2].status='TIMEOUT_CALL';rows[2].ms=null;rows[2].execution.result=null;
+  assert.equal(prerequisiteGate(rows,'CANARY',options).observations[0].reason,'POSSIBLE_COMPLETION_REGRESSION');
+  rows[2].status='OOM';
+  assert.equal(prerequisiteGate(rows,'CANARY',options).status,'HOLD','OOM needs a proven bounded scope');
+  rows[2].execution.memoryScope={memoryMax:3221225472,swapMax:0};
+  assert.equal(prerequisiteGate(rows,'CANARY',options).status,'PASS');
+  rows[2].execution.reaped=false;assert.equal(prerequisiteGate(rows,'CANARY',options).status,'HOLD');
+  rows[2].execution.reaped=true;rows[2].status='MISMATCH';assert.equal(prerequisiteGate(rows,'CANARY',options).status,'HOLD');
+  const calibration=calibrationRows().slice(0,4);
+  const diagnostic=prerequisiteGate(calibration,'CALIBRATION',options);
+  assert.equal(diagnostic.status,'PASS');assert(diagnostic.calibration.reasons.includes('INSUFFICIENT_COMPLETE_CALIBRATION'));
+  calibration.pop();assert.equal(prerequisiteGate(calibration,'CALIBRATION',options).status,'HOLD','missing pair still blocks');
+  assert.throws(()=>prerequisiteGate([], 'CALIBRATION',{gateContract:{id:'unknown'}}));
 });
 test('compile seed trial and pair identity includes comparator, no shared baseline',()=>{
   const m={campaignId:'x',job:FOLLOWUP_JOB,inputs:[{id:'f',sha256:'a'.repeat(64)}]};
@@ -298,6 +338,12 @@ test('common performance profile resumes an indexed immutable legacy parent with
     inputs:old.inputs.map(f=>({...f,expectedWitness:{...f.expectedWitness,contract:'INSERTION_SELECTED_QUALITY'}})),
     continuation:{parentLock:parentFile,parentLockSha256:sha256(fs.readFileSync(parentFile)),history,historyIndexSha256:sha256(fs.readFileSync(path.join(history,'HISTORY_INDEX.json')))}};
   const next=activateCommon(m,path.join(dir,'new-lock'),{createdUtc:new Date(now+1000).toISOString(),invocationId:'new',confirm:true});
+  const revised=activateCommon({...m,revision:6,gateContract:GATE_CONTRACT},path.join(dir,'v2-lock'),
+    {createdUtc:new Date(now+1000).toISOString(),invocationId:'v2',confirm:true});
+  assert.equal(revised.originMs,next.originMs);assert.equal(revised.conditionHash,next.conditionHash);
+  assert.notEqual(revised.manifestHash,next.manifestHash,'new adjudication must have a distinct manifest');
+  assert.throws(()=>activateCommon({...m,gateContract:GATE_CONTRACT},path.join(dir,'unversioned'),
+    {createdUtc:new Date(now+1000).toISOString(),invocationId:'unversioned',confirm:true}));
   assert.equal(next.originMs,parent.originMs);assert.equal(next.endMs,parent.endMs);validateCommonLock(next);
   assert.equal(historyReservation(m).calls,4);
   const after=compileTasks(m,[template],'CANARY')[0].calls;
@@ -307,4 +353,30 @@ test('common performance profile resumes an indexed immutable legacy parent with
     {createdUtc:new Date(now+1000).toISOString(),invocationId:'bad',confirm:true}));
   assert.throws(()=>activateCommon({...m,measurement:{adapter:'secondary-fixture',variants:['integrated']}},path.join(dir,'bad2'),
     {createdUtc:new Date(now+1000).toISOString(),invocationId:'bad2',confirm:true}));
+  const completedDir=path.join(dir,'completed'),completedHistory=path.join(completedDir,'history');
+  const templates=[template,{phase:'CALIBRATION',task_id:'CALIBRATION/f',fixture_ids:['f'],
+    variants:['TRACE_OFF_BASELINE','TRACE_ON_BASELINE'],calls:2}];
+  fs.writeFileSync(path.join(dir,'TASKS.jsonl'),templates.map(t=>JSON.stringify(t)).join('\n'));
+  writeJson(path.join(completedDir,'PARENT_LOCK.json'),next);
+  for(const phase of ['CANARY','CALIBRATION']) {
+    const calls=compileTasks(m,templates,phase).flatMap(t=>t.calls),p=path.join(completedHistory,phase);
+    writeJson(path.join(p,'STAGE_PLAN.json'),{phase,manifestHash:next.manifestHash,expectedCalls:calls});
+    fs.writeFileSync(path.join(p,'raw.jsonl'),calls.map(c=>JSON.stringify({...c,campaignId:m.campaignId,
+      invocationId:next.invocationId,manifestHash:next.manifestHash,logicalCallId:c.callId,recordId:c.callId,
+      status:'EXACT',execution:{reaped:true}})).join('\n')+'\n');
+    await seal(p,{campaignId:m.campaignId,invocationId:next.invocationId});
+  }
+  indexHistory(completedHistory,m.campaignId);
+  const resumed={...m,revision:6,gateContract:GATE_CONTRACT,
+    prerequisiteReuse:{id:'adjudication-only-prerequisites-v1',phases:['CANARY','CALIBRATION']},
+    continuation:{parentLock:path.join(completedDir,'PARENT_LOCK.json'),history:completedHistory,
+      parentLockSha256:sha256(fs.readFileSync(path.join(completedDir,'PARENT_LOCK.json'))),
+      historyIndexSha256:sha256(fs.readFileSync(path.join(completedHistory,'HISTORY_INDEX.json')))}};
+  assert.equal(verifyReuse(resumed).rows.length,6);
+  assert.equal(collectedHistory({manifest:resumed},{rows:[],warnings:[],unknown:[]}).rows.length,6);
+  assert.equal(historyReservation(resumed).calls,6,'reused calls charged exactly once');
+  assert.throws(()=>verifyReuse({...resumed,sourceFiles:{...m.sourceFiles,harness:{...m.sourceFiles.harness,
+    'tools/secondary-bench/common/triage/child.mjs':'changed'}}}),/execution source changed/);
+  assert.throws(()=>verifyReuse({...resumed,profileContract:{...PROFILE,cpDelayMs:0}}),/condition changed/);
+  assert.throws(()=>verifyReuse({...resumed,prerequisiteReuse:{...resumed.prerequisiteReuse,phases:['CANARY']}}));
 });

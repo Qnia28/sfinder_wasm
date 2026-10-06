@@ -1,5 +1,7 @@
 # Astra A/B 공통 하네스 재개 — r5
 
+> r5는 calibration 비용 screen 때문에 본측정 전에 종료됐다. 현재 판정·다음 실행 설계는 [TRIAGE_PURPOSE_ALIGNMENT_20261006_KO.md](TRIAGE_PURPOSE_ALIGNMENT_20261006_KO.md)를 따른다. 아래는 당시 실행 provenance다.
+
 ## 범위
 
 `D:\AI\sfinder-wasm\triage-analysis\Astra\NEXT_EXPERIMENT_PLAN_KO.md`의 M5 확장 순서대로 기존 common 실행 기반에 triage performance profile / 실제 정책 adapter / paired compiler / 독립감사를 연결한다. 기존 information profile, original fixture/weighted rows/K/primary seed, 제품 source/WASM, A/B 규칙과 CP 지연·limit·threads는 바꾸지 않는다.

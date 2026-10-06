@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { digest, sha256 } from '../contracts.mjs';
+import { evidenceFirst } from './gates.mjs';
 
 const median = values => { const s = [...values].sort((a,b) => a-b), n = s.length; return n ? (s[Math.floor((n-1)/2)] + s[Math.floor(n/2)]) / 2 : null; };
 export const percentile = (values, p) => { const s = [...values].sort((a,b) => a-b); if (!s.length) return null;
@@ -56,10 +57,36 @@ export function selectConfirmation(manifest, rows, phase) {
   for (const id of manifest.design.retest.always_include_fixture_ids) if (inputs.some(i => i.inputId === id)) selected.add(id);
   return { selected: [...selected].sort(), decisions: decision, policy: 'CONSERVATIVE_CHANGED_PLUS_TAIL_STATUS_VARIANCE_GATE_SELECTION' };
 }
-export function prerequisiteGate(rows, phase, { cpPreflight } = {}) {
+export function calibrationAssessment(rows) {
+  const inputs = pairedInputs(rows, 'CALIBRATION');
+  const valid = inputs.filter(i => i.delta !== null);
+  const aggregateDeltaMs = median(valid.map(i => i.delta));
+  const aggregateLimitMs = valid.length ? Math.max(2, .02 * median(valid.map(i => i.baseMs))) : null;
+  const observations = inputs.map(i => ({ inputId:i.inputId, completePairs:i.deltas.length,
+    baseMedianMs:i.baseMs, addedMedianMs:i.delta, limitMs:i.baseMs === null ? null : Math.max(5,.05*i.baseMs),
+    exceedsScreen:i.delta !== null && i.delta > Math.max(5,.05*i.baseMs),
+    issues:i.issues, pairs:i.pairs.map(p => ({ pairId:p.pairId, repeat:p.base.repeat,
+      order:p.base.order, offStatus:p.base.status, onStatus:p.candidate.status,
+      offMs:p.base.ms, onMs:p.candidate.ms,
+      deltaMs:p.base.status === 'EXACT' && p.candidate.status === 'EXACT' ? p.candidate.ms-p.base.ms : null })) }));
+  const reasons = [];
+  if (valid.length < 12) reasons.push('INSUFFICIENT_COMPLETE_CALIBRATION');
+  if (inputs.some(i => i.issues.length)) reasons.push('CALIBRATION_STATUS_DISCORDANCE');
+  if (valid.length && aggregateDeltaMs > aggregateLimitMs) reasons.push('AGGREGATE_OVERHEAD_SCREEN');
+  if (observations.some(i => i.exceedsScreen)) reasons.push('PER_INPUT_OVERHEAD_SCREEN');
+  return { status:reasons.length ? 'REVIEW_REQUIRED' : 'SCREEN_CLEAR', reasons,
+    completedInputs:valid.length, aggregateDeltaMs, aggregateLimitMs, observations,
+    confirmedOverhead:false, automaticExtraCalls:0,
+    interpretation:'Two initial counterbalanced pairs are a screen, not independent confirmation. Do not subtract this delta from policy timings.',
+    claimScope:'Instrumented policy comparisons only; uninstrumented fast-path and promotion claims require separate review.' };
+}
+
+export function prerequisiteGate(rows, phase, { cpPreflight, gateContract } = {}) {
+  const collect = evidenceFirst(gateContract), observations = [];
   if (!['CANARY','CALIBRATION'].includes(phase)) return { status: 'HOLD', reason: 'UNKNOWN_GATE' };
-  const allowed = new Set(['EXACT','TIMEOUT_CALL','INCOMPLETE']);
+  const allowed = new Set(['EXACT','TIMEOUT_CALL','INCOMPLETE', ...(collect ? ['OOM'] : [])]);
   const errors = rows.filter(r => !allowed.has(r.status) || r.execution?.reaped !== true
+    || r.status === 'OOM' && (r.execution?.memoryScope?.memoryMax !== 3221225472 || r.execution?.memoryScope?.swapMax !== 0)
     || r.status === 'EXACT' && (!Number.isFinite(r.ms) || r.ms < 0 || r.execution.result?.verified?.completed !== true
       || !Array.isArray(r.execution.result?.verified?.selected) || !Array.isArray(r.execution.result?.verified?.qualityVector)));
   if (!rows.length || errors.length) return { status: 'HOLD', reason: 'EXECUTION_OR_COVERAGE', errors: errors.map(r => r.callId ?? null) };
@@ -84,17 +111,23 @@ export function prerequisiteGate(rows, phase, { cpPreflight } = {}) {
         || !['PRECHANGE_BASELINE','BASELINE','A','B'].every(v => ps.some(r => r.variant === v)))
         return { status: 'HOLD', reason: 'CANARY_VARIANT_COVERAGE' };
       const old = ps.find(r => r.variant === 'PRECHANGE_BASELINE'), base = ps.find(r => r.variant === 'BASELINE');
-      if (old.status !== base.status) return { status: 'HOLD', reason: 'BASELINE_STATUS_DRIFT' };
-      if (base.status === 'EXACT' && ps.some(r => r.status !== 'EXACT'))
-        return { status: 'HOLD', reason: 'CANARY_COMPLETION_REGRESSION' };
+      if (old.status !== base.status) {
+        if (!collect) return { status: 'HOLD', reason: 'BASELINE_STATUS_DRIFT' };
+        observations.push({inputId:base.inputId,reason:'BASELINE_STATUS_DRIFT'});
+      }
+      if (base.status === 'EXACT' && ps.some(r => r.status !== 'EXACT')) {
+        if (!collect) return { status: 'HOLD', reason: 'CANARY_COMPLETION_REGRESSION' };
+        observations.push({inputId:base.inputId,reason:'POSSIBLE_COMPLETION_REGRESSION'});
+      }
       const exact = ps.filter(r => r.status === 'EXACT');
       if (new Set(exact.map(r => digest(r.execution.result.verified))).size > 1) return { status: 'HOLD', reason: 'WITNESS_DRIFT' };
     }
   }
   if (phase === 'CALIBRATION') {
     const inputs = pairedInputs(rows,phase), valid = inputs.filter(i => i.ratio !== null);
-    if (inputs.some(i => i.issues.length)) return { status: 'HOLD', reason: 'CALIBRATION_PAIR_OR_STATUS' };
-    if (valid.length < 12) return { status: 'HOLD', reason: 'INSUFFICIENT_COMPLETE_CALIBRATION' };
+    if (inputs.some(i => i.issues.some(issue => issue !== 'STATUS_DISCORDANCE' || !collect)))
+      return { status: 'HOLD', reason: 'CALIBRATION_PAIR_OR_STATUS' };
+    if (!collect && valid.length < 12) return { status: 'HOLD', reason: 'INSUFFICIENT_COMPLETE_CALIBRATION' };
     for (const input of valid) for (const pair of input.pairs) if (pair.base.status==='EXACT'&&pair.candidate.status==='EXACT') {
       if (digest(pair.base.execution.result.verified)!==digest(pair.candidate.execution.result.verified))
         return {status:'HOLD',reason:'TRACE_WITNESS_DRIFT'};
@@ -102,12 +135,16 @@ export function prerequisiteGate(rows, phase, { cpPreflight } = {}) {
       if (!a.secondaryCpStarted&&!b.secondaryCpStarted && a.qualitySearchedStates!==b.qualitySearchedStates)
         return {status:'HOLD',reason:'TRACE_NATIVE_STATES_DRIFT'};
     }
+    if (collect) return {status:'PASS',phase,performancePass:false,collectionAllowed:true,
+      evidenceStatus:'PASS',calibration:calibrationAssessment(rows)};
     if (median(valid.map(i => i.delta)) > Math.max(2, .02*median(valid.map(i => i.baseMs)))
       || valid.some(i => i.delta > Math.max(5, .05*i.baseMs))) return { status: 'HOLD', reason: 'TRACE_OVERHEAD' };
   }
-  return { status: 'PASS', phase, performancePass: false };
+  return { status: 'PASS', phase, performancePass: false,
+    ...(collect ? {evidenceStatus:'PASS',collectionAllowed:true,observations} : {}) };
 }
 export function developmentReport(manifest, rows) {
+  const collect = evidenceFirst(manifest.gateContract);
   const initial = pairedInputs(rows,'ALL_INITIAL'), confirmation = pairedInputs(rows,'ALL_CONFIRMATION');
   const issues = [];
   for (const i of initial) {
@@ -158,5 +195,11 @@ export function developmentReport(manifest, rows) {
   return { status: 'DEVELOPMENT_EVIDENCE_ONLY_ASTRA_REVIEW_REQUIRED', freshValidation:false, performancePass:false,
     rows:rows.length, initial:initial.map(({pairs,...i}) => i), confirmation:confirmation.map(({pairs,...i}) => i), issues,
     gates:manifest.design.gates,summaries,
+    ...(collect ? { gateContract:manifest.gateContract, calibration:calibrationAssessment(rows),
+      decisionStatus:'REVIEW_REQUIRED',
+      phaseStatusCounts:Object.fromEntries([...new Set(rows.map(r=>r.phase))].map(phase=>[phase,
+        rows.filter(r=>r.phase===phase).reduce((counts,r)=>{counts[r.status]=(counts[r.status]??0)+1;return counts;},{})])),
+      perSaveInitial:pairedInputs(rows,'PER_SAVE_INITIAL').map(({pairs,...i})=>i),
+      perSaveConfirmation:pairedInputs(rows,'PER_SAVE_CONFIRMATION').map(({pairs,...i})=>i) } : {}),
     note:'No automatic performance PASS. Full gates and phase-separated censoring reviewed from raw evidence; raw initial and selected retest remain separate.' };
 }

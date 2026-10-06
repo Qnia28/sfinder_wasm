@@ -130,41 +130,85 @@ def cp_failure(r):
     return bool(failure and failure not in ['Error: CP secondary time limit reached','CP secondary time limit reached',
         'TIMEOUT','UNKNOWN','FEASIBLE','incomplete CP proof'])
 
-def phase_gate(db, phase):
+GATE_CONTRACT = dict(id='evidence-first-v2', execution='BLOCK_INVALID_EVIDENCE_OR_UNSAFE_RUNTIME',
+    calibration='REPORT_UNCERTAINTY_WITHOUT_BLOCKING_COLLECTION',outcomes='RETAIN_CENSORED_AND_REGRESSING_CANDIDATES',
+    promotion='SEPARATE_REVIEW_NO_AUTOMATIC_PASS',automaticExtraCalls=0)
+
+def evidence_first(contract):
+    if contract is None:return False
+    require(contract==GATE_CONTRACT,'unsupported gate contract')
+    return True
+
+def phase_gate(db, phase, contract=None):
+    collect=evidence_first(contract);require(phase in ['CANARY','CALIBRATION'],'unknown prerequisite phase')
+    observations=[]
     pairs = collections.defaultdict(list); groups = collections.defaultdict(list)
     for (text,) in db.execute('SELECT raw FROM records WHERE phase=?', (phase,)):
         r = json.loads(text)
-        require(r['status'] in ['EXACT','TIMEOUT_CALL','INCOMPLETE'] and r['execution'].get('reaped') is True, 'gate execution/OOM/coverage')
+        require(r['status'] in ['EXACT','TIMEOUT_CALL','INCOMPLETE']+(['OOM'] if collect else [])
+            and r['execution'].get('reaped') is True, 'gate execution/OOM/coverage')
+        if r['status']=='OOM':
+            scope=r['execution'].get('memoryScope') or {}
+            require(scope.get('memoryMax')==3221225472 and scope.get('swapMax')==0,'unproven OOM scope')
         require(not cp_failure(r), 'gate CP runtime/proof failure')
         v = r.get('execution',{}).get('result') or {}
-        summary = dict(variant=r['variant'],status=r['status'],ms=r['ms'],verified=v.get('verified'),native=v.get('result'))
+        summary = dict(inputId=r['inputId'],variant=r['variant'],status=r['status'],ms=r['ms'],verified=v.get('verified'),native=v.get('result'),
+            repeat=r.get('repeat'),order=r.get('order'))
         groups[r['inputId']].append(summary)
         if 'pairId' in r: pairs[r['pairId']].append(summary)
     require(bool(groups), 'empty gate population')
     if phase == 'CANARY':
-        for group in groups.values():
+        for fid,group in groups.items():
             by_variant = {r['variant']:r for r in group}
             require(len(group)==4 and set(by_variant)=={'PRECHANGE_BASELINE','BASELINE','A','B'}, 'canary variant coverage')
-            base = by_variant['BASELINE']; require(base['status']==by_variant['PRECHANGE_BASELINE']['status'], 'baseline status drift')
-            require(base['status']!='EXACT' or all(r['status']=='EXACT' for r in group), 'canary completion regression')
+            base = by_variant['BASELINE']
+            if base['status']!=by_variant['PRECHANGE_BASELINE']['status']:
+                require(collect,'baseline status drift');observations.append(dict(inputId=fid,reason='BASELINE_STATUS_DRIFT'))
+            if base['status']=='EXACT' and any(r['status']!='EXACT' for r in group):
+                require(collect,'canary completion regression');observations.append(dict(inputId=fid,reason='POSSIBLE_COMPLETION_REGRESSION'))
             require(len({digest(r['verified']) for r in group if r['status']=='EXACT'})<=1, 'canary witness drift')
     else:
-        per_input = collections.defaultdict(list)
+        per_input = collections.defaultdict(list);details=collections.defaultdict(list);discordant=set()
         for pid, pair in pairs.items():
             require(len(pair)==2, 'calibration partial pair')
             off = next((r for r in pair if r['variant']=='TRACE_OFF_BASELINE'),None)
             on = next((r for r in pair if r['variant']=='TRACE_ON_BASELINE'),None)
-            require(off and on and off['status']==on['status'], 'calibration variant/status')
-            if off['status']=='EXACT':
+            require(off and on and off['inputId']==on['inputId'], 'calibration variant/identity')
+            fid=off['inputId']
+            if off['status']!=on['status']:
+                require(collect,'calibration variant/status');discordant.add(fid)
+            complete=off['status']==on['status']=='EXACT'
+            details[fid].append(dict(pairId=pid,repeat=off['repeat'],order=off['order'],offStatus=off['status'],onStatus=on['status'],
+                offMs=off['ms'],onMs=on['ms'],deltaMs=on['ms']-off['ms'] if complete else None))
+            if complete:
                 require(off['verified']==on['verified'], 'calibration witness drift')
                 if not off['native'].get('secondaryCpStarted') and not on['native'].get('secondaryCpStarted'):
                     require(off['native'].get('qualitySearchedStates')==on['native'].get('qualitySearchedStates'), 'calibration states drift')
-                per_input[pid.rsplit('/',2)[0]].append((off['ms'],on['ms']-off['ms']))
+                per_input[fid].append((off['ms'],on['ms']-off['ms']))
+        if collect:
+            inputs=[]
+            for fid,ps in details.items():
+                values=per_input[fid];b=statistics.median(v[0] for v in values) if values else None
+                d=statistics.median(v[1] for v in values) if values else None;limit=max(5,.05*b) if b is not None else None
+                inputs.append(dict(inputId=fid,completePairs=len(values),baseMedianMs=b,addedMedianMs=d,limitMs=limit,
+                    exceedsScreen=d is not None and d>limit,issues=['STATUS_DISCORDANCE'] if fid in discordant else [],pairs=ps))
+            valid=[i for i in inputs if i['completePairs']];reasons=[]
+            delta=statistics.median(i['addedMedianMs'] for i in valid) if valid else None
+            limit=max(2,.02*statistics.median(i['baseMedianMs'] for i in valid)) if valid else None
+            if len(valid)<12:reasons.append('INSUFFICIENT_COMPLETE_CALIBRATION')
+            if discordant:reasons.append('CALIBRATION_STATUS_DISCORDANCE')
+            if valid and delta>limit:reasons.append('AGGREGATE_OVERHEAD_SCREEN')
+            if any(i['exceedsScreen'] for i in inputs):reasons.append('PER_INPUT_OVERHEAD_SCREEN')
+            return dict(evidenceStatus='PASS',collectionAllowed=True,calibration=dict(status='REVIEW_REQUIRED' if reasons else 'SCREEN_CLEAR',
+                reasons=reasons,completedInputs=len(valid),aggregateDeltaMs=delta,aggregateLimitMs=limit,observations=inputs,
+                confirmedOverhead=False,automaticExtraCalls=0,
+                claimScope='Instrumented policy comparisons only; uninstrumented fast-path and promotion claims require separate review.'))
         require(len(per_input)>=12, 'calibration completed inputs <12')
         baselines = [statistics.median(v[0] for v in pairs) for pairs in per_input.values()]
         deltas = [statistics.median(v[1] for v in pairs) for pairs in per_input.values()]
         require(statistics.median(deltas)<=max(2,.02*statistics.median(baselines)), 'calibration aggregate overhead')
         require(all(d<=max(5,.05*b) for b,d in zip(baselines,deltas)), 'calibration per-input overhead')
+    return dict(evidenceStatus='PASS',collectionAllowed=True,observations=observations)
 
 def required_confirmation(db, m, phase):
     pairs = collections.defaultdict(list)
@@ -269,24 +313,37 @@ def common_parent_check(m, config, lock=None):
     for v in index['members']:
         file=member(history,v['path']);require(sha(file)==v['sha256'] and file.stat().st_size==v['bytes'],'parent history changed')
     require({p.relative_to(history).as_posix() for p in history.rglob('*') if p.is_file()}=={v['path'] for v in index['members']}|{'HISTORY_INDEX.json'},'unindexed parent history')
-    ids=set()
+    ids=set();locks={parent['manifestHash']:parent}
+    if m.get('prerequisiteReuse'):
+        ancestor=read(root/'ANCESTOR_LOCK.json')
+        require(ancestor['manifestHash']==digest(ancestor['manifest']) and parent['parentHash']==sha(root/'ANCESTOR_LOCK.json'), 'ancestor lock binding')
+        require(ancestor['originMs']==parent['originMs'] and ancestor['endMs']==parent['endMs'],'ancestor campaign clock')
+        require(ancestor['manifest']['sourceFiles']['product']==m['sourceFiles']['product'],'ancestor product')
+        locks[ancestor['manifestHash']]=ancestor
+        require(m['provenance']['priorCpSyntheticCalls']==8,'cumulative synthetic CP reservation')
+        require(m['prerequisiteReuse']==dict(id='adjudication-only-prerequisites-v1',phases=['CANARY','CALIBRATION']), 'prerequisite reuse contract')
+        mutable={'tools/secondary-bench/common/README_KO.md','tests/triage-bench.test.mjs','tests/triage-independent-audit.test.py'}
+        mutable.update('tools/secondary-bench/common/triage/'+f for f in ['action.mjs','analysis.mjs','gates.mjs','protocol.mjs','prepare.py','independent-audit.py','reuse.mjs'])
+        for name in set(old['sourceFiles']['harness'])|set(m['sourceFiles']['harness']):
+            if name not in mutable:require(old['sourceFiles']['harness'].get(name)==m['sourceFiles']['harness'].get(name),'reuse execution source changed: '+name)
+        for name in ['inputs','profileContract','tasksHash','job','baselineFiles','runtime']:require(old[name]==m[name],'reuse condition changed: '+name)
     templates=[json.loads(l) for l in (config/'TASKS.jsonl').read_text(encoding='utf-8').splitlines()]
     for file in history.rglob('SNAPSHOT.json'):snapshot(file.parent)
     for file in history.rglob('STAGE_PLAN.json'):
-        plan=read(file);require(plan['manifestHash']==parent['manifestHash'],'parent stage lock')
-        selected={f['id'] for f in old['inputs']}
-        expected=[call for task in compile_calls(old,templates,plan['phase'],selected) for call in task]
+        plan=read(file);require(plan['manifestHash'] in locks,'parent stage lock');owner=locks[plan['manifestHash']]['manifest']
+        selected={f['id'] for f in owner['inputs']}
+        expected=[call for task in compile_calls(owner,templates,plan['phase'],selected) for call in task]
         require(plan['expectedCalls']==expected,'parent independent schedule')
         ids.update(call['callId'] for call in expected)
     starts={};rows={}
     for file in history.rglob('starts.jsonl'):
         for line in file.read_text(encoding='utf-8').splitlines():
-            row=json.loads(line);require(row['invocationId']==parent['invocationId'] and row['manifestHash']==parent['manifestHash'],'parent start invocation/lock')
+            row=json.loads(line);require(row['manifestHash'] in locks and row['invocationId']==locks[row['manifestHash']]['invocationId'],'parent start invocation/lock')
             ids.add(row['callId']);attempt=row['executionAttemptId']
             require(attempt not in starts or starts[attempt]==row,'different duplicate parent starts');starts[attempt]=row
     for file in history.rglob('raw.jsonl'):
         for line in file.read_text(encoding='utf-8').splitlines():
-            row=json.loads(line);require(row['invocationId']==parent['invocationId'] and row['manifestHash']==parent['manifestHash'],'parent raw invocation/lock')
+            row=json.loads(line);require(row['manifestHash'] in locks and row['invocationId']==locks[row['manifestHash']]['invocationId'],'parent raw invocation/lock')
             key=row['callId'];ids.add(key);require(key not in rows or rows[key]==row,'different duplicate parent raw');rows[key]=row
     statuses=dict(collections.Counter(r['status'] for r in rows.values()))
     finished={r['executionAttemptId'] for r in rows.values() if r.get('executionAttemptId')}
@@ -296,7 +353,7 @@ def common_parent_check(m, config, lock=None):
         and proof['contract']=='INSERTION_SELECTED_QUALITY' and proof['exactRecordsChecked']==2508 and proof['solverCalls']==0,'original witness bytes audit')
     require(m['provenance']['priorReservedRunnerHours']+13*2.5<=36*2.5,'cumulative runner allocation')
     if (root/'PRIOR_JOBS.json').exists():
-        jobs=read(root/'PRIOR_JOBS.json')['jobs'];reserved=(m.get('activationRecovery') or {}).get('priorActivationReservedHours',0)
+        ledger=read(root/'PRIOR_JOBS.json');jobs=ledger['jobs'];reserved=ledger.get('ancestorReservedRunnerHours',(m.get('activationRecovery') or {}).get('priorActivationReservedHours',0))
         for j in jobs:
             if j['conclusion']=='skipped':continue
             name=j['name'];reserved+=.5 if name=='activate' else 1.5 if name=='audit' or name.endswith(' / plan') else 2 if 'audit' in name else 2.5
@@ -318,6 +375,10 @@ def audit(config, history, output, phase=None, inputs_only=False):
     errors = []; missing = []; statuses = collections.Counter(); checked = 0; fixtures = 0
     def error(where, exc): errors.append(dict(where=where, error=str(exc)))
     m = read(config / 'MANIFEST.json'); lock = read(config / 'LOCK.json') if (config / 'LOCK.json').exists() else None
+    collect=evidence_first(m.get('gateContract'))
+    if collect:
+        require(isinstance(m.get('revision'),int) and m['revision']>=6 and (m.get('measurement') or {}).get('adapter')=='triage-fixture',
+            'new gate contract requires a new explicit performance revision')
     templates = [json.loads(l) for l in (config / 'TASKS.jsonl').read_text(encoding='utf-8').splitlines()]
     require(sha(config / 'TASKS.jsonl') == m['tasksHash'], 'task bytes')
     # Independent schedule compiler, not a copy of the JS-produced plan ledger.
@@ -351,6 +412,9 @@ def audit(config, history, output, phase=None, inputs_only=False):
     db.executescript('CREATE TABLE records(call_id TEXT PRIMARY KEY, input_id TEXT, phase TEXT, raw TEXT, checkpoint TEXT);'
                      'CREATE TABLE starts(attempt TEXT PRIMARY KEY, raw TEXT, checkpoint TEXT);')
     snapshots = {}; directories = {}; plans = {}; receipts = []; selected = {}; inventory = {}; runner_preflights = 0
+    reuse_parent=read(config/'continuation/PARENT_LOCK.json') if m.get('prerequisiteReuse') else None
+    reuse_history=config/'continuation/history' if reuse_parent else None
+    def phase_lock(p):return reuse_parent if reuse_parent and p in m['prerequisiteReuse']['phases'] else lock
     if not inputs_only:
         try: snapshot(config)
         except Exception as exc: error('activation snapshot', exc)
@@ -359,12 +423,18 @@ def audit(config, history, output, phase=None, inputs_only=False):
             if transport['errors'] or transport['downloaded'] != transport['selected']: missing.append('partial artifact download')
         else: missing.append('DOWNLOAD_COMPLETE.json')
         if (history / 'DOWNLOAD_INDEX.json').exists(): inventory = {i['id']: i for i in read(history / 'DOWNLOAD_INDEX.json')['artifacts']}
-        for file in sorted(history.rglob('SNAPSHOT.json')):
+        if reuse_parent:
+            transport=read(reuse_history/'DOWNLOAD_COMPLETE.json')
+            require(not transport['errors'] and transport['downloaded']==transport['selected'],'reused transport incomplete')
+            inventory.update({i['id']:i for i in read(reuse_history/'DOWNLOAD_INDEX.json')['artifacts']})
+        history_snapshots=list(history.rglob('SNAPSHOT.json'))
+        if reuse_parent:history_snapshots.extend(f for f in reuse_history.rglob('SNAPSHOT.json') if '_ancestor-r3' not in f.parts)
+        for file in sorted(history_snapshots):
             try:
                 s = snapshot(file.parent); snapshots[s['checkpointId']] = s; directories[s['checkpointId']] = file.parent
                 require(s['identity'].get('campaignId') == m['campaignId'], 'foreign snapshot campaign')
                 # Payload snapshots use a name; execution snapshots use invocation/phase/chunk/part.
-                if 'invocationId' in s['identity']: require(s['identity']['invocationId'] == lock['invocationId'], 'foreign snapshot invocation')
+                if 'invocationId' in s['identity']: require(s['identity']['invocationId'] == phase_lock(s['identity'].get('phase'))['invocationId'], 'foreign snapshot invocation')
                 for name in ['raw.jsonl', 'starts.jsonl']:
                     p = file.parent / name
                     if not p.exists(): continue
@@ -386,23 +456,27 @@ def audit(config, history, output, phase=None, inputs_only=False):
                 if (file.parent / 'TRANSPORT_COMPLETE.json').exists(): receipts.append(read(file.parent / 'TRANSPORT_COMPLETE.json'))
                 if (file.parent / 'ENVIRONMENT.json').exists():
                     environment = read(file.parent / 'ENVIRONMENT.json')
+                    owner=reuse_parent if reuse_parent and reuse_history in file.parents else lock
                     require(environment['node']=='v24.13.0' and environment['platform']=='linux'
-                            and environment['commit']==lock['commit'], 'runner runtime/source')
+                            and environment['commit']==owner['commit'], 'runner runtime/source')
                     if (file.parent / 'CP_PREFLIGHT.json').exists(): cp_check(read(file.parent / 'CP_PREFLIGHT.json')); runner_preflights += 1
-            except Exception as exc: error(str(file.relative_to(history)), exc)
+            except Exception as exc: error(str(file), exc)
         db.commit()
     expected = {}; required = ['CANARY','CALIBRATION'] if phase=='CALIBRATION' else [phase] if phase else PHASES
     for p, plan in plans.items():
         try:
-            require(p in PHASES and plan['manifestHash'] == lock['manifestHash'], 'stage lock/phase')
-            tasks = compile_calls(m, templates, p, selected.get(p)); calls = [c for t in tasks for c in t]
+            owner=phase_lock(p)
+            require(p in PHASES and plan['manifestHash'] == owner['manifestHash'], 'stage lock/phase')
+            tasks = compile_calls(owner['manifest'], templates, p, selected.get(p)); calls = [c for t in tasks for c in t]
             require(plan['expectedCalls'] == calls, 'stage calls differ from independent compiler')
             cs = chunks(tasks, m['job']); require(plan['chunks'] == len(cs) == len(plan['matrix']), 'stage chunk count')
             for index, chunk in enumerate(cs):
                 for part, task in enumerate(chunk):
                     for c in task: expected[c['callId']] = (c, dict(phase=p, chunk=index, part=part))
         except Exception as exc: error('plan/'+p, exc)
-    require(len(expected)+prior_reserved<=m['maxCalls'], 'cumulative prior/current scheduled call cap')
+    reused_count=sum(len(plan['expectedCalls']) for p,plan in plans.items() if reuse_parent and p in m['prerequisiteReuse']['phases'])
+    if reuse_parent:require(reused_count==128,'completed prerequisites missing')
+    require(len(expected)-reused_count+prior_reserved<=m['maxCalls'], 'cumulative prior/current scheduled call cap')
     for p in ['ALL_CONFIRMATION','PER_SAVE_CONFIRMATION']:
         if p in plans:
             try:
@@ -446,12 +520,13 @@ def audit(config, history, output, phase=None, inputs_only=False):
                 require(r['callId'] in expected, 'unplanned call'); c, location = expected[r['callId']]
                 require(all(r.get(k) == v for k,v in c.items()), 'call/pair/limit identity')
                 require(r['logicalCallId'] == c['callId'] and r['metadata'] == ref['metadata'], 'logical/metadata')
-                require(r['manifestHash'] == lock['manifestHash'] and r['profileHash'] == lock['profileHash']
-                    and r['invocationId'] == lock['invocationId'] and r['condition'] == m['profileContract'], 'execution lock/profile')
+                owner=phase_lock(r['phase'])
+                require(r['manifestHash'] == owner['manifestHash'] and r['profileHash'] == owner['profileHash']
+                    and r['invocationId'] == owner['invocationId'] and r['condition'] == m['profileContract'], 'execution lock/profile')
                 ident = snapshots[checkpoint]['identity']; require(all(ident.get(k) == v for k,v in location.items()), 'chunk placement')
                 if r['executionAttemptId'] is None:
                     require(r['status'].startswith('NOT_RUN_') and r['ms'] is None, 'NOT_RUN semantics'); not_run.append(c['callId']); continue
-                require(r['executionAttemptId'] == digest(dict(invocation=lock['invocationId'],call=c['callId'])), 'attempt identity')
+                require(r['executionAttemptId'] == digest(dict(invocation=owner['invocationId'],call=c['callId'])), 'attempt identity')
                 require(r['executionAttemptId'] not in observed_attempts, 'attempt replay'); observed_attempts.add(r['executionAttemptId'])
                 start = db.execute('SELECT raw FROM starts WHERE attempt=?', (r['executionAttemptId'],)).fetchone(); require(start, 'durable start missing')
                 sr = json.loads(start[0]); require(all(r.get(k) == v for k,v in sr.items()), 'start/final identity')
@@ -513,11 +588,11 @@ def audit(config, history, output, phase=None, inputs_only=False):
         del f
     unknown = [a for (a,) in db.execute('SELECT attempt FROM starts') if a not in observed_attempts]
     if unknown: missing.extend('unknown-start/'+a for a in unknown)
-    gates = {}
+    gates = {}; assessments={}
     if not inputs_only:
         for p in ['CANARY','CALIBRATION']:
             if p in plans:
-                try: phase_gate(db,p); gates[p]='PASS'
+                try: assessments[p]=phase_gate(db,p,m.get('gateContract')); gates[p]='PASS'
                 except Exception as exc: gates[p]='HOLD'; error('gate/'+p,exc)
         if 'CANARY' in plans and runner_preflights != plans['CANARY']['chunks']:
             error('canary VM preflights','missing actual CP check on canary VM')
@@ -529,8 +604,12 @@ def audit(config, history, output, phase=None, inputs_only=False):
         populationCalls=0, freshValidation=False, performancePass=False, independentOptimality=False,
         prerequisiteGates=gates, canaryVmPreflights=runner_preflights,
         priorReservedCalls=prior_reserved,currentCallCap=m['maxCalls']-prior_reserved,priorEvidencePooled=False,
+        reusedPrerequisiteCalls=reused_count,reusedPrerequisiteInvocation=reuse_parent['invocationId'] if reuse_parent else None,
         scope='BYTE_HASH_SCHEDULE_START_RECEIPT_K_SEED_ORIGINAL_WEIGHTED_WITNESS_AND_NATIVE_PROOF_FLAGS',
         limitation='Witness/proof-flag audit is not an independent optimality proof or fresh performance validation.')
+    if collect:
+        report.update(gateContract=m['gateContract'],evidenceStatus=report['status'],decisionStatus='REVIEW_REQUIRED',
+            collectionAllowed=report['status']=='PASS',prerequisiteAssessments=assessments)
     (output/'INDEPENDENT_AUDIT.json').write_text(json.dumps(report,ensure_ascii=False,indent=2,allow_nan=False)+'\n',encoding='utf-8')
     return report
 
@@ -539,6 +618,14 @@ def main():
     p.add_argument('--phase',choices=['CANARY','CALIBRATION']);p.add_argument('--inputs-only',action='store_true');a=p.parse_args()
     r=audit(Path(a.config),Path(a.history) if a.history else Path(a.config)/'NO_HISTORY',Path(a.out),a.phase,a.inputs_only)
     print(json.dumps({k:r[k] for k in ['status','phase','fixtureFilesChecked','witnessRecordsChecked','solverCalls']}))
+    for error in r['errors']:print('EVIDENCE_ERROR '+json.dumps(error))
+    for missing in r['missing']:print('EVIDENCE_MISSING '+missing)
+    for phase,assessment in r.get('prerequisiteAssessments',{}).items():
+        calibration=assessment.get('calibration')
+        if calibration:
+            print('CALIBRATION_SCREEN '+json.dumps({k:v for k,v in calibration.items() if k!='observations'}))
+            for item in calibration['observations']:
+                if item['exceedsScreen'] or item['issues']:print('CALIBRATION_REVIEW '+json.dumps(item))
     return 0 if r['status']=='PASS' else 1
 
 if __name__=='__main__': raise SystemExit(main())

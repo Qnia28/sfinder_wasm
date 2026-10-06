@@ -43,6 +43,8 @@
 
 ### M5 triage performance 확장
 
+**현재 판정 보완:** [실험 목적 정렬·adjudication v2](../planning/TRIAGE_PURPOSE_ALIGNMENT_20261006_KO.md). 새 `gateContract=evidence-first-v2`에서는 증거/실행조건/회수 위반만 collection gate로 취급하고, calibration 비용 신호·정상 검열 관측·canary 후보 회귀는 연구 검토로 남긴다. legacy manifest 판정은 보존한다. Actions Summary에 증거 상태와 연구 검토를 구분해 표시한다.
+
 - `common/action`의 명시적 `protocol: triage`가 paired phase compiler / development gate / 독립 Python 감사를 선택한다. 인증·SDK 호출은 기존 JavaScript action에서 준비한 pinned Node runtime에 전달한다. 일반 information 실행에 performance manifest를 묵시적으로 섞지 않는다.
 - 실행 루프·admission·scope·OOM 격리·회수·immutable checkpoint/transport는 **기존 `common/executor.mjs` 하나**다. `triage/executor.mjs`는 이전 호출자용 얇은 연결부이며 별도 실행 루프가 없다. 제품 adapter는 `common/adapters.mjs`에 등록한다.
 - performance lock의 activation·parent lock/history SHA256·source/input/condition 관계·origin/end 유지에는 **기존 `common/manifest.mjs` continuation**을 사용한다. 이전 triage immutable lock은 읽기 전용 호환 검증하며 소급 변환하지 않는다.
