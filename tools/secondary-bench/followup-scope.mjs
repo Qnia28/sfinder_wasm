@@ -36,7 +36,7 @@ export async function isolatedScope(request, outputDir) {
   }
   let properties, inspectError = null;
   try {
-    const args = ['systemctl', 'show', unit, '-p', 'Result', '-p', 'MemoryPeak', '-p', 'ExecMainStatus', '-p', 'ActiveState', '-p', 'LoadState'];
+    const args = ['systemctl', 'show', unit, '-p', 'Result', '-p', 'MemoryPeak', '-p', 'CPUUsageNSec', '-p', 'ExecMainStatus', '-p', 'ActiveState', '-p', 'LoadState'];
     let stdout;
     try { ({ stdout } = await exec('sudo', args, { timeout: 10000 })); }
     catch (error) { stdout = error.stdout ?? ''; inspectError = String(error.stderr ?? error); }
@@ -57,7 +57,8 @@ export async function isolatedScope(request, outputDir) {
     reaped: reaped && (cancelled || oom || execution.reaped),
     memoryScope: { kind: 'CALL_PROCESS_TREE_PARENT_CHILD_AND_NESTED_WORKERS', memoryMax: 3 * 1024 ** 3, swapMax: 0,
       unit, properties, inspectError, peakBytes: /^[0-9]+$/.test(properties.MemoryPeak) ? Number(properties.MemoryPeak)
-        : execution.scopePeakBytes ?? null, exitCode } };
+        : execution.scopePeakBytes ?? null, cpuUsec: /^[0-9]+$/.test(properties.CPUUsageNSec) ? Number(properties.CPUUsageNSec) / 1000
+        : execution.scopeCpuUsec ?? null, exitCode } };
   writeJson(path.join(outputDir, 'SCOPE_COMPLETE.json'), final);
   await exec('sudo', ['systemctl', 'reset-failed', unit]).catch(() => {});
   return final;
@@ -69,15 +70,21 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   writeJson(path.join(directory, 'CALL_LOCK.json'), { startedUtc: new Date().toISOString(), pid: process.pid,
     node: process.version, memoryScope: scope, request });
   const events = fs.openSync(path.join(directory, 'events.jsonl'), 'wx');
+  const policyTrace = [];
   const stdout = fs.openSync(path.join(directory, 'stdout.log'), 'wx'), stderr = fs.openSync(path.join(directory, 'stderr.log'), 'wx');
   try {
     const execution = await runIsolated({ childFile: request.contractChildFile ? path.resolve(request.contractChildFile) : new URL('./child.mjs', import.meta.url), job: request.job,
       limits: request.limits, phaseLimits: request.phaseLimits,
-      onEvent: event => { fs.writeSync(events, JSON.stringify(event) + '\n'); fs.fsyncSync(events); },
+      onEvent: event => { fs.writeSync(events, JSON.stringify(event) + '\n'); fs.fsyncSync(events);
+        if (event.event === 'phase' && event.name === 'policy-trace' && policyTrace.length < 64) policyTrace.push(event.trace); },
       onOutput: (name, bytes) => fs.writeSync(name === 'stdout' ? stdout : stderr, bytes) });
     const cgroupDirectory = path.dirname(scope.memoryEventsPath);
     const peak = fs.readFileSync(path.join(cgroupDirectory, 'memory.peak'), 'utf8').trim();
+    const cpuStat = fs.readFileSync(path.join(cgroupDirectory, 'cpu.stat'), 'utf8');
     writeJson(path.join(directory, 'EXECUTION.json'), { ...execution,
+      ...(request.job.action === 'triage' ? { policyTrace } : {}),
+      scopeCpuUsec: Number(cpuStat.match(/^usage_usec (\d+)$/m)?.[1]) || null,
+      scopeCpuStat: cpuStat,
       scopePeakBytes: /^[0-9]+$/.test(peak) ? Number(peak) : null,
       scopeMemoryEvents: fs.readFileSync(scope.memoryEventsPath, 'utf8') });
   } finally { for (const fd of [events, stdout, stderr]) { fs.fsyncSync(fd); fs.closeSync(fd); } }

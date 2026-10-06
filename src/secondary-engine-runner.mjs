@@ -51,8 +51,8 @@ export function startSecondaryEngine(engine, payload, { limitMs = 120000, signal
 
 // Continue Rust when late CP times out/errors. Never replace an exact request
 // with FEASIBLE or quality-only proof, and never discard ongoing Rust progress.
-export async function raceSecondaryEngines({ startRust, startCp, cpAfterMs = 60000, signal = null, validate = value => value }) {
-  let rust, cp, timer, abort, cpStarted = false, cpFailure = null;
+export async function raceSecondaryEngines({ startRust, startCp, cpAfterMs = 60000, signal = null, validate = value => value, onCpOutcome = null }) {
+  let rust, cp, timer, abort, cpStarted = false, cpFailure = null, closing = false;
   try {
     return await new Promise((resolve, reject) => {
       abort = () => reject(signal.reason ?? new Error('secondary cancelled'));
@@ -60,18 +60,25 @@ export async function raceSecondaryEngines({ startRust, startCp, cpAfterMs = 600
       if (signal?.aborted) { abort(); return; }
       const accept = (value, engine) => {
         try {
-          if (!value?.completed) { if (engine === 'rust') throw new Error('Rust exact secondary did not complete'); cpFailure = value?.status ?? 'incomplete CP proof'; return; }
+          if (!value?.completed) { if (engine === 'rust') throw new Error('Rust exact secondary did not complete'); cpFailure = value?.status ?? 'incomplete CP proof';
+            onCpOutcome?.({ kind: ['TIMEOUT','UNKNOWN','FEASIBLE','incomplete CP proof'].includes(cpFailure) ? 'INCOMPLETE' : 'INVALID', failure: cpFailure }); return; }
           if (engine === 'cpsat' && (!value.qualityComplete || !value.tieComplete)) throw new Error('CP result lacks quality/stable-ID proof');
-          resolve({ result: validate(value), engine, cpStarted, cpFailure });
-        } catch (error) { if (engine === 'rust') reject(error); else cpFailure = String(error); }
+          const result = validate(value);
+          if (engine === 'cpsat') onCpOutcome?.({ kind: 'EXACT' });
+          resolve({ result, engine, cpStarted, cpFailure });
+        } catch (error) { if (engine === 'rust') reject(error); else { cpFailure = String(error); onCpOutcome?.({ kind: 'INVALID', failure: cpFailure }); } }
       };
       rust = startRust(); rust.promise.then(value => accept(value, 'rust'), reject);
       timer = setTimeout(() => {
-        try { cpStarted = true; cp = startCp(); cp.promise.then(value => accept(value, 'cpsat'), error => { cpFailure = String(error); }); }
-        catch (error) { cpFailure = String(error); }
+        const failed = error => { if (closing) { onCpOutcome?.({ kind: 'CANCELLED_AFTER_POLICY_SETTLED' }); return; }
+          cpFailure = String(error); onCpOutcome?.({
+          kind: error?.message === 'CP secondary time limit reached' ? 'TIMEOUT' : 'ERROR', failure: cpFailure }); };
+        try { cpStarted = true; cp = startCp(); cp.promise.then(value => accept(value, 'cpsat'), failed); }
+        catch (error) { failed(error); }
       }, Math.max(0, cpAfterMs));
     });
   } finally {
+    closing = true;
     clearTimeout(timer); signal?.removeEventListener('abort', abort);
     await Promise.all([rust?.stop(), cp?.stop()]);
   }

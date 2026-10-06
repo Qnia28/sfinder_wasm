@@ -4,3 +4,7 @@
 /tests/secondary-bench*.mjs -text
 /tests/helpers/secondary-bench-*.mjs -text
 /.github/workflows/secondary-bench-*.yml -text
+/tests/triage-bench.test.mjs -text
+/tests/triage-independent-audit.test.py -text
+/.github/workflows/secondary-triage-*.yml -text
+/.github/secondary-triage/** -text

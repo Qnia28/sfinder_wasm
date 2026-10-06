@@ -33,6 +33,11 @@ export function validateSecondaryWitness(payload, result) {
 export async function solveExactSecondaryAsync(coverage, options) {
   const started = performance.now(), mode = normalizeSecondary(options.secondary);
   const { solver, qualityFor, primary, primaryKeys, signal = null } = options;
+  const trace = options.secondaryTrace;
+  const emit = (name, details = {}) => trace?.({ name, ...details });
+  if ((options.experimentalTriagePolicy ?? 'baseline') !== 'baseline' && mode !== 'auto' && mode !== 'rust') {
+    throw new Error('experimental triage only supports Auto/Rust policy');
+  }
   signal?.throwIfAborted();
   const elapsedBefore = options.secondaryElapsedMs ?? 0;
   const externalDefer = options.deferThreshold;
@@ -46,7 +51,8 @@ export async function solveExactSecondaryAsync(coverage, options) {
 
   const format = (result, engine, probe = null, cpStarted = false) => {
     const baseline = solveExactSecondary(coverage, { ...options, deferThreshold: null,
-      primaryHard: engine !== 'integrated', integratedProbe: engine === 'integrated' ? result : undefined,
+       primaryHard: engine !== 'integrated', integratedProbe: engine === 'integrated' ? result : undefined,
+       experimentalTriagePolicy: 'baseline', secondaryTrace: undefined,
       solver: { minimumCoverAtCount: () => result } });
     const probeStates = probe?.searchedStates ?? 0;
     return { ...baseline,
@@ -79,11 +85,16 @@ export async function solveExactSecondaryAsync(coverage, options) {
     const seedKeys = probe?.keys?.length === primary.count ? probe.keys : primaryKeys;
     const payload = prepareSecondaryEngineInput(coverage, qualityFor, primary.count, seedKeys);
     const cpAfterMs = Math.max(0, SECONDARY_CP_DELAY_MS - elapsedBefore - (performance.now() - started));
+    emit('threshold-worker-start', { seedSource: probe?.keys?.length === primary.count ? 'probe' : 'primary',
+      seedKeys, cpAfterMs, cpLimitMs: SECONDARY_CP_LIMIT_MS });
     const winner = await raceSecondaryEngines({
       startRust: () => startSecondaryEngine('threshold', payload, { signal }),
-      startCp: () => startSecondaryEngine('cpsat', payload, { limitMs: SECONDARY_CP_LIMIT_MS, signal }),
-      cpAfterMs, signal, validate: value => validateSecondaryWitness(payload, value),
+      startCp: () => { emit('cp-start', { limitMs: SECONDARY_CP_LIMIT_MS });
+        return startSecondaryEngine('cpsat', payload, { limitMs: SECONDARY_CP_LIMIT_MS, signal }); },
+       cpAfterMs, signal, validate: value => validateSecondaryWitness(payload, value),
+       ...(trace ? { onCpOutcome: outcome => emit('cp-end', outcome) } : {}),
     });
+    emit('engines-reaped', { winner: winner.engine, cpStarted: winner.cpStarted, cpFailure: winner.cpFailure });
     return { ...format(winner.result, winner.engine === 'cpsat' ? 'cpsat' : 'threshold', probe, winner.cpStarted),
       ...(winner.cpFailure ? { secondaryCpFailure: winner.cpFailure } : {}) };
   } });

@@ -1,0 +1,58 @@
+name: Triage policy benchmark operation
+description: Explicit paired-policy profile using common evidence and per-call scopes
+inputs:
+  mode:
+    required: true
+    description: activate, plan, run, audit, independent-audit (no solver replay)
+  phase:
+    required: false
+    description: Frozen phase name
+  artifact-id:
+    required: false
+    description: Immutable payload ID
+  digest:
+    required: false
+    description: Immutable payload SHA256
+  asset-id:
+    required: false
+    description: Prepared release bundle asset ID
+  confirm:
+    required: false
+    description: Explicit launch confirmation
+  job-started-ms:
+    required: false
+    description: Job clock before checkout/setup
+outputs:
+  artifact-id:
+    description: Activation artifact ID
+    value: ${{ steps.native.outputs.artifact-id }}
+  digest:
+    description: Activation SHA256
+    value: ${{ steps.native.outputs.digest }}
+  matrix:
+    description: Frozen phase chunk matrix
+    value: ${{ steps.native.outputs.matrix }}
+  has-work:
+    description: Whether phase has admitted tasks
+    value: ${{ steps.native.outputs.has-work }}
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 24.13.0
+    - run: npm ci --ignore-scripts --no-audit --no-fund
+      shell: bash
+    - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      shell: bash
+    - id: native
+      run: node tools/secondary-bench/common/triage/action.mjs
+      shell: bash
+      env:
+        INPUT_MODE: ${{ inputs.mode }}
+        INPUT_PHASE: ${{ inputs.phase }}
+        INPUT_ARTIFACT_ID: ${{ inputs.artifact-id }}
+        INPUT_DIGEST: ${{ inputs.digest }}
+        INPUT_ASSET_ID: ${{ inputs.asset-id }}
+        INPUT_CONFIRM: ${{ inputs.confirm }}
+        INPUT_JOB_STARTED_MS: ${{ inputs.job-started-ms }}

@@ -1,0 +1,151 @@
+name: Secondary triage probe seed 16VM
+on:
+  workflow_dispatch:
+    inputs:
+      asset-id:
+        description: Prepared immutable GitHub release asset ID
+        type: string
+        required: true
+      confirm:
+        description: RUN_TRIAGE_PROBE_SEED_16VM
+        type: string
+        required: true
+  push:
+    branches: [experiment/secondary-routing-20261005]
+    paths: [.github/secondary-triage/START.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: secondary-triage-probe-seed
+  cancel-in-progress: false
+jobs:
+  activate:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[RUN_TRIAGE_16VM]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      artifact-id: ${{ steps.activate.outputs.artifact-id }}
+      digest: ${{ steps.activate.outputs.digest }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: activate
+        uses: ./tools/secondary-bench/common/triage/action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: activate
+          asset-id: ${{ inputs.asset-id }}
+          confirm: ${{ inputs.confirm }}
+  canary:
+    needs: activate
+    uses: ./.github/workflows/secondary-triage-stage.yml
+    with:
+      phase: CANARY
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  canary-audit:
+    needs: [activate, canary]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/common/triage/action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: independent-audit
+          phase: CANARY
+          artifact-id: ${{ needs.activate.outputs.artifact-id }}
+          digest: ${{ needs.activate.outputs.digest }}
+  calibration:
+    needs: [activate, canary-audit]
+    uses: ./.github/workflows/secondary-triage-stage.yml
+    with:
+      phase: CALIBRATION
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  calibration-audit:
+    needs: [activate, calibration]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/common/triage/action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: independent-audit
+          phase: CALIBRATION
+          artifact-id: ${{ needs.activate.outputs.artifact-id }}
+          digest: ${{ needs.activate.outputs.digest }}
+  all-initial:
+    needs: [activate, calibration-audit]
+    uses: ./.github/workflows/secondary-triage-stage.yml
+    with:
+      phase: ALL_INITIAL
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  per-save:
+    needs: [activate, all-initial]
+    uses: ./.github/workflows/secondary-triage-stage.yml
+    with:
+      phase: PER_SAVE_INITIAL
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  seed:
+    needs: [activate, per-save]
+    uses: ./.github/workflows/secondary-triage-stage.yml
+    with:
+      phase: SEED_DIAGNOSTIC
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  trivial:
+    needs: [activate, seed]
+    uses: ./.github/workflows/secondary-triage-stage.yml
+    with:
+      phase: TRIVIAL_CONTRACT
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  confirm-all:
+    needs: [activate, trivial]
+    uses: ./.github/workflows/secondary-triage-stage.yml
+    with:
+      phase: ALL_CONFIRMATION
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  confirm-per-save:
+    needs: [activate, confirm-all]
+    uses: ./.github/workflows/secondary-triage-stage.yml
+    with:
+      phase: PER_SAVE_CONFIRMATION
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  audit:
+    needs: [activate, canary, canary-audit, calibration, calibration-audit, all-initial, per-save, seed, trivial, confirm-all, confirm-per-save]
+    if: always() && needs.activate.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/common/triage/action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: audit
+          artifact-id: ${{ needs.activate.outputs.artifact-id }}
+          digest: ${{ needs.activate.outputs.digest }}
+  independent-audit:
+    needs: [activate, audit]
+    if: always() && needs.activate.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/common/triage/action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: independent-audit
+          artifact-id: ${{ needs.activate.outputs.artifact-id }}
+          digest: ${{ needs.activate.outputs.digest }}

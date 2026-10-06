@@ -1,0 +1,426 @@
+"""Independent, stdlib-only evidence auditor. Never imports or executes a solver.
+
+Reads one fixture/result at a time; raw records are indexed on disk in SQLite.
+PASS means bytes/contracts/witnesses, NOT independent optimality or performance.
+"""
+import argparse
+import collections
+import hashlib
+import json
+import math
+import sqlite3
+import statistics
+from pathlib import Path
+
+PHASES = ['CANARY', 'CALIBRATION', 'ALL_INITIAL', 'PER_SAVE_INITIAL', 'SEED_DIAGNOSTIC',
+          'TRIVIAL_CONTRACT', 'ALL_CONFIRMATION', 'PER_SAVE_CONFIRMATION']
+
+def encode(v, sorted_keys=True):
+    # Node JSON.stringify serializes integral floats without a decimal suffix.
+    def numbers(x):
+        if isinstance(x, float):
+            assert math.isfinite(x), 'nonfinite JSON'
+            return int(x) if x.is_integer() else x
+        if isinstance(x, list): return [numbers(i) for i in x]
+        if isinstance(x, dict): return {k: numbers(i) for k, i in x.items()}
+        return x
+    return json.dumps(numbers(v), sort_keys=sorted_keys, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
+
+def digest(v): return hashlib.sha256(encode(v).encode()).hexdigest()
+def sha(p):
+    with p.open('rb') as f: return hashlib.file_digest(f, 'sha256').hexdigest()
+def read(p): return json.loads(p.read_text(encoding='utf-8-sig'))
+def member(root, name):
+    assert isinstance(name, str) and '\\' not in name and not name.startswith('/')
+    assert all(s not in ['', '.', '..'] for s in name.split('/'))
+    p = (root / name).resolve(); assert root.resolve() in p.parents and not p.is_symlink(), 'unsafe member'
+    return p
+def require(ok, message):
+    if not ok: raise ValueError(message)
+
+def snapshot(directory):
+    s = read(directory / 'SNAPSHOT.json')
+    require(s['checkpointId'] == digest(dict(identity=s['identity'], members=s['members'])), 'snapshot identity hash')
+    names = set()
+    for m in s['members']:
+        require(m['path'] not in names, 'duplicate snapshot member'); names.add(m['path'])
+        p = member(directory, m['path'])
+        require(p.stat().st_size == m['bytes'] and sha(p) == m['sha256'], 'snapshot member bytes: ' + m['path'])
+    actual = {p.relative_to(directory).as_posix() for p in directory.rglob('*') if p.is_file()}
+    require(actual == names | {'SNAPSHOT.json'}, 'snapshot unindexed/missing files')
+    return s
+
+def vector(f, selected):
+    require(isinstance(selected, list) and len(selected) == f['K'] and len(set(selected)) == f['K'], 'witness cardinality/duplicates')
+    require(all(type(i) is int and 0 <= i < len(f['keys']) for i in selected), 'unknown stable ID')
+    chosen = set(selected); values = []
+    for row in f['rows']:
+        q = max((q for i, q in row if i in chosen), default=0)
+        require(q > 0, 'witness misses original weighted row'); values.append(q)
+    return sorted(values)
+
+def fixture_check(f, ref):
+    require(f['schema'] == 1 and f['id'] == ref['id'], 'fixture schema/identity')
+    keys = f['keys']; require(all(isinstance(k, str) for k in keys) and keys == sorted(set(keys)), 'stable universe')
+    require(type(f['K']) is int and 0 <= f['K'] <= len(keys), 'K range')
+    require(f['cardinalityProof']['status'] == 'PROVEN' and isinstance(f['cardinalityProof']['backend'], str), 'K proof provenance')
+    for row in f['rows']:
+        require(bool(row) and len({e[0] for e in row}) == len(row), 'empty/duplicate original edge')
+        require(all(len(e) == 2 and type(e[0]) is int and 0 <= e[0] < len(keys)
+                    and type(e[1]) is int and 0 < e[1] <= 0xffffffff for e in row), 'weighted edge')
+    vector(f, f['seed'])
+    m = ref['metadata']; c = f['origin']['command']
+    require(c['clear'] == 4 and c['useHold'] is True and c['exactHumanQuality'] == 'true', 'clear/hold/exact')
+    require(c['queueLength'] == c['piecesNeeded'] + 1 and c['savedPieceCount'] == 1, 'N+1')
+    require(c['pattern'] == m['pattern'] and c['family'] == m['family'], 'family/pattern')
+    require(f['K'] == m['K'] and len(keys) == m['n'] and len(f['rows']) == m['R'], 'fixture dimensions')
+    require(bool(f.get('primaryHard')) == m['primary_hard'], 'primaryHard provenance')
+
+def compile_calls(m, templates, phase, selected=None):
+    refs = {r['id']: r for r in m['inputs']}; tasks = []
+    for t in templates:
+        if t['phase'] != phase or t['conditional'] and t['fixture_ids'][0] not in (selected or set()): continue
+        calls = []
+        def add(fid, variant, repeat, extra=None):
+            ident = dict(campaignId=m['campaignId'], phase=phase, taskId=t['task_id'], inputId=fid,
+                         inputHash=refs[fid]['sha256'], variant=variant, repeat=repeat, **(extra or {}))
+            calls.append(dict(**ident, callId=digest(ident), limits=dict(startupMs=10000,
+                callMs=30000 if phase == 'TRIVIAL_CONTRACT' else 300000, reapMs=5000)))
+        if 'pairs' in t:
+            for p in t['pairs']:
+                for variant in p['order']:
+                    add(t['fixture_ids'][0], t.get('baseline_variant', variant) if variant == 'BASELINE' else variant,
+                        p['repeat'], dict(pairId=p['pair_id'], comparator=p['comparator'], order=p['order']))
+        elif 'trials' in t:
+            for trial in t['trials']:
+                for variant in trial['order']: add(t['fixture_ids'][0], variant, trial['repeat'], dict(trialId=f"{t['task_id']}/{trial['repeat']}"))
+        else:
+            for fid in t['fixture_ids']:
+                for variant in t['variants']: add(fid, variant, 1)
+        require(len(calls) == t['calls'], 'template call count')
+        tasks.append(calls)
+    return tasks
+
+def chunks(tasks, job):
+    capacity = job['jobMs'] - job['reserveMs'] - job['setupMs'] - job['parts'] * job['checkpointMs']
+    result = []; current = []; cost = 0
+    for task in tasks:
+        worst = sum(c['limits']['startupMs'] + c['limits']['callMs'] + 2*c['limits']['reapMs'] + job['scopeOverheadMs'] for c in task)
+        require(worst <= capacity, 'task budget')
+        if current and (len(current) == job['parts'] or cost + worst > capacity):
+            result.append(current); current = []; cost = 0
+        current.append(task); cost += worst
+    if current: result.append(current)
+    require(len(result) <= 256, 'matrix cap'); return result
+
+def cp_check(e):
+    require(e.get('status') == 'EXACT' and e.get('reaped') is True, 'CP preflight scope/result')
+    r = e['result']; require(r.get('cpPreflight') == 'PASS' and r.get('qualityComplete') is True
+        and r.get('tieComplete') is True and r['result']['keys'] == ['b'] and r['result']['qualityVector'] == [2], 'CP preflight quality/tie')
+    require(r['result'].get('completed') is True and r['result'].get('qualityComplete') is True
+        and r['result'].get('tieComplete') is True, 'CP native proof flags')
+    require(e['memoryScope']['memoryMax'] == 3221225472 and e['memoryScope']['swapMax'] == 0, 'CP preflight scope')
+
+def cp_failure(r):
+    e = r.get('execution') or {}; record = e.get('result') or {}; native = record.get('result') or {}
+    events = record.get('trace', []) + e.get('policyTrace', [])
+    if any(t.get('name')=='cp-end' and t.get('kind') in ['ERROR','INVALID'] for t in events): return True
+    failure = native.get('secondaryCpFailure')
+    return bool(failure and failure not in ['Error: CP secondary time limit reached','CP secondary time limit reached',
+        'TIMEOUT','UNKNOWN','FEASIBLE','incomplete CP proof'])
+
+def phase_gate(db, phase):
+    pairs = collections.defaultdict(list); groups = collections.defaultdict(list)
+    for (text,) in db.execute('SELECT raw FROM records WHERE phase=?', (phase,)):
+        r = json.loads(text)
+        require(r['status'] in ['EXACT','TIMEOUT_CALL','INCOMPLETE'] and r['execution'].get('reaped') is True, 'gate execution/OOM/coverage')
+        require(not cp_failure(r), 'gate CP runtime/proof failure')
+        v = r.get('execution',{}).get('result') or {}
+        summary = dict(variant=r['variant'],status=r['status'],ms=r['ms'],verified=v.get('verified'),native=v.get('result'))
+        groups[r['inputId']].append(summary)
+        if 'pairId' in r: pairs[r['pairId']].append(summary)
+    require(bool(groups), 'empty gate population')
+    if phase == 'CANARY':
+        for group in groups.values():
+            by_variant = {r['variant']:r for r in group}
+            require(len(group)==4 and set(by_variant)=={'PRECHANGE_BASELINE','BASELINE','A','B'}, 'canary variant coverage')
+            base = by_variant['BASELINE']; require(base['status']==by_variant['PRECHANGE_BASELINE']['status'], 'baseline status drift')
+            require(base['status']!='EXACT' or all(r['status']=='EXACT' for r in group), 'canary completion regression')
+            require(len({digest(r['verified']) for r in group if r['status']=='EXACT'})<=1, 'canary witness drift')
+    else:
+        per_input = collections.defaultdict(list)
+        for pid, pair in pairs.items():
+            require(len(pair)==2, 'calibration partial pair')
+            off = next((r for r in pair if r['variant']=='TRACE_OFF_BASELINE'),None)
+            on = next((r for r in pair if r['variant']=='TRACE_ON_BASELINE'),None)
+            require(off and on and off['status']==on['status'], 'calibration variant/status')
+            if off['status']=='EXACT':
+                require(off['verified']==on['verified'], 'calibration witness drift')
+                if not off['native'].get('secondaryCpStarted') and not on['native'].get('secondaryCpStarted'):
+                    require(off['native'].get('qualitySearchedStates')==on['native'].get('qualitySearchedStates'), 'calibration states drift')
+                per_input[pid.rsplit('/',2)[0]].append((off['ms'],on['ms']-off['ms']))
+        require(len(per_input)>=12, 'calibration completed inputs <12')
+        baselines = [statistics.median(v[0] for v in pairs) for pairs in per_input.values()]
+        deltas = [statistics.median(v[1] for v in pairs) for pairs in per_input.values()]
+        require(statistics.median(deltas)<=max(2,.02*statistics.median(baselines)), 'calibration aggregate overhead')
+        require(all(d<=max(5,.05*b) for b,d in zip(baselines,deltas)), 'calibration per-input overhead')
+
+def required_confirmation(db, m, phase):
+    pairs = collections.defaultdict(list)
+    for (text,) in db.execute('SELECT raw FROM records WHERE phase=?', (phase,)):
+        r = json.loads(text)
+        pairs[r['pairId']].append(dict(inputId=r['inputId'],variant=r['variant'],comparator=r['comparator'],
+            status=r['status'],ms=r['ms'],metadata=r['metadata'],scope=(r.get('execution') or {}).get('memoryScope') or {}))
+    inputs = {}
+    for pair in pairs.values():
+        head=pair[0];key=(head['inputId'],head['comparator'])
+        if key not in inputs: inputs[key]=dict(id=head['inputId'],comp=head['comparator'],meta=head['metadata'],deltas=[],base=[],candidate=[],issues=False,resources=[])
+        i=inputs[key];base=next((r for r in pair if r['variant']=='BASELINE'),None);candidate=next((r for r in pair if r['variant']!='BASELINE'),None)
+        if len(pair)!=2 or not base or not candidate: i['issues']=True;continue
+        if base['status']!=candidate['status']:i['issues']=True
+        if base['status']==candidate['status']=='EXACT':
+            i['deltas'].append(candidate['ms']-base['ms']);i['base'].append(base['ms']);i['candidate'].append(candidate['ms'])
+        for resource in ['cpuUsec','peakBytes']:
+            a=base['scope'].get(resource);b=candidate['scope'].get(resource)
+            if a and a>0 and b is not None:i['resources'].append((resource,b/a))
+    selected=set()
+    for comp in {i['comp'] for i in inputs.values()}:
+        valid=[i for i in inputs.values() if i['comp']==comp and i['deltas']];n=math.ceil(len(valid)*.1)
+        tie=lambda i:hashlib.sha256((m['design']['selection_seed']+'|'+i['id']).encode()).hexdigest()
+        ordered=sorted(valid,key=lambda i:(statistics.median(i['deltas']),tie(i)))
+        if n:selected.update(i['id'] for i in ordered[:n]+ordered[-n:])
+    for i in inputs.values():
+        meta=i['meta'];changed=(not meta['primary_hard'] and meta['d']>=17) or (meta['primary_hard'] and meta['d']<=16)
+        variability=any(v and min(v)>0 and max(v)/min(v)>=1.10 for v in [i['base'],i['candidate']])
+        fast=i['deltas'] and statistics.median(i['deltas'])>=.95*max(5,.05*statistics.median(i['base']))
+        resources=any(statistics.median([v for k,v in i['resources'] if k==resource])>=1.045
+            for resource in ['cpuUsec','peakBytes'] if any(k==resource for k,_ in i['resources']))
+        if changed or i['issues'] or variability or fast or resources:selected.add(i['id'])
+    selected.update(fid for fid in m['design']['retest']['always_include_fixture_ids'] if any(i['id']==fid for i in inputs.values()))
+    return selected
+
+def audit(config, history, output, phase=None, inputs_only=False):
+    output.mkdir(parents=True, exist_ok=False)
+    errors = []; missing = []; statuses = collections.Counter(); checked = 0; fixtures = 0
+    def error(where, exc): errors.append(dict(where=where, error=str(exc)))
+    m = read(config / 'MANIFEST.json'); lock = read(config / 'LOCK.json') if (config / 'LOCK.json').exists() else None
+    templates = [json.loads(l) for l in (config / 'TASKS.jsonl').read_text(encoding='utf-8').splitlines()]
+    require(sha(config / 'TASKS.jsonl') == m['tasksHash'], 'task bytes')
+    # Independent schedule compiler, not a copy of the JS-produced plan ledger.
+    full = {p: compile_calls(m, templates, p, {f['id'] for f in m['inputs']}) for p in PHASES}
+    full_calls = [c for ts in full.values() for t in ts for c in t]
+    require(len(full_calls) == m['maxCalls'] == 8479, 'full call budget')
+    require(sum(len(chunks(ts, m['job'])) for ts in full.values()) == 523, 'matrix budget')
+    require((523+36)*2.5 <= m['maxRunnerHours'] == 1400 and m['maxParallel'] == 16, 'runner/VM cap')
+    require(m['overallMs'] == 120*3600000, 'campaign clock limit')
+    require(m['auditContract']==dict(id='independent-python-evidence-v1',runtime='Python3-stdlib',solverReplay=False,
+        prerequisiteJobs=['CANARY','CALIBRATION'],finalDedicatedVm=True,performancePass=False,independentOptimality=False), 'independent audit contract')
+    require(m['cpPreflightContract']==dict(id='scoped-cpsat-weighted-tie-v1',activationCalls=1,maxCanaryVmCalls=3,
+        callMs=30000,populationCalls=0), 'CP preflight contract')
+    for group in ['product','harness']:
+        for name,h in m.get('sourceFiles',{}).get(group,{}).items():
+            data=member(Path.cwd(),name).read_bytes()
+            if name.startswith(('src/','rust/','wasm/')) or name in ['package.json','package-lock.json']:
+                if b'\0' not in data:
+                    try:data.decode('utf-8');data=data.replace(b'\r\n',b'\n')
+                    except UnicodeDecodeError:pass
+            require(hashlib.sha256(data).hexdigest()==h,'independent source hash: '+name)
+    if lock:
+        require(lock['manifest']==m, 'manifest differs from activation')
+        require(digest(m) == lock['manifestHash'] and digest(m['profileContract']) == lock['profileHash'], 'manifest/profile lock')
+        require(lock['endMs'] == lock['originMs'] + m['overallMs'], 'campaign origin reset')
+        try: cp_check(read(config / 'CP_PREFLIGHT.json'))
+        except Exception as exc: error('CP_PREFLIGHT', exc)
+    elif not inputs_only: raise ValueError('activation lock missing')
+    db = sqlite3.connect(output / 'AUDIT_INDEX.sqlite')
+    db.executescript('CREATE TABLE records(call_id TEXT PRIMARY KEY, input_id TEXT, phase TEXT, raw TEXT, checkpoint TEXT);'
+                     'CREATE TABLE starts(attempt TEXT PRIMARY KEY, raw TEXT, checkpoint TEXT);')
+    snapshots = {}; directories = {}; plans = {}; receipts = []; selected = {}; inventory = {}; runner_preflights = 0
+    if not inputs_only:
+        try: snapshot(config)
+        except Exception as exc: error('activation snapshot', exc)
+        if (history / 'DOWNLOAD_COMPLETE.json').exists():
+            transport = read(history / 'DOWNLOAD_COMPLETE.json')
+            if transport['errors'] or transport['downloaded'] != transport['selected']: missing.append('partial artifact download')
+        else: missing.append('DOWNLOAD_COMPLETE.json')
+        if (history / 'DOWNLOAD_INDEX.json').exists(): inventory = {i['id']: i for i in read(history / 'DOWNLOAD_INDEX.json')['artifacts']}
+        for file in sorted(history.rglob('SNAPSHOT.json')):
+            try:
+                s = snapshot(file.parent); snapshots[s['checkpointId']] = s; directories[s['checkpointId']] = file.parent
+                require(s['identity'].get('campaignId') == m['campaignId'], 'foreign snapshot campaign')
+                # Payload snapshots use a name; execution snapshots use invocation/phase/chunk/part.
+                if 'invocationId' in s['identity']: require(s['identity']['invocationId'] == lock['invocationId'], 'foreign snapshot invocation')
+                for name in ['raw.jsonl', 'starts.jsonl']:
+                    p = file.parent / name
+                    if not p.exists(): continue
+                    require(p.stat().st_size==0 or p.read_bytes().endswith(b'\n'), 'torn final append')
+                    with p.open(encoding='utf-8') as stream:
+                        for line in stream:
+                            r = json.loads(line); require(r['campaignId'] == m['campaignId'], 'foreign raw campaign')
+                            key = r['callId'] if name == 'raw.jsonl' else r['executionAttemptId']
+                            table = 'records' if name == 'raw.jsonl' else 'starts'
+                            prior = db.execute(f'SELECT raw,checkpoint FROM {table} WHERE '+('call_id' if table=='records' else 'attempt')+'=?', (key,)).fetchone()
+                            if prior:
+                                require(prior == (line, s['checkpointId']), 'duplicate execution without identical snapshot proof'); continue
+                            if table == 'records': db.execute('INSERT INTO records VALUES(?,?,?,?,?)', (key,r['inputId'],r['phase'],line,s['checkpointId']))
+                            else: db.execute('INSERT INTO starts VALUES(?,?,?)', (key,line,s['checkpointId']))
+                if (file.parent / 'STAGE_PLAN.json').exists():
+                    plan = read(file.parent / 'STAGE_PLAN.json'); require(plan['phase'] not in plans, 'duplicate stage plan'); plans[plan['phase']] = plan
+                if (file.parent / 'SELECTION.json').exists():
+                    selection = read(file.parent / 'SELECTION.json'); require(selection['phase'] not in selected, 'duplicate selection'); selected[selection['phase']] = set(selection['selected'])
+                if (file.parent / 'TRANSPORT_COMPLETE.json').exists(): receipts.append(read(file.parent / 'TRANSPORT_COMPLETE.json'))
+                if (file.parent / 'ENVIRONMENT.json').exists():
+                    environment = read(file.parent / 'ENVIRONMENT.json')
+                    require(environment['node']=='v24.13.0' and environment['platform']=='linux'
+                            and environment['commit']==lock['commit'], 'runner runtime/source')
+                    if (file.parent / 'CP_PREFLIGHT.json').exists(): cp_check(read(file.parent / 'CP_PREFLIGHT.json')); runner_preflights += 1
+            except Exception as exc: error(str(file.relative_to(history)), exc)
+        db.commit()
+    expected = {}; required = ['CANARY','CALIBRATION'] if phase=='CALIBRATION' else [phase] if phase else PHASES
+    for p, plan in plans.items():
+        try:
+            require(p in PHASES and plan['manifestHash'] == lock['manifestHash'], 'stage lock/phase')
+            tasks = compile_calls(m, templates, p, selected.get(p)); calls = [c for t in tasks for c in t]
+            require(plan['expectedCalls'] == calls, 'stage calls differ from independent compiler')
+            cs = chunks(tasks, m['job']); require(plan['chunks'] == len(cs) == len(plan['matrix']), 'stage chunk count')
+            for index, chunk in enumerate(cs):
+                for part, task in enumerate(chunk):
+                    for c in task: expected[c['callId']] = (c, dict(phase=p, chunk=index, part=part))
+        except Exception as exc: error('plan/'+p, exc)
+    for p in ['ALL_CONFIRMATION','PER_SAVE_CONFIRMATION']:
+        if p in plans:
+            try:
+                initial='ALL_INITIAL' if p=='ALL_CONFIRMATION' else 'PER_SAVE_INITIAL'
+                require(initial in plans and db.execute('SELECT count(*) FROM records WHERE phase=?',(initial,)).fetchone()[0]
+                    ==len(plans[initial]['expectedCalls']), 'confirmation before complete initial population')
+                require(required_confirmation(db,m,initial)<=selected.get(p,set()),'required independent retest selection omitted')
+            except Exception as exc:error('selection/'+p,exc)
+    if not inputs_only:
+        refs = {f['id'] for f in m['inputs']}
+        for (fid,) in db.execute('SELECT DISTINCT input_id FROM records'):
+            if fid not in refs: error('raw/'+fid, 'unregistered fixture')
+        for p in required:
+            if p not in plans: missing.append('plan/'+p)
+        for c in expected:
+            if not db.execute('SELECT 1 FROM records WHERE call_id=?', (c,)).fetchone(): missing.append('call/'+c)
+        for receipt in receipts:
+            try:
+                require(receipt['status'] == 'ALL_DURABLE' and receipt['solverCallsInTransport'] == 0, 'undelivered transport')
+                for r in receipt['receipts']:
+                    require(r['status'] == 'UPLOADED' and r['checkpointId'] in snapshots, 'receipt checkpoint missing')
+                    require(snapshots[r['checkpointId']]['identity'] == r['identity'], 'receipt identity')
+                    for attempt in r['attempts']:
+                        if attempt['status'] == 'UPLOADED':
+                            require(attempt['artifactId'] in inventory and inventory[attempt['artifactId']]['digest'] == attempt['digest'], 'receipt/backend hash')
+            except Exception as exc: error('transport', exc)
+        for p, plan in plans.items():
+            for index in range(plan['chunks']):
+                if not any(r.get('receipts') and r['receipts'][0]['identity'].get('phase') == p
+                           and r['receipts'][0]['identity'].get('chunk') == index for r in receipts): missing.append(f'receipt/{p}/{index}')
+    consensus = {}; not_run = []; observed_attempts = set()
+    for ref in m['inputs']:
+        try:
+            file = member(config, ref['member']); require(sha(file) == ref['sha256'], 'fixture byte hash')
+            f = read(file); fixture_check(f, ref); fixtures += 1
+        except Exception as exc: error('fixture/'+ref['id'], exc); continue
+        index = {k:i for i,k in enumerate(f['keys'])}
+        for (text, checkpoint) in db.execute('SELECT raw,checkpoint FROM records WHERE input_id=? ORDER BY phase,call_id', (ref['id'],)):
+            r = json.loads(text); statuses[r['status']] += 1
+            try:
+                require(r['callId'] in expected, 'unplanned call'); c, location = expected[r['callId']]
+                require(all(r.get(k) == v for k,v in c.items()), 'call/pair/limit identity')
+                require(r['logicalCallId'] == c['callId'] and r['metadata'] == ref['metadata'], 'logical/metadata')
+                require(r['manifestHash'] == lock['manifestHash'] and r['profileHash'] == lock['profileHash']
+                    and r['invocationId'] == lock['invocationId'] and r['condition'] == m['profileContract'], 'execution lock/profile')
+                ident = snapshots[checkpoint]['identity']; require(all(ident.get(k) == v for k,v in location.items()), 'chunk placement')
+                if r['executionAttemptId'] is None:
+                    require(r['status'].startswith('NOT_RUN_') and r['ms'] is None, 'NOT_RUN semantics'); not_run.append(c['callId']); continue
+                require(r['executionAttemptId'] == digest(dict(invocation=lock['invocationId'],call=c['callId'])), 'attempt identity')
+                require(r['executionAttemptId'] not in observed_attempts, 'attempt replay'); observed_attempts.add(r['executionAttemptId'])
+                start = db.execute('SELECT raw FROM starts WHERE attempt=?', (r['executionAttemptId'],)).fetchone(); require(start, 'durable start missing')
+                sr = json.loads(start[0]); require(all(r.get(k) == v for k,v in sr.items()), 'start/final identity')
+                e = r['execution']; require(e['status'] == r['status'] and e['reaped'] is True, 'scope status/reclamation')
+                attempt_dir = directories[checkpoint] / r['executionAttemptId']
+                require(read(attempt_dir/'SCOPE_COMPLETE.json')==e, 'raw/scope evidence parity')
+                request = read(attempt_dir/'REQUEST.json'); require(request['callId']==r['executionAttemptId']
+                    and request['limits']==c['limits'] and request['job']['variant']==r['variant']
+                    and request['job']['fixtureSha256']==ref['sha256'] and request['job']['exactHumanQuality']=='true', 'scope request parity')
+                traces = []; returned = []; ready = 0
+                with (attempt_dir/'events.jsonl').open(encoding='utf-8') as events:
+                    for line in events:
+                        event = json.loads(line)
+                        if event.get('event')=='ready': ready += 1
+                        if event.get('event')=='result': returned.append(event['record'])
+                        if event.get('event')=='phase' and event.get('name')=='policy-trace': traces.append(event['trace'])
+                require(ready <= 1 and len(returned) <= 1, 'duplicate IPC ready/result')
+                if 'policyTrace' in e: require(traces == e['policyTrace'], 'supervisor policy trace differs from raw IPC events')
+                else: require(r['status']=='OOM' or not traces, 'missing durable supervisor trace')
+                require(not cp_failure(dict(execution=dict(policyTrace=traces))), 'CP failure in raw IPC trace')
+                if e.get('result') is not None: require(returned == [e['result']], 'supervisor result differs from raw IPC event')
+                if r['status'] in ['EXACT','INCOMPLETE','PROBE_INCOMPLETE']: require(ready==1 and bool(returned), 'missing IPC ready/result')
+                if r['variant']=='T_PROBE_SEED':
+                    probes = db.execute("SELECT raw FROM records WHERE input_id=? AND phase='SEED_DIAGNOSTIC'", (ref['id'],))
+                    probe = next((p for (line,) in probes if (p:=json.loads(line)).get('trialId')==r['trialId']
+                                  and p['variant']=='I100K_SEED_CAPTURE'), None)
+                    require(probe and probe['status'] in ['EXACT','PROBE_INCOMPLETE']
+                        and request['job']['probeSeed']==probe['execution']['result']['probeSeed'], 'trial probe seed provenance')
+                scope = e['memoryScope']; require(scope['memoryMax'] == 3221225472 and scope['swapMax'] == 0, 'scope memory/swap')
+                if cp_failure(r): raise ValueError('CP runtime/proof failure in policy profile')
+                if r['status'] not in ['EXACT','INCOMPLETE','PROBE_INCOMPLETE','TIMEOUT_CALL','TIMEOUT_STARTUP','OOM']:
+                    raise ValueError('execution failure: '+r['status'])
+                if r['status'] != 'EXACT': require(r['ms'] is None, 'censored call given elapsed success time')
+                record = e.get('result')
+                if r['status'] not in ['EXACT','PROBE_INCOMPLETE','INCOMPLETE']: continue
+                require(record['fixtureSha256'] == ref['sha256'] and record['variant'] == r['variant'], 'result identity')
+                require(record['primarySeedHash'] == hashlib.sha256(encode(f['seed'],False).encode()).hexdigest(), 'primary seed identity')
+                result = record['result']; require(result['count'] == f['K'], 'result K')
+                require(all(k in index for k in result['keys']), 'unknown result key')
+                chosen = sorted(index[k] for k in result['keys']); quality = vector(f, chosen)
+                require(result['qualityVector'] == quality and record['verified']['selected'] == chosen
+                    and record['verified']['qualityVector'] == quality, 'independent original-row weighted vector')
+                require(record['verified']['qualityHash'] == hashlib.sha256(encode(quality,False).encode()).hexdigest(), 'quality hash')
+                complete = result.get('completed') is True
+                require(complete == record['verified']['completed'] == (r['status']=='EXACT'), 'partial result promoted to exact')
+                if r['variant']=='I100K_SEED_CAPTURE': require(record['probeSeed'] == chosen and record['stateBudget']==100000, 'probe seed/budget')
+                if complete:
+                    require(math.isfinite(r['ms']) and r['ms'] >= 0 and r['ms'] == record['policySettledMs'], 'settled timing')
+                    if result.get('secondaryResolved') == 'cpsat': require(result.get('qualityComplete') is True and result.get('tieComplete') is True, 'CP exact/tie proof flags')
+                    witness = dict(selected=chosen,quality=quality); h = hashlib.sha256(encode(witness,False).encode()).hexdigest()
+                    require(ref['id'] not in consensus or consensus[ref['id']]==h, 'cross-variant/repeat witness disagreement'); consensus[ref['id']]=h
+                    old = ref.get('expectedWitness')
+                    if old:
+                        expected_hash = digest(witness) if old['contract']=='SORTED_QUALITY_SELECTED' else h
+                        require(expected_hash==old['sha256'] and record['historicalWitness']==expected_hash, 'historical witness mismatch')
+                checked += 1
+            except Exception as exc: error(r['callId'], exc)
+        del f
+    unknown = [a for (a,) in db.execute('SELECT attempt FROM starts') if a not in observed_attempts]
+    if unknown: missing.extend('unknown-start/'+a for a in unknown)
+    gates = {}
+    if not inputs_only:
+        for p in ['CANARY','CALIBRATION']:
+            if p in plans:
+                try: phase_gate(db,p); gates[p]='PASS'
+                except Exception as exc: gates[p]='HOLD'; error('gate/'+p,exc)
+        if 'CANARY' in plans and runner_preflights != plans['CANARY']['chunks']:
+            error('canary VM preflights','missing actual CP check on canary VM')
+    observed = db.execute('SELECT count(*) FROM records').fetchone()[0]; db.close()
+    report = dict(schemaVersion=1, status='FAIL' if errors else 'INCOMPLETE' if missing or not_run else 'PASS',
+        role='INDEPENDENT_PYTHON_STDLIB_EVIDENCE_AUDIT', phase=phase or ('INPUTS_ONLY' if inputs_only else 'ALL'),
+        fixtureFilesChecked=fixtures, witnessRecordsChecked=checked, observedCalls=observed, scheduledCalls=len(expected),
+        statusCounts=dict(statuses), errors=errors, missing=missing, notRun=not_run, solverCalls=0,
+        populationCalls=0, freshValidation=False, performancePass=False, independentOptimality=False,
+        prerequisiteGates=gates, canaryVmPreflights=runner_preflights,
+        scope='BYTE_HASH_SCHEDULE_START_RECEIPT_K_SEED_ORIGINAL_WEIGHTED_WITNESS_AND_NATIVE_PROOF_FLAGS',
+        limitation='Witness/proof-flag audit is not an independent optimality proof or fresh performance validation.')
+    (output/'INDEPENDENT_AUDIT.json').write_text(json.dumps(report,ensure_ascii=False,indent=2,allow_nan=False)+'\n',encoding='utf-8')
+    return report
+
+def main():
+    p=argparse.ArgumentParser();p.add_argument('--config',required=True);p.add_argument('--history');p.add_argument('--out',required=True)
+    p.add_argument('--phase',choices=['CANARY','CALIBRATION']);p.add_argument('--inputs-only',action='store_true');a=p.parse_args()
+    r=audit(Path(a.config),Path(a.history) if a.history else Path(a.config)/'NO_HISTORY',Path(a.out),a.phase,a.inputs_only)
+    print(json.dumps({k:r[k] for k in ['status','phase','fixtureFilesChecked','witnessRecordsChecked','solverCalls']}))
+    return 0 if r['status']=='PASS' else 1
+
+if __name__=='__main__': raise SystemExit(main())

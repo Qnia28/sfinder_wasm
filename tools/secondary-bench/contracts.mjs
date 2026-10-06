@@ -64,7 +64,7 @@ export function fixtureIdentity(fixture) {
   validateFixture(fixture);
   return identity({ keys: fixture.keys, rows: fixture.rows, K: fixture.K, seed: fixture.seed });
 }
-export function packedView(fixture) {
+export function packedView(fixture, register = registerNumericCoverage) {
   validateFixture(fixture);
   const { keys, rows } = fixture;
   const offsets = new Uint32Array(rows.length + 1);
@@ -79,7 +79,7 @@ export function packedView(fixture) {
   const rawCases = rows.map((_, i) => ({ caseId: fixture.caseIds?.[i] ?? i }));
   const coverage = { size: rows.length };
   // Preserve ALL stable IDs, even if an imported fixture has unused candidates.
-  registerNumericCoverage(coverage, { keys, keyIndex: new Map(keys.map((key, i) => [key, i])), rawCases, primaryCases: [] },
+  register(coverage, { keys, keyIndex: new Map(keys.map((key, i) => [key, i])), rawCases, primaryCases: [] },
     { offsets, ids, qualities, caseCount: rows.length, entryCount: entries });
   return { coverage, qualityFor: () => { throw new Error('packed original qualities only'); } };
 }

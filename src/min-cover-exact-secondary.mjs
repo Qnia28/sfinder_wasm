@@ -1,23 +1,33 @@
 import { minimumCover } from "./min-cover.mjs";
 import { inspectTrivialSecondary, createSecondarySession } from './min-cover-components.mjs';
 import { solveRoutedSecondary } from './min-cover-routing.mjs';
+import { decideExperimentalProbe } from './min-cover-triage-experiment.mjs';
 const FAST_EXACT_STATE_BUDGET = 100000;
 
 export function solveExactSecondary(coverage, options) {
     if (!['off', 'on', 'auto'].includes(options.decomposition ?? 'off')) throw new Error('invalid secondary decomposition mode');
     const { result: trivial, structure } = inspectTrivialSecondary(coverage, options.primary.count, options.qualityFor);
-    const attachStructure = result => ({ ...result, secondaryStructure: structure });
-    const result = solveInspectedSecondary(coverage, options, trivial);
+    const decision = decideExperimentalProbe(options.experimentalTriagePolicy ?? 'baseline', options.primaryHard, structure);
+    const attachStructure = result => ({ ...result, secondaryStructure: structure,
+      ...(options.experimentalTriagePolicy && options.experimentalTriagePolicy !== 'baseline' ? { experimentalTriage: decision } : {}) });
+    const result = solveInspectedSecondary(coverage, options, trivial, structure, decision);
     return result?.then ? result.then(attachStructure) : attachStructure(result);
 }
 
-function solveInspectedSecondary(coverage, options, trivial) {
+function solveInspectedSecondary(coverage, options, trivial, structure, decision) {
     const { solver, qualityFor, primary, primaryKeys, primaryHard, requestedPrimary, requested, kernelStats,
       integratedProbe, deferThreshold, decomposition = 'off', routingProbeStates = 10000,
-      routingMinComponents = 3, routingStructureFirst = false } = options;
+       routingMinComponents = 3, routingStructureFirst = false } = options;
+    const experiment = options.experimentalTriagePolicy ?? 'baseline';
+    if (experiment !== 'baseline' && decomposition !== 'off') throw new Error('triage experiment requires decomposition off');
+    const trace = options.secondaryTrace;
+    const emit = (name, details = {}) => trace?.({ name, ...details });
+    emit('structure', { ...structure, ...decision });
     const defer = probe => deferThreshold({ primary, primaryKeys, primaryHard, requestedPrimary,
       requested, kernelStats, integratedProbe: probe, ...(decomposition !== 'off' ? { decomposition } : {}),
-      ...(decomposition === 'auto' ? { routingProbeStates, routingMinComponents, routingStructureFirst } : {}) });
+       ...(decomposition === 'auto' ? { routingProbeStates, routingMinComponents, routingStructureFirst } : {}),
+       ...(experiment !== 'baseline' ? { experimentalTriagePolicy: experiment, triageDecision: decision } : {}),
+       ...(trace ? { secondaryTrace: trace } : {}) });
 
     if (trivial) return {
       ...trivial,
@@ -63,10 +73,13 @@ function solveInspectedSecondary(coverage, options, trivial) {
     // integrated BestSetSearch once K is already known. Bound that first
     // attempt so pathological quality structures can fall back to the
     // sequential-threshold exact prover without sacrificing exactness.
-    if (!primaryHard) {
+    if (decision.useProbe) {
+      emit('probe-start', { stateBudget: FAST_EXACT_STATE_BUDGET, reused: integratedProbe != null });
       const integrated = integratedProbe ?? search({
         qualityFor, seedKeys: primaryKeys, stateBudget: FAST_EXACT_STATE_BUDGET, integrated: true,
       });
+      emit('probe-end', { completed: integrated?.completed === true, states: integrated?.searchedStates ?? null,
+        seedKeys: integrated?.keys ?? null });
       if (integrated?.completed && Number.isFinite(integrated.count) && integrated.count === primary.count) {
         return {
           ...integrated,
@@ -90,6 +103,7 @@ function solveInspectedSecondary(coverage, options, trivial) {
       }
       if (deferThreshold) return defer(integrated);
       const sequentialSeed = integrated?.keys?.length === primary.count ? integrated.keys : primaryKeys;
+      emit('threshold-start', { seedSource: sequentialSeed === primaryKeys ? 'primary' : 'probe' });
       const exact = search({
         qualityFor, seedKeys: sequentialSeed, lockedPrefix: [],
       }) ?? minimumCover(coverage, { qualityFor, solver });
@@ -119,6 +133,7 @@ function solveInspectedSecondary(coverage, options, trivial) {
     }
 
     if (deferThreshold) return defer(undefined);
+    emit('threshold-start', { seedSource: 'primary' });
     const exact = search({
       qualityFor, seedKeys: primaryKeys, lockedPrefix: [],
     }) ?? minimumCover(coverage, { qualityFor, solver });
