@@ -50,7 +50,8 @@ async function cpPreflight(directory, identity) {
     limits: { startupMs: 10000, callMs: 30000, reapMs: 5000 }, phaseLimits: {},
     contractChildFile: 'tools/secondary-bench/common/triage/cp-preflight-child.mjs' }, directory);
   if (result.status !== 'EXACT' || !result.reaped || result.result?.cpPreflight !== 'PASS')
-    await upload(`triage-data-TRIAGE_PROBE_SEED_AB_20261006_R1-cp-preflight-failed-${callId}`,directory);
+    { console.error('CP_PREFLIGHT_FAILED',JSON.stringify(result));
+      await upload(`triage-data-TRIAGE_PROBE_SEED_AB_20261006_R1-cp-preflight-failed-${callId}`,directory); }
   assert(result.status === 'EXACT' && result.reaped && result.result?.cpPreflight === 'PASS',
     'CP actual worker/scope preflight failed: ' + JSON.stringify(result));
   return result;
@@ -85,7 +86,20 @@ try {
     assert(!priorLocks.some(a=>a.name===`triage-lock-${m.campaignId}`),'campaign already activated; never reset its origin with another dispatch');
     assert.equal(digest(m),marker.manifestHash); assert.equal(m.tasksHash,sha256(fs.readFileSync('config/TASKS.jsonl')));
     assert.equal(process.version,'v24.13.0','runtime lock');
-    const run=gh([`repos/${repo}/actions/runs/${runId}`]), originMs=Date.parse(run.created_at);
+    const run=gh([`repos/${repo}/actions/runs/${runId}`]);
+    const recovery=m.activationRecovery;
+    if(recovery) {
+      assert.equal(recovery.populationCalls,0,'activation-only recovery may not replay population calls');
+      for(const id of recovery.priorRunIds) {
+        const prior=gh([`repos/${repo}/actions/runs/${id}`]);
+        assert.equal(prior.status,'completed');assert.equal(prior.conclusion,'failure');
+        const artifacts=gh(['--paginate','--slurp',`repos/${repo}/actions/runs/${id}/artifacts?per_page=100`]).flatMap(p=>p.artifacts);
+        assert(!artifacts.some(a=>a.name.startsWith('triage-lock-')||/-(CANARY|CALIBRATION|ALL_INITIAL|PER_SAVE_INITIAL|SEED_DIAGNOSTIC|TRIVIAL_CONTRACT|ALL_CONFIRMATION|PER_SAVE_CONFIRMATION)-\d+-\d+-t\d+$/.test(a.name)),
+          'recovery requires separate continuation design if population evidence or activation lock exists');
+      }
+      assert.equal(recovery.originUtc,gh([`repos/${repo}/actions/runs/${recovery.priorRunIds[0]}`]).created_at);
+    }
+    const originMs=Date.parse(recovery?.originUtc??run.created_at);
     const lock=validateLock({manifest:m,manifestHash:digest(m),profileHash:digest(PROFILE),originMs,endMs:originMs+m.overallMs,
       invocationId:runId,commit:process.env.GITHUB_SHA,repository:repo}); writeJson('config/LOCK.json',lock);
     execFileSync(process.execPath,['--test','tests/triage-bench.test.mjs'],{stdio:'inherit',timeout:120000});

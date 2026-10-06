@@ -46,8 +46,7 @@ runs:
     - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
       shell: bash
     - id: native
-      run: node tools/secondary-bench/common/triage/action.mjs
-      shell: bash
+      uses: ./tools/secondary-bench/common/triage/native-action
       env:
         INPUT_MODE: ${{ inputs.mode }}
         INPUT_PHASE: ${{ inputs.phase }}

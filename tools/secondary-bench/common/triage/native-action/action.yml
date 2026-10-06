@@ -1,0 +1,5 @@
+name: Native triage operation with Actions artifact credentials
+description: Runs the pinned Node process inside a JavaScript action runtime
+runs:
+  using: node24
+  main: index.mjs

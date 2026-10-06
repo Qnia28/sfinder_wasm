@@ -22,7 +22,7 @@ def normalized_hash(path, product):
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--analysis',default=r'D:\AI\sfinder-wasm\triage-analysis\Astra')
-    parser.add_argument('--out',required=True);args=parser.parse_args()
+    parser.add_argument('--out',required=True);parser.add_argument('--activation-recovery');args=parser.parse_args()
     work=Path.cwd();analysis=Path(args.analysis);out=Path(args.out);out.mkdir(parents=True,exist_ok=False)
     design=json.loads((analysis/'next-experiment/PLAN.json').read_text(encoding='utf-8'))
     targets=[json.loads(s) for s in (analysis/'next-experiment/TARGETS.jsonl').read_text(encoding='utf-8').splitlines()]
@@ -73,6 +73,9 @@ def main():
         prerequisiteJobs=['CANARY','CALIBRATION'],finalDedicatedVm=True,performancePass=False,independentOptimality=False)
     manifest['cpPreflightContract']=dict(id='scoped-cpsat-weighted-tie-v1',activationCalls=1,maxCanaryVmCalls=3,
         callMs=30000,populationCalls=0)
+    if args.activation_recovery:
+        manifest['activationRecovery']=json.loads(Path(args.activation_recovery).read_text(encoding='utf-8'))
+        assert manifest['activationRecovery']['populationCalls']==0
     manifest['design']['budget']['max_parallel_vm']=16
     manifest['design']['budget']['runtime_reserved_control_jobs']=36
     manifest['design']['state']='PREPARED_REMOTE_GATES_REQUIRED'

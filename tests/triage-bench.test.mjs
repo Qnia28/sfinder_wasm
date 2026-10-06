@@ -211,6 +211,17 @@ test('phase workflow is branch-limited, opt-in and reserves 16 matrix VMs',()=>{
   const marker=JSON.parse(fs.readFileSync('.github/secondary-triage/START.json','utf8'));
   assert([null,'RUN_TRIAGE_PROBE_SEED_16VM'].includes(marker.confirm));
 });
+test('artifact operations run through a JavaScript action, never a bare composite shell',()=>{
+  const composite=fs.readFileSync('tools/secondary-bench/common/triage/action/action.yml','utf8');
+  const native=fs.readFileSync('tools/secondary-bench/common/triage/native-action/action.yml','utf8');
+  const bootstrap=fs.readFileSync('tools/secondary-bench/common/triage/native-action/index.mjs','utf8');
+  assert(composite.includes('uses: ./tools/secondary-bench/common/triage/native-action'));
+  assert(!composite.includes('run: node tools/secondary-bench/common/triage/action.mjs'));
+  assert(native.includes('using: node24'));assert(bootstrap.includes('ACTIONS_RUNTIME_TOKEN'));
+  assert(bootstrap.includes("spawnSync('node'"));
+  const scope=fs.readFileSync('tools/secondary-bench/followup-scope.mjs','utf8');
+  assert(!scope.includes('ACTIONS_RUNTIME_TOKEN'),'runtime credential must stay outside policy tree');
+});
 test('triage chunk checkpoints and immutable transport retry never re-execute policy calls',async t=>{
   const dir=temp(t),bundle=path.join(dir,'bundle');fs.mkdirSync(bundle);fs.mkdirSync(path.join(bundle,'fixtures'));
   const f={schema:1,id:'f',keys:['a'],K:1,seed:[0],rows:[[[0,1]]],cardinalityProof:{status:'PROVEN',backend:'rust'}};
