@@ -13,7 +13,9 @@ import statistics
 from pathlib import Path
 
 PHASES = ['CANARY', 'CALIBRATION', 'ALL_INITIAL', 'PER_SAVE_INITIAL', 'SEED_DIAGNOSTIC',
-          'TRIVIAL_CONTRACT', 'ALL_CONFIRMATION', 'PER_SAVE_CONFIRMATION']
+           'TRIVIAL_CONTRACT', 'ALL_CONFIRMATION', 'PER_SAVE_CONFIRMATION']
+FAST_ARMS = {name:dict(policy='A' if name.startswith('A_') else 'baseline',trace='_ON' in name)
+             for name in ['BASE_ON','A_ON','BASE_OFF','A_OFF','SHAM_ON_1','SHAM_ON_2','SHAM_OFF_1','SHAM_OFF_2']}
 
 def encode(v, sorted_keys=True):
     # Node JSON.stringify serializes integral floats without a decimal suffix.
@@ -84,10 +86,14 @@ def compile_calls(m, templates, phase, selected=None):
         def add(fid, variant, repeat, extra=None):
             ident = dict(campaignId=m['campaignId'], phase=phase, taskId=t['task_id'], inputId=fid,
                          inputHash=refs[fid]['sha256'], variant=variant, repeat=repeat, **(extra or {}))
-            if m.get('continuation'):ident['measurementEpoch']=m['revision']
+            if m.get('continuation') or m.get('followup'):ident['measurementEpoch']=m['revision']
             calls.append(dict(**ident, callId=digest(ident), limits=dict(startupMs=10000,
                 callMs=30000 if phase == 'TRIVIAL_CONTRACT' else 300000, reapMs=5000)))
-        if 'pairs' in t:
+        if m.get('followup'):
+            for position,arm in enumerate(t['arms']):
+                require(arm in FAST_ARMS,'unknown followup arm')
+                add(t['fixture_ids'][0],arm,t['block'],dict(block=t['block'],position=position,role=t['role']))
+        elif 'pairs' in t:
             for p in t['pairs']:
                 for variant in p['order']:
                     add(t['fixture_ids'][0], t.get('baseline_variant', variant) if variant == 'BASELINE' else variant,
@@ -382,11 +388,17 @@ def audit(config, history, output, phase=None, inputs_only=False):
     templates = [json.loads(l) for l in (config / 'TASKS.jsonl').read_text(encoding='utf-8').splitlines()]
     require(sha(config / 'TASKS.jsonl') == m['tasksHash'], 'task bytes')
     # Independent schedule compiler, not a copy of the JS-produced plan ledger.
-    full = {p: compile_calls(m, templates, p, {f['id'] for f in m['inputs']}) for p in PHASES}
+    full = {p: compile_calls(m, templates, p, {f['id'] for f in m['inputs']}) for p in (['A_FAST_FACTORIAL'] if m.get('followup') else PHASES)}
     full_calls = [c for ts in full.values() for t in ts for c in t]
-    require(len(full_calls) == m['maxCalls'] == 8479, 'full call budget')
-    require(sum(len(chunks(ts, m['job'])) for ts in full.values()) == 523, 'matrix budget')
-    require((523+36)*2.5 <= m['maxRunnerHours'] == 1400 and m['maxParallel'] == 16, 'runner/VM cap')
+    if m.get('followup'):
+        require(len(full_calls)==500 and sum(len(chunks(ts,m['job'])) for ts in full.values())==42,'followup schedule')
+        f=m['followup']
+        require(f['priorCalls']+500+f['newCpCalls']<=m['maxCalls']==8479,'followup call cap')
+        require(f['priorRunnerHours']+42*2.5+f['controlHours']<=m['maxRunnerHours']==1400 and m['maxParallel']==16,'followup VM cap')
+    else:
+        require(len(full_calls) == m['maxCalls'] == 8479, 'full call budget')
+        require(sum(len(chunks(ts, m['job'])) for ts in full.values()) == 523, 'matrix budget')
+        require((523+36)*2.5 <= m['maxRunnerHours'] == 1400 and m['maxParallel'] == 16, 'runner/VM cap')
     require(m['overallMs'] == 120*3600000, 'campaign clock limit')
     require(m['auditContract']==dict(id='independent-python-evidence-v1',runtime='Python3-stdlib',solverReplay=False,
         prerequisiteJobs=['CANARY','CALIBRATION'],finalDedicatedVm=True,performancePass=False,independentOptimality=False), 'independent audit contract')
@@ -408,6 +420,13 @@ def audit(config, history, output, phase=None, inputs_only=False):
         except Exception as exc: error('CP_PREFLIGHT', exc)
     elif not inputs_only: raise ValueError('activation lock missing')
     prior_reserved=common_parent_check(m,config,lock) if m.get('continuation') else continuation_check(m,config,lock)
+    if m.get('followup'):
+        follow=m['followup']; parent=read(config/'PARENT_LOCK.json')
+        require(sha(config/'PARENT_LOCK.json')==follow['parentLockSha256'],'followup parent bytes')
+        require(lock['originMs']==parent['originMs']==follow['originMs'] and lock['endMs']==parent['endMs']==follow['endMs'],'followup clock')
+        require(parent['manifest']['sourceFiles']['product']==m['sourceFiles']['product'],'followup product changed')
+        require(sha(config/'PRIOR_ACCOUNTING.json')==follow['accountingSha256'],'followup accounting bytes')
+        prior_reserved=follow['priorCalls']+follow['newCpCalls']
     db = sqlite3.connect(output / 'AUDIT_INDEX.sqlite')
     db.executescript('CREATE TABLE records(call_id TEXT PRIMARY KEY, input_id TEXT, phase TEXT, raw TEXT, checkpoint TEXT);'
                      'CREATE TABLE starts(attempt TEXT PRIMARY KEY, raw TEXT, checkpoint TEXT);')
@@ -462,11 +481,11 @@ def audit(config, history, output, phase=None, inputs_only=False):
                     if (file.parent / 'CP_PREFLIGHT.json').exists(): cp_check(read(file.parent / 'CP_PREFLIGHT.json')); runner_preflights += 1
             except Exception as exc: error(str(file), exc)
         db.commit()
-    expected = {}; required = ['CANARY','CALIBRATION'] if phase=='CALIBRATION' else [phase] if phase else PHASES
+    expected = {}; required = ['A_FAST_FACTORIAL'] if m.get('followup') else ['CANARY','CALIBRATION'] if phase=='CALIBRATION' else [phase] if phase else PHASES
     for p, plan in plans.items():
         try:
             owner=phase_lock(p)
-            require(p in PHASES and plan['manifestHash'] == owner['manifestHash'], 'stage lock/phase')
+            require(p in (['A_FAST_FACTORIAL'] if m.get('followup') else PHASES) and plan['manifestHash'] == owner['manifestHash'], 'stage lock/phase')
             tasks = compile_calls(owner['manifest'], templates, p, selected.get(p)); calls = [c for t in tasks for c in t]
             require(plan['expectedCalls'] == calls, 'stage calls differ from independent compiler')
             cs = chunks(tasks, m['job']); require(plan['chunks'] == len(cs) == len(plan['matrix']), 'stage chunk count')
@@ -561,6 +580,13 @@ def audit(config, history, output, phase=None, inputs_only=False):
                     raise ValueError('execution failure: '+r['status'])
                 if r['status'] != 'EXACT': require(r['ms'] is None, 'censored call given elapsed success time')
                 record = e.get('result')
+                if m.get('followup'):
+                    arm=FAST_ARMS[r['variant']]
+                    if not arm['trace']:require(not traces and not (record or {}).get('trace'),'OFF emitted trace')
+                    if record and r['status'] in ['EXACT','INCOMPLETE']:
+                        require(record.get('armContract')==arm,'followup policy/trace arm')
+                        policy=(record.get('result') or {}).get('experimentalTriage',{}).get('policy')
+                        require(policy==('A' if arm['policy']=='A' else None),'wrong actual policy')
                 if r['status'] not in ['EXACT','PROBE_INCOMPLETE','INCOMPLETE']: continue
                 require(record['fixtureSha256'] == ref['sha256'] and record['variant'] == r['variant'], 'result identity')
                 require(record['primarySeedHash'] == hashlib.sha256(encode(f['seed'],False).encode()).hexdigest(), 'primary seed identity')

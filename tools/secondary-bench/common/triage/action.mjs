@@ -15,6 +15,7 @@ import { prerequisiteGate, selectConfirmation, developmentReport } from './analy
 import { runChunk } from './executor.mjs';
 import { isolatedScope } from '../../followup-scope.mjs';
 import { verifyReuse, collectedHistory } from './reuse.mjs';
+import { fastParent } from './fast-followup.mjs';
 
 const tool = file => fileURLToPath(new URL(file, import.meta.url));
 const client = (await import('../../artifact-action/node_modules/@actions/artifact/lib/artifact.js')).default;
@@ -98,12 +99,12 @@ try {
     const priorLocks=gh(['--paginate','--slurp',`repos/${repo}/actions/artifacts?name=triage-lock-${m.campaignId}&per_page=100`]).flatMap(p=>p.artifacts);
     assert(!m.startupContinuation,'r4 dedicated repair route is superseded; use indexed common continuation');
     const continuation=m.continuation;
-    const parent=continuation?validateCommonLock(readJson(continuation.parentLock)):null;
+     const parent=m.followup?validateCommonLock(fastParent(m)):continuation?validateCommonLock(readJson(continuation.parentLock)):null;
     const parentArtifact=m.provenance.parentLockArtifact;
     const allowedLocks=new Set([parentArtifact?.id,...(m.provenance.ancestorLockArtifacts??[]).map(a=>a.id)]);
     assert(!priorLocks.some(a=>a.name===`triage-lock-${m.campaignId}`&&!allowedLocks.has(a.id)),
       'campaign already activated; never reset its origin with another dispatch');
-    if(continuation) {
+     if(continuation || m.followup) {
       const prior=gh([`repos/${repo}/actions/runs/${parent.invocationId}`]);
       assert.equal(prior.status,'completed');assert.equal(prior.conclusion,'failure');assert.equal(prior.run_attempt,1);
       assert.equal(parent.commit,prior.head_sha);
@@ -114,8 +115,8 @@ try {
         assert.equal(artifactDigest(a.digest),ancestor.digest);assert(!a.expired);
         assert(parent.ancestorLocks.some(l=>l.invocationId===String(a.workflow_run.id)),'foreign ancestor backend');
       }
-      const reservation=historyReservation(m);
-      assert(m.provenance.priorReservedRunnerHours+13*2.5<=36*2.5,'prior runner allocations exceed original control reserve');
+       const reservation=m.followup?{calls:m.followup.priorCalls,unknown:[],warnings:[],statuses:{}}:historyReservation(m);
+       if (!m.followup) assert(m.provenance.priorReservedRunnerHours+13*2.5<=36*2.5,'prior runner allocations exceed original control reserve');
       writeJson('config/PARENT_VALIDATION.json',{status:'PASS',parentArtifact:backend,parentRun:prior,
         reservedCalls:reservation.calls,priorUnknown:reservation.unknown,priorWarnings:reservation.warnings,priorStatuses:reservation.statuses,
         priorEvidencePooled:false,priorEvidenceReclassified:false,solverCalls:0});
@@ -135,12 +136,15 @@ try {
       }
       assert.equal(recovery.originUtc,gh([`repos/${repo}/actions/runs/${recovery.priorRunIds[0]}`]).created_at);
     }
-    assert(continuation,'resumption requires an immutable indexed parent lock/history');
+     assert(continuation || m.followup,'resumption requires frozen parent evidence');
     const lock=activateCommon(m,'common-activation',{createdUtc:run.created_at,invocationId:runId,commit:process.env.GITHUB_SHA,confirm:true});
     fs.copyFileSync('common-activation/LOCK.json','config/LOCK.json');
-    execFileSync(process.execPath,['--test','tests/triage-bench.test.mjs'],{stdio:'inherit',timeout:120000});
-    execFileSync('python',['-B','tests/triage-independent-audit.test.py'],{stdio:'inherit',timeout:120000});
-    writeJson('config/SYNTHETIC_GATE.json',{status:'PASS',populationCalls:0,solverCalls:'LIGHTWEIGHT_SYNTHETIC_TESTS_ONLY'});
+     if (!m.followup) {
+       execFileSync(process.execPath,['--test','tests/triage-bench.test.mjs'],{stdio:'inherit',timeout:120000});
+       execFileSync('python',['-B','tests/triage-independent-audit.test.py'],{stdio:'inherit',timeout:120000});
+     }
+     writeJson('config/SYNTHETIC_GATE.json',{status:m.followup?'LOCAL_CONTRACT_CHECK_NOT_REPEATED':'PASS',populationCalls:0,
+       solverCalls:m.followup?0:'LIGHTWEIGHT_SYNTHETIC_TESTS_ONLY'});
     const reuse=verifyReuse(m);
     const cp = reuse ? readJson('config/continuation/PARENT_CP_PREFLIGHT.json') : await cpPreflight('config/cp-preflight', 'activation');
     if(reuse) writeJson('config/PREREQUISITE_REUSE.json',{status:'PASS',parentInvocationId:reuse.parent.invocationId,
@@ -148,7 +152,8 @@ try {
       reusedCalls:reuse.rows.length,solverCalls:0,newCpSyntheticCalls:0,priorCpSyntheticCalls:m.provenance.priorCpSyntheticCalls});
     writeJson('config/CP_PREFLIGHT.json',cp);
     const receipt=await upload('triage-lock-'+m.campaignId,'config',15*60000);
-    output('artifact-id',receipt.artifactId);output('digest',receipt.digest);
+     output('artifact-id',receipt.artifactId);output('digest',receipt.digest);
+     output('fast-followup',String(Boolean(m.followup)));
   } else if(mode==='plan') {
     await download(process.env.INPUT_ARTIFACT_ID,process.env.INPUT_DIGEST,'config');
     const lock=validateLock(readJson('config/LOCK.json')); verifySources(lock.manifest.sourceFiles);
@@ -161,7 +166,7 @@ try {
       process.exit(0);
     }
     let history={rows:[]}, selected=null;
-    if(phase!=='CANARY') history=getHistory(lock.manifest.campaignId);
+     if(phase!=='CANARY' && !lock.manifest.followup) history=getHistory(lock.manifest.campaignId);
     const required=phase==='CALIBRATION'?'CANARY':phase==='ALL_INITIAL'?'CALIBRATION':null;
     if(required) {
       const expected=templates.filter(t=>t.phase===required).reduce((n,t)=>n+t.calls,0);
@@ -186,8 +191,11 @@ try {
     const reserved=prior.reduce((n,p)=>n+p.chunks,0)+chunks.length;
     assert(Date.now()<lock.endMs-lock.manifest.job.finalTransportMs,'campaign deadline expired');
     const expectedCalls=chunks.flatMap(c=>c.tasks.flatMap(t=>t.calls));
-    const parentReservation=historyReservation(lock.manifest);
-    assert((reserved+36)*2.5<=lock.manifest.maxRunnerHours,'runner-hour reservation exceeded');
+     const followup=lock.manifest.followup;
+     const parentReservation=followup?{calls:followup.priorCalls+followup.newCpCalls}:historyReservation(lock.manifest);
+     assert(followup ? followup.priorRunnerHours+reserved*2.5+followup.controlHours<=lock.manifest.maxRunnerHours
+       : (reserved+36)*2.5<=lock.manifest.maxRunnerHours,'runner-hour reservation exceeded');
+     if (followup) { assert.equal(expectedCalls.length,500); assert.equal(chunks.length,42); }
     assert(parentReservation.calls+prior.reduce((n,p)=>n+p.expectedCalls.length,0)+expectedCalls.length<=lock.manifest.maxCalls,
       'cumulative call cap exceeded; required confirmation selection may not be silently reduced');
     const matrix=[];
@@ -210,7 +218,7 @@ try {
   } else if(mode==='run') {
     await download(process.env.INPUT_ARTIFACT_ID,process.env.INPUT_DIGEST,'bundle');
     const lock=validateLock(readJson('bundle/LOCK.json'));verifySources(lock.manifest.sourceFiles);
-    cloneBaseline(lock);
+     if (!lock.manifest.followup) cloneBaseline(lock);
     const jobStartedMs=Number(process.env.INPUT_JOB_STARTED_MS); assert(Number.isFinite(jobStartedMs));
     const remaining=jobStartedMs+lock.manifest.job.jobMs+lock.manifest.job.finalTransportMs+lock.manifest.job.transportAuditMs-Date.now();assert(remaining>0);
     watchdog=setTimeout(()=>process.exit(1),remaining);
@@ -234,7 +242,13 @@ try {
       status:'FAIL',reason:'AUDITOR_DID_NOT_FINISH',auditExit,solverCalls:0,performancePass:false });
     const report=readJson('independent/INDEPENDENT_AUDIT.json');
     summarize('Independent evidence audit (not candidate promotion)',report);
-    await upload(`triage-independent-${lock.manifest.campaignId}-${phase||'FINAL'}`,'independent',5*60000);
+     await upload(`triage-independent-${lock.manifest.campaignId}-${phase||'FINAL'}`,'independent',5*60000);
+     if (lock.manifest.followup) {
+       writeJson('report/REPORT.json',{...report,role:'FOLLOWUP_EVIDENCE_ONLY_LLM_ANALYSIS_PENDING',
+         executionCompleteness:report.status==='PASS'?'COMPLETE':'INCOMPLETE',
+         rawValidity:report.errors?.length?'FAIL':report.missing?.length?'INCOMPLETE':'PASS'});
+       await upload(`triage-final-${lock.manifest.campaignId}`,'report');
+     }
     if(auditExit||report.status!=='PASS')process.exitCode=1;
   } else if(mode==='audit') {
     await download(process.env.INPUT_ARTIFACT_ID,process.env.INPUT_DIGEST,'config');

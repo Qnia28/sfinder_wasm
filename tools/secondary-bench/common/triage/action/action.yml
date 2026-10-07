@@ -23,6 +23,9 @@ inputs:
     required: false
     description: Job clock before checkout/setup
 outputs:
+  fast-followup:
+    description: Approved single-stage follow-up
+    value: ${{ steps.native.outputs.fast-followup }}
   artifact-id:
     description: Activation artifact ID
     value: ${{ steps.native.outputs.artifact-id }}

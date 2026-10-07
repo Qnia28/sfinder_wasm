@@ -5,6 +5,7 @@ import { canonical, digest, sha256, readJson, writeJson, strict, integer, ENGINE
 import { FOLLOWUP_JOB, validateLimits, validateBudget } from './budget.mjs';
 import { verifyHistoryIndex } from './evidence.mjs';
 import { PROFILE as TRIAGE_PROFILE, validateManifest as validateTriageManifest, validateLock as validateTriageLock } from './triage/protocol.mjs';
+import { fastParent } from './triage/fast-followup.mjs';
 
 export const PROFILE = Object.freeze({ id: 'exact-cold-v1', lifecycle: 'fresh-process-cold', exactHumanQuality: 'true',
   timingContract: 'secondary-response-v1', memoryMaxBytes: 3 * 1024 ** 3, swapMaxBytes: 0,
@@ -142,6 +143,12 @@ export function activate(authored, directory, { createdUtc, invocationId, commit
   verifySources(m.sourceFiles);
   assert(Number.isFinite(Date.parse(createdUtc)) && /^[a-zA-Z0-9_-]+$/.test(invocationId));
   let originUtc = createdUtc, parentHash = null, ancestorLocks = [];
+  if (m.followup) {
+    const parent = validateLock(fastParent(m));
+    originUtc = parent.originUtc; parentHash = m.followup.parentLockSha256;
+    ancestorLocks = [...parent.ancestorLocks, { manifestHash:parent.manifestHash,
+      harnessHash:parent.harnessHash, invocationId:parent.invocationId }];
+  }
   if (m.continuation) {
     const c = m.continuation, bytes = fs.readFileSync(c.parentLock); assert.equal(sha256(bytes), c.parentLockSha256);
     const parent = validateLock(JSON.parse(bytes));

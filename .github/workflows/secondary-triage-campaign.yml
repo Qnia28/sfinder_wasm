@@ -27,6 +27,7 @@ jobs:
     outputs:
       artifact-id: ${{ steps.activate.outputs.artifact-id }}
       digest: ${{ steps.activate.outputs.digest }}
+      fast-followup: ${{ steps.activate.outputs.fast-followup }}
     steps:
       - uses: actions/checkout@v4
       - id: activate
@@ -39,6 +40,7 @@ jobs:
           confirm: ${{ inputs.confirm }}
   canary:
     needs: activate
+    if: needs.activate.outputs.fast-followup != 'true'
     uses: ./.github/workflows/secondary-triage-stage.yml
     with:
       phase: CANARY
@@ -123,7 +125,7 @@ jobs:
       digest: ${{ needs.activate.outputs.digest }}
   audit:
     needs: [activate, canary, canary-audit, calibration, calibration-audit, all-initial, per-save, seed, trivial, confirm-all, confirm-per-save]
-    if: always() && needs.activate.result == 'success'
+    if: always() && needs.activate.result == 'success' && needs.activate.outputs.fast-followup != 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -137,9 +139,31 @@ jobs:
           digest: ${{ needs.activate.outputs.digest }}
   independent-audit:
     needs: [activate, audit]
-    if: always() && needs.activate.result == 'success'
+    if: always() && needs.activate.result == 'success' && needs.activate.outputs.fast-followup != 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/common/triage/action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: independent-audit
+          artifact-id: ${{ needs.activate.outputs.artifact-id }}
+          digest: ${{ needs.activate.outputs.digest }}
+  fast-followup:
+    needs: activate
+    if: needs.activate.outputs.fast-followup == 'true'
+    uses: ./.github/workflows/secondary-triage-stage.yml
+    with:
+      phase: A_FAST_FACTORIAL
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  fast-audit:
+    needs: [activate, fast-followup]
+    if: always() && needs.activate.result == 'success' && needs.activate.outputs.fast-followup == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: ./tools/secondary-bench/common/triage/action

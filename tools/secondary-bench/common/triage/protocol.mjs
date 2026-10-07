@@ -3,6 +3,7 @@ import { digest, integer, strict } from '../contracts.mjs';
 import { FOLLOWUP_JOB, worstCall, packTasks, validateBudget } from '../budget.mjs';
 import { continuationContract } from './continuation.mjs';
 import { evidenceFirst } from './gates.mjs';
+import { FAST_PHASE, FAST_ARMS, validateFast } from './fast-followup.mjs';
 
 export const PROFILE = Object.freeze({ id: 'triage-cold-v1', lifecycle: 'fresh-process-cold',
   exactHumanQuality: 'true', timingContract: 'post-primary-policy-settled-v1',
@@ -19,7 +20,7 @@ export function validateManifest(m) {
   strict(m,['schemaVersion','campaignId','purpose','freshValidation','profile','profileContract','maxParallel','maxCalls',
     'maxRunnerHours','overallMs','job','inputs','baselineFiles','sourceFiles','tasksHash','design','provenance','runtime',
     'auditContract','cpPreflightContract','activationRecovery','startupContinuation','revision','approval','analysis',
-    'measurement','budget','evidence','continuation','gateContract','prerequisiteReuse'],'triage manifest');
+    'measurement','budget','evidence','continuation','gateContract','prerequisiteReuse','followup'],'triage manifest');
   if (evidenceFirst(m.gateContract)) {
     integer(m.revision,6,2147483647);
     assert.equal(m.measurement?.adapter,'triage-fixture','new gate contract requires explicit performance manifest');
@@ -35,13 +36,13 @@ export function validateManifest(m) {
   assert.deepEqual(m.profileContract, PROFILE);
   assert.deepEqual(m.auditContract, AUDIT_CONTRACT); assert.deepEqual(m.cpPreflightContract, CP_PREFLIGHT_CONTRACT);
   assert.equal(m.job.jobMinutes, 150); assert.deepEqual(m.job, FOLLOWUP_JOB);
-  assert.equal(m.inputs.length, 580); assert.equal(new Set(m.inputs.map(f => f.id)).size, 580);
+   assert.equal(m.inputs.length, m.followup ? 25 : 580); assert.equal(new Set(m.inputs.map(f => f.id)).size, m.inputs.length);
   for (const f of m.inputs) { assert(/^[a-f0-9]{64}$/.test(f.sha256)); assert.equal(f.member, `fixtures/${f.sha256}.json`); }
   assert.equal(m.design.gates.correctness_disagreements_allowed, 0);
   continuationContract(m);
   if (m.measurement) {
     assert.equal(m.measurement.adapter, 'triage-fixture');
-    assert.deepEqual(m.measurement.variants, ['BASELINE','A','B']);
+    if (m.followup) validateFast(m); else assert.deepEqual(m.measurement.variants, ['BASELINE','A','B']);
     assert.equal(m.analysis, 'DEVELOPMENT_KEEP_HOLD_REJECT'); integer(m.revision);
     assert(typeof m.approval === 'string' && m.approval.length);
     validateBudget(m.budget);
@@ -61,7 +62,7 @@ export function validateLock(lock) {
   assert(/^[a-zA-Z0-9_-]+$/.test(lock.invocationId)); return lock;
 }
 export function compileTasks(m, templates, phase, selected = null) {
-  assert(PHASES.includes(phase));
+  assert(m.followup ? phase === FAST_PHASE : PHASES.includes(phase));
   const index = new Map(m.inputs.map(f => [f.id, f]));
   return templates.filter(t => t.phase === phase && (!t.conditional || selected?.includes(t.fixture_ids[0]))).map(t => {
     const calls = [];
@@ -69,10 +70,16 @@ export function compileTasks(m, templates, phase, selected = null) {
       const input = index.get(inputId); assert(input);
       const limits = { startupMs: 10000, callMs: phase === 'TRIVIAL_CONTRACT' ? 30000 : 300000, reapMs: 5000 };
       const identity = { campaignId: m.campaignId, phase, taskId: t.task_id, inputId, inputHash: input.sha256, variant, repeat, ...extra,
-        ...(m.continuation ? { measurementEpoch:m.revision } : {}) };
+        ...(m.continuation || m.followup ? { measurementEpoch:m.revision } : {}) };
       calls.push({ ...identity, callId: digest(identity), limits });
     };
-    if (t.pairs) for (const pair of t.pairs) for (const variant of pair.order)
+    if (m.followup) {
+      assert.equal(t.arms.length, 4);
+      for (const [position, arm] of t.arms.entries()) {
+        assert(FAST_ARMS[arm]);
+        add(t.fixture_ids[0], arm, t.block, { block:t.block, position, role:t.role });
+      }
+    } else if (t.pairs) for (const pair of t.pairs) for (const variant of pair.order)
       add(t.fixture_ids[0], variant === 'BASELINE' && t.baseline_variant ? t.baseline_variant : variant, pair.repeat,
         { pairId: pair.pair_id, comparator: pair.comparator, order: pair.order });
     else if (t.trials) for (const trial of t.trials) for (const variant of trial.order)

@@ -5,6 +5,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { performance } from 'node:perf_hooks';
 import { hash, validateFixture, packedView, selectedVector, verifyResult } from '../../contracts.mjs';
+import { FAST_ARMS } from './fast-followup.mjs';
 
 const send = message => new Promise((resolve, reject) => process.send(message, e => e ? reject(e) : resolve()));
 export function historicalWitnessHash(verified, expected) {
@@ -17,7 +18,7 @@ export function historicalWitnessHash(verified, expected) {
 export async function executeTriage(job) {
   assert.equal(job.exactHumanQuality, 'true');
   assert(['PRECHANGE_BASELINE','BASELINE','A','B','TRACE_OFF_BASELINE','TRACE_ON_BASELINE',
-    'I100K_SEED_CAPTURE','T_PRIMARY_SEED','T_PROBE_SEED'].includes(job.variant),'unregistered benchmark variant');
+    'I100K_SEED_CAPTURE','T_PRIMARY_SEED','T_PROBE_SEED', ...Object.keys(FAST_ARMS)].includes(job.variant),'unregistered benchmark variant');
   const start = performance.now();
   const bytes = fs.readFileSync(job.fixturePath); assert.equal(hash(bytes), job.fixtureSha256);
   const fixture = validateFixture(JSON.parse(bytes));
@@ -28,7 +29,8 @@ export async function executeTriage(job) {
   const { createWasmSolver } = await load('wasm-backend.mjs');
   const { solveExactSecondaryAsync } = await load('min-cover-three-engine.mjs');
   const events = [];
-  const traceOn = !['PRECHANGE_BASELINE', 'TRACE_OFF_BASELINE'].includes(job.variant);
+  const arm = FAST_ARMS[job.variant];
+  const traceOn = arm ? arm.trace : !['PRECHANGE_BASELINE', 'TRACE_OFF_BASELINE'].includes(job.variant);
   let solver;
   const cpuStart = process.cpuUsage();
   const entry = performance.now();
@@ -52,7 +54,7 @@ export async function executeTriage(job) {
     const options = { solver, qualityFor: view.qualityFor, secondary: 'auto', decomposition: 'off',
       primary: { count: fixture.K, backend, searchedStates: fixture.cardinalityProof.primarySearchedStates ?? null },
       primaryKeys, primaryHard: fixture.primaryHard, requestedPrimary: 'auto', requested: false, kernelStats,
-      experimentalTriagePolicy: ['A', 'B'].includes(job.variant) ? job.variant : 'baseline', secondaryTrace: trace };
+      experimentalTriagePolicy: arm?.policy ?? (['A', 'B'].includes(job.variant) ? job.variant : 'baseline'), secondaryTrace: trace };
     let result, probeSeed = null;
     if (!['I100K_SEED_CAPTURE', 'T_PRIMARY_SEED', 'T_PROBE_SEED'].includes(job.variant) && process.platform === 'linux') {
       const { assertORToolsSupported } = await load('ortools-min-cover.mjs');
@@ -87,6 +89,7 @@ export async function executeTriage(job) {
     const incompleteProbe = job.variant === 'I100K_SEED_CAPTURE' && !verified.completed;
     return { status: incompleteProbe ? 'PROBE_INCOMPLETE' : verified.completed ? 'EXACT' : 'INCOMPLETE',
       variant: job.variant, result, verified, probeSeed, trace: finalEvents,
+      ...(arm ? { armContract: arm } : {}),
       fixtureSha256: hash(bytes), primarySeedHash: hash(JSON.stringify(fixture.seed)),
       historicalWitness,
       responseMs: settled - entry, policyReturnMs: returned - entry, policySettledMs: settled - entry,
