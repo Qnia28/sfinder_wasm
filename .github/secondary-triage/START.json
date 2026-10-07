@@ -1,7 +1,7 @@
 {
   "state": "ACTIVATION_REQUESTED",
   "confirm": "RUN_TRIAGE_PROBE_SEED_16VM",
-  "assetId": 615891400,
-  "bundleSha256": "5f6ddfa948d1349be9b909af093e5e9ffedf798e11a54a66b62a807e853c2a2e",
-  "manifestHash": "cd98e213a725422e11073213d4e4946e12e0ed6123e9e6c5f4e63269314e6647"
+  "assetId": 618280564,
+  "bundleSha256": "123d103f0079b01d31e80262eea0674654524b225999e3cb484fdb59f06d0eb7",
+  "manifestHash": "92adbfefe92f805bb2ce80eccc0db61e3361eaf29db1bdbb9be1d7f298e05c94"
 }
