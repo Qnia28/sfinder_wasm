@@ -47,13 +47,27 @@ test('CP winner needs quality AND stable-ID proof; unproved/error CP leaves Rust
   const job = raceSecondaryEngines({ startRust: () => rust, startCp: () => cp, cpAfterMs: 0 });
   await pause(5); cp.resolve(done); assert.equal((await job).engine, 'cpsat'); assert.equal(rust.stops, 1);
 });
-test('cancellation and Rust errors terminate all active engines', async () => {
-  for (const abort of [true, false]) {
+test('cancellation terminates all active engines', async () => {
+  for (const abort of [true]) {
     const rust = deferred(), cp = deferred(), controller = new AbortController(), error = new Error('stop test');
     const job = raceSecondaryEngines({ startRust: () => rust, startCp: () => cp, cpAfterMs: 0, signal: controller.signal });
     await pause(5); if (abort) controller.abort(error); else rust.reject(error);
     await assert.rejects(job, e => e === error); assert.equal(rust.stops, 1); assert.equal(cp.stops, 1);
   }
+});
+test('Rust failure preserves CP progress and both failures surface without hanging', async () => {
+  for(const late of [false,true]) {
+    const rust=deferred(),cp=deferred();let starts=0;
+    const job=raceSecondaryEngines({startRust:()=>rust,startCp:()=>{starts++;return cp;},cpAfterMs:late?0:60000});
+    if(late)await pause(5);
+    rust.reject(new Error('Rust worker failed'));await pause(5);
+    assert.equal(starts,1);assert.equal(cp.stops,0);cp.resolve(done);
+    const r=await job;assert.equal(r.engine,'cpsat');assert.match(r.rustFailure,/Rust worker failed/);
+  }
+  const rust=deferred(),cp=deferred();
+  const job=raceSecondaryEngines({startRust:()=>rust,startCp:()=>cp,cpAfterMs:0});
+  await pause(5);cp.resolve({...done,completed:false,status:'UNKNOWN'});await pause(5);
+  rust.reject(new Error('Rust failed too'));await assert.rejects(job,/Both exact secondary engines failed/);
 });
 test('original duplicate-row weights and witness coverage are checked independently', () => {
   const m = matrix([[[0,1],[1,3]],[[0,5],[1,1]],[[0,5],[1,1]]]);

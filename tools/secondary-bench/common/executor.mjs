@@ -4,7 +4,7 @@ import path from 'node:path';
 import { performance } from 'node:perf_hooks';
 import { digest, readJson, writeJson, replaceJson, verifySources, logicalCallId } from './contracts.mjs';
 import { PROFILE, validateLock, isTriage } from './manifest.mjs';
-import { PROFILE as TRIAGE_PROFILE } from './triage/protocol.mjs';
+import { profileForTriage } from './triage/protocol.mjs';
 import { selectedVector } from '../contracts.mjs';
 import { admitted, worstCall } from './budget.mjs';
 import { requestFor } from './adapters.mjs';
@@ -29,7 +29,7 @@ export async function executeTask(lock, chunk, task, bundle, directory, quaranti
       const base = triage ? {schemaVersion:1,campaignId:lock.manifest.campaignId,manifestHash:lock.manifestHash,
         profileHash:lock.profileHash,invocationId:lock.invocationId,phase:task.phase,taskId:task.id,
         runnerId:`${process.env.GITHUB_RUN_ID??'synthetic'}/${process.env.GITHUB_JOB??'local'}/${process.env.INPUT_ARTIFACT_ID??'contract'}`,
-        ...call,logicalCallId:call.callId,metadata:input.metadata,condition:TRIAGE_PROFILE} :
+        ...call,logicalCallId:call.callId,metadata:input.metadata,condition:profileForTriage(lock.manifest)} :
         { schemaVersion: 1, campaignId: lock.manifest.campaignId, invocationId: lock.invocationId,
         conditionHash: lock.conditionHash, productHash: lock.productHash, harnessHash: lock.harnessHash,
         manifestHash: lock.manifestHash, stagePlanId: chunk.stagePlanId, stage: chunk.stage,
@@ -56,7 +56,7 @@ export async function executeTask(lock, chunk, task, bundle, directory, quaranti
         catch(error) {execution.status='MISMATCH';execution.seedError=error.message;}
       }
       const row = { ...attempt, status: execution.status, ms: execution.status === 'EXACT' ? (triage?execution.result.policySettledMs:execution.result.responseMs) : null,
-        supervisorWallMs: performance.now() - started, condition: triage?TRIAGE_PROFILE:PROFILE, execution };
+        supervisorWallMs: performance.now() - started, condition: triage?profileForTriage(lock.manifest):PROFILE, execution };
       append(raw, row); results.push(row);
       if (execution.status === 'OOM' && execution.reaped) quarantine.oom.push(call.inputId + '/' + call.variant);
       else if (!execution.reaped || !(triage?['EXACT','INCOMPLETE','PROBE_INCOMPLETE']:['EXACT', 'INCOMPLETE', 'CAPTURED', 'COLLECTOR_MATCH']).includes(execution.status) && !execution.status.startsWith('TIMEOUT_'))

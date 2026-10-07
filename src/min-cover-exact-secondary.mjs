@@ -1,10 +1,12 @@
 import { minimumCover } from "./min-cover.mjs";
 import { inspectTrivialSecondary, createSecondarySession } from './min-cover-components.mjs';
 import { solveRoutedSecondary } from './min-cover-routing.mjs';
-import { decideExperimentalProbe } from './min-cover-triage-experiment.mjs';
+import { decideExperimentalProbe, DEFAULT_SECONDARY_TRIAGE_POLICY } from './min-cover-triage-experiment.mjs';
 const FAST_EXACT_STATE_BUDGET = 100000;
 
 export function solveExactSecondary(coverage, options) {
+    options = { ...options, experimentalTriagePolicy: options.experimentalTriagePolicy
+      ?? ((options.decomposition ?? 'off') === 'off' ? DEFAULT_SECONDARY_TRIAGE_POLICY : 'baseline') };
     if (!['off', 'on', 'auto'].includes(options.decomposition ?? 'off')) throw new Error('invalid secondary decomposition mode');
     const { result: trivial, structure } = inspectTrivialSecondary(coverage, options.primary.count, options.qualityFor);
     const decision = decideExperimentalProbe(options.experimentalTriagePolicy ?? 'baseline', options.primaryHard, structure);

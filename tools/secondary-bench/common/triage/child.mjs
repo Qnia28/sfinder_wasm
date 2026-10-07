@@ -6,6 +6,7 @@ import { pathToFileURL } from 'node:url';
 import { performance } from 'node:perf_hooks';
 import { hash, validateFixture, packedView, selectedVector, verifyResult } from '../../contracts.mjs';
 import { FAST_ARMS } from './fast-followup.mjs';
+import { LARGE_ARMS } from './large-run.mjs';
 
 const send = message => new Promise((resolve, reject) => process.send(message, e => e ? reject(e) : resolve()));
 export function historicalWitnessHash(verified, expected) {
@@ -18,7 +19,7 @@ export function historicalWitnessHash(verified, expected) {
 export async function executeTriage(job) {
   assert.equal(job.exactHumanQuality, 'true');
   assert(['PRECHANGE_BASELINE','BASELINE','A','B','TRACE_OFF_BASELINE','TRACE_ON_BASELINE',
-    'I100K_SEED_CAPTURE','T_PRIMARY_SEED','T_PROBE_SEED', ...Object.keys(FAST_ARMS)].includes(job.variant),'unregistered benchmark variant');
+    'I100K_SEED_CAPTURE','T_PRIMARY_SEED','T_PROBE_SEED', ...Object.keys(FAST_ARMS), ...Object.keys(LARGE_ARMS)].includes(job.variant),'unregistered benchmark variant');
   const start = performance.now();
   const bytes = fs.readFileSync(job.fixturePath); assert.equal(hash(bytes), job.fixtureSha256);
   const fixture = validateFixture(JSON.parse(bytes));
@@ -29,7 +30,8 @@ export async function executeTriage(job) {
   const { createWasmSolver } = await load('wasm-backend.mjs');
   const { solveExactSecondaryAsync } = await load('min-cover-three-engine.mjs');
   const events = [];
-  const arm = FAST_ARMS[job.variant];
+  const arm = LARGE_ARMS[job.variant] ?? FAST_ARMS[job.variant];
+  const cpLimitMs = LARGE_ARMS[job.variant] ? arm.cpLimitMs : 120000;
   const traceOn = arm ? arm.trace : !['PRECHANGE_BASELINE', 'TRACE_OFF_BASELINE'].includes(job.variant);
   let solver;
   const cpuStart = process.cpuUsage();
@@ -51,7 +53,7 @@ export async function executeTriage(job) {
           seedCount: seedKeys?.length ?? null, atMs: performance.now() - entry } });
       }
     } : undefined;
-    const options = { solver, qualityFor: view.qualityFor, secondary: 'auto', decomposition: 'off',
+    const options = { solver, qualityFor: view.qualityFor, secondary: arm?.secondary ?? 'auto', secondaryCpLimitMs:cpLimitMs, decomposition: 'off',
       primary: { count: fixture.K, backend, searchedStates: fixture.cardinalityProof.primarySearchedStates ?? null },
       primaryKeys, primaryHard: fixture.primaryHard, requestedPrimary: 'auto', requested: false, kernelStats,
       experimentalTriagePolicy: arm?.policy ?? (['A', 'B'].includes(job.variant) ? job.variant : 'baseline'), secondaryTrace: trace };
@@ -96,7 +98,7 @@ export async function executeTriage(job) {
       timings: { fixtureAndImportMs: entry - start, initMs, packingMs, auditMs: performance.now() - audit,
         policyReturnMs: returned - entry, policySettledMs: settled - entry },
       cpuUs: cpu, diagnostic, stateBudget: job.variant === 'I100K_SEED_CAPTURE' ? 100000 : null,
-      cpDelayMs: diagnostic ? null : 60000, cpLimitMs: diagnostic ? null : 120000,
+      cpDelayMs: diagnostic ? null : arm?.secondary==='cpsat' ? 0 : 60000, cpLimitMs: diagnostic ? null : cpLimitMs,
       runtime: { node: process.version, v8: process.versions.v8, platform: process.platform, arch: process.arch },
       proof: { witnessAudit: 'PASS', engineCompleted: verified.completed, independentOptimality: 'NOT_CLAIMED_BY_WITNESS_AUDIT' } };
   } finally { solver?.close(); }

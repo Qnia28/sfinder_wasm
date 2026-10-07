@@ -4,8 +4,9 @@ import path from 'node:path';
 import { canonical, digest, sha256, readJson, writeJson, strict, integer, ENGINES, verifySources } from './contracts.mjs';
 import { FOLLOWUP_JOB, validateLimits, validateBudget } from './budget.mjs';
 import { verifyHistoryIndex } from './evidence.mjs';
-import { PROFILE as TRIAGE_PROFILE, validateManifest as validateTriageManifest, validateLock as validateTriageLock } from './triage/protocol.mjs';
+import { PROFILE as TRIAGE_PROFILE, profileForTriage, validateManifest as validateTriageManifest, validateLock as validateTriageLock } from './triage/protocol.mjs';
 import { fastParent } from './triage/fast-followup.mjs';
+import { largeParent } from './triage/large-run.mjs';
 
 export const PROFILE = Object.freeze({ id: 'exact-cold-v1', lifecycle: 'fresh-process-cold', exactHumanQuality: 'true',
   timingContract: 'secondary-response-v1', memoryMaxBytes: 3 * 1024 ** 3, swapMaxBytes: 0,
@@ -14,7 +15,7 @@ export const PROFILE = Object.freeze({ id: 'exact-cold-v1', lifecycle: 'fresh-pr
 const top = ['schemaVersion', 'campaignId', 'revision', 'purpose', 'approval', 'profile', 'measurement', 'inputs', 'selection',
   'repeats', 'limits', 'budget', 'sourceFiles', 'provenance', 'evidence', 'continuation', 'analysis'];
 export const isTriage = m => m.profile === TRIAGE_PROFILE.id;
-export const profileFor = m => isTriage(m) ? TRIAGE_PROFILE : PROFILE;
+export const profileFor = m => isTriage(m) ? profileForTriage(m) : PROFILE;
 function validateContinuation(m) {
   if (!m.continuation) return;
   strict(m.continuation, ['parentLock', 'parentLockSha256', 'history', 'historyIndexSha256'], 'continuation');
@@ -101,7 +102,7 @@ export function validateManifest(m) {
   return m;
 }
 export const conditionHash = m => isTriage(m)
-  ? digest({ profile: TRIAGE_PROFILE, tasksHash: m.tasksHash, job: m.job, baselineFiles: m.baselineFiles })
+  ? digest({ profile: profileForTriage(m), tasksHash: m.tasksHash, job: m.job, baselineFiles: m.baselineFiles })
   : digest({ profile: PROFILE, measurement: m.measurement, limits: m.limits, repeats: m.repeats, selection: m.selection });
 export const inputHash = m => isTriage(m)
   ? digest(m.inputs.map(({ expectedWitness, ...f }) => ({ ...f, witnessSha256: expectedWitness?.sha256 ?? null })))
@@ -143,9 +144,9 @@ export function activate(authored, directory, { createdUtc, invocationId, commit
   verifySources(m.sourceFiles);
   assert(Number.isFinite(Date.parse(createdUtc)) && /^[a-zA-Z0-9_-]+$/.test(invocationId));
   let originUtc = createdUtc, parentHash = null, ancestorLocks = [];
-  if (m.followup) {
-    const parent = validateLock(fastParent(m));
-    originUtc = parent.originUtc; parentHash = m.followup.parentLockSha256;
+  if (m.followup || m.largeRun) {
+    const parent = validateLock(m.largeRun ? largeParent(m) : fastParent(m));
+    originUtc = parent.originUtc; parentHash = (m.largeRun??m.followup).parentLockSha256;
     ancestorLocks = [...parent.ancestorLocks, { manifestHash:parent.manifestHash,
       harnessHash:parent.harnessHash, invocationId:parent.invocationId }];
   }
@@ -166,6 +167,6 @@ export function activate(authored, directory, { createdUtc, invocationId, commit
     inputHash: inputHash(m), productHash: digest(m.sourceFiles.product), harnessHash: digest(m.sourceFiles.harness),
     invocationId, commit, createdUtc, originUtc, endUtc: new Date(Date.parse(originUtc) + m.budget.overallMs).toISOString(), parentHash, ancestorLocks,
     ...(isTriage(m) ? { originMs: Date.parse(originUtc), endMs: Date.parse(originUtc) + m.budget.overallMs,
-      profileHash: digest(TRIAGE_PROFILE), repository: process.env.GITHUB_REPOSITORY ?? null } : {}) });
+      profileHash: digest(profileForTriage(m)), repository: process.env.GITHUB_REPOSITORY ?? null } : {}) });
   assert(!fs.existsSync(directory), 'activation requires new directory'); writeJson(path.join(directory, 'LOCK.json'), lock); return lock;
 }

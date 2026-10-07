@@ -5,7 +5,8 @@ import { isORToolsSupported, assertORToolsSupported } from './ortools-min-cover.
 import { prepareSecondaryEngineInput, startSecondaryEngine, raceSecondaryEngines } from './secondary-engine-runner.mjs';
 
 export const SECONDARY_CP_DELAY_MS = 60000;
-export const SECONDARY_CP_LIMIT_MS = 120000;
+// null means no product deadline. Benchmarks own a separate whole-call watchdog.
+export const SECONDARY_CP_LIMIT_MS = null;
 export function normalizeSecondary(value = 'auto') {
   const mode = String(value).trim().toLowerCase();
   if (!['auto', 'rust', 'integrated', 'threshold', 'cpsat'].includes(mode)) throw new Error('invalid secondary engine: ' + value);
@@ -28,8 +29,8 @@ export function validateSecondaryWitness(payload, result) {
   return { ...result, keys: [...chosen].sort((a, b) => a - b).map(id => keys[id]), qualityVector: vector };
 }
 
-// Auto keeps the audited integrated100k -> threshold path. CP is a late helper,
-// not an early state-budget replacement. Rust progress survives the CP attempt.
+// Auto uses the bounded structural probe before threshold. CP joins late without
+// a product time limit; either exact engine may finish and Rust survives CP failure.
 export async function solveExactSecondaryAsync(coverage, options) {
   const started = performance.now(), mode = normalizeSecondary(options.secondary);
   const { solver, qualityFor, primary, primaryKeys, signal = null } = options;
@@ -40,8 +41,10 @@ export async function solveExactSecondaryAsync(coverage, options) {
   }
   signal?.throwIfAborted();
   const elapsedBefore = options.secondaryElapsedMs ?? 0;
+  const cpLimitMs = options.secondaryCpLimitMs === undefined ? SECONDARY_CP_LIMIT_MS : options.secondaryCpLimitMs;
+  if (cpLimitMs !== null && (!Number.isFinite(cpLimitMs) || cpLimitMs <= 0)) throw new Error('invalid CP time limit');
   const externalDefer = options.deferThreshold;
-  const forward = context => externalDefer({ ...context, secondary: mode,
+  const forward = context => externalDefer({ ...context, secondary: mode, secondaryCpLimitMs: cpLimitMs,
     secondaryElapsedMs: elapsedBefore + performance.now() - started });
   if (mode === 'rust' || (mode === 'auto' && ((options.decomposition ?? 'off') !== 'off' || !(solver instanceof WasmPcSolver) || !isORToolsSupported()))) {
     return solveExactSecondary(coverage, { ...options, deferThreshold: externalDefer ? forward : null });
@@ -72,10 +75,12 @@ export async function solveExactSecondaryAsync(coverage, options) {
   if (mode === 'cpsat') {
     assertORToolsSupported();
     const payload = prepareSecondaryEngineInput(coverage, qualityFor, primary.count, primaryKeys);
-    const engine = startSecondaryEngine('cpsat', payload, { limitMs: SECONDARY_CP_LIMIT_MS, signal });
+    emit('cp-start', { limitMs:cpLimitMs, explicit:true });
+    const engine = startSecondaryEngine('cpsat', payload, { limitMs: cpLimitMs, signal });
     try {
       const result = await engine.promise;
       if (!result?.completed || !result.qualityComplete || !result.tieComplete) throw new Error('CP-SAT did not prove exact quality and stable IDs within its limit');
+      emit('cp-end', { kind:'EXACT', explicit:true });
       return format(validateSecondaryWitness(payload, result), 'cpsat', null, true);
     } finally { await engine.stop(); }
   }
@@ -86,16 +91,17 @@ export async function solveExactSecondaryAsync(coverage, options) {
     const payload = prepareSecondaryEngineInput(coverage, qualityFor, primary.count, seedKeys);
     const cpAfterMs = Math.max(0, SECONDARY_CP_DELAY_MS - elapsedBefore - (performance.now() - started));
     emit('threshold-worker-start', { seedSource: probe?.keys?.length === primary.count ? 'probe' : 'primary',
-      seedKeys, cpAfterMs, cpLimitMs: SECONDARY_CP_LIMIT_MS });
+      seedKeys, cpAfterMs, cpLimitMs });
     const winner = await raceSecondaryEngines({
       startRust: () => startSecondaryEngine('threshold', payload, { signal }),
-      startCp: () => { emit('cp-start', { limitMs: SECONDARY_CP_LIMIT_MS });
-        return startSecondaryEngine('cpsat', payload, { limitMs: SECONDARY_CP_LIMIT_MS, signal }); },
+      startCp: () => { emit('cp-start', { limitMs: cpLimitMs });
+        return startSecondaryEngine('cpsat', payload, { limitMs: cpLimitMs, signal }); },
        cpAfterMs, signal, validate: value => validateSecondaryWitness(payload, value),
        ...(trace ? { onCpOutcome: outcome => emit('cp-end', outcome) } : {}),
     });
     emit('engines-reaped', { winner: winner.engine, cpStarted: winner.cpStarted, cpFailure: winner.cpFailure });
     return { ...format(winner.result, winner.engine === 'cpsat' ? 'cpsat' : 'threshold', probe, winner.cpStarted),
+      ...(winner.rustFailure ? { secondaryRustFailure:winner.rustFailure } : {}),
       ...(winner.cpFailure ? { secondaryCpFailure: winner.cpFailure } : {}) };
   } });
 }

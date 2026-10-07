@@ -17,8 +17,8 @@ async function run({ engine, module, payload, limitMs }) {
         const row = []; for (let i = offsets[r]; i < offsets[r + 1]; i++) row.push([ids[i], qualities[i]]); return row;
       });
       const keyIndex = new Map(keys.map((key, id) => [key, id]));
-      const remaining = limitMs - (performance.now() - started);
-      const result = remaining > 0 ? await solveCpSecondaryModel({ keys, rows, count, seed: seedKeys.map(key => keyIndex.get(key)) }, api, { limitMs: remaining }) : { completed: false };
+       const remaining = limitMs === null ? null : limitMs - (performance.now() - started);
+       const result = remaining === null || remaining > 0 ? await solveCpSecondaryModel({ keys, rows, count, seed: seedKeys.map(key => keyIndex.get(key)) }, api, { limitMs: remaining }) : { completed: false };
       response = { result };
     } else {
       const instance = await WebAssembly.instantiate(module, {}); solver = new WasmPcSolver(instance.exports, 4);

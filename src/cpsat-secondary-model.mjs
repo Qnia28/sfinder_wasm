@@ -6,12 +6,12 @@ export function secondaryQualityVector(rows, selected) {
   return rows.map(row => row.reduce((best, [id, q]) => chosen.has(id) ? Math.max(best, q) : best, 0)).sort((a, b) => a - b);
 }
 
-export async function solveCpSecondaryModel({ keys, rows, count, seed }, api, { limitMs = 120000 } = {}) {
+export async function solveCpSecondaryModel({ keys, rows, count, seed }, api, { limitMs = null } = {}) {
   const { CpModel, CpSolver, LinearExpr } = api;
   const started = performance.now(), model = new CpModel(), cp = new CpSolver();
   const x = keys.map((_, i) => model.newBoolVar('x' + i));
   check(Number.isSafeInteger(count) && count >= 0 && count <= keys.length, 'invalid CP cardinality');
-  check(Number.isFinite(limitMs) && limitMs > 0, 'invalid CP time limit');
+  check(limitMs === null || Number.isFinite(limitMs) && limitMs > 0, 'invalid CP time limit');
   let selected = [...seed].sort((a, b) => a - b);
   const validate = () => {
     check(selected.length === count && new Set(selected).size === count && selected.every(i => Number.isInteger(i) && i >= 0 && i < keys.length), 'invalid CP witness cardinality');
@@ -59,14 +59,14 @@ export async function solveCpSecondaryModel({ keys, rows, count, seed }, api, { 
   while (radix ** batch > 2 ** 45 && batch > 1) batch--;
   const stages = [];
   async function optimize(expression, phase, detail) {
-    const remaining = limitMs - (performance.now() - started);
-    if (remaining <= 0) { status = 'TIMEOUT'; return false; }
+    const remaining = limitMs === null ? null : limitMs - (performance.now() - started);
+    if (remaining !== null && remaining <= 0) { status = 'TIMEOUT'; return false; }
     model.maximize(expression); model.proto().solutionHint = undefined;
     const chosen = new Set(selected);
     for (let i = 0; i < x.length; i++) model.addHint(x[i], chosen.has(i) ? 1 : 0);
     status = cp.statusName(await cp.solve(model, { numWorkers: 1, subsolvers: ['max_lp'], randomSeed: 1,
       addZeroHalfCuts: false, useSatInprocessing: false, relativeGapLimit: 0, absoluteGapLimit: 0,
-      maxTimeInSeconds: remaining / 1000, executor: 'direct' }));
+      ...(remaining === null ? {} : { maxTimeInSeconds: remaining / 1000 }), executor: 'direct' }));
     if (status === 'OPTIMAL' || status === 'FEASIBLE') { selected = x.flatMap((v, i) => cp.value(v) ? [i] : []); validate(); }
     if (status !== 'OPTIMAL') return false;
     const exact = phase === 'quality'

@@ -47,7 +47,7 @@ test('hard low-d B actually probes and seed fallback reaches real product functi
 });
 test('baseline hard has no probe; trivial shortcuts bypass experimental solver',()=>{
   const m=triangle(),calls=[];
-  solveExactSecondary(m.coverage,opts(m,{minimumCoverAtCount(_c,_k,o){calls.push(o);return done;}}));
+  solveExactSecondary(m.coverage,opts(m,{minimumCoverAtCount(_c,_k,o){calls.push(o);return done;}},{experimentalTriagePolicy:'baseline'}));
   assert.equal(calls.length,1);assert.equal(calls[0].integrated,undefined);
   const all={...opts(m,{minimumCoverAtCount(){throw Error('trivial searched');}},{experimentalTriagePolicy:'B'}),primary:{count:3,backend:'rust'}};
   assert.equal(solveExactSecondary(m.coverage,all).secondaryTrivial,'all-candidates');
@@ -246,7 +246,7 @@ test('phase workflow is branch-limited, opt-in and reserves 16 matrix VMs',()=>{
   const stage=fs.readFileSync('.github/workflows/secondary-triage-stage.yml','utf8');
   assert(workflow.includes('[experiment/secondary-routing-20261005]'));
   assert(workflow.includes('[RUN_TRIAGE_16VM]'));assert(stage.includes('max-parallel: 16'));
-  assert(stage.includes('timeout-minutes: 150'));
+  assert(stage.includes('timeout-minutes: 350'));
   assert(workflow.includes('needs: [activate, canary-audit]'));
   assert(workflow.includes('needs: [activate, calibration-audit]'));
   assert(workflow.includes('needs: [activate, audit]'));assert(workflow.includes('mode: independent-audit'));

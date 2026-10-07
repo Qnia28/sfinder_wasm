@@ -4,6 +4,7 @@ import { FOLLOWUP_JOB, worstCall, packTasks, validateBudget } from '../budget.mj
 import { continuationContract } from './continuation.mjs';
 import { evidenceFirst } from './gates.mjs';
 import { FAST_PHASE, FAST_ARMS, validateFast } from './fast-followup.mjs';
+import { LARGE_PHASE, LARGE_ARMS, validateLarge } from './large-run.mjs';
 
 export const PROFILE = Object.freeze({ id: 'triage-cold-v1', lifecycle: 'fresh-process-cold',
   exactHumanQuality: 'true', timingContract: 'post-primary-policy-settled-v1',
@@ -16,11 +17,13 @@ export const AUDIT_CONTRACT = Object.freeze({ id: 'independent-python-evidence-v
   prerequisiteJobs: ['CANARY','CALIBRATION'], finalDedicatedVm: true, performancePass: false, independentOptimality: false });
 export const CP_PREFLIGHT_CONTRACT = Object.freeze({ id: 'scoped-cpsat-weighted-tie-v1', activationCalls: 1,
   maxCanaryVmCalls: 3, callMs: 30000, populationCalls: 0 });
+export const profileForTriage = m => m.largeRun ? { ...PROFILE, cpLimitMs:null, arms:LARGE_ARMS, callTimeoutMs:600000 } : PROFILE;
+export const phasesFor = m => m.largeRun ? [LARGE_PHASE] : m.followup ? [FAST_PHASE] : PHASES;
 export function validateManifest(m) {
   strict(m,['schemaVersion','campaignId','purpose','freshValidation','profile','profileContract','maxParallel','maxCalls',
     'maxRunnerHours','overallMs','job','inputs','baselineFiles','sourceFiles','tasksHash','design','provenance','runtime',
     'auditContract','cpPreflightContract','activationRecovery','startupContinuation','revision','approval','analysis',
-    'measurement','budget','evidence','continuation','gateContract','prerequisiteReuse','followup'],'triage manifest');
+    'measurement','budget','evidence','continuation','gateContract','prerequisiteReuse','followup','largeRun'],'triage manifest');
   if (evidenceFirst(m.gateContract)) {
     integer(m.revision,6,2147483647);
     assert.equal(m.measurement?.adapter,'triage-fixture','new gate contract requires explicit performance manifest');
@@ -31,18 +34,19 @@ export function validateManifest(m) {
   }
   assert.equal(m.schemaVersion, 1); assert.equal(m.profile, PROFILE.id);
   assert.equal(m.purpose, 'development-policy-ab'); assert.equal(m.freshValidation, false);
-  assert.equal(m.maxParallel, 16); assert.equal(m.maxCalls, 8479);
-  integer(m.maxRunnerHours, 1400, 1400); integer(m.overallMs, 120 * 3600000, 120 * 3600000);
-  assert.deepEqual(m.profileContract, PROFILE);
+  assert.equal(m.maxParallel, 16);
+  if (m.largeRun) validateLarge(m);
+  else { assert.equal(m.maxCalls,8479); integer(m.maxRunnerHours,1400,1400); assert.deepEqual(m.job,FOLLOWUP_JOB); }
+  integer(m.overallMs, 120 * 3600000, 120 * 3600000);
+  assert.deepEqual(m.profileContract, profileForTriage(m));
   assert.deepEqual(m.auditContract, AUDIT_CONTRACT); assert.deepEqual(m.cpPreflightContract, CP_PREFLIGHT_CONTRACT);
-  assert.equal(m.job.jobMinutes, 150); assert.deepEqual(m.job, FOLLOWUP_JOB);
    assert.equal(m.inputs.length, m.followup ? 25 : 580); assert.equal(new Set(m.inputs.map(f => f.id)).size, m.inputs.length);
   for (const f of m.inputs) { assert(/^[a-f0-9]{64}$/.test(f.sha256)); assert.equal(f.member, `fixtures/${f.sha256}.json`); }
   assert.equal(m.design.gates.correctness_disagreements_allowed, 0);
   continuationContract(m);
   if (m.measurement) {
     assert.equal(m.measurement.adapter, 'triage-fixture');
-    if (m.followup) validateFast(m); else assert.deepEqual(m.measurement.variants, ['BASELINE','A','B']);
+    if (m.followup) validateFast(m); else if (!m.largeRun) assert.deepEqual(m.measurement.variants, ['BASELINE','A','B']);
     assert.equal(m.analysis, 'DEVELOPMENT_KEEP_HOLD_REJECT'); integer(m.revision);
     assert(typeof m.approval === 'string' && m.approval.length);
     validateBudget(m.budget);
@@ -58,22 +62,28 @@ export function validateManifest(m) {
 export function validateLock(lock) {
   validateManifest(lock.manifest); assert.equal(lock.manifestHash, digest(lock.manifest));
   assert.equal(lock.endMs, lock.originMs + lock.manifest.overallMs);
-  assert.equal(lock.profileHash, digest(PROFILE));
+  assert.equal(lock.profileHash, digest(profileForTriage(lock.manifest)));
   assert(/^[a-zA-Z0-9_-]+$/.test(lock.invocationId)); return lock;
 }
 export function compileTasks(m, templates, phase, selected = null) {
-  assert(m.followup ? phase === FAST_PHASE : PHASES.includes(phase));
+  assert(phasesFor(m).includes(phase));
   const index = new Map(m.inputs.map(f => [f.id, f]));
   return templates.filter(t => t.phase === phase && (!t.conditional || selected?.includes(t.fixture_ids[0]))).map(t => {
     const calls = [];
     const add = (inputId, variant, repeat, extra = {}) => {
       const input = index.get(inputId); assert(input);
-      const limits = { startupMs: 10000, callMs: phase === 'TRIVIAL_CONTRACT' ? 30000 : 300000, reapMs: 5000 };
+      const limits = { startupMs: 10000, callMs: m.largeRun ? 600000 : phase === 'TRIVIAL_CONTRACT' ? 30000 : 300000, reapMs: 5000 };
       const identity = { campaignId: m.campaignId, phase, taskId: t.task_id, inputId, inputHash: input.sha256, variant, repeat, ...extra,
-        ...(m.continuation || m.followup ? { measurementEpoch:m.revision } : {}) };
+        ...(m.continuation || m.followup || m.largeRun ? { measurementEpoch:m.revision } : {}) };
       calls.push({ ...identity, callId: digest(identity), limits });
     };
-    if (m.followup) {
+    if (m.largeRun) {
+      assert.equal(t.arms.length,8);
+      assert.deepEqual([...t.arms.slice(0,4)].reverse(),t.arms.slice(4));
+      assert.deepEqual([...t.arms.slice(0,4)].sort(),Object.keys(LARGE_ARMS).sort());
+      for (const [i,arm] of t.arms.entries()) add(t.fixture_ids[0],arm,Math.floor(i/4)+1,
+        { block:Math.floor(i/4)+1, position:i%4, role:t.role });
+    } else if (m.followup) {
       assert.equal(t.arms.length, 4);
       for (const [position, arm] of t.arms.entries()) {
         assert(FAST_ARMS[arm]);

@@ -28,6 +28,7 @@ jobs:
       artifact-id: ${{ steps.activate.outputs.artifact-id }}
       digest: ${{ steps.activate.outputs.digest }}
       fast-followup: ${{ steps.activate.outputs.fast-followup }}
+      large-run: ${{ steps.activate.outputs.large-run }}
     steps:
       - uses: actions/checkout@v4
       - id: activate
@@ -40,7 +41,7 @@ jobs:
           confirm: ${{ inputs.confirm }}
   canary:
     needs: activate
-    if: needs.activate.outputs.fast-followup != 'true'
+    if: needs.activate.outputs.fast-followup != 'true' && needs.activate.outputs.large-run != 'true'
     uses: ./.github/workflows/secondary-triage-stage.yml
     with:
       phase: CANARY
@@ -125,7 +126,7 @@ jobs:
       digest: ${{ needs.activate.outputs.digest }}
   audit:
     needs: [activate, canary, canary-audit, calibration, calibration-audit, all-initial, per-save, seed, trivial, confirm-all, confirm-per-save]
-    if: always() && needs.activate.result == 'success' && needs.activate.outputs.fast-followup != 'true'
+    if: always() && needs.activate.result == 'success' && needs.activate.outputs.fast-followup != 'true' && needs.activate.outputs.large-run != 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -139,7 +140,7 @@ jobs:
           digest: ${{ needs.activate.outputs.digest }}
   independent-audit:
     needs: [activate, audit]
-    if: always() && needs.activate.result == 'success' && needs.activate.outputs.fast-followup != 'true'
+    if: always() && needs.activate.result == 'success' && needs.activate.outputs.fast-followup != 'true' && needs.activate.outputs.large-run != 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     steps:
@@ -160,8 +161,8 @@ jobs:
       artifact-id: ${{ needs.activate.outputs.artifact-id }}
       digest: ${{ needs.activate.outputs.digest }}
   fast-audit:
-    needs: [activate, fast-followup]
-    if: always() && needs.activate.result == 'success' && needs.activate.outputs.fast-followup == 'true'
+    needs: [activate, fast-followup, large-run]
+    if: always() && needs.activate.result == 'success' && (needs.activate.outputs.fast-followup == 'true' || needs.activate.outputs.large-run == 'true')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
@@ -173,3 +174,36 @@ jobs:
           mode: independent-audit
           artifact-id: ${{ needs.activate.outputs.artifact-id }}
           digest: ${{ needs.activate.outputs.digest }}
+  large-run:
+    needs: activate
+    if: needs.activate.outputs.large-run == 'true'
+    uses: ./.github/workflows/secondary-triage-stage.yml
+    with:
+      phase: H9_CP_10M
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  bundle-results:
+    needs: [activate, fast-audit, independent-audit]
+    if: always() && needs.activate.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble portable evidence without solver replay
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -B tools/secondary-bench/postprocess/package.py bundle --repo "$GITHUB_REPOSITORY" --run "$GITHUB_RUN_ID" --out collected
+      - name: Upload one result bundle (also on audit failure)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: triage-handoff-${{ github.run_id }}
+          retention-days: 30
+          compression-level: 0
+          if-no-files-found: error
+          path: |
+            collected/ANALYSIS.zip
+            collected/EVIDENCE.zip
+            collected/SUMMARY.json
+            collected/COLLECTION.json
+            collected/PACKAGE.json

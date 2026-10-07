@@ -23,6 +23,9 @@ inputs:
     required: false
     description: Job clock before checkout/setup
 outputs:
+  large-run:
+    description: Approved broad ten-minute study
+    value: ${{ steps.native.outputs.large-run }}
   fast-followup:
     description: Approved single-stage follow-up
     value: ${{ steps.native.outputs.fast-followup }}

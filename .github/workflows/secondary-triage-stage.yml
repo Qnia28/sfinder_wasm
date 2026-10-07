@@ -36,7 +36,7 @@ jobs:
     needs: plan
     if: needs.plan.outputs.has-work == 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 150
+    timeout-minutes: 350
     strategy:
       fail-fast: false
       max-parallel: 16

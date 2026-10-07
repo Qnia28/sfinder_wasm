@@ -10,7 +10,8 @@ process.once('message', async () => {
     assert.equal(process.platform, 'linux'); assertORToolsSupported();
     const payload = { keys: ['a','b','c'], offsets: new Uint32Array([0,3]),
       ids: new Uint32Array([0,1,2]), qualities: new Uint32Array([1,2,2]), count: 1, seedKeys: ['a'] };
-    engine = startSecondaryEngine('cpsat', payload, { limitMs: 15000 });
+    // The outer synthetic scope is bounded; exercise the unlimited product path.
+    engine = startSecondaryEngine('cpsat', payload, { limitMs: null });
     const result = await engine.promise;
     assert.equal(result.completed, true); assert.equal(result.qualityComplete, true); assert.equal(result.tieComplete, true);
     assert.deepEqual(result.keys, ['b']); assert.deepEqual(result.qualityVector, [2]);
