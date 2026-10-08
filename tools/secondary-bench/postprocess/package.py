@@ -95,13 +95,21 @@ def timeout_map(text):
 def job_accounting(jobs, workflows):
     campaign = timeout_map(workflows.get('.github/workflows/secondary-triage-campaign.yml', ''))
     stage = timeout_map(workflows.get('.github/workflows/secondary-triage-stage.yml', ''))
-    details = []; unknown = []
+    details = []; unknown = []; seen = {}
     for job in jobs:
         if job.get('conclusion') == 'skipped': continue
+        # GitHub clones retained successful jobs with new IDs on a partial rerun.
+        # Only identical finished execution metadata on an assigned runner aliases.
+        alias = (job['name'], job.get('started_at'), job.get('completed_at'), job.get('runner_id'))
+        retained = job.get('conclusion') == 'success' and all(alias[1:])
+        if retained and alias in seen:
+            seen[alias].setdefault('retainedJobAliases', []).append(job['id'])
+            continue
         name = job['name']
         key = 'plan' if name.endswith(' / plan') else 'run' if ' / run (' in name else None
         minutes = stage.get(key) if key else campaign.get(name)
         details.append(dict(id=job['id'], name=name, status=job['status'], conclusion=job.get('conclusion'), reservedMinutes=minutes))
+        if retained: seen[alias] = details[-1]
         if minutes is None: unknown.append(job['id'])
     return dict(jobs=details, unknownReservationJobs=unknown,
                 reservedHours=sum(j['reservedMinutes'] for j in details)/60 if not unknown else None)
@@ -110,6 +118,23 @@ def job_accounting(jobs, workflows):
 def inspect_artifacts(root, inventory, run, workflows):
     locks = {}; plans = []; raw = {}; starts = {}; cp_ids = set(); errors = []; analysis_files = []
     reports = []; audits = []; dbs = []; environments = []
+    # Reruns retain original final artifacts. Select the newest version of each
+    # exact final artifact name, while retaining every version in the archive.
+    selected_finals = set()
+    final_groups = {}
+    for a in inventory:
+        if role(a['name']) == 'report' or (a['name'].startswith('triage-independent-') and a['name'].endswith('-FINAL')):
+            final_groups.setdefault(a['name'], []).append(a)
+    for name, versions in final_groups.items():
+        if len(versions) == 1:
+            selected_finals.add(versions[0]['id'])
+        elif run.get('run_attempt', 1) > 1 and all(a.get('created_at') for a in versions):
+            newest = max(a['created_at'] for a in versions)
+            candidates = [a for a in versions if a['created_at'] == newest]
+            if len(candidates) == 1: selected_finals.add(candidates[0]['id'])
+            else: errors.append(dict(error='AMBIGUOUS_FINAL_ARTIFACT_VERSION', name=name))
+        else:
+            errors.append(dict(error='AMBIGUOUS_FINAL_ARTIFACT_VERSION', name=name))
     for a in inventory:
         if role(a['name']) == 'excluded': continue
         if not re.fullmatch(r'sha256:[a-f0-9]{64}',a.get('digest') or ''):
@@ -158,6 +183,12 @@ def inspect_artifacts(root, inventory, run, workflows):
                         analysis_files.append(pointer)
         except (ValueError, KeyError, zipfile.BadZipFile) as exc:
             errors.append(dict(artifactId=a['id'], error=str(exc)))
+    historical_reports = [dict(report=v,pointer=p) for v,p in reports if p['artifactId'] not in selected_finals]
+    historical_audits = [dict(report=v,pointer=p) for v,p in audits if p['artifactId'] not in selected_finals]
+    historical_dbs = [p for p in dbs if p['artifactId'] not in selected_finals]
+    reports = [(v,p) for v,p in reports if p['artifactId'] in selected_finals]
+    audits = [(v,p) for v,p in audits if p['artifactId'] in selected_finals]
+    dbs = [p for p in dbs if p['artifactId'] in selected_finals]
     current = [l for l in locks.values() if str(l['invocationId']) == str(run['id'])]
     if len(current) != 1: errors.append(dict(error='CURRENT_ACTIVATION_LOCK_MISSING_OR_AMBIGUOUS'))
     lock = current[0] if len(current) == 1 else None
@@ -181,7 +212,7 @@ def inspect_artifacts(root, inventory, run, workflows):
         if not owner or owner['invocationId']!=r['invocationId'] or owner['manifest']['campaignId']!=r['campaignId']:
             errors.append(dict(error='RAW_LOCK_IDENTITY_MISMATCH',callId=key[2]))
     start_rows = [dict(campaignId=k[0], invocationId=k[1], executionAttemptId=k[2], callId=v['value']['callId'], pointer=v['pointer']) for k,v in starts.items()]
-    jobs = job_accounting(run['jobs'], workflows)
+    jobs = job_accounting(run.get('priorAttemptJobs', []) + run['jobs'], workflows)
     current_plans=[plan for plan,_ in plans if lock and plan['manifestHash']==lock['manifestHash']]
     planned_matrix=sum(plan.get('chunks',0) for plan in current_plans)
     allocated_matrix=sum(' / run (' in j['name'] for j in jobs['jobs'])
@@ -246,6 +277,9 @@ def inspect_artifacts(root, inventory, run, workflows):
     return dict(campaignId=m.get('campaignId'), errors=errors, analysisFiles=analysis_files,
         reports=[dict(report=v, pointer=p) for v,p in reports], audits=[dict(report=v, pointer=p) for v,p in audits], rawDatabases=dbs,
         rawDatabaseParity=database_check,
+        finalArtifactSelection=dict(rule='LATEST_CREATED_PER_EXACT_NAME_ON_RERUN',
+            selectedArtifactIds=sorted(selected_finals), historicalReports=historical_reports,
+            historicalAudits=historical_audits, historicalRawDatabases=historical_dbs),
         accounting=dict(calls=list(calls.values()), starts=start_rows, budget=budget, runnerAllocation=jobs,
             **(dict(priorReservedCalls=m['largeRun']['priorCalls'],priorCampaignId=m['provenance']['priorCampaignId']) if m.get('largeRun') else {}),
             priorReservedRunnerHours=prior_hours, cumulativeReservedRunnerHours=prior_hours+jobs['reservedHours'] if jobs['reservedHours'] is not None else None,
@@ -266,6 +300,10 @@ def collect(repository, run_id, out, allow_active=False):
     artifacts = [a for p in api(repository, f'actions/runs/{run_id}/artifacts?per_page=100', True) for a in p['artifacts']]
     jobs = [j for p in api(repository, f'actions/runs/{run_id}/attempts/{run["run_attempt"]}/jobs?per_page=100', True) for j in p['jobs']]
     run['jobs'] = jobs
+    if run['run_attempt'] > 1:
+        run['priorAttemptJobs'] = [j for attempt in range(1, run['run_attempt'])
+            for page in api(repository, f'actions/runs/{run_id}/attempts/{attempt}/jobs?per_page=100', True)
+            for j in page['jobs']]
     objects = out/'objects'; objects.mkdir(exist_ok=True); failures = []
     if not allow_active:
         handoffs=[a for a in artifacts if a['name']==f'triage-handoff-{run_id}' and not a['expired']]
@@ -358,6 +396,7 @@ def package(out):
         errors=errors, accounting=result['accounting'], rawDatabaseParity=result['rawDatabaseParity'], decision='LLM_REVIEW_REQUIRED', solverCalls=0,
         reportFiles=[r['pointer'] for r in result['reports']], auditFiles=[r['pointer'] for r in result['audits']],
         rawDatabaseFiles=result['rawDatabases'],
+        finalArtifactSelection=result['finalArtifactSelection'],
         artifactIndex=[dict(**a, collectionRole=role(a['name']), object='objects/'+a['digest'][7:]+'.zip'
                             if role(a['name'])!='excluded' and re.fullmatch(r'sha256:[a-f0-9]{64}', a.get('digest') or '') and (out/'objects'/(a['digest'][7:]+'.zip')).exists() else None)
                        for a in capture['inventory']],

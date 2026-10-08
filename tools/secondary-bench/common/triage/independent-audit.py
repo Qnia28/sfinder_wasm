@@ -22,8 +22,9 @@ LARGE_ARMS = {
     'H9_OPEN': dict(policy='A_H9',trace=True,secondary='auto',cpLimitMs=None),
     'CP_OPEN': dict(policy='baseline',trace=True,secondary='cpsat',cpLimitMs=None),
 }
+def memory_run(m):return (m.get('largeRun') or {}).get('id')=='cp-memory-stages-v1'
 def phases_for(m):
-    return ['H9_CP_10M'] if m.get('largeRun') else ['A_FAST_FACTORIAL'] if m.get('followup') else PHASES
+    return ['CP_MEMORY_R9'] if memory_run(m) else ['H9_CP_10M'] if m.get('largeRun') else ['A_FAST_FACTORIAL'] if m.get('followup') else PHASES
 
 def encode(v, sorted_keys=True):
     # Node JSON.stringify serializes integral floats without a decimal suffix.
@@ -97,7 +98,10 @@ def compile_calls(m, templates, phase, selected=None):
             if m.get('continuation') or m.get('followup') or m.get('largeRun'):ident['measurementEpoch']=m['revision']
             calls.append(dict(**ident, callId=digest(ident), limits=dict(startupMs=10000,
                 callMs=600000 if m.get('largeRun') else 30000 if phase == 'TRIVIAL_CONTRACT' else 300000, reapMs=5000)))
-        if m.get('largeRun'):
+        if memory_run(m):
+            require(sorted(t['arms'])==['CP_OPEN','H9_OPEN'],'memory arm order')
+            for position,arm in enumerate(t['arms']):add(t['fixture_ids'][0],arm,1,dict(block=1,position=position,role=t['role']))
+        elif m.get('largeRun'):
             require(len(t['arms'])==8 and set(t['arms'][:4])==set(LARGE_ARMS) and t['arms'][4:]==list(reversed(t['arms'][:4])), 'large arm order')
             for i,arm in enumerate(t['arms']):
                 add(t['fixture_ids'][0],arm,i//4+1,dict(block=i//4+1,position=i%4,role=t['role']))
@@ -402,7 +406,15 @@ def audit(config, history, output, phase=None, inputs_only=False):
     # Independent schedule compiler, not a copy of the JS-produced plan ledger.
     full = {p: compile_calls(m, templates, p, {f['id'] for f in m['inputs']}) for p in phases_for(m)}
     full_calls = [c for ts in full.values() for t in ts for c in t]
-    if m.get('largeRun'):
+    if memory_run(m):
+        l=m['largeRun']
+        require(m['revision']==9 and m['campaignId']=='TRIAGE_CP_MEMORY_20261009_R9','memory identity')
+        require(len(full_calls)==l['calls']==8 and sum(len(chunks(ts,m['job'])) for ts in full.values())==l['chunks']==4,'memory schedule')
+        require(l['priorCalls']==13047 and l['priorCpCalls']==10 and l['priorRunnerHours']==2533.333333333333,'memory prior accounting')
+        require(l['priorCalls']+l['priorCpCalls']+9<=m['maxCalls']==20000,'memory call admission')
+        require(l['priorRunnerHours']+4*m['job']['jobMinutes']/60+l['controlHours']<=m['maxRunnerHours']==5000 and m['maxParallel']==4,'memory runner admission')
+        require(m['measurement']['variants']==['CP_OPEN','H9_OPEN'] and m['profileContract']['arms']==LARGE_ARMS and m['profileContract']['callTimeoutMs']==600000,'memory profile')
+    elif m.get('largeRun'):
         l=m['largeRun']
         require(m['revision']==8 and m['campaignId']=='TRIAGE_H9_CP10M_20261007_R8','large identity')
         require(len(full_calls)==l['calls']==4640 and sum(len(chunks(ts,m['job'])) for ts in full.values())==l['chunks']==194,'large schedule')
@@ -449,7 +461,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
         require(parent['originMs']==l['originMs']==source['originMs'] and parent['endMs']==l['endMs']==source['endMs'],'large original clock')
         if lock:require(lock['originMs']==l['originMs'] and lock['endMs']==l['endMs'],'large lock clock')
         refs={f['id']:f for f in source['manifest']['inputs']}
-        require(len(m['inputs'])==580 and all(refs.get(f['id'])==f for f in m['inputs']),'large original fixtures')
+        require(len(m['inputs'])==(4 if memory_run(m) else 580) and all(refs.get(f['id'])==f for f in m['inputs']),'large original fixtures')
         prior_reserved=l['priorCalls']+l['priorCpCalls']+1
     elif m.get('followup'):
         follow=m['followup']; parent=read(config/'PARENT_LOCK.json')
@@ -606,6 +618,18 @@ def audit(config, history, output, phase=None, inputs_only=False):
                     require(probe and probe['status'] in ['EXACT','PROBE_INCOMPLETE']
                         and request['job']['probeSeed']==probe['execution']['result']['probeSeed'], 'trial probe seed provenance')
                 scope = e['memoryScope']; require(scope['memoryMax'] == 3221225472 and scope['swapMax'] == 0, 'scope memory/swap')
+                if memory_run(m):
+                    require(request['job'].get('memoryDiagnostic')=='cp-memory-v1','memory diagnostic request')
+                    streams=list(attempt_dir.glob('memory-*.jsonl'));require(bool(streams),'missing memory evidence')
+                    roles=[]
+                    for stream in streams:
+                        data=stream.read_bytes();require(data.endswith(b'\n'),'torn memory trace')
+                        samples=[json.loads(line) for line in data.splitlines()]
+                        require(samples and [r['sequence'] for r in samples]==list(range(1,len(samples)+1)),'memory sequence')
+                        require(len(samples)<=10000 and all(r['schema']==1 and r['memory']['rss']>0 and r['cgroupCurrent']>0 for r in samples),'memory scalar contract')
+                        roles.append(samples[0]['role'])
+                    require('policy-parent' in roles,'missing parent memory stream')
+                    if any(t['name']=='cp-start' for t in traces):require('cpsat' in roles,'CP started without diagnostic stream')
                 if cp_failure(r): raise ValueError('CP runtime/proof failure in policy profile')
                 if r['status'] not in ['EXACT','INCOMPLETE','PROBE_INCOMPLETE','TIMEOUT_CALL','TIMEOUT_STARTUP','OOM']:
                     raise ValueError('execution failure: '+r['status'])

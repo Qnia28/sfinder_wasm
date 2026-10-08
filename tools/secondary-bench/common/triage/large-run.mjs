@@ -12,8 +12,34 @@ export const LARGE_ARMS = Object.freeze({
   CP_OPEN: { policy:'baseline', trace:true, secondary:'cpsat', cpLimitMs:null },
 });
 export const LARGE_JOB = Object.freeze({ ...FOLLOWUP_JOB, jobMs:325*60000, jobMinutes:350 });
+export const isMemoryRun = m => m.largeRun?.id === 'cp-memory-stages-v1';
+export const largePhase = m => isMemoryRun(m) ? 'CP_MEMORY_R9' : LARGE_PHASE;
+export const MEMORY_JOB = Object.freeze({ ...FOLLOWUP_JOB,parts:1,jobMs:45*60000,jobMinutes:350 });
+export const MEMORY_INPUTS = [
+  'cycle1-pcinfo-033/all/restricted-split/ALL',
+  'cycle1-pcinfo-030/all/restricted-split/ALL',
+  'cycle1-pcinfo-031/all/bag-plus-next-draw/ALL',
+  'cycle1-pcinfo-040/all/restricted-split/ALL',
+];
 export function validateLarge(m) {
   const l=m.largeRun;
+  if (isMemoryRun(m)) {
+    assert.equal(m.revision,9);assert.equal(m.campaignId,'TRIAGE_CP_MEMORY_20261009_R9');
+    assert(!m.continuation&&!m.followup&&!m.prerequisiteReuse);
+    assert.deepEqual(m.inputs.map(f=>f.id),MEMORY_INPUTS);
+    assert.deepEqual(m.measurement.variants,['CP_OPEN','H9_OPEN']);
+    assert.deepEqual(m.job,MEMORY_JOB);assert.equal(m.maxParallel,4);
+    assert.equal(l.calls,8);assert.equal(l.chunks,4);assert.equal(l.callMs,600000);
+    assert.equal(l.priorCalls,13047);assert.equal(l.priorCpCalls,10);
+    assert.equal(l.priorRunnerHours,2533.333333333333);assert.equal(l.controlHours,6);
+    assert.equal(l.originMs,1791287463000);assert.equal(l.endMs,1791719463000);
+    assert.equal(m.maxCalls,20000);assert.equal(m.maxRunnerHours,5000);
+    assert.equal(l.budgetAuthorization,'USER_CONTINUE_CP_MEMORY_20261009');
+    for (const k of ['parentLockSha256','fixtureSourceLockSha256','accountingSha256'])assert(/^[a-f0-9]{64}$/.test(l[k]));
+    assert(l.priorCalls+l.priorCpCalls+l.calls+1<=m.maxCalls);
+    assert(l.priorRunnerHours+4*m.job.jobMinutes/60+l.controlHours<=m.maxRunnerHours);
+    return;
+  }
   assert.equal(l.id,'h9-cp-10m-v1'); assert.equal(m.revision,8);
   assert.equal(m.campaignId,'TRIAGE_H9_CP10M_20261007_R8');
   assert(!m.continuation && !m.followup && !m.prerequisiteReuse);
@@ -33,13 +59,15 @@ export function largeParent(m) {
   const load=(name,hash)=>{const b=fs.readFileSync('config/'+name);assert.equal(sha256(b),hash);return JSON.parse(b);};
   const parent=load('PARENT_LOCK.json',l.parentLockSha256);
   const source=load('FIXTURE_SOURCE_LOCK.json',l.fixtureSourceLockSha256);
-  assert.equal(parent.invocationId,'37604369041'); assert.equal(source.invocationId,'37487586383');
+  assert.equal(parent.invocationId,isMemoryRun(m)?'37623263031':'37604369041'); assert.equal(source.invocationId,isMemoryRun(m)?'37623263031':'37487586383');
   assert.equal(parent.originMs,l.originMs); assert.equal(parent.endMs,l.endMs);
   assert.equal(source.originMs,l.originMs); assert.equal(source.endMs,l.endMs);
   for(const ref of m.inputs)assert.deepEqual(ref,source.manifest.inputs.find(f=>f.id===ref.id));
   const a=load('PRIOR_ACCOUNTING.json',l.accountingSha256);
   assert.equal(a.reservedCalls,l.priorCalls); assert.equal(a.cumulativeCpSyntheticCalls,l.priorCpCalls);
   assert.equal(a.cumulativeReservedRunnerHours,l.priorRunnerHours);
-  assert(a.budgetEvidenceComplete && !a.unknownStarts.length);
+  if (isMemoryRun(m)) assert(a.latestPackageCollectionComplete && a.latestPackageMissingCalls===0 && a.latestPackageUnknownAllocations===0);
+  else assert(a.budgetEvidenceComplete);
+  assert(!a.unknownStarts.length);
   return parent;
 }

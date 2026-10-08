@@ -4,7 +4,7 @@ import { FOLLOWUP_JOB, worstCall, packTasks, validateBudget } from '../budget.mj
 import { continuationContract } from './continuation.mjs';
 import { evidenceFirst } from './gates.mjs';
 import { FAST_PHASE, FAST_ARMS, validateFast } from './fast-followup.mjs';
-import { LARGE_PHASE, LARGE_ARMS, validateLarge } from './large-run.mjs';
+import { LARGE_PHASE, LARGE_ARMS, validateLarge, isMemoryRun, largePhase } from './large-run.mjs';
 
 export const PROFILE = Object.freeze({ id: 'triage-cold-v1', lifecycle: 'fresh-process-cold',
   exactHumanQuality: 'true', timingContract: 'post-primary-policy-settled-v1',
@@ -18,7 +18,7 @@ export const AUDIT_CONTRACT = Object.freeze({ id: 'independent-python-evidence-v
 export const CP_PREFLIGHT_CONTRACT = Object.freeze({ id: 'scoped-cpsat-weighted-tie-v1', activationCalls: 1,
   maxCanaryVmCalls: 3, callMs: 30000, populationCalls: 0 });
 export const profileForTriage = m => m.largeRun ? { ...PROFILE, cpLimitMs:null, arms:LARGE_ARMS, callTimeoutMs:600000 } : PROFILE;
-export const phasesFor = m => m.largeRun ? [LARGE_PHASE] : m.followup ? [FAST_PHASE] : PHASES;
+export const phasesFor = m => m.largeRun ? [largePhase(m)] : m.followup ? [FAST_PHASE] : PHASES;
 export function validateManifest(m) {
   strict(m,['schemaVersion','campaignId','purpose','freshValidation','profile','profileContract','maxParallel','maxCalls',
     'maxRunnerHours','overallMs','job','inputs','baselineFiles','sourceFiles','tasksHash','design','provenance','runtime',
@@ -34,13 +34,13 @@ export function validateManifest(m) {
   }
   assert.equal(m.schemaVersion, 1); assert.equal(m.profile, PROFILE.id);
   assert.equal(m.purpose, 'development-policy-ab'); assert.equal(m.freshValidation, false);
-  assert.equal(m.maxParallel, 16);
+  assert.equal(m.maxParallel, isMemoryRun(m)?4:16);
   if (m.largeRun) validateLarge(m);
   else { assert.equal(m.maxCalls,8479); integer(m.maxRunnerHours,1400,1400); assert.deepEqual(m.job,FOLLOWUP_JOB); }
   integer(m.overallMs, 120 * 3600000, 120 * 3600000);
   assert.deepEqual(m.profileContract, profileForTriage(m));
   assert.deepEqual(m.auditContract, AUDIT_CONTRACT); assert.deepEqual(m.cpPreflightContract, CP_PREFLIGHT_CONTRACT);
-   assert.equal(m.inputs.length, m.followup ? 25 : 580); assert.equal(new Set(m.inputs.map(f => f.id)).size, m.inputs.length);
+   assert.equal(m.inputs.length, isMemoryRun(m)?4:m.followup ? 25 : 580); assert.equal(new Set(m.inputs.map(f => f.id)).size, m.inputs.length);
   for (const f of m.inputs) { assert(/^[a-f0-9]{64}$/.test(f.sha256)); assert.equal(f.member, `fixtures/${f.sha256}.json`); }
   assert.equal(m.design.gates.correctness_disagreements_allowed, 0);
   continuationContract(m);
@@ -77,7 +77,10 @@ export function compileTasks(m, templates, phase, selected = null) {
         ...(m.continuation || m.followup || m.largeRun ? { measurementEpoch:m.revision } : {}) };
       calls.push({ ...identity, callId: digest(identity), limits });
     };
-    if (m.largeRun) {
+    if (isMemoryRun(m)) {
+      assert.deepEqual([...t.arms].sort(),['CP_OPEN','H9_OPEN']);
+      for (const [position,arm] of t.arms.entries()) add(t.fixture_ids[0],arm,1,{block:1,position,role:t.role});
+    } else if (m.largeRun) {
       assert.equal(t.arms.length,8);
       assert.deepEqual([...t.arms.slice(0,4)].reverse(),t.arms.slice(4));
       assert.deepEqual([...t.arms.slice(0,4)].sort(),Object.keys(LARGE_ARMS).sort());

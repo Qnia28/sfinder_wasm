@@ -15651,7 +15651,9 @@ var DirectCpSatExecutor = class {
     return this.nextRequestId++;
   }
   async solve(requestId, solveRequest, createdAtMs, onEvent) {
+    globalThis.__secondaryMemoryTrace?.('runtime-load-begin');
     const module = await this.module();
+    globalThis.__secondaryMemoryTrace?.('runtime-load-end', { wasmBytes: module.HEAPU8.buffer.byteLength });
     const startedAtMs = nowMs();
     await onEvent(createCpSatJobStatusEvent(
       requestId,
@@ -15662,14 +15664,17 @@ var DirectCpSatExecutor = class {
     const modelBytes = solveRequest.model;
     const paramsBytes = solveRequest.parameters;
     const flags = callbackFlags(solveRequest.callbacks);
+    globalThis.__secondaryMemoryTrace?.('wasm-copy-begin', { modelBytes: modelBytes.length, wasmBytes: module.HEAPU8.buffer.byteLength });
     const modelPtr = allocateWasmBytes(module, modelBytes);
     const paramsPtr = allocateWasmBytes(module, paramsBytes);
+    globalThis.__secondaryMemoryTrace?.('wasm-copy-end', { wasmBytes: module.HEAPU8.buffer.byteLength });
     let callbackId = 0;
     let callbackError = null;
     const pendingCallbacks = [];
     try {
       const bytes = await readWasmResult(module, async (lengthPointer) => {
         if (!flags) {
+          globalThis.__secondaryMemoryTrace?.('native-solve-enter', { wasmBytes: module.HEAPU8.buffer.byteLength });
           return await module.ccall(
             "solve_model",
             "number",
@@ -15702,6 +15707,7 @@ var DirectCpSatExecutor = class {
           { async: true }
         );
       }, (pointer) => module._free_buffer(pointer));
+      globalThis.__secondaryMemoryTrace?.('native-solve-return', { wasmBytes: module.HEAPU8.buffer.byteLength });
       await Promise.all(pendingCallbacks);
       if (callbackError) throw callbackError;
       return { type: "solve", response: bytes };
@@ -21845,7 +21851,9 @@ var CpSolver = class {
       ...solverParameters
     } = options;
     const mergedParams = { ...this.parameters, ...solverParameters };
+    globalThis.__secondaryMemoryTrace?.('encode-begin');
     const modelBytes = await CpSat.createModel(model.proto());
+    globalThis.__secondaryMemoryTrace?.('encode-end', { modelBytes: modelBytes.length });
     const hasInternalEvents = Boolean(solutionCallback || this.bestBoundCallback || this.logCallback);
     let eventMask = requestedEventMask;
     if (hasInternalEvents && (eventMask || !onEvent)) {

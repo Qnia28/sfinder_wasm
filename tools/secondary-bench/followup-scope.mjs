@@ -67,6 +67,10 @@ export async function isolatedScope(request, outputDir) {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const [mode, filename, directory] = process.argv.slice(2); assert.equal(mode, 'inner');
   const request = readJson(filename), scope = requireLinuxMemoryScope();
+  if (request.job.memoryDiagnostic === 'cp-memory-v1') {
+    process.env.SECONDARY_MEMORY_DIRECTORY = path.resolve(directory);
+    process.env.SECONDARY_MEMORY_MODULE = new URL('./common/triage/memory-trace.mjs', import.meta.url).href;
+  }
   writeJson(path.join(directory, 'CALL_LOCK.json'), { startedUtc: new Date().toISOString(), pid: process.pid,
     node: process.version, memoryScope: scope, request });
   const events = fs.openSync(path.join(directory, 'events.jsonl'), 'wx');

@@ -16,7 +16,7 @@ import { runChunk } from './executor.mjs';
 import { isolatedScope } from '../../followup-scope.mjs';
 import { verifyReuse, collectedHistory } from './reuse.mjs';
 import { fastParent } from './fast-followup.mjs';
-import { largeParent } from './large-run.mjs';
+import { largeParent, isMemoryRun, largePhase } from './large-run.mjs';
 
 const tool = file => fileURLToPath(new URL(file, import.meta.url));
 const client = (await import('../../artifact-action/node_modules/@actions/artifact/lib/artifact.js')).default;
@@ -61,9 +61,9 @@ function getHistory(campaignId, strict = true) {
   if (strict) assert(!history.warnings.length&&!history.unknown.length,'incomplete execution history');
   return collectedHistory(validateLock(readJson('config/LOCK.json')),history);
 }
-async function cpPreflight(directory, identity) {
+async function cpPreflight(directory, identity, memoryDiagnostic = false) {
   const callId = digest({ runId, identity, check: 'CP_SYNTHETIC_PREFLIGHT_V1' });
-  const result = await isolatedScope({ callId, job: { action: 'cp-preflight' },
+  const result = await isolatedScope({ callId, job: { action: 'cp-preflight',...(memoryDiagnostic?{memoryDiagnostic:'cp-memory-v1'}:{}) },
     limits: { startupMs: 10000, callMs: 30000, reapMs: 5000 }, phaseLimits: {},
     contractChildFile: 'tools/secondary-bench/common/triage/cp-preflight-child.mjs' }, directory);
   if (result.status !== 'EXACT' || !result.reaped || result.result?.cpPreflight !== 'PASS')
@@ -71,6 +71,14 @@ async function cpPreflight(directory, identity) {
       await upload(`triage-data-TRIAGE_PROBE_SEED_AB_20261006_R1-cp-preflight-failed-${callId}`,directory); }
   assert(result.status === 'EXACT' && result.reaped && result.result?.cpPreflight === 'PASS',
     'CP actual worker/scope preflight failed: ' + JSON.stringify(result));
+  if (memoryDiagnostic) {
+    const streams=fs.readdirSync(directory).filter(n=>/^memory-.*\.jsonl$/.test(n));assert.equal(streams.length,1);
+    const rows=fs.readFileSync(path.join(directory,streams[0]),'utf8').trim().split('\n').map(JSON.parse);
+    for (const stage of ['rows-expand-end','stage-model-ready','encode-end','wasm-copy-end','native-solve-enter','native-solve-return','trace-close'])
+      assert(rows.some(r=>r.stage===stage),'missing diagnostic preflight stage '+stage);
+    assert(rows.every(r=>r.role==='cpsat'&&r.cgroupCurrent>0&&r.memory.heapUsed>0));
+    writeJson(path.join(directory,'MEMORY_PREFLIGHT.json'),{status:'PASS',events:rows.length,solverCallsAdded:0});
+  }
   return result;
 }
 function cloneBaseline(config) {
@@ -109,7 +117,7 @@ try {
       'campaign already activated; never reset its origin with another dispatch');
      if(continuation || m.followup || m.largeRun) {
       const prior=gh([`repos/${repo}/actions/runs/${parent.invocationId}`]);
-      assert.equal(prior.status,'completed');assert.equal(prior.conclusion,m.largeRun?'success':'failure');assert.equal(prior.run_attempt,1);
+       assert.equal(prior.status,'completed');assert.equal(prior.conclusion,isMemoryRun(m)?'failure':m.largeRun?'success':'failure');assert.equal(prior.run_attempt,isMemoryRun(m)?2:1);
       assert.equal(parent.commit,prior.head_sha);
       const backend=gh([`repos/${repo}/actions/artifacts/${parentArtifact.id}`]);
       assert.equal(artifactDigest(backend.digest),parentArtifact.digest);assert.equal(backend.workflow_run.id,prior.id);assert(!backend.expired);
@@ -150,7 +158,7 @@ try {
      writeJson('config/SYNTHETIC_GATE.json',{status:m.followup||m.largeRun?'LOCAL_CONTRACT_CHECK_NOT_REPEATED':'PASS',populationCalls:0,
        solverCalls:m.followup||m.largeRun?0:'LIGHTWEIGHT_SYNTHETIC_TESTS_ONLY'});
     const reuse=verifyReuse(m);
-    const cp = reuse ? readJson('config/continuation/PARENT_CP_PREFLIGHT.json') : await cpPreflight('config/cp-preflight', 'activation');
+    const cp = reuse ? readJson('config/continuation/PARENT_CP_PREFLIGHT.json') : await cpPreflight('config/cp-preflight', 'activation',isMemoryRun(m));
     if(reuse) writeJson('config/PREREQUISITE_REUSE.json',{status:'PASS',parentInvocationId:reuse.parent.invocationId,
       originalManifestHash:reuse.parent.manifestHash,phases:m.prerequisiteReuse.phases,
       reusedCalls:reuse.rows.length,solverCalls:0,newCpSyntheticCalls:0,priorCpSyntheticCalls:m.provenance.priorCpSyntheticCalls});
@@ -158,7 +166,8 @@ try {
     const receipt=await upload('triage-lock-'+m.campaignId,'config',15*60000);
      output('artifact-id',receipt.artifactId);output('digest',receipt.digest);
      output('fast-followup',String(Boolean(m.followup)));
-     output('large-run',String(Boolean(m.largeRun)));
+      output('large-run',String(Boolean(m.largeRun)));
+      output('large-phase',m.largeRun?largePhase(m):'');
   } else if(mode==='plan') {
     await download(process.env.INPUT_ARTIFACT_ID,process.env.INPUT_DIGEST,'config');
     const lock=validateLock(readJson('config/LOCK.json')); verifySources(lock.manifest.sourceFiles);

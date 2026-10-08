@@ -8,6 +8,8 @@ export function secondaryQualityVector(rows, selected) {
 
 export async function solveCpSecondaryModel({ keys, rows, count, seed }, api, { limitMs = null } = {}) {
   const { CpModel, CpSolver, LinearExpr } = api;
+  const memoryTrace = globalThis.__secondaryMemoryTrace;
+  memoryTrace?.('model-begin');
   const started = performance.now(), model = new CpModel(), cp = new CpSolver();
   const x = keys.map((_, i) => model.newBoolVar('x' + i));
   check(Number.isSafeInteger(count) && count >= 0 && count <= keys.length, 'invalid CP cardinality');
@@ -18,6 +20,7 @@ export async function solveCpSecondaryModel({ keys, rows, count, seed }, api, { 
     check(secondaryQualityVector(rows, selected).every(q => q > 0), 'CP witness misses an original row');
   };
   validate(); model.add(LinearExpr.sum(x).eq(count));
+  memoryTrace?.('normalize-begin');
   const unique = new Map();
   for (const row of rows) {
     const normalized = new Map();
@@ -30,6 +33,7 @@ export async function solveCpSecondaryModel({ keys, rows, count, seed }, api, { 
     if (previous) previous.weight++; else unique.set(key, { row: entries, weight: 1 });
   }
   const classes = [...unique.values()], ors = new Map(), coverageRows = new Set();
+  memoryTrace?.('normalize-end', { classes:classes.length });
   const logicalOr = ids => {
     if (!ids.length) return 0;
     if (ids.length === 1) return x[ids[0]];
@@ -43,6 +47,7 @@ export async function solveCpSecondaryModel({ keys, rows, count, seed }, api, { 
   }
   const levels = [...new Set(rows.flatMap(row => row.map(([, q]) => q)))].sort((a, b) => a - b);
   if (levels.length > 1) levels.shift();
+  memoryTrace?.('coverage-levels-ready', { levels:levels.length, coverageRows:coverageRows.size });
   const objectiveFor = level => {
     const groups = new Map();
     for (const { row, weight } of classes) {
@@ -59,6 +64,7 @@ export async function solveCpSecondaryModel({ keys, rows, count, seed }, api, { 
   while (radix ** batch > 2 ** 45 && batch > 1) batch--;
   const stages = [];
   async function optimize(expression, phase, detail) {
+    memoryTrace?.('stage-model-ready', { phase,...detail,stageIndex:stages.length,variables:model.proto().variables.length,constraints:model.proto().constraints.length });
     const remaining = limitMs === null ? null : limitMs - (performance.now() - started);
     if (remaining !== null && remaining <= 0) { status = 'TIMEOUT'; return false; }
     model.maximize(expression); model.proto().solutionHint = undefined;
@@ -67,6 +73,7 @@ export async function solveCpSecondaryModel({ keys, rows, count, seed }, api, { 
     status = cp.statusName(await cp.solve(model, { numWorkers: 1, subsolvers: ['max_lp'], randomSeed: 1,
       addZeroHalfCuts: false, useSatInprocessing: false, relativeGapLimit: 0, absoluteGapLimit: 0,
       ...(remaining === null ? {} : { maxTimeInSeconds: remaining / 1000 }), executor: 'direct' }));
+    memoryTrace?.('stage-solve-return', { phase,...detail,stageIndex:stages.length,status });
     if (status === 'OPTIMAL' || status === 'FEASIBLE') { selected = x.flatMap((v, i) => cp.value(v) ? [i] : []); validate(); }
     if (status !== 'OPTIMAL') return false;
     const exact = phase === 'quality'
@@ -79,6 +86,7 @@ export async function solveCpSecondaryModel({ keys, rows, count, seed }, api, { 
   let qualityComplete = true;
   for (let start = 0; start < levels.length; start += batch) {
     const block = levels.slice(start, start + batch);
+    memoryTrace?.('quality-batch-begin', { start,levels:block });
     const expression = LinearExpr.weightedSum(block.map(objectiveFor), block.map((_, i) => radix ** (block.length - 1 - i)));
     if (!await optimize(expression, 'quality', { levels: block })) { qualityComplete = false; break; }
   }

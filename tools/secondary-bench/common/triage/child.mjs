@@ -17,6 +17,13 @@ export function historicalWitnessHash(verified, expected) {
   return hash(JSON.stringify(value));
 }
 export async function executeTriage(job) {
+  let memoryDiagnostic, memoryTimer;
+  if (job.memoryDiagnostic === 'cp-memory-v1') {
+    const { installMemoryTrace } = await import('./memory-trace.mjs');
+    memoryDiagnostic = installMemoryTrace('policy-parent');
+    memoryTimer = setInterval(()=>memoryDiagnostic.trace('sample'),250);
+    memoryTimer.unref();
+  }
   assert.equal(job.exactHumanQuality, 'true');
   assert(['PRECHANGE_BASELINE','BASELINE','A','B','TRACE_OFF_BASELINE','TRACE_ON_BASELINE',
     'I100K_SEED_CAPTURE','T_PRIMARY_SEED','T_PROBE_SEED', ...Object.keys(FAST_ARMS), ...Object.keys(LARGE_ARMS)].includes(job.variant),'unregistered benchmark variant');
@@ -40,8 +47,10 @@ export async function executeTriage(job) {
     // Compile/init and JS packing are included in the measured post-primary entry.
     const init = performance.now(); solver = await createWasmSolver(4, { legal: false });
     const initMs = performance.now() - init;
+    memoryDiagnostic?.trace('parent-rust-init-end');
     const packing = performance.now(); const view = packedView(fixture, registerNumericCoverage);
     const packingMs = performance.now() - packing;
+    memoryDiagnostic?.trace('parent-packed-ready');
     const primaryKeys = fixture.seed.map(id => fixture.keys[id]);
     const { backend, kernelStats = {} } = fixture.cardinalityProof;
     const trace = traceOn ? event => {
@@ -101,7 +110,7 @@ export async function executeTriage(job) {
       cpDelayMs: diagnostic ? null : arm?.secondary==='cpsat' ? 0 : 60000, cpLimitMs: diagnostic ? null : cpLimitMs,
       runtime: { node: process.version, v8: process.versions.v8, platform: process.platform, arch: process.arch },
       proof: { witnessAudit: 'PASS', engineCompleted: verified.completed, independentOptimality: 'NOT_CLAIMED_BY_WITNESS_AUDIT' } };
-  } finally { solver?.close(); }
+  } finally { solver?.close();clearInterval(memoryTimer);memoryDiagnostic?.close(); }
 }
 if (process.send) {
   process.once('message', async ({ job }) => {

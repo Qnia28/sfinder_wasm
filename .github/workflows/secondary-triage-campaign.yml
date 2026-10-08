@@ -29,6 +29,7 @@ jobs:
       digest: ${{ steps.activate.outputs.digest }}
       fast-followup: ${{ steps.activate.outputs.fast-followup }}
       large-run: ${{ steps.activate.outputs.large-run }}
+      large-phase: ${{ steps.activate.outputs.large-phase }}
     steps:
       - uses: actions/checkout@v4
       - id: activate
@@ -179,7 +180,7 @@ jobs:
     if: needs.activate.outputs.large-run == 'true'
     uses: ./.github/workflows/secondary-triage-stage.yml
     with:
-      phase: H9_CP_10M
+      phase: ${{ needs.activate.outputs.large-phase }}
       artifact-id: ${{ needs.activate.outputs.artifact-id }}
       digest: ${{ needs.activate.outputs.digest }}
   bundle-results:

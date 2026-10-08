@@ -100,6 +100,47 @@ class PackageTests(unittest.TestCase):
             self.assertEqual(s['rawDatabaseParity'],'FAIL');self.assertEqual(s['analysisMaterials'],'PARTIAL')
             self.assertEqual(s['collectionState'],'INCOMPLETE')
 
+    def test_rerun_selects_newest_final_preserving_old_failure_and_checks_new_db(self):
+        root=self.root/'result';capture=fixture(root)
+        newer=self.root/'newer';new=fixture(newer,bad_db=True)
+        for a in capture['inventory']:a['created_at']='2026-10-07T00:00:00Z'
+        for a in new['inventory']:
+            if not a['name'].startswith(('triage-final-', 'triage-independent-')):continue
+            b=copy.deepcopy(a);b.update(id=a['id']+100,created_at='2026-10-08T00:00:00Z')
+            file=b['digest'][7:]+'.zip'
+            (root/'objects'/file).write_bytes((newer/'objects'/file).read_bytes())
+            capture['inventory'].append(b)
+        capture['run']['run_attempt']=2;capture['runAttempt']=2
+        (root/'COLLECTION.json').write_text(p.encode(capture)+'\n',encoding='utf-8')
+        s=p.package(root)
+        self.assertEqual(s['auditFiles'][0]['artifactId'],105)
+        self.assertEqual(s['evidenceValidity'],'INCOMPLETE')
+        self.assertEqual(s['rawDatabaseParity'],'FAIL','never fall back to the older passing DB')
+        self.assertEqual(s['finalArtifactSelection']['historicalAudits'][0]['pointer']['artifactId'],5)
+        with zipfile.ZipFile(root/'ANALYSIS.zip') as z:
+            self.assertIn('reports/5/AUDIT_INDEX.sqlite',z.namelist())
+            self.assertIn('reports/105/AUDIT_INDEX.sqlite',z.namelist())
+
+    def test_ambiguous_final_versions_are_not_silently_selected(self):
+        root=self.root/'result';capture=fixture(root)
+        duplicate=copy.deepcopy(capture['inventory'][-1]);duplicate['id']=99
+        capture['inventory'].append(duplicate);capture['run']['run_attempt']=2
+        r=p.inspect_artifacts(root,capture['inventory'],capture['run'],capture['workflows'])
+        self.assertTrue(any(e['error']=='AMBIGUOUS_FINAL_ARTIFACT_VERSION' for e in r['errors']))
+        self.assertEqual(r['rawDatabaseParity'],'MISSING')
+
+    def test_retry_reservations_include_failed_jobs_but_not_retained_success_clones(self):
+        wf={'.github/workflows/secondary-triage-stage.yml':'jobs:\n  run:\n    timeout-minutes: 350\n'}
+        old=dict(id=1,name='large-run / run (0)',status='completed',conclusion='success',
+                 started_at='2026-10-07T00:00:00Z',completed_at='2026-10-07T00:01:00Z',runner_id=100)
+        failed={**old,'id':2,'name':'large-run / run (1)','conclusion':'failure','runner_id':0}
+        retained={**old,'id':3}
+        retry={**failed,'id':4,'conclusion':'success','runner_id':101,'started_at':'2026-10-08T00:00:00Z',
+               'completed_at':'2026-10-08T00:01:00Z'}
+        a=p.job_accounting([old,failed,retained,retry],wf)
+        self.assertEqual(a['reservedHours'],17.5)
+        self.assertEqual(a['jobs'][0]['retainedJobAliases'],[3])
+
     def test_archive_tampering_and_unsafe_zip_refused(self):
         root=self.root/'result';fixture(root);p.package(root)
         with (root/'ANALYSIS.zip').open('ab') as f:f.write(b'tamper')
