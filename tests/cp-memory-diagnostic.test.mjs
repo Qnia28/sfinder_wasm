@@ -7,6 +7,7 @@ import { installMemoryTrace } from '../tools/secondary-bench/common/triage/memor
 import { CpModel, CpSolver, CpSat, LinearExpr } from '../src/vendor/ortools/node/cp-sat.js';
 import { solveCpSecondaryModel } from '../src/cpsat-secondary-model.mjs';
 import { validateManifest, compileTasks, chunksFor } from '../tools/secondary-bench/common/triage/protocol.mjs';
+import { largePhase } from '../tools/secondary-bench/common/triage/large-run.mjs';
 
 test('durable isolate trace brackets actual model building without native solve',async()=>{
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'cp-memory-synthetic-'));
@@ -27,9 +28,9 @@ test('durable isolate trace brackets actual model building without native solve'
 test('frozen diagnostic has eight independent calls, four chunks and original watchdog', {skip:!process.env.MEMORY_CONFIG},()=>{
   const root=process.env.MEMORY_CONFIG,m=validateManifest(JSON.parse(fs.readFileSync(path.join(root,'MANIFEST.json'))));
   const tasks=fs.readFileSync(path.join(root,'TASKS.jsonl'),'utf8').trim().split('\n').map(JSON.parse);
-  const calls=compileTasks(m,tasks,'CP_MEMORY_R9').flatMap(t=>t.calls);
+  const calls=compileTasks(m,tasks,largePhase(m)).flatMap(t=>t.calls);
   assert.equal(calls.length,8);assert.equal(new Set(calls.map(c=>c.callId)).size,8);
-  assert.equal(chunksFor(m,tasks,'CP_MEMORY_R9').length,4);
+  assert.equal(chunksFor(m,tasks,largePhase(m)).length,4);
   assert(calls.every(c=>c.limits.callMs===600000&&c.measurementEpoch===m.revision));
   assert.throws(()=>validateManifest({...m,maxCalls:20001}));
 });

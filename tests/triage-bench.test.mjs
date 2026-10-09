@@ -245,7 +245,7 @@ test('phase workflow is branch-limited, opt-in and caps diagnostic/general VMs a
   const workflow=fs.readFileSync('.github/workflows/secondary-triage-campaign.yml','utf8');
   const stage=fs.readFileSync('.github/workflows/secondary-triage-stage.yml','utf8');
   assert(workflow.includes('[experiment/secondary-routing-20261005]'));
-  assert(workflow.includes('[RUN_TRIAGE_16VM]'));assert(stage.includes("max-parallel: ${{ inputs.phase == 'CP_MEMORY_R9' && 4 || 16 }}"));
+  assert(workflow.includes('[RUN_TRIAGE_16VM]'));assert(stage.includes("max-parallel: ${{ (inputs.phase == 'CP_MEMORY_R9' || inputs.phase == 'CP_COMPACT_R11') && 4 || 16 }}"));
   assert(stage.includes('timeout-minutes: 350'));
   assert(workflow.includes('needs: [activate, canary-audit]'));
   assert(workflow.includes('needs: [activate, calibration-audit]'));

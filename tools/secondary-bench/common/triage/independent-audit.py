@@ -24,7 +24,7 @@ LARGE_ARMS = {
 }
 def memory_run(m):return (m.get('largeRun') or {}).get('id')=='cp-memory-stages-v1'
 def phases_for(m):
-    return ['CP_MEMORY_R9'] if memory_run(m) else ['H9_CP_10M'] if m.get('largeRun') else ['A_FAST_FACTORIAL'] if m.get('followup') else PHASES
+    return ['CP_COMPACT_R11' if m['revision']==11 else 'CP_MEMORY_R9'] if memory_run(m) else ['H9_CP_10M'] if m.get('largeRun') else ['A_FAST_FACTORIAL'] if m.get('followup') else PHASES
 
 def encode(v, sorted_keys=True):
     # Node JSON.stringify serializes integral floats without a decimal suffix.
@@ -136,10 +136,12 @@ def chunks(tasks, job):
     if current: result.append(current)
     require(len(result) <= 256, 'matrix cap'); return result
 
-def cp_check(e):
+def cp_check(e,compact=False):
     require(e.get('status') == 'EXACT' and e.get('reaped') is True, 'CP preflight scope/result')
     r = e['result']; require(r.get('cpPreflight') == 'PASS' and r.get('qualityComplete') is True
-        and r.get('tieComplete') is True and r['result']['keys'] == ['b'] and r['result']['qualityVector'] == [2], 'CP preflight quality/tie')
+        and r.get('tieComplete') is True and r['result']['keys'] == ['b'] and r['result']['qualityVector'] == ([2,5,6,6] if compact else [2]), 'CP preflight quality/tie')
+    if compact:
+        require(r.get('syntheticCase')=='COMPACT_OR_MULTIBATCH_WEIGHTED_TIE' and len([s for s in r['result']['stages'] if s['phase']=='quality'])==2,'compact preflight stages')
     require(r['result'].get('completed') is True and r['result'].get('qualityComplete') is True
         and r['result'].get('tieComplete') is True, 'CP native proof flags')
     require(e['memoryScope']['memoryMax'] == 3221225472 and e['memoryScope']['swapMax'] == 0, 'CP preflight scope')
@@ -408,10 +410,15 @@ def audit(config, history, output, phase=None, inputs_only=False):
     full_calls = [c for ts in full.values() for t in ts for c in t]
     if memory_run(m):
         l=m['largeRun']
-        require(m['revision'] in [9,10] and m['campaignId']==f"TRIAGE_CP_MEMORY_20261009_R{m['revision']}",'memory identity')
+        compact=m['revision']==11
+        require(m['revision'] in [9,10,11] and m['campaignId']==('TRIAGE_CP_COMPACT_20261009_R11' if compact else f"TRIAGE_CP_MEMORY_20261009_R{m['revision']}"),'memory identity')
         require(len(full_calls)==l['calls']==8 and sum(len(chunks(ts,m['job'])) for ts in full.values())==l['chunks']==4,'memory schedule')
         repair=m['revision']==10
-        require(l['priorCalls']==(13055 if repair else 13047) and l['priorCpCalls']==(11 if repair else 10) and l['priorRunnerHours']==(2538.833333333333 if repair else 2533.333333333333),'memory prior accounting')
+        require(l['priorCalls']==(13063 if compact else 13055 if repair else 13047) and l['priorCpCalls']==(12 if compact else 11 if repair else 10) and l['priorRunnerHours']==(2567.6666666666665 if compact else 2538.833333333333 if repair else 2533.333333333333),'memory prior accounting')
+        if compact:
+            parent=read(config/'PARENT_LOCK.json');before=parent['manifest']['sourceFiles']['product'];after=m['sourceFiles']['product']
+            require(parent['invocationId']==l['comparatorRunId']=='37886233804' and l['modelChange']=='BOOLEAN_OR_DUAL_REIFICATION','compact comparator')
+            require(before.keys()==after.keys() and [k for k in after if after[k]!=before[k]]==['src/cpsat-secondary-model.mjs'],'compact product change scope')
         if repair:
             proof=read(config/'RECOVERY_PROOF.json');parent=read(config/'PARENT_LOCK.json')
             require(sha(config/'RECOVERY_PROOF.json')==l['recoveryProofSha256'],'recovery proof bytes')
@@ -454,7 +461,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
         require(lock['manifest']==m, 'manifest differs from activation')
         require(digest(m) == lock['manifestHash'] and digest(m['profileContract']) == lock['profileHash'], 'manifest/profile lock')
         require(lock['endMs'] == lock['originMs'] + m['overallMs'], 'campaign origin reset')
-        try: cp_check(read(config / 'CP_PREFLIGHT.json'))
+        try: cp_check(read(config / 'CP_PREFLIGHT.json'),m.get('revision')==11)
         except Exception as exc: error('CP_PREFLIGHT', exc)
     elif not inputs_only: raise ValueError('activation lock missing')
     prior_reserved=common_parent_check(m,config,lock) if m.get('continuation') else continuation_check(m,config,lock)

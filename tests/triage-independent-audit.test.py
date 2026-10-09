@@ -103,6 +103,16 @@ def campaign(base, gate_contract=None):
     return config,history
 
 class IndependentAudit(unittest.TestCase):
+    def test_compact_preflight_requires_weighted_vector_and_multiple_quality_stages(self):
+        p=preflight()
+        with self.assertRaises(ValueError):audit.cp_check(p,compact=True)
+        p['result']['syntheticCase']='COMPACT_OR_MULTIBATCH_WEIGHTED_TIE'
+        p['result']['result'].update(qualityVector=[2,5,6,6],stages=[dict(phase='quality'),dict(phase='quality'),dict(phase='tie')])
+        audit.cp_check(p,compact=True)
+        with self.assertRaises(ValueError):audit.cp_check(p)
+        p['result']['result']['stages'].pop(0)
+        with self.assertRaises(ValueError):audit.cp_check(p,compact=True)
+
     def setUp(self):
         temp=Path(os.environ['LOCALAPPDATA'])/'Temp/opencode' if os.name=='nt' else None
         self.tmp=tempfile.TemporaryDirectory(prefix='triage-independent-',dir=temp);self.addCleanup(self.tmp.cleanup)

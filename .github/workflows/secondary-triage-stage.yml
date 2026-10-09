@@ -39,7 +39,7 @@ jobs:
     timeout-minutes: 350
     strategy:
       fail-fast: false
-      max-parallel: ${{ inputs.phase == 'CP_MEMORY_R9' && 4 || 16 }}
+      max-parallel: ${{ (inputs.phase == 'CP_MEMORY_R9' || inputs.phase == 'CP_COMPACT_R11') && 4 || 16 }}
       matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
     steps:
       - id: clock

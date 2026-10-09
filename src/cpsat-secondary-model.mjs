@@ -38,7 +38,15 @@ export async function solveCpSecondaryModel({ keys, rows, count, seed }, api, { 
     if (!ids.length) return 0;
     if (ids.length === 1) return x[ids[0]];
     const key = ids.join(','); let variable = ors.get(key);
-    if (!variable) { variable = model.newBoolVar('y' + ors.size); model.addMaxEquality(variable, ids.map(id => x[id])); ors.set(key, variable); }
+    if (!variable) {
+      variable = model.newBoolVar('y' + ors.size);
+      // Exact Boolean equivalence: y => OR(xs), !y => AND(!xs).
+      // Keep two literal lists instead of a LinearExpressionProto per input.
+      // Both directions are required: earlier quality objectives are later locked.
+      model.addBoolOr(ids.map(id => x[id])).onlyEnforceIf(variable);
+      model.addBoolAnd(ids.map(id => x[id].not())).onlyEnforceIf(variable.not());
+      ors.set(key, variable);
+    }
     return variable;
   };
   for (const { row } of classes) {
