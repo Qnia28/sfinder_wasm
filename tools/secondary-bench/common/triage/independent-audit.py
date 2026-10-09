@@ -24,7 +24,7 @@ LARGE_ARMS = {
 }
 def memory_run(m):return (m.get('largeRun') or {}).get('id')=='cp-memory-stages-v1'
 def phases_for(m):
-    return ['CP_COMPACT_R11' if m['revision']==11 else 'CP_MEMORY_R9'] if memory_run(m) else ['H9_CP_10M'] if m.get('largeRun') else ['A_FAST_FACTORIAL'] if m.get('followup') else PHASES
+    return ['CP_FAILURE_R12' if m['revision']==12 else 'CP_COMPACT_R11' if m['revision']==11 else 'CP_MEMORY_R9'] if memory_run(m) else ['H9_CP_10M'] if m.get('largeRun') else ['A_FAST_FACTORIAL'] if m.get('followup') else PHASES
 
 def encode(v, sorted_keys=True):
     # Node JSON.stringify serializes integral floats without a decimal suffix.
@@ -99,7 +99,7 @@ def compile_calls(m, templates, phase, selected=None):
             calls.append(dict(**ident, callId=digest(ident), limits=dict(startupMs=10000,
                 callMs=600000 if m.get('largeRun') else 30000 if phase == 'TRIVIAL_CONTRACT' else 300000, reapMs=5000)))
         if memory_run(m):
-            require(sorted(t['arms'])==['CP_OPEN','H9_OPEN'],'memory arm order')
+            require(sorted(t['arms'])==(['CP_OPEN'] if m['revision']==12 else ['CP_OPEN','H9_OPEN']),'memory arm order')
             for position,arm in enumerate(t['arms']):add(t['fixture_ids'][0],arm,1,dict(block=1,position=position,role=t['role']))
         elif m.get('largeRun'):
             require(len(t['arms'])==8 and set(t['arms'][:4])==set(LARGE_ARMS) and t['arms'][4:]==list(reversed(t['arms'][:4])), 'large arm order')
@@ -408,7 +408,20 @@ def audit(config, history, output, phase=None, inputs_only=False):
     # Independent schedule compiler, not a copy of the JS-produced plan ledger.
     full = {p: compile_calls(m, templates, p, {f['id'] for f in m['inputs']}) for p in phases_for(m)}
     full_calls = [c for ts in full.values() for t in ts for c in t]
-    if memory_run(m):
+    if memory_run(m) and m['revision']==12:
+        l=m['largeRun'];parent=read(config/'PARENT_LOCK.json')
+        require(m['campaignId']=='TRIAGE_CP_FAILURE_20261010_R12','failure diagnostic identity')
+        require(len(full_calls)==l['calls']==1 and sum(len(chunks(ts,m['job'])) for ts in full.values())==l['chunks']==1,'failure diagnostic schedule')
+        require(l['priorCalls']==13071 and l['priorCpCalls']==13 and l['priorRunnerHours']==2596.5,'failure diagnostic prior accounting')
+        require(parent['invocationId']==l['comparatorRunId']=='37916694988','failure diagnostic parent')
+        require(m['sourceFiles']['product']==parent['manifest']['sourceFiles']['product'],'failure diagnostic product/WASM changed')
+        require(m['inputs']==[parent['manifest']['inputs'][0]] and m['inputs'][0]['id']=='cycle1-pcinfo-033/all/restricted-split/ALL','failure diagnostic original fixture')
+        require(l['modelChange']=='NONE_DIAGNOSTIC_IMPORT_EXPORT_INTERCEPTION','failure diagnostic change scope')
+        require(l['originMs']==1791287463000 and l['endMs']==1791719463000,'failure diagnostic clock')
+        require(l['priorCalls']+l['priorCpCalls']+2<=m['maxCalls']==20000,'failure diagnostic call admission')
+        require(l['priorRunnerHours']+m['job']['jobMinutes']/60+l['controlHours']<=m['maxRunnerHours']==5000 and m['maxParallel']==1,'failure diagnostic runner admission')
+        require(m['measurement']['variants']==['CP_OPEN'] and m['profileContract']['arms']==LARGE_ARMS and m['profileContract']['callTimeoutMs']==600000,'failure diagnostic profile')
+    elif memory_run(m):
         l=m['largeRun']
         compact=m['revision']==11
         require(m['revision'] in [9,10,11] and m['campaignId']==('TRIAGE_CP_COMPACT_20261009_R11' if compact else f"TRIAGE_CP_MEMORY_20261009_R{m['revision']}"),'memory identity')
@@ -461,7 +474,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
         require(lock['manifest']==m, 'manifest differs from activation')
         require(digest(m) == lock['manifestHash'] and digest(m['profileContract']) == lock['profileHash'], 'manifest/profile lock')
         require(lock['endMs'] == lock['originMs'] + m['overallMs'], 'campaign origin reset')
-        try: cp_check(read(config / 'CP_PREFLIGHT.json'),m.get('revision')==11)
+        try: cp_check(read(config / 'CP_PREFLIGHT.json'),m.get('revision') in [11,12])
         except Exception as exc: error('CP_PREFLIGHT', exc)
     elif not inputs_only: raise ValueError('activation lock missing')
     prior_reserved=common_parent_check(m,config,lock) if m.get('continuation') else continuation_check(m,config,lock)
@@ -474,7 +487,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
         require(parent['originMs']==l['originMs']==source['originMs'] and parent['endMs']==l['endMs']==source['endMs'],'large original clock')
         if lock:require(lock['originMs']==l['originMs'] and lock['endMs']==l['endMs'],'large lock clock')
         refs={f['id']:f for f in source['manifest']['inputs']}
-        require(len(m['inputs'])==(4 if memory_run(m) else 580) and all(refs.get(f['id'])==f for f in m['inputs']),'large original fixtures')
+        require(len(m['inputs'])==((1 if m['revision']==12 else 4) if memory_run(m) else 580) and all(refs.get(f['id'])==f for f in m['inputs']),'large original fixtures')
         prior_reserved=l['priorCalls']+l['priorCpCalls']+1
     elif m.get('followup'):
         follow=m['followup']; parent=read(config/'PARENT_LOCK.json')
@@ -633,6 +646,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
                 scope = e['memoryScope']; require(scope['memoryMax'] == 3221225472 and scope['swapMax'] == 0, 'scope memory/swap')
                 if memory_run(m):
                     require(request['job'].get('memoryDiagnostic')=='cp-memory-v1','memory diagnostic request')
+                    if m['revision']==12:require(request['job'].get('nativeFailureDiagnostic') is True,'native failure diagnostic request')
                     streams=list(attempt_dir.glob('memory-*.jsonl'));require(bool(streams),'missing memory evidence')
                     roles=[]
                     for stream in streams:

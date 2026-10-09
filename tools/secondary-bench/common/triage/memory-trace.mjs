@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { threadId } from 'node:worker_threads';
+import { installWasmFailureTrace } from './wasm-failure-trace.mjs';
 
 export function installMemoryTrace(role, directory = process.env.SECONDARY_MEMORY_DIRECTORY) {
   if (!directory) throw new Error('missing diagnostic directory');
@@ -23,6 +24,8 @@ export function installMemoryTrace(role, directory = process.env.SECONDARY_MEMOR
     fs.writeSync(fd,JSON.stringify(row)+'\n');fs.fsyncSync(fd);
   };
   globalThis.__secondaryMemoryTrace = trace;
+  const restore = role === 'cpsat' && process.env.SECONDARY_NATIVE_FAILURE_DIAGNOSTIC === '1'
+    ? installWasmFailureTrace(trace) : null;
   trace('trace-open');
-  return { trace,close(){ if (!closed) { trace('trace-close');closed=true;delete globalThis.__secondaryMemoryTrace;fs.closeSync(fd); } } };
+  return { trace,close(){ if (!closed) { trace('trace-close');closed=true;restore?.();delete globalThis.__secondaryMemoryTrace;fs.closeSync(fd); } } };
 }

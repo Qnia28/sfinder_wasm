@@ -38,7 +38,8 @@ export function requestFor(call, task, bundle, outputDir, { input = null, probeS
     const file=safePath(bundle,input.member);assert.equal(sha256(fs.readFileSync(file)),call.inputHash);
     return { action:'triage',variant:call.variant,fixturePath:file,fixtureSha256:call.inputHash,
       exactHumanQuality:'true',baselineRoot:path.resolve('triage-baseline'),expectedWitness:input.expectedWitness??null,
-      ...(['CP_MEMORY_R9','CP_COMPACT_R11'].includes(call.phase)?{memoryDiagnostic:'cp-memory-v1'}:{}),
+      ...(['CP_MEMORY_R9','CP_COMPACT_R11','CP_FAILURE_R12'].includes(call.phase)?{memoryDiagnostic:'cp-memory-v1'}:{}),
+      ...(call.phase==='CP_FAILURE_R12'?{nativeFailureDiagnostic:true}:{}),
       ...(call.variant==='T_PROBE_SEED'?{probeSeed}: {}) };
   }
   if (task.adapter === 'secondary-fixture') {

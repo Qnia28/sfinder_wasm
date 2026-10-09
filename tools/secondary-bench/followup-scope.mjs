@@ -70,6 +70,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   if (request.job.memoryDiagnostic === 'cp-memory-v1') {
     process.env.SECONDARY_MEMORY_DIRECTORY = path.resolve(directory);
     process.env.SECONDARY_MEMORY_MODULE = new URL('./common/triage/memory-trace.mjs', import.meta.url).href;
+    if (request.job.nativeFailureDiagnostic === true) process.env.SECONDARY_NATIVE_FAILURE_DIAGNOSTIC = '1';
   }
   writeJson(path.join(directory, 'CALL_LOCK.json'), { startedUtc: new Date().toISOString(), pid: process.pid,
     node: process.version, memoryScope: scope, request });

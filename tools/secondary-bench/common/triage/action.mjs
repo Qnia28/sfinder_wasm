@@ -61,9 +61,9 @@ function getHistory(campaignId, strict = true) {
   if (strict) assert(!history.warnings.length&&!history.unknown.length,'incomplete execution history');
   return collectedHistory(validateLock(readJson('config/LOCK.json')),history);
 }
-async function cpPreflight(directory, identity, memoryDiagnostic = false, compactCpTest = false) {
+async function cpPreflight(directory, identity, memoryDiagnostic = false, compactCpTest = false, nativeFailureDiagnostic = false) {
   const callId = digest({ runId, identity, check: 'CP_SYNTHETIC_PREFLIGHT_V1' });
-  const result = await isolatedScope({ callId, job: { action: 'cp-preflight',...(memoryDiagnostic?{memoryDiagnostic:'cp-memory-v1'}:{}),...(compactCpTest?{compactCpTest:true}:{}) },
+  const result = await isolatedScope({ callId, job: { action: 'cp-preflight',...(memoryDiagnostic?{memoryDiagnostic:'cp-memory-v1'}:{}),...(compactCpTest?{compactCpTest:true}:{}),...(nativeFailureDiagnostic?{nativeFailureDiagnostic:true}:{}) },
     limits: { startupMs: 10000, callMs: 30000, reapMs: 5000 }, phaseLimits: {},
     contractChildFile: 'tools/secondary-bench/common/triage/cp-preflight-child.mjs' }, directory);
   if (result.status !== 'EXACT' || !result.reaped || result.result?.cpPreflight !== 'PASS')
@@ -77,6 +77,7 @@ async function cpPreflight(directory, identity, memoryDiagnostic = false, compac
     for (const stage of ['rows-expand-end','stage-model-ready','encode-end','wasm-copy-end','native-solve-enter','native-solve-return','trace-close'])
       assert(rows.some(r=>r.stage===stage),'missing diagnostic preflight stage '+stage);
     assert(rows.every(r=>r.role==='cpsat'&&r.cgroupCurrent>0&&r.memory.heapUsed>0));
+    if (nativeFailureDiagnostic) assert(rows.some(r=>r.stage==='wasm-export-return'),'native diagnostic interception inactive');
     writeJson(path.join(directory,'MEMORY_PREFLIGHT.json'),{status:'PASS',events:rows.length,solverCallsAdded:0});
   }
   return result;
@@ -117,7 +118,7 @@ try {
       'campaign already activated; never reset its origin with another dispatch');
      if(continuation || m.followup || m.largeRun) {
       const prior=gh([`repos/${repo}/actions/runs/${parent.invocationId}`]);
-       assert.equal(prior.status,'completed');assert.equal(prior.conclusion,m.revision===11?'success':isMemoryRun(m)?'failure':m.largeRun?'success':'failure');assert.equal(prior.run_attempt,isMemoryRun(m)&&m.revision!==11&&!m.largeRun.recoveryRunId?2:1);
+       assert.equal(prior.status,'completed');assert.equal(prior.conclusion,m.revision===11?'success':isMemoryRun(m)?'failure':m.largeRun?'success':'failure');assert.equal(prior.run_attempt,isMemoryRun(m)&&![11,12].includes(m.revision)&&!m.largeRun.recoveryRunId?2:1);
       assert.equal(parent.commit,prior.head_sha);
       const backend=gh([`repos/${repo}/actions/artifacts/${parentArtifact.id}`]);
       assert.equal(artifactDigest(backend.digest),parentArtifact.digest);assert.equal(backend.workflow_run.id,prior.id);assert(!backend.expired);
@@ -158,7 +159,8 @@ try {
      writeJson('config/SYNTHETIC_GATE.json',{status:m.followup||m.largeRun?'LOCAL_CONTRACT_CHECK_NOT_REPEATED':'PASS',populationCalls:0,
        solverCalls:m.followup||m.largeRun?0:'LIGHTWEIGHT_SYNTHETIC_TESTS_ONLY'});
     const reuse=verifyReuse(m);
-    const cp = reuse ? readJson('config/continuation/PARENT_CP_PREFLIGHT.json') : await cpPreflight('config/cp-preflight', 'activation',isMemoryRun(m),m.revision===11);
+    if(m.revision===12)execFileSync(process.execPath,['--test','tests/wasm-failure-trace.test.mjs'],{stdio:'inherit',timeout:30000});
+    const cp = reuse ? readJson('config/continuation/PARENT_CP_PREFLIGHT.json') : await cpPreflight('config/cp-preflight', 'activation',isMemoryRun(m),[11,12].includes(m.revision),m.revision===12);
     if(reuse) writeJson('config/PREREQUISITE_REUSE.json',{status:'PASS',parentInvocationId:reuse.parent.invocationId,
       originalManifestHash:reuse.parent.manifestHash,phases:m.prerequisiteReuse.phases,
       reusedCalls:reuse.rows.length,solverCalls:0,newCpSyntheticCalls:0,priorCpSyntheticCalls:m.provenance.priorCpSyntheticCalls});
