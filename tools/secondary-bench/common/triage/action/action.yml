@@ -23,6 +23,9 @@ inputs:
     required: false
     description: Job clock before checkout/setup
 outputs:
+  large-phase:
+    description: Frozen single-stage phase name
+    value: ${{ steps.native.outputs.large-phase }}
   large-run:
     description: Approved broad ten-minute study
     value: ${{ steps.native.outputs.large-run }}

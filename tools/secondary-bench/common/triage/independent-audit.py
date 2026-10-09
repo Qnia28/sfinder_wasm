@@ -408,9 +408,15 @@ def audit(config, history, output, phase=None, inputs_only=False):
     full_calls = [c for ts in full.values() for t in ts for c in t]
     if memory_run(m):
         l=m['largeRun']
-        require(m['revision']==9 and m['campaignId']=='TRIAGE_CP_MEMORY_20261009_R9','memory identity')
+        require(m['revision'] in [9,10] and m['campaignId']==f"TRIAGE_CP_MEMORY_20261009_R{m['revision']}",'memory identity')
         require(len(full_calls)==l['calls']==8 and sum(len(chunks(ts,m['job'])) for ts in full.values())==l['chunks']==4,'memory schedule')
-        require(l['priorCalls']==13047 and l['priorCpCalls']==10 and l['priorRunnerHours']==2533.333333333333,'memory prior accounting')
+        repair=m['revision']==10
+        require(l['priorCalls']==(13055 if repair else 13047) and l['priorCpCalls']==(11 if repair else 10) and l['priorRunnerHours']==(2538.833333333333 if repair else 2533.333333333333),'memory prior accounting')
+        if repair:
+            proof=read(config/'RECOVERY_PROOF.json');parent=read(config/'PARENT_LOCK.json')
+            require(sha(config/'RECOVERY_PROOF.json')==l['recoveryProofSha256'],'recovery proof bytes')
+            require(proof['runId']==l['recoveryRunId']=='37815474702' and proof['populationCalls']==proof['starts']==0 and proof['reservedUnstartedDesignSlots']==8 and proof['cpSyntheticCalls']==1 and proof['reservedHours']==5.5,'recovery accounting')
+            require(m['sourceFiles']['product']==parent['manifest']['sourceFiles']['product'],'repair product changed')
         require(l['priorCalls']+l['priorCpCalls']+9<=m['maxCalls']==20000,'memory call admission')
         require(l['priorRunnerHours']+4*m['job']['jobMinutes']/60+l['controlHours']<=m['maxRunnerHours']==5000 and m['maxParallel']==4,'memory runner admission')
         require(m['measurement']['variants']==['CP_OPEN','H9_OPEN'] and m['profileContract']['arms']==LARGE_ARMS and m['profileContract']['callTimeoutMs']==600000,'memory profile')

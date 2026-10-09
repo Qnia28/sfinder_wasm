@@ -24,14 +24,16 @@ export const MEMORY_INPUTS = [
 export function validateLarge(m) {
   const l=m.largeRun;
   if (isMemoryRun(m)) {
-    assert.equal(m.revision,9);assert.equal(m.campaignId,'TRIAGE_CP_MEMORY_20261009_R9');
+    assert([9,10].includes(m.revision));assert.equal(m.campaignId,`TRIAGE_CP_MEMORY_20261009_R${m.revision}`);
     assert(!m.continuation&&!m.followup&&!m.prerequisiteReuse);
     assert.deepEqual(m.inputs.map(f=>f.id),MEMORY_INPUTS);
     assert.deepEqual(m.measurement.variants,['CP_OPEN','H9_OPEN']);
     assert.deepEqual(m.job,MEMORY_JOB);assert.equal(m.maxParallel,4);
     assert.equal(l.calls,8);assert.equal(l.chunks,4);assert.equal(l.callMs,600000);
-    assert.equal(l.priorCalls,13047);assert.equal(l.priorCpCalls,10);
-    assert.equal(l.priorRunnerHours,2533.333333333333);assert.equal(l.controlHours,6);
+    const repair=m.revision===10;
+    assert.equal(l.priorCalls,repair?13055:13047);assert.equal(l.priorCpCalls,repair?11:10);
+    assert.equal(l.priorRunnerHours,repair?2538.833333333333:2533.333333333333);assert.equal(l.controlHours,6);
+    if(repair) {assert.equal(l.recoveryRunId,'37815474702');assert(/^[a-f0-9]{64}$/.test(l.recoveryProofSha256));}
     assert.equal(l.originMs,1791287463000);assert.equal(l.endMs,1791719463000);
     assert.equal(m.maxCalls,20000);assert.equal(m.maxRunnerHours,5000);
     assert.equal(l.budgetAuthorization,'USER_CONTINUE_CP_MEMORY_20261009');
@@ -59,7 +61,7 @@ export function largeParent(m) {
   const load=(name,hash)=>{const b=fs.readFileSync('config/'+name);assert.equal(sha256(b),hash);return JSON.parse(b);};
   const parent=load('PARENT_LOCK.json',l.parentLockSha256);
   const source=load('FIXTURE_SOURCE_LOCK.json',l.fixtureSourceLockSha256);
-  assert.equal(parent.invocationId,isMemoryRun(m)?'37623263031':'37604369041'); assert.equal(source.invocationId,isMemoryRun(m)?'37623263031':'37487586383');
+  assert.equal(parent.invocationId,isMemoryRun(m)?l.recoveryRunId??'37623263031':'37604369041'); assert.equal(source.invocationId,isMemoryRun(m)?'37623263031':'37487586383');
   assert.equal(parent.originMs,l.originMs); assert.equal(parent.endMs,l.endMs);
   assert.equal(source.originMs,l.originMs); assert.equal(source.endMs,l.endMs);
   for(const ref of m.inputs)assert.deepEqual(ref,source.manifest.inputs.find(f=>f.id===ref.id));
@@ -69,5 +71,12 @@ export function largeParent(m) {
   if (isMemoryRun(m)) assert(a.latestPackageCollectionComplete && a.latestPackageMissingCalls===0 && a.latestPackageUnknownAllocations===0);
   else assert(a.budgetEvidenceComplete);
   assert(!a.unknownStarts.length);
+  if(l.recoveryRunId) {
+    const proof=load('RECOVERY_PROOF.json',l.recoveryProofSha256);
+    assert.equal(proof.runId,l.recoveryRunId);assert.equal(proof.populationCalls,0);assert.equal(proof.starts,0);
+    assert.equal(proof.reservedUnstartedDesignSlots,8);assert.equal(proof.cpSyntheticCalls,1);assert.equal(proof.reservedHours,5.5);
+    assert.equal(proof.sourceProductUnchanged,true);
+    assert.deepEqual(m.sourceFiles.product,parent.manifest.sourceFiles.product);
+  }
   return parent;
 }

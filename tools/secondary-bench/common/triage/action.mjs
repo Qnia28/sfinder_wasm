@@ -117,7 +117,7 @@ try {
       'campaign already activated; never reset its origin with another dispatch');
      if(continuation || m.followup || m.largeRun) {
       const prior=gh([`repos/${repo}/actions/runs/${parent.invocationId}`]);
-       assert.equal(prior.status,'completed');assert.equal(prior.conclusion,isMemoryRun(m)?'failure':m.largeRun?'success':'failure');assert.equal(prior.run_attempt,isMemoryRun(m)?2:1);
+       assert.equal(prior.status,'completed');assert.equal(prior.conclusion,isMemoryRun(m)?'failure':m.largeRun?'success':'failure');assert.equal(prior.run_attempt,isMemoryRun(m)&&!m.largeRun.recoveryRunId?2:1);
       assert.equal(parent.commit,prior.head_sha);
       const backend=gh([`repos/${repo}/actions/artifacts/${parentArtifact.id}`]);
       assert.equal(artifactDigest(backend.digest),parentArtifact.digest);assert.equal(backend.workflow_run.id,prior.id);assert(!backend.expired);

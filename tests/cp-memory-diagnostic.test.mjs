@@ -30,8 +30,16 @@ test('frozen diagnostic has eight independent calls, four chunks and original wa
   const calls=compileTasks(m,tasks,'CP_MEMORY_R9').flatMap(t=>t.calls);
   assert.equal(calls.length,8);assert.equal(new Set(calls.map(c=>c.callId)).size,8);
   assert.equal(chunksFor(m,tasks,'CP_MEMORY_R9').length,4);
-  assert(calls.every(c=>c.limits.callMs===600000&&c.measurementEpoch===9));
+  assert(calls.every(c=>c.limits.callMs===600000&&c.measurementEpoch===m.revision));
   assert.throws(()=>validateManifest({...m,maxCalls:20001}));
+});
+
+test('phase output is forwarded through the composite action to the reusable workflow',()=>{
+  const action=fs.readFileSync('tools/secondary-bench/common/triage/action/action.yml','utf8');
+  const workflow=fs.readFileSync('.github/workflows/secondary-triage-campaign.yml','utf8');
+  assert.match(action,/large-phase:\s*\n\s*description:[^\n]*\n\s*value: \$\{\{ steps\.native\.outputs\.large-phase \}\}/);
+  assert(workflow.includes('large-phase: ${{ steps.activate.outputs.large-phase }}'));
+  assert(workflow.includes('phase: ${{ needs.activate.outputs.large-phase }}'));
 });
 
 test('vendor serialization markers bracket real protobuf encode without loading native runtime',async()=>{
