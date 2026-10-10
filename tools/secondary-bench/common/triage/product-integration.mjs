@@ -23,8 +23,9 @@ export function validateIntegration(m) {
   assert.equal(m.integration.devCommit,'7ef62d18e1d155b6479e00d651c851ff3baa7112');
   assert.equal(m.integration.initialRounds,3);assert.equal(m.integration.confirmationRounds,2);
   assert.equal(m.integration.repeatsPerRound,2);assert.equal(m.integration.newCpCalls,0);
-  assert.equal(m.maxRunnerHours,5381);assert.equal(m.integration.maxMatrixJobs,920);
-  assert(920*350/60+13.5<=m.maxRunnerHours);assert(m.approval);
+  assert.equal(m.maxRunnerHours,5382);assert.equal(m.integration.maxMatrixJobs,920);
+  assert.equal(m.integration.originUtc,'2026-10-10T17:13:25Z');
+  assert(920*350/60+13.5+m.integration.priorControlHours<=m.maxRunnerHours);assert(m.approval);
   validateBudget(m.budget);assert.deepEqual(m.budget,{maxParallel:16,overallMs:m.overallMs,maxCalls:m.maxCalls,job:m.job});
   assert.equal(m.auditContract.id,'product-command-independent-python-v1');
   assert.deepEqual(m.auditContract.prerequisiteJobs,[]);

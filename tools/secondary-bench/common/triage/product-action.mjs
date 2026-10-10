@@ -54,6 +54,11 @@ if(mode==='activate'){
   assert.equal(sha256(fs.readFileSync('config.zip')),marker.bundleSha256);
   execFileSync('python',['tools/secondary-bench/followup-extract.py','config.zip','config',String(4*1024**3)],{timeout:120000});
   const m=validateIntegration(await products('config'));assert.equal(digest(m),marker.manifestHash);assert.equal(sha256(fs.readFileSync('config/TASKS.jsonl')),m.tasksHash);
+  for(const id of m.integration.activationRecoveryRuns){
+    const prior=gh([`repos/${repo}/actions/runs/${id}`]);assert.equal(prior.status,'completed');assert.equal(prior.conclusion,'failure');
+    const artifacts=gh(['--paginate','--slurp',`repos/${repo}/actions/runs/${id}/artifacts?per_page=100`]).flatMap(p=>p.artifacts);
+    assert(!artifacts.some(a=>a.name.startsWith('triage-lock-')||a.name.startsWith('triage-data-')),'recovery cannot replay published activation/population');
+  }
   assert.equal(process.version,'v24.13.0');
   const lock=activate(m,'activation',{createdUtc:new Date().toISOString(),invocationId:runId,commit:process.env.GITHUB_SHA,confirm:true});
   fs.copyFileSync('activation/LOCK.json','config/LOCK.json');

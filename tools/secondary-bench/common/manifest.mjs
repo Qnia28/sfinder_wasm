@@ -144,6 +144,7 @@ export function activate(authored, directory, { createdUtc, invocationId, commit
   verifySources(m.sourceFiles);
   assert(Number.isFinite(Date.parse(createdUtc)) && /^[a-zA-Z0-9_-]+$/.test(invocationId));
   let originUtc = createdUtc, parentHash = null, ancestorLocks = [];
+  if(m.integration?.originUtc)originUtc=m.integration.originUtc;
   if (m.followup || m.largeRun) {
     const parent = validateLock(m.largeRun ? largeParent(m) : fastParent(m));
     originUtc = parent.originUtc; parentHash = (m.largeRun??m.followup).parentLockSha256;

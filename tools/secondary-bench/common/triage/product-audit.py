@@ -55,7 +55,8 @@ def audit(config,history,out):
     require(m==lock['manifest'] and digest(m)==lock['manifestHash'],'manifest binding')
     require(lock['endMs']==lock['originMs']+21*86400000,'new authorized RC clock')
     require(m['integration']['id']=='rc-dev-product-v1' and m['maxCalls']==21960 and m['maxParallel']==16,'authorized RC scope')
-    require(m['maxRunnerHours']==5381 and 920*350/60+13.5<=5381,'runner hour reserve')
+    require(m['maxRunnerHours']==5382 and 920*350/60+13.5+m['integration']['priorControlHours']<=5382,'runner hour reserve')
+    require(lock['originMs']==datetime.datetime.fromisoformat(m['integration']['originUtc'].replace('Z','+00:00')).timestamp()*1000,'original RC authorization origin')
     require(sha(config/'PRIOR_ACCOUNTING.json')==m['integration']['priorAccountingSha256'],'prior accounting bytes')
     require(sha(config/'TASKS.jsonl')==m['tasksHash'],'template hash');templates=[json.loads(l) for l in (config/'TASKS.jsonl').read_text().splitlines()]
     require(len(templates)==10980,'full five-round templates')

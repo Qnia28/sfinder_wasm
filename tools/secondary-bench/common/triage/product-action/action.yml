@@ -46,13 +46,13 @@ runs:
     - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
       shell: bash
     - id: operation
-      run: node tools/secondary-bench/common/triage/product-action.mjs
-      shell: bash
-      env:
-        INPUT_MODE: ${{ inputs.mode }}
-        INPUT_PHASE: ${{ inputs.phase }}
-        CONFIG_ID: ${{ inputs.config-id }}
-        CONFIG_DIGEST: ${{ inputs.config-digest }}
-        INPUT_ARTIFACT_ID: ${{ inputs.artifact-id }}
-        INPUT_DIGEST: ${{ inputs.digest }}
-        JOB_STARTED_MS: ${{ inputs.job-started-ms }}
+      uses: ./tools/secondary-bench/common/action
+      with:
+        protocol: product-integration
+        mode: ${{ inputs.mode }}
+        phase: ${{ inputs.phase }}
+        config-artifact-id: ${{ inputs.config-id }}
+        config-digest: ${{ inputs.config-digest }}
+        artifact-id: ${{ inputs.artifact-id }}
+        digest: ${{ inputs.digest }}
+        job-started-ms: ${{ inputs.job-started-ms }}

@@ -16,12 +16,16 @@ import { checkAllocation } from '../allocation.mjs';
 
 // A separate explicit performance profile; information profile semantics stay
 // unchanged. Both use this established JavaScript action's SDK credentials.
-if(process.env.INPUT_PROTOCOL==='triage') {
+if(['triage','product-integration'].includes(process.env.INPUT_PROTOCOL)) {
   process.env.INPUT_ARTIFACT_ID=process.env['INPUT_ARTIFACT-ID'];
   process.env.INPUT_ASSET_ID=process.env['INPUT_ASSET-ID'];
   process.env.INPUT_JOB_STARTED_MS=process.env['INPUT_JOB-STARTED-MS'];
+  process.env.JOB_STARTED_MS=process.env['INPUT_JOB-STARTED-MS'];
+  process.env.CONFIG_ID=process.env['INPUT_CONFIG-ARTIFACT-ID'];
+  process.env.CONFIG_DIGEST=process.env['INPUT_CONFIG-DIGEST'];
   assert(process.env.ACTIONS_RUNTIME_TOKEN&&process.env.ACTIONS_RESULTS_URL,'Actions artifact runtime credentials required');
-  const result=spawnSync('node',[fileURLToPath(new URL('../triage/action.mjs',import.meta.url))],{stdio:'inherit',env:process.env});
+  const script=process.env.INPUT_PROTOCOL==='product-integration'?'../triage/product-action.mjs':'../triage/action.mjs';
+  const result=spawnSync('node',[fileURLToPath(new URL(script,import.meta.url))],{stdio:'inherit',env:process.env});
   if(result.error)throw result.error;
   process.exit(result.status??1);
 }

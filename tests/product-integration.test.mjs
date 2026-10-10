@@ -23,7 +23,7 @@ test('all commands complete two repeats before next round; repetitions have sepa
     assert.equal(chunks.length,184);assert.equal(tasks.length*2,4392);total+=tasks.length*2;
     for(const c of chunks)assert.equal(new Set(c.tasks.map(t=>t.calls[0].block)).size,1);
   }
-  assert.equal(total,21960);assert(920*350/60+13.5<=5381);
+  assert.equal(total,21960);assert(920*350/60+13.5+4/3<=5382);
 });
 test('independent Python compiler, chunk count and tail selection agree',()=>{
   const {m,templates,rows}=fixture();rows.find(r=>r.inputId==='input-0300').ms=1000;

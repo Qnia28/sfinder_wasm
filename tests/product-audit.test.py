@@ -20,8 +20,8 @@ class ProductAudit(unittest.TestCase):
         (config/'TASKS.jsonl').write_text(''.join(a.encode(t)+'\n' for t in templates),encoding='utf8');write(config/'PRIOR_ACCOUNTING.json',dict(prior='preserved'))
         (root/'source.txt').write_text('source')
         job=dict(parts=12,jobMs=325*60000,reserveMs=5*60000,setupMs=10*60000,checkpointMs=2*60000,finalTransportMs=15*60000,transportAuditMs=3*60000,jobMinutes=350,scopeOverheadMs=20000)
-        m=dict(campaignId='synthetic',inputs=refs,maxCalls=21960,maxParallel=16,maxRunnerHours=5381,job=job,
-            integration=dict(id='rc-dev-product-v1',priorAccountingSha256=a.sha(config/'PRIOR_ACCOUNTING.json'),mandatoryConfirmation=[]),
+        m=dict(campaignId='synthetic',inputs=refs,maxCalls=21960,maxParallel=16,maxRunnerHours=5382,job=job,
+            integration=dict(id='rc-dev-product-v1',priorAccountingSha256=a.sha(config/'PRIOR_ACCOUNTING.json'),mandatoryConfirmation=[],priorControlHours=4/3,originUtc='2026-10-11T00:00:00Z'),
             tasksHash=a.sha(config/'TASKS.jsonl'),sourceFiles=dict(product={'source.txt':a.sha(root/'source.txt')},harness={'source.txt':a.sha(root/'source.txt')}),profileContract=dict(test='synthetic'))
         write(config/'MANIFEST.json',m);origin=1791676800000
         lock=dict(manifest=m,manifestHash=a.digest(m),profileHash=a.digest(m['profileContract']),invocationId='test',commit='test',originMs=origin,endMs=origin+21*86400000)
