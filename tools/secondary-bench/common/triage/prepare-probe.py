@@ -21,7 +21,7 @@ def activation(package,summary):
     assert hashlib.sha256(data).hexdigest()==ref['digest'][7:]
     return ref,zipfile.ZipFile(io.BytesIO(data))
 
-def prepare(parent_package,fixture_package,design,ledger,out):
+def prepare(parent_package,fixture_package,design,ledger,out,failed_package=None):
     ps=verify(parent_package);ss=verify(fixture_package)
     assert str(ps['runId'])=='37958947216' and str(ss['runId'])=='37623263031'
     assert all(s['collectionState']=='COMPLETE' and s['rawDatabaseParity']=='PASS' and not s['errors'] for s in [ps,ss])
@@ -29,6 +29,19 @@ def prepare(parent_package,fixture_package,design,ledger,out):
     prior=next(c for c in current['campaigns'] if c['campaignId']==ps['campaignId'])
     assert prior['budgetEvidenceComplete'] and not prior['unknownStarts']
     assert prior['reservedCalls']==13072 and prior['cumulativeCpSyntheticCalls']==14 and prior['cumulativeReservedRunnerHours']==2607.8333333333335
+    repair=None
+    if failed_package:
+        failed=verify(failed_package);a=failed['accounting']
+        assert str(failed['runId'])=='38027879477' and not a['calls'] and not a['starts']
+        assert a['runnerAllocation']['reservedHours']==0.5 and not a['runnerAllocation']['unknownReservationJobs']
+        assert a['runnerAllocation']['scheduledMatrixJobs']==0
+        assert not any(x['collectionRole']=='activation' for x in failed['artifactIndex'])
+        repair=dict(runId='38027879477',packageSha256=sha(failed_package/'PACKAGE.json'),originalSummary=failed,
+            originalCollection=json.loads((failed_package/'COLLECTION.json').read_text()),
+            conservativePopulationReservation=100,conservativeCpReservation=1,reservedHours=0.5,
+            reason='Source mismatch before activation lock/preflight. Retain all declared slots conservatively; not executed-call counts.')
+        prior=dict(prior,reservedCalls=13172,cumulativeCpSyntheticCalls=15,cumulativeReservedRunnerHours=2608.3333333333335,
+            startupRepair=repair)
     for f in json.loads((design/'INDEX.json').read_text(encoding='utf8'))['files']:
         p=design/f['path'];assert sha(p)==f['sha256'] and p.stat().st_size==f['bytes']
     with (design/'TARGETS.csv').open(encoding='utf8',newline='') as f:targets=[t for t in csv.DictReader(f) if t['experiment']=='PROBE_P15']
@@ -60,23 +73,25 @@ def prepare(parent_package,fixture_package,design,ledger,out):
             budgetAmendment='Approved P15 only; original clock/caps retained; 100 calls plus one compact CP synthetic')
         (out/'PARENT_LOCK.json').write_bytes(pb);(out/'FIXTURE_SOURCE_LOCK.json').write_bytes(sb)
         write(out/'PRIOR_ACCOUNTING.json',dict(**prior,ledgerHead=current['ledgerHead'],sourcePackageSha256=sha(parent_package/'PACKAGE.json')))
+        if repair:write(out/'STARTUP_REPAIR.json',repair)
         write(out/'P15_DESIGN.json',dict(targets=targets,authoredDesign=authored,sourceIndexSha256=sha(design/'INDEX.json')))
         target_index={t['fixture_id']:t for t in targets};arm_map={'CONTROL':'H9_OPEN','CANDIDATE':'P15_OPEN'}
         tasks=[dict(task_id=t['proposed_task_id'],phase='PROBE_P15_R13',fixture_ids=[t['fixture_id']],conditional=False,calls=2,
                     block=t['block'],arms=[arm_map[a] for a in t['arms']],role=target_index[t['fixture_id']]['selection_reason']) for t in scheduled]
         write(out/'P15_SCHEDULE.json',tasks)
         (out/'TASKS.jsonl').write_text(''.join(encode(t)+'\n' for t in tasks),encoding='utf8');m['tasksHash']=sha(out/'TASKS.jsonl')
-        m['largeRun']=dict(id='probe-p15-v1',calls=100,chunks=18,callMs=600000,priorCalls=13072,priorCpCalls=14,
+        m['largeRun']=dict(id='probe-p15-v1',calls=100,chunks=18,callMs=600000,priorCalls=prior['reservedCalls'],priorCpCalls=prior['cumulativeCpSyntheticCalls'],
             priorRunnerHours=prior['cumulativeReservedRunnerHours'],controlHours=6,originMs=parent['originMs'],endMs=parent['endMs'],
             budgetAuthorization=m['approval'],parentLockSha256=sha(out/'PARENT_LOCK.json'),fixtureSourceLockSha256=sha(out/'FIXTURE_SOURCE_LOCK.json'),
             accountingSha256=sha(out/'PRIOR_ACCOUNTING.json'),designSha256=sha(out/'P15_DESIGN.json'),scheduleSha256=sha(out/'P15_SCHEDULE.json'))
+        m['provenance']['priorCpSyntheticCalls']=prior['cumulativeCpSyntheticCalls']
+        if repair:m['largeRun']['startupRepairSha256']=sha(out/'STARTUP_REPAIR.json')
         m['sourceFiles']=json.loads(json.dumps(parent['manifest']['sourceFiles']))
         for name in ['tools/secondary-bench/common/triage/probe-followup.mjs','tools/secondary-bench/common/triage/prepare-probe.py','tests/triage-probe-p15.test.mjs']:
             m['sourceFiles']['harness'][name]=''
         for group in ['product','harness']:
             for name in m['sourceFiles'][group]:
-                data=Path(name).read_bytes()
-                if b'\0' not in data:data=data.replace(b'\r\n',b'\n')
+                data=subprocess.check_output(['git','show','HEAD:'+name])
                 m['sourceFiles'][group][name]=hashlib.sha256(data).hexdigest()
         before=parent['manifest']['sourceFiles']['product'];after=m['sourceFiles']['product']
         assert [k for k in after if after[k]!=before[k]]==['src/min-cover-triage-experiment.mjs']
@@ -90,9 +105,10 @@ def prepare(parent_package,fixture_package,design,ledger,out):
                 dest=out/ref['member'];dest.parent.mkdir(exist_ok=True);dest.write_bytes(data)
     write(out/'START.json',dict(state='APPROVED_FROZEN',confirm='RUN_TRIAGE_PROBE_SEED_16VM',assetId=None,
         bundleSha256=sha(out/'TRIAGE_P15_INPUTS.zip'),manifestHash=digest(m)))
-    print(encode(dict(inputs=25,calls=100,chunks=18,solverCalls=0,totalCalls=13187,totalReservedRunnerHours=2718.8333333333335)))
+    print(encode(dict(inputs=25,calls=100,chunks=18,solverCalls=0,totalCalls=prior['reservedCalls']+prior['cumulativeCpSyntheticCalls']+101,totalReservedRunnerHours=prior['cumulativeReservedRunnerHours']+111)))
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for n in ['parent-package','fixture-package','design','ledger','out']:p.add_argument('--'+n,required=True,type=Path)
-    a=p.parse_args();prepare(a.parent_package,a.fixture_package,a.design,a.ledger,a.out)
+    p.add_argument('--failed-package',type=Path)
+    a=p.parse_args();prepare(a.parent_package,a.fixture_package,a.design,a.ledger,a.out,a.failed_package)

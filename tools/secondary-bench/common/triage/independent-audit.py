@@ -421,7 +421,13 @@ def audit(config, history, output, phase=None, inputs_only=False):
         l=m['largeRun'];parent=read(config/'PARENT_LOCK.json')
         require(m['revision']==13 and m['campaignId']=='TRIAGE_PROBE_P15_20261010_R13','P15 identity')
         require(len(full_calls)==l['calls']==100 and sum(len(chunks(ts,m['job'])) for ts in full.values())==l['chunks']==18,'P15 schedule')
-        require(l['priorCalls']==13072 and l['priorCpCalls']==14 and l['priorRunnerHours']==2607.8333333333335,'P15 prior accounting')
+        repaired=bool(l.get('startupRepairSha256'))
+        require(l['priorCalls']==(13172 if repaired else 13072) and l['priorCpCalls']==(15 if repaired else 14) and l['priorRunnerHours']==(2608.3333333333335 if repaired else 2607.8333333333335),'P15 prior accounting')
+        if repaired:
+            require(sha(config/'STARTUP_REPAIR.json')==l['startupRepairSha256'],'startup repair bytes')
+            r=read(config/'STARTUP_REPAIR.json');a=r['originalSummary']['accounting']
+            require(r['runId']=='38027879477' and r['conservativePopulationReservation']==100 and r['conservativeCpReservation']==1 and r['reservedHours']==0.5,'startup repair reservation')
+            require(not a['calls'] and not a['starts'] and a['runnerAllocation']['reservedHours']==0.5 and a['runnerAllocation']['scheduledMatrixJobs']==0,'startup repair evidence')
         require(parent['invocationId']=='37958947216' and read(config/'FIXTURE_SOURCE_LOCK.json')['invocationId']=='37623263031','P15 ancestry')
         before=parent['manifest']['sourceFiles']['product'];after=m['sourceFiles']['product']
         require(before.keys()==after.keys() and [k for k in after if after[k]!=before[k]]==['src/min-cover-triage-experiment.mjs'],'P15 product change scope')

@@ -17,7 +17,8 @@ export function validateProbe(m) {
   assert.equal(m.maxParallel,16);assert.deepEqual(m.job,PROBE_JOB);
   assert.equal(m.inputs.length,25);assert.deepEqual(m.measurement.variants,Object.keys(PROBE_ARMS));
   assert.equal(l.calls,100);assert.equal(l.chunks,18);assert.equal(l.callMs,600000);
-  assert.equal(l.priorCalls,13072);assert.equal(l.priorCpCalls,14);assert.equal(l.priorRunnerHours,2607.8333333333335);
+  const repaired=Boolean(l.startupRepairSha256);
+  assert.equal(l.priorCalls,repaired?13172:13072);assert.equal(l.priorCpCalls,repaired?15:14);assert.equal(l.priorRunnerHours,repaired?2608.3333333333335:2607.8333333333335);
   assert.equal(l.controlHours,6);assert.equal(l.originMs,1791287463000);assert.equal(l.endMs,1791719463000);
   assert.equal(m.maxCalls,20000);assert.equal(m.maxRunnerHours,5000);
   assert.equal(l.budgetAuthorization,'USER_IMPLEMENT_COMPARE_P15_20261010');
@@ -27,6 +28,15 @@ export function validateProbe(m) {
 }
 export function verifyProbeDesign(m) {
   const load=(name,hash)=>{const b=fs.readFileSync('config/'+name);assert.equal(sha256(b),hash);return JSON.parse(b);};
+  if(m.largeRun.startupRepairSha256) {
+    const r=load('STARTUP_REPAIR.json',m.largeRun.startupRepairSha256);
+    assert.equal(r.runId,'38027879477');assert.equal(r.conservativePopulationReservation,100);
+    assert.equal(r.conservativeCpReservation,1);assert.equal(r.reservedHours,0.5);
+    assert.deepEqual(r.originalSummary.accounting.calls,[]);assert.deepEqual(r.originalSummary.accounting.starts,[]);
+    assert.equal(r.originalSummary.accounting.runnerAllocation.reservedHours,0.5);
+    assert.equal(r.originalSummary.accounting.runnerAllocation.scheduledMatrixJobs,0);
+    assert(!r.originalSummary.artifactIndex.some(a=>a.collectionRole==='activation'));
+  }
   const design=load('P15_DESIGN.json',m.largeRun.designSha256);
   const schedule=load('P15_SCHEDULE.json',m.largeRun.scheduleSha256);
   const targets=design.targets;
