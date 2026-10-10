@@ -4,6 +4,7 @@ import { decideExperimentalProbe, DEFAULT_SECONDARY_TRIAGE_POLICY } from '../src
 import { SECONDARY_CP_LIMIT_MS } from '../src/min-cover-three-engine.mjs';
 import { solveCpSecondaryModel } from '../src/cpsat-secondary-model.mjs';
 import { LARGE_ARMS, LARGE_JOB } from '../tools/secondary-bench/common/triage/large-run.mjs';
+import { PROBE_ARMS } from '../tools/secondary-bench/common/triage/probe-followup.mjs';
 import { compileTasks, chunksFor } from '../tools/secondary-bench/common/triage/protocol.mjs';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -51,7 +52,7 @@ test('large arms execute their declared policy and preserve exact witness on syn
     rows:[[[0,1],[1,1]],[[1,1],[2,1]],[[0,1],[2,1]]],primaryHard:false,
     cardinalityProof:{status:'PROVEN',backend:'rust',kernelStats:{cases:3,solutions:3,entries:6}}};
   const file=path.join(dir,'fixture.json');fs.writeFileSync(file,JSON.stringify(f));
-  for(const [variant,arm] of Object.entries(LARGE_ARMS)) {
+  for(const [variant,arm] of Object.entries({...LARGE_ARMS,...PROBE_ARMS})) {
     if(variant==='CP_OPEN'&&!isORToolsSupported())continue;
     const r=await runIsolated({childFile:new URL('../tools/secondary-bench/common/triage/child.mjs',import.meta.url),
       job:{variant,fixturePath:file,fixtureSha256:hash(fs.readFileSync(file)),exactHumanQuality:'true'},

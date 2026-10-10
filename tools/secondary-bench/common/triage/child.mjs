@@ -7,6 +7,7 @@ import { performance } from 'node:perf_hooks';
 import { hash, validateFixture, packedView, selectedVector, verifyResult } from '../../contracts.mjs';
 import { FAST_ARMS } from './fast-followup.mjs';
 import { LARGE_ARMS } from './large-run.mjs';
+import { PROBE_ARMS } from './probe-followup.mjs';
 
 const send = message => new Promise((resolve, reject) => process.send(message, e => e ? reject(e) : resolve()));
 export function historicalWitnessHash(verified, expected) {
@@ -26,7 +27,7 @@ export async function executeTriage(job) {
   }
   assert.equal(job.exactHumanQuality, 'true');
   assert(['PRECHANGE_BASELINE','BASELINE','A','B','TRACE_OFF_BASELINE','TRACE_ON_BASELINE',
-    'I100K_SEED_CAPTURE','T_PRIMARY_SEED','T_PROBE_SEED', ...Object.keys(FAST_ARMS), ...Object.keys(LARGE_ARMS)].includes(job.variant),'unregistered benchmark variant');
+    'I100K_SEED_CAPTURE','T_PRIMARY_SEED','T_PROBE_SEED', ...Object.keys(FAST_ARMS), ...Object.keys(LARGE_ARMS), ...Object.keys(PROBE_ARMS)].includes(job.variant),'unregistered benchmark variant');
   const start = performance.now();
   const bytes = fs.readFileSync(job.fixturePath); assert.equal(hash(bytes), job.fixtureSha256);
   const fixture = validateFixture(JSON.parse(bytes));
@@ -37,8 +38,8 @@ export async function executeTriage(job) {
   const { createWasmSolver } = await load('wasm-backend.mjs');
   const { solveExactSecondaryAsync } = await load('min-cover-three-engine.mjs');
   const events = [];
-  const arm = LARGE_ARMS[job.variant] ?? FAST_ARMS[job.variant];
-  const cpLimitMs = LARGE_ARMS[job.variant] ? arm.cpLimitMs : 120000;
+  const arm = PROBE_ARMS[job.variant] ?? LARGE_ARMS[job.variant] ?? FAST_ARMS[job.variant];
+  const cpLimitMs = LARGE_ARMS[job.variant] || PROBE_ARMS[job.variant] ? arm.cpLimitMs : 120000;
   const traceOn = arm ? arm.trace : !['PRECHANGE_BASELINE', 'TRACE_OFF_BASELINE'].includes(job.variant);
   let solver;
   const cpuStart = process.cpuUsage();
@@ -102,6 +103,7 @@ export async function executeTriage(job) {
       variant: job.variant, result, verified, probeSeed, trace: finalEvents,
       ...(arm ? { armContract: arm } : {}),
       fixtureSha256: hash(bytes), primarySeedHash: hash(JSON.stringify(fixture.seed)),
+      primarySeedKeysHash: hash(JSON.stringify(primaryKeys)),
       historicalWitness,
       responseMs: settled - entry, policyReturnMs: returned - entry, policySettledMs: settled - entry,
       timings: { fixtureAndImportMs: entry - start, initMs, packingMs, auditMs: performance.now() - audit,

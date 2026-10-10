@@ -23,7 +23,11 @@ LARGE_ARMS = {
     'CP_OPEN': dict(policy='baseline',trace=True,secondary='cpsat',cpLimitMs=None),
 }
 def memory_run(m):return (m.get('largeRun') or {}).get('id')=='cp-memory-stages-v1'
+PROBE_ARMS = {'H9_OPEN':dict(policy='A_H9',trace=True,secondary='auto',cpLimitMs=None),
+              'P15_OPEN':dict(policy='P15',trace=True,secondary='auto',cpLimitMs=None)}
+def probe_run(m):return (m.get('largeRun') or {}).get('id')=='probe-p15-v1'
 def phases_for(m):
+    if probe_run(m):return ['PROBE_P15_R13']
     return ['CP_FAILURE_R12' if m['revision']==12 else 'CP_COMPACT_R11' if m['revision']==11 else 'CP_MEMORY_R9'] if memory_run(m) else ['H9_CP_10M'] if m.get('largeRun') else ['A_FAST_FACTORIAL'] if m.get('followup') else PHASES
 
 def encode(v, sorted_keys=True):
@@ -98,7 +102,10 @@ def compile_calls(m, templates, phase, selected=None):
             if m.get('continuation') or m.get('followup') or m.get('largeRun'):ident['measurementEpoch']=m['revision']
             calls.append(dict(**ident, callId=digest(ident), limits=dict(startupMs=10000,
                 callMs=600000 if m.get('largeRun') else 30000 if phase == 'TRIVIAL_CONTRACT' else 300000, reapMs=5000)))
-        if memory_run(m):
+        if probe_run(m):
+            require(sorted(t['arms'])==sorted(PROBE_ARMS) and t['block'] in [1,2] and len(t['fixture_ids'])==1,'probe paired arms')
+            for position,arm in enumerate(t['arms']):add(t['fixture_ids'][0],arm,t['block'],dict(block=t['block'],position=position,role=t['role']))
+        elif memory_run(m):
             require(sorted(t['arms'])==(['CP_OPEN'] if m['revision']==12 else ['CP_OPEN','H9_OPEN']),'memory arm order')
             for position,arm in enumerate(t['arms']):add(t['fixture_ids'][0],arm,1,dict(block=1,position=position,role=t['role']))
         elif m.get('largeRun'):
@@ -125,6 +132,8 @@ def compile_calls(m, templates, phase, selected=None):
     return tasks
 
 def chunks(tasks, job):
+    if tasks and tasks[0][0]['phase']=='PROBE_P15_R13' and len({t[0]['block'] for t in tasks})>1:
+        return [c for b in [1,2] for c in chunks([t for t in tasks if t[0]['block']==b],job)]
     capacity = job['jobMs'] - job['reserveMs'] - job['setupMs'] - job['parts'] * job['checkpointMs']
     result = []; current = []; cost = 0
     for task in tasks:
@@ -408,7 +417,29 @@ def audit(config, history, output, phase=None, inputs_only=False):
     # Independent schedule compiler, not a copy of the JS-produced plan ledger.
     full = {p: compile_calls(m, templates, p, {f['id'] for f in m['inputs']}) for p in phases_for(m)}
     full_calls = [c for ts in full.values() for t in ts for c in t]
-    if memory_run(m) and m['revision']==12:
+    if probe_run(m):
+        l=m['largeRun'];parent=read(config/'PARENT_LOCK.json')
+        require(m['revision']==13 and m['campaignId']=='TRIAGE_PROBE_P15_20261010_R13','P15 identity')
+        require(len(full_calls)==l['calls']==100 and sum(len(chunks(ts,m['job'])) for ts in full.values())==l['chunks']==18,'P15 schedule')
+        require(l['priorCalls']==13072 and l['priorCpCalls']==14 and l['priorRunnerHours']==2607.8333333333335,'P15 prior accounting')
+        require(parent['invocationId']=='37958947216' and read(config/'FIXTURE_SOURCE_LOCK.json')['invocationId']=='37623263031','P15 ancestry')
+        before=parent['manifest']['sourceFiles']['product'];after=m['sourceFiles']['product']
+        require(before.keys()==after.keys() and [k for k in after if after[k]!=before[k]]==['src/min-cover-triage-experiment.mjs'],'P15 product change scope')
+        require(l['originMs']==1791287463000 and l['endMs']==1791719463000,'P15 original clock')
+        require(l['controlHours']==6 and l['priorCalls']+l['priorCpCalls']+101<=m['maxCalls']==20000,'P15 calls cap')
+        require(l['priorRunnerHours']+18*m['job']['jobMinutes']/60+6<=m['maxRunnerHours']==5000 and m['maxParallel']==16,'P15 runner cap')
+        require(m['measurement']['variants']==list(PROBE_ARMS) and m['profileContract']['arms']==PROBE_ARMS and m['profileContract']['callTimeoutMs']==600000,'P15 profile')
+        require(sha(config/'P15_DESIGN.json')==l['designSha256'] and sha(config/'P15_SCHEDULE.json')==l['scheduleSha256'],'P15 design hashes')
+        require(read(config/'P15_SCHEDULE.json')==templates,'P15 frozen schedule')
+        targets=read(config/'P15_DESIGN.json')['targets'];refs={f['id']:f for f in m['inputs']}
+        require(len(targets)==25 and len(refs)==25 and {t['fixture_id'] for t in targets}==set(refs),'P15 design population')
+        for t in targets:
+            ref=refs[t['fixture_id']];meta=ref['metadata'];changed=not meta['primary_hard'] and 15<=meta['d']<=16
+            require(t['fixture_sha256']==ref['sha256'] and changed==(t['selection_reason']=='CHANGED_STRATUM'),'P15 selection predicate')
+            ts=sorted([x for x in templates if x['fixture_ids']==[ref['id']]],key=lambda x:x['block'])
+            require([x['block'] for x in ts]==[1,2] and ts[0]['arms']==list(reversed(ts[1]['arms'])),'P15 paired reversal')
+        require(sum(t['selection_reason']=='CHANGED_STRATUM' for t in targets)==18,'P15 changed18')
+    elif memory_run(m) and m['revision']==12:
         l=m['largeRun'];parent=read(config/'PARENT_LOCK.json')
         require(m['campaignId']=='TRIAGE_CP_FAILURE_20261010_R12','failure diagnostic identity')
         require(len(full_calls)==l['calls']==1 and sum(len(chunks(ts,m['job'])) for ts in full.values())==l['chunks']==1,'failure diagnostic schedule')
@@ -474,7 +505,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
         require(lock['manifest']==m, 'manifest differs from activation')
         require(digest(m) == lock['manifestHash'] and digest(m['profileContract']) == lock['profileHash'], 'manifest/profile lock')
         require(lock['endMs'] == lock['originMs'] + m['overallMs'], 'campaign origin reset')
-        try: cp_check(read(config / 'CP_PREFLIGHT.json'),m.get('revision') in [11,12])
+        try: cp_check(read(config / 'CP_PREFLIGHT.json'),m.get('revision') in [11,12,13])
         except Exception as exc: error('CP_PREFLIGHT', exc)
     elif not inputs_only: raise ValueError('activation lock missing')
     prior_reserved=common_parent_check(m,config,lock) if m.get('continuation') else continuation_check(m,config,lock)
@@ -487,7 +518,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
         require(parent['originMs']==l['originMs']==source['originMs'] and parent['endMs']==l['endMs']==source['endMs'],'large original clock')
         if lock:require(lock['originMs']==l['originMs'] and lock['endMs']==l['endMs'],'large lock clock')
         refs={f['id']:f for f in source['manifest']['inputs']}
-        require(len(m['inputs'])==((1 if m['revision']==12 else 4) if memory_run(m) else 580) and all(refs.get(f['id'])==f for f in m['inputs']),'large original fixtures')
+        require(len(m['inputs'])==(25 if probe_run(m) else (1 if m['revision']==12 else 4) if memory_run(m) else 580) and all(refs.get(f['id'])==f for f in m['inputs']),'large original fixtures')
         prior_reserved=l['priorCalls']+l['priorCpCalls']+1
     elif m.get('followup'):
         follow=m['followup']; parent=read(config/'PARENT_LOCK.json')
@@ -663,7 +694,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
                 if r['status'] != 'EXACT': require(r['ms'] is None, 'censored call given elapsed success time')
                 record = e.get('result')
                 if m.get('largeRun'):
-                    arm=LARGE_ARMS[r['variant']]
+                    arm=(PROBE_ARMS if probe_run(m) else LARGE_ARMS)[r['variant']]
                     for event in traces:
                         if event['name']=='cp-start':require(event['limitMs']==arm['cpLimitMs'],'actual CP limit')
                     if record and r['status'] in ['EXACT','INCOMPLETE']:
@@ -681,6 +712,12 @@ def audit(config, history, output, phase=None, inputs_only=False):
                 if r['status'] not in ['EXACT','PROBE_INCOMPLETE','INCOMPLETE']: continue
                 require(record['fixtureSha256'] == ref['sha256'] and record['variant'] == r['variant'], 'result identity')
                 require(record['primarySeedHash'] == hashlib.sha256(encode(f['seed'],False).encode()).hexdigest(), 'primary seed identity')
+                if probe_run(m):
+                    require(record.get('primarySeedKeysHash')==hashlib.sha256(encode([f['keys'][i] for i in f['seed']],False).encode()).hexdigest(),'P15 comparable seed identity')
+                    structure=next(e for e in record['trace'] if e['name']=='structure')
+                    d=structure['count']-structure['forcedCount'];hard=bool(f['primaryHard'])
+                    expected_probe=d<=9 if hard else d<=(14 if r['variant']=='P15_OPEN' else 16)
+                    require(structure['validStructure'] and structure['d']==d and structure['useProbe']==expected_probe,'P15 observed route')
                 result = record['result']; require(result['count'] == f['K'], 'result K')
                 require(all(k in index for k in result['keys']), 'unknown result key')
                 chosen = sorted(index[k] for k in result['keys']); quality = vector(f, chosen)
