@@ -6,6 +6,7 @@ import { evidenceFirst } from './gates.mjs';
 import { FAST_PHASE, FAST_ARMS, validateFast } from './fast-followup.mjs';
 import { LARGE_PHASE, LARGE_ARMS, validateLarge, isMemoryRun, largePhase } from './large-run.mjs';
 import { isProbeRun, PROBE_ARMS } from './probe-followup.mjs';
+import { isPromotion, PROMOTION_PHASES } from './promotion.mjs';
 
 export const PROFILE = Object.freeze({ id: 'triage-cold-v1', lifecycle: 'fresh-process-cold',
   exactHumanQuality: 'true', timingContract: 'post-primary-policy-settled-v1',
@@ -18,8 +19,8 @@ export const AUDIT_CONTRACT = Object.freeze({ id: 'independent-python-evidence-v
   prerequisiteJobs: ['CANARY','CALIBRATION'], finalDedicatedVm: true, performancePass: false, independentOptimality: false });
 export const CP_PREFLIGHT_CONTRACT = Object.freeze({ id: 'scoped-cpsat-weighted-tie-v1', activationCalls: 1,
   maxCanaryVmCalls: 3, callMs: 30000, populationCalls: 0 });
-export const profileForTriage = m => m.largeRun ? { ...PROFILE, cpLimitMs:null, arms:isProbeRun(m)?PROBE_ARMS:LARGE_ARMS, callTimeoutMs:600000 } : PROFILE;
-export const phasesFor = m => m.largeRun ? [largePhase(m)] : m.followup ? [FAST_PHASE] : PHASES;
+export const profileForTriage = m => m.largeRun ? { ...PROFILE, cpLimitMs:null, arms:isProbeRun(m)||isPromotion(m)?PROBE_ARMS:LARGE_ARMS, callTimeoutMs:600000 } : PROFILE;
+export const phasesFor = m => isPromotion(m)?PROMOTION_PHASES:m.largeRun ? [largePhase(m)] : m.followup ? [FAST_PHASE] : PHASES;
 export function validateManifest(m) {
   strict(m,['schemaVersion','campaignId','purpose','freshValidation','profile','profileContract','maxParallel','maxCalls',
     'maxRunnerHours','overallMs','job','inputs','baselineFiles','sourceFiles','tasksHash','design','provenance','runtime',
@@ -41,7 +42,7 @@ export function validateManifest(m) {
   integer(m.overallMs, 120 * 3600000, 120 * 3600000);
   assert.deepEqual(m.profileContract, profileForTriage(m));
   assert.deepEqual(m.auditContract, AUDIT_CONTRACT); assert.deepEqual(m.cpPreflightContract, CP_PREFLIGHT_CONTRACT);
-   assert.equal(m.inputs.length, isProbeRun(m)?25:isMemoryRun(m)?m.revision===12?1:4:m.followup ? 25 : 580); assert.equal(new Set(m.inputs.map(f => f.id)).size, m.inputs.length);
+   assert.equal(m.inputs.length, isPromotion(m)?761:isProbeRun(m)?25:isMemoryRun(m)?m.revision===12?1:4:m.followup ? 25 : 580); assert.equal(new Set(m.inputs.map(f => f.id)).size, m.inputs.length);
   for (const f of m.inputs) { assert(/^[a-f0-9]{64}$/.test(f.sha256)); assert.equal(f.member, `fixtures/${f.sha256}.json`); }
   assert.equal(m.design.gates.correctness_disagreements_allowed, 0);
   continuationContract(m);
@@ -78,7 +79,7 @@ export function compileTasks(m, templates, phase, selected = null) {
         ...(m.continuation || m.followup || m.largeRun ? { measurementEpoch:m.revision } : {}) };
       calls.push({ ...identity, callId: digest(identity), limits });
     };
-    if (isProbeRun(m)) {
+    if (isProbeRun(m)||isPromotion(m)) {
       assert.deepEqual([...t.arms].sort(),Object.keys(PROBE_ARMS).sort());
       assert([1,2].includes(t.block));assert.equal(t.fixture_ids.length,1);
       for(const [position,arm] of t.arms.entries())add(t.fixture_ids[0],arm,t.block,{block:t.block,position,role:t.role});
@@ -108,7 +109,7 @@ export function compileTasks(m, templates, phase, selected = null) {
   });
 }
 export function chunksFor(m, templates, phase, selected = null) {
-  if(isProbeRun(m)) {
+  if(isProbeRun(m)||isPromotion(m)) {
     const ts=compileTasks(m,templates,phase,selected);
     return [1,2].flatMap(b=>packTasks(ts.filter(t=>t.calls[0].block===b),m.job));
   }

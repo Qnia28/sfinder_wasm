@@ -18,6 +18,7 @@ import { verifyReuse, collectedHistory } from './reuse.mjs';
 import { fastParent } from './fast-followup.mjs';
 import { largeParent, isMemoryRun, largePhase } from './large-run.mjs';
 import { isProbeRun } from './probe-followup.mjs';
+import { isPromotion, selectPromotion } from './promotion.mjs';
 
 const tool = file => fileURLToPath(new URL(file, import.meta.url));
 const client = (await import('../../artifact-action/node_modules/@actions/artifact/lib/artifact.js')).default;
@@ -161,7 +162,7 @@ try {
        solverCalls:m.followup||m.largeRun?0:'LIGHTWEIGHT_SYNTHETIC_TESTS_ONLY'});
     const reuse=verifyReuse(m);
     if(m.revision===12)execFileSync(process.execPath,['--test','tests/wasm-failure-trace.test.mjs'],{stdio:'inherit',timeout:30000});
-    const cp = reuse ? readJson('config/continuation/PARENT_CP_PREFLIGHT.json') : await cpPreflight('config/cp-preflight', 'activation',isMemoryRun(m),[11,12,13].includes(m.revision),m.revision===12);
+    const cp = reuse ? readJson('config/continuation/PARENT_CP_PREFLIGHT.json') : await cpPreflight('config/cp-preflight', 'activation',isMemoryRun(m),[11,12,13,14].includes(m.revision),m.revision===12);
     if(reuse) writeJson('config/PREREQUISITE_REUSE.json',{status:'PASS',parentInvocationId:reuse.parent.invocationId,
       originalManifestHash:reuse.parent.manifestHash,phases:m.prerequisiteReuse.phases,
       reusedCalls:reuse.rows.length,solverCalls:0,newCpSyntheticCalls:0,priorCpSyntheticCalls:m.provenance.priorCpSyntheticCalls});
@@ -170,7 +171,8 @@ try {
      output('artifact-id',receipt.artifactId);output('digest',receipt.digest);
      output('fast-followup',String(Boolean(m.followup)));
       output('large-run',String(Boolean(m.largeRun)));
-      output('large-phase',m.largeRun?largePhase(m):'');
+       output('large-phase',m.largeRun?largePhase(m):'');
+       output('promotion',String(isPromotion(m)));
   } else if(mode==='plan') {
     await download(process.env.INPUT_ARTIFACT_ID,process.env.INPUT_DIGEST,'config');
     const lock=validateLock(readJson('config/LOCK.json')); verifySources(lock.manifest.sourceFiles);
@@ -184,6 +186,7 @@ try {
     }
     let history={rows:[]}, selected=null;
      if(phase!=='CANARY' && !lock.manifest.followup && !lock.manifest.largeRun) history=getHistory(lock.manifest.campaignId);
+     if(isPromotion(lock.manifest)&&phase==='P15_CONFIRMATION')history=getHistory(lock.manifest.campaignId);
     const required=phase==='CALIBRATION'?'CANARY':phase==='ALL_INITIAL'?'CALIBRATION':null;
     if(required) {
       const expected=templates.filter(t=>t.phase===required).reduce((n,t)=>n+t.calls,0);
@@ -194,7 +197,17 @@ try {
       await upload(`triage-data-${lock.manifest.campaignId}-${required}-gate`,'gate');
       assert.equal(gate.status,'PASS',JSON.stringify(gate));
     }
-    if(phase.endsWith('CONFIRMATION')) {
+    if(phase==='P15_CONFIRMATION') {
+      const expected=compileTasks(lock.manifest,templates,'P15_INITIAL').flatMap(t=>t.calls);
+      const rows=history.rows.filter(r=>r.phase==='P15_INITIAL');
+      assert.equal(rows.length,expected.length);assert.deepEqual(rows.map(r=>r.callId).sort(),expected.map(r=>r.callId).sort());
+      assert(rows.every(r=>['EXACT','TIMEOUT_CALL','INCOMPLETE','OOM'].includes(r.status)||r.status==='NOT_RUN_AFTER_OOM'),'invalid/incomplete initial execution');
+      assert(rows.filter(r=>!r.status.startsWith('NOT_RUN_')).every(r=>r.execution?.reaped===true),'unreaped initial execution');
+      const decision=selectPromotion(lock.manifest,rows);selected=decision.selected;
+      writeJson('selection/SELECTION.json',{phase,...decision});
+      summarize('P15 fixed one-wave confirmation selection',{status:'SELECTED',reason:`${selected.length} inputs; tails/loop variation/changed/status union`,performancePass:false});
+      await upload(`triage-data-${lock.manifest.campaignId}-${phase}-selection`,'selection');
+    } else if(phase.endsWith('CONFIRMATION')) {
       const initial=phase==='ALL_CONFIRMATION'?'ALL_INITIAL':'PER_SAVE_INITIAL';
       const expected=templates.filter(t=>t.phase===initial).reduce((n,t)=>n+t.calls,0);
       assert.equal(history.rows.filter(r=>r.phase===initial).length,expected,'initial incomplete: no retest selection');
@@ -212,7 +225,10 @@ try {
      const parentReservation=followup?{calls:followup.priorCalls+(followup.priorCpCalls??0)+(followup.newCpCalls??1)}:historyReservation(lock.manifest);
      assert(followup ? followup.priorRunnerHours+reserved*lock.manifest.job.jobMinutes/60+followup.controlHours<=lock.manifest.maxRunnerHours
        : (reserved+36)*2.5<=lock.manifest.maxRunnerHours,'runner-hour reservation exceeded');
-     if (followup) { assert.equal(expectedCalls.length,followup.calls); assert.equal(chunks.length,followup.chunks); }
+     if (isPromotion(lock.manifest)) {
+       assert.equal(expectedCalls.length,phase==='P15_INITIAL'?followup.initialCalls:selected.length*4);
+       assert(chunks.length<=followup.chunks/2);
+     } else if (followup) { assert.equal(expectedCalls.length,followup.calls); assert.equal(chunks.length,followup.chunks); }
     assert(parentReservation.calls+prior.reduce((n,p)=>n+p.expectedCalls.length,0)+expectedCalls.length<=lock.manifest.maxCalls,
       'cumulative call cap exceeded; required confirmation selection may not be silently reduced');
     const matrix=[];

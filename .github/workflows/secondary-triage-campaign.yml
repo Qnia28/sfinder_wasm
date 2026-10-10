@@ -30,6 +30,7 @@ jobs:
       fast-followup: ${{ steps.activate.outputs.fast-followup }}
       large-run: ${{ steps.activate.outputs.large-run }}
       large-phase: ${{ steps.activate.outputs.large-phase }}
+      promotion: ${{ steps.activate.outputs.promotion }}
     steps:
       - uses: actions/checkout@v4
       - id: activate
@@ -162,7 +163,7 @@ jobs:
       artifact-id: ${{ needs.activate.outputs.artifact-id }}
       digest: ${{ needs.activate.outputs.digest }}
   fast-audit:
-    needs: [activate, fast-followup, large-run]
+    needs: [activate, fast-followup, large-run, promotion-confirm]
     if: always() && needs.activate.result == 'success' && (needs.activate.outputs.fast-followup == 'true' || needs.activate.outputs.large-run == 'true')
     runs-on: ubuntu-24.04
     timeout-minutes: 90
@@ -181,6 +182,14 @@ jobs:
     uses: ./.github/workflows/secondary-triage-stage.yml
     with:
       phase: ${{ needs.activate.outputs.large-phase }}
+      artifact-id: ${{ needs.activate.outputs.artifact-id }}
+      digest: ${{ needs.activate.outputs.digest }}
+  promotion-confirm:
+    needs: [activate, large-run]
+    if: needs.activate.outputs.promotion == 'true'
+    uses: ./.github/workflows/secondary-triage-stage.yml
+    with:
+      phase: P15_CONFIRMATION
       artifact-id: ${{ needs.activate.outputs.artifact-id }}
       digest: ${{ needs.activate.outputs.digest }}
   bundle-results:

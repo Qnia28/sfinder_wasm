@@ -26,7 +26,9 @@ def memory_run(m):return (m.get('largeRun') or {}).get('id')=='cp-memory-stages-
 PROBE_ARMS = {'H9_OPEN':dict(policy='A_H9',trace=True,secondary='auto',cpLimitMs=None),
               'P15_OPEN':dict(policy='P15',trace=True,secondary='auto',cpLimitMs=None)}
 def probe_run(m):return (m.get('largeRun') or {}).get('id')=='probe-p15-v1'
+def promotion_run(m):return (m.get('largeRun') or {}).get('id')=='p15-promotion-v1'
 def phases_for(m):
+    if promotion_run(m):return ['P15_INITIAL','P15_CONFIRMATION']
     if probe_run(m):return ['PROBE_P15_R13']
     return ['CP_FAILURE_R12' if m['revision']==12 else 'CP_COMPACT_R11' if m['revision']==11 else 'CP_MEMORY_R9'] if memory_run(m) else ['H9_CP_10M'] if m.get('largeRun') else ['A_FAST_FACTORIAL'] if m.get('followup') else PHASES
 
@@ -102,7 +104,7 @@ def compile_calls(m, templates, phase, selected=None):
             if m.get('continuation') or m.get('followup') or m.get('largeRun'):ident['measurementEpoch']=m['revision']
             calls.append(dict(**ident, callId=digest(ident), limits=dict(startupMs=10000,
                 callMs=600000 if m.get('largeRun') else 30000 if phase == 'TRIVIAL_CONTRACT' else 300000, reapMs=5000)))
-        if probe_run(m):
+        if probe_run(m) or promotion_run(m):
             require(sorted(t['arms'])==sorted(PROBE_ARMS) and t['block'] in [1,2] and len(t['fixture_ids'])==1,'probe paired arms')
             for position,arm in enumerate(t['arms']):add(t['fixture_ids'][0],arm,t['block'],dict(block=t['block'],position=position,role=t['role']))
         elif memory_run(m):
@@ -132,7 +134,7 @@ def compile_calls(m, templates, phase, selected=None):
     return tasks
 
 def chunks(tasks, job):
-    if tasks and tasks[0][0]['phase']=='PROBE_P15_R13' and len({t[0]['block'] for t in tasks})>1:
+    if tasks and tasks[0][0]['phase'] in ['PROBE_P15_R13','P15_INITIAL','P15_CONFIRMATION'] and len({t[0]['block'] for t in tasks})>1:
         return [c for b in [1,2] for c in chunks([t for t in tasks if t[0]['block']==b],job)]
     capacity = job['jobMs'] - job['reserveMs'] - job['setupMs'] - job['parts'] * job['checkpointMs']
     result = []; current = []; cost = 0
@@ -277,6 +279,36 @@ def required_confirmation(db, m, phase):
     selected.update(fid for fid in m['design']['retest']['always_include_fixture_ids'] if any(i['id']==fid for i in inputs.values()))
     return selected
 
+def promotion_selection(m,rows):
+    """Independent tail/loop selection, with no JS selector imports."""
+    selected=set();metrics=[]
+    require(len(rows)==m['largeRun']['initialCalls'],'promotion initial size')
+    for ref in m['inputs']:
+        fid=ref['id'];rs=[r for r in rows if r['inputId']==fid];require(len(rs)==4,'promotion initial four calls')
+        ratios=[];deltas=[];times={a:[] for a in PROBE_ARMS}
+        for block in [1,2]:
+            pair=[r for r in rs if r['block']==block];require(len(pair)==2,'promotion pair length')
+            b=next(r for r in pair if r['variant']=='H9_OPEN');c=next(r for r in pair if r['variant']=='P15_OPEN')
+            require(b['runnerId']==c['runnerId'] and b['condition']==c['condition'],'promotion matched pair')
+            for r in pair:
+                if r['status']=='EXACT':
+                    require(math.isfinite(r['ms']) and r['ms']>0,'promotion exact time');times[r['variant']].append(r['ms'])
+            if b['status']==c['status']=='EXACT':
+                require(b['execution']['result']['verified']==c['execution']['result']['verified'],'promotion pair witness')
+                ratios.append(c['ms']/b['ms']);deltas.append(c['ms']-b['ms'])
+        meta=ref['metadata']
+        if not meta['primary_hard'] and meta['d'] in [15,16]:selected.add(fid)
+        if len({r['status'] for r in rs})>1:selected.add(fid)
+        if any(len(xs)==2 and max(xs)/min(xs)>1.1 for xs in [*times.values(),ratios]):selected.add(fid)
+        metrics.append(dict(inputId=fid,population=meta['dataset'],deltaMs=statistics.median(deltas) if len(deltas)==2 else None,
+            ratio=statistics.median(ratios) if len(ratios)==2 else None))
+    for pop in ['ALL','PER_SAVE']:
+        for key in ['deltaMs','ratio']:
+            valid=sorted([r for r in metrics if r['population']==pop and r[key] is not None],key=lambda r:(r[key],r['inputId']))
+            n=math.ceil(len(valid)*.1)
+            if n:selected.update(r['inputId'] for r in valid[:n]+valid[-n:])
+    return selected
+
 def continuation_check(m, config=None, lock=None):
     c=m.get('startupContinuation')
     if not c:return 0
@@ -417,7 +449,26 @@ def audit(config, history, output, phase=None, inputs_only=False):
     # Independent schedule compiler, not a copy of the JS-produced plan ledger.
     full = {p: compile_calls(m, templates, p, {f['id'] for f in m['inputs']}) for p in phases_for(m)}
     full_calls = [c for ts in full.values() for t in ts for c in t]
-    if probe_run(m):
+    if promotion_run(m):
+        l=m['largeRun'];parent=read(config/'PARENT_LOCK.json')
+        require(m['revision']==14 and m['campaignId']=='TRIAGE_P15_PROMOTION_20261010_R14','promotion identity')
+        require(len(full_calls)==l['calls']==6088 and l['initialCalls']==3044 and sum(len(chunks(ts,m['job'])) for ts in full.values())==l['chunks']==256,'promotion max schedule')
+        require(l['priorCalls']==13272 and l['priorCpCalls']==16 and l['priorRunnerHours']==2718.8333333333335,'promotion inherited accounting')
+        require(parent['invocationId']=='38028248052' and parent['manifest']['sourceFiles']['product']==m['sourceFiles']['product'],'promotion product unchanged')
+        require(l['originMs']==1791287463000 and l['endMs']==1791719463000 and l['controlHours']==8,'promotion original clock')
+        require(l['priorCalls']+l['priorCpCalls']+l['calls']+1<=m['maxCalls']==20000,'promotion call cap')
+        require(l['priorRunnerHours']+256*m['job']['jobMinutes']/60+8<=m['maxRunnerHours']==5000 and m['maxParallel']==16,'promotion runner cap')
+        require(m['measurement']['variants']==list(PROBE_ARMS) and m['profileContract']['arms']==PROBE_ARMS and m['profileContract']['callTimeoutMs']==600000,'promotion profile')
+        require(sha(config/'PROMOTION_CATALOG.json')==l['catalogSha256'],'promotion catalog bytes')
+        cat=read(config/'PROMOTION_CATALOG.json');require(cat['selectedRefs']==m['inputs'],'promotion catalog refs')
+        require(len(m['inputs'])==761 and sum(f['metadata']['dataset']=='ALL' for f in m['inputs'])==548,'promotion population')
+        require(sum(not f['metadata']['primary_hard'] and f['metadata']['d'] in [15,16] for f in m['inputs'])==97,'promotion changed census')
+        require(m['design']['selection']==dict(id='p15-tails-loops-v1',fraction=.1,loopRatio=1.1,tails=['deltaMs','ratio'],populations=['ALL','PER_SAVE'],changedAlways=True,confirmationLoops=2,statusDiscordance=True,recursiveSelection=False),'promotion selection contract')
+        for ref in m['inputs']:
+            for phase_name in phases_for(m):
+                ts=sorted([t for t in templates if t['phase']==phase_name and t['fixture_ids']==[ref['id']]],key=lambda t:t['block'])
+                require([t['block'] for t in ts]==[1,2] and ts[0]['arms']==list(reversed(ts[1]['arms'])) and all(t['conditional']==(phase_name=='P15_CONFIRMATION') for t in ts),'promotion reversal/conditional')
+    elif probe_run(m):
         l=m['largeRun'];parent=read(config/'PARENT_LOCK.json')
         require(m['revision']==13 and m['campaignId']=='TRIAGE_PROBE_P15_20261010_R13','P15 identity')
         require(len(full_calls)==l['calls']==100 and sum(len(chunks(ts,m['job'])) for ts in full.values())==l['chunks']==18,'P15 schedule')
@@ -511,7 +562,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
         require(lock['manifest']==m, 'manifest differs from activation')
         require(digest(m) == lock['manifestHash'] and digest(m['profileContract']) == lock['profileHash'], 'manifest/profile lock')
         require(lock['endMs'] == lock['originMs'] + m['overallMs'], 'campaign origin reset')
-        try: cp_check(read(config / 'CP_PREFLIGHT.json'),m.get('revision') in [11,12,13])
+        try: cp_check(read(config / 'CP_PREFLIGHT.json'),m.get('revision') in [11,12,13,14])
         except Exception as exc: error('CP_PREFLIGHT', exc)
     elif not inputs_only: raise ValueError('activation lock missing')
     prior_reserved=common_parent_check(m,config,lock) if m.get('continuation') else continuation_check(m,config,lock)
@@ -524,7 +575,8 @@ def audit(config, history, output, phase=None, inputs_only=False):
         require(parent['originMs']==l['originMs']==source['originMs'] and parent['endMs']==l['endMs']==source['endMs'],'large original clock')
         if lock:require(lock['originMs']==l['originMs'] and lock['endMs']==l['endMs'],'large lock clock')
         refs={f['id']:f for f in source['manifest']['inputs']}
-        require(len(m['inputs'])==(25 if probe_run(m) else (1 if m['revision']==12 else 4) if memory_run(m) else 580) and all(refs.get(f['id'])==f for f in m['inputs']),'large original fixtures')
+        if promotion_run(m):require(all(f in m['inputs'] for f in refs.values()),'promotion retains original580')
+        else:require(len(m['inputs'])==(25 if probe_run(m) else (1 if m['revision']==12 else 4) if memory_run(m) else 580) and all(refs.get(f['id'])==f for f in m['inputs']),'large original fixtures')
         prior_reserved=l['priorCalls']+l['priorCpCalls']+1
     elif m.get('followup'):
         follow=m['followup']; parent=read(config/'PARENT_LOCK.json')
@@ -610,6 +662,13 @@ def audit(config, history, output, phase=None, inputs_only=False):
                     ==len(plans[initial]['expectedCalls']), 'confirmation before complete initial population')
                 require(required_confirmation(db,m,initial)<=selected.get(p,set()),'required independent retest selection omitted')
             except Exception as exc:error('selection/'+p,exc)
+    if promotion_run(m) and 'P15_CONFIRMATION' in plans:
+        try:
+            require('P15_INITIAL' in plans,'promotion confirmation before initial')
+            rows=[json.loads(t) for (t,) in db.execute("SELECT raw FROM records WHERE phase='P15_INITIAL'")]
+            require(len(rows)==3044,'promotion initial missing rows')
+            require(promotion_selection(m,rows)==selected.get('P15_CONFIRMATION',set()),'promotion selected union differs')
+        except Exception as exc:error('selection/P15_CONFIRMATION',exc)
     if not inputs_only:
         refs = {f['id'] for f in m['inputs']}
         for (fid,) in db.execute('SELECT DISTINCT input_id FROM records'):
@@ -671,7 +730,8 @@ def audit(config, history, output, phase=None, inputs_only=False):
                 require(ready <= 1 and len(returned) <= 1, 'duplicate IPC ready/result')
                 if 'policyTrace' in e: require(traces == e['policyTrace'], 'supervisor policy trace differs from raw IPC events')
                 else: require(r['status']=='OOM' or not traces, 'missing durable supervisor trace')
-                require(not cp_failure(dict(execution=dict(policyTrace=traces))), 'CP failure in raw IPC trace')
+                if not promotion_run(m):require(not cp_failure(dict(execution=dict(policyTrace=traces))), 'CP failure in raw IPC trace')
+                else:require(not any(t.get('name')=='cp-end' and t.get('kind')=='INVALID' for t in traces),'invalid CP proof')
                 if e.get('result') is not None: require(returned == [e['result']], 'supervisor result differs from raw IPC event')
                 if r['status'] in ['EXACT','INCOMPLETE','PROBE_INCOMPLETE']: require(ready==1 and bool(returned), 'missing IPC ready/result')
                 if r['variant']=='T_PROBE_SEED':
@@ -694,13 +754,13 @@ def audit(config, history, output, phase=None, inputs_only=False):
                         roles.append(samples[0]['role'])
                     require('policy-parent' in roles,'missing parent memory stream')
                     if any(t['name']=='cp-start' for t in traces):require('cpsat' in roles,'CP started without diagnostic stream')
-                if cp_failure(r): raise ValueError('CP runtime/proof failure in policy profile')
+                if cp_failure(r) and not promotion_run(m): raise ValueError('CP runtime/proof failure in policy profile')
                 if r['status'] not in ['EXACT','INCOMPLETE','PROBE_INCOMPLETE','TIMEOUT_CALL','TIMEOUT_STARTUP','OOM']:
                     raise ValueError('execution failure: '+r['status'])
                 if r['status'] != 'EXACT': require(r['ms'] is None, 'censored call given elapsed success time')
                 record = e.get('result')
                 if m.get('largeRun'):
-                    arm=(PROBE_ARMS if probe_run(m) else LARGE_ARMS)[r['variant']]
+                    arm=(PROBE_ARMS if probe_run(m) or promotion_run(m) else LARGE_ARMS)[r['variant']]
                     for event in traces:
                         if event['name']=='cp-start':require(event['limitMs']==arm['cpLimitMs'],'actual CP limit')
                     if record and r['status'] in ['EXACT','INCOMPLETE']:
@@ -718,12 +778,15 @@ def audit(config, history, output, phase=None, inputs_only=False):
                 if r['status'] not in ['EXACT','PROBE_INCOMPLETE','INCOMPLETE']: continue
                 require(record['fixtureSha256'] == ref['sha256'] and record['variant'] == r['variant'], 'result identity')
                 require(record['primarySeedHash'] == hashlib.sha256(encode(f['seed'],False).encode()).hexdigest(), 'primary seed identity')
-                if probe_run(m):
+                if probe_run(m) or promotion_run(m):
                     require(record.get('primarySeedKeysHash')==hashlib.sha256(encode([f['keys'][i] for i in f['seed']],False).encode()).hexdigest(),'P15 comparable seed identity')
-                    structure=next(e for e in record['trace'] if e['name']=='structure')
-                    d=structure['count']-structure['forcedCount'];hard=bool(f['primaryHard'])
-                    expected_probe=d<=9 if hard else d<=(14 if r['variant']=='P15_OPEN' else 16)
-                    require(structure['validStructure'] and structure['d']==d and structure['useProbe']==expected_probe,'P15 observed route')
+                    structure=next((e for e in record['trace'] if e['name']=='structure'),None)
+                    if structure is None:
+                        require(promotion_run(m) and bool(ref['metadata']['trivial']),'missing nontrivial route')
+                    else:
+                        d=structure['count']-structure['forcedCount'];hard=bool(f['primaryHard'])
+                        expected_probe=d<=9 if hard else d<=(14 if r['variant']=='P15_OPEN' else 16)
+                        require(structure['validStructure'] and structure['d']==d and structure['useProbe']==expected_probe,'P15 observed route')
                 result = record['result']; require(result['count'] == f['K'], 'result K')
                 require(all(k in index for k in result['keys']), 'unknown result key')
                 chosen = sorted(index[k] for k in result['keys']); quality = vector(f, chosen)

@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import { readJson, sha256 } from '../contracts.mjs';
 import { FOLLOWUP_JOB } from '../budget.mjs';
 import { isProbeRun, PROBE_PHASE, validateProbe, verifyProbeDesign } from './probe-followup.mjs';
+import { isPromotion, validatePromotion, verifyPromotionCatalog, PROMOTION_PHASES } from './promotion.mjs';
 
 export const LARGE_PHASE = 'H9_CP_10M';
 export const LARGE_ARMS = Object.freeze({
@@ -14,7 +15,7 @@ export const LARGE_ARMS = Object.freeze({
 });
 export const LARGE_JOB = Object.freeze({ ...FOLLOWUP_JOB, jobMs:325*60000, jobMinutes:350 });
 export const isMemoryRun = m => m.largeRun?.id === 'cp-memory-stages-v1';
-export const largePhase = m => isProbeRun(m) ? PROBE_PHASE : isMemoryRun(m) ? m.revision===12?'CP_FAILURE_R12':m.revision===11?'CP_COMPACT_R11':'CP_MEMORY_R9' : LARGE_PHASE;
+export const largePhase = m => isPromotion(m)?PROMOTION_PHASES[0]:isProbeRun(m) ? PROBE_PHASE : isMemoryRun(m) ? m.revision===12?'CP_FAILURE_R12':m.revision===11?'CP_COMPACT_R11':'CP_MEMORY_R9' : LARGE_PHASE;
 export const MEMORY_JOB = Object.freeze({ ...FOLLOWUP_JOB,parts:1,jobMs:45*60000,jobMinutes:350 });
 export const MEMORY_INPUTS = [
   'cycle1-pcinfo-033/all/restricted-split/ALL',
@@ -24,6 +25,7 @@ export const MEMORY_INPUTS = [
 ];
 export function validateLarge(m) {
   const l=m.largeRun;
+  if (isPromotion(m)) return validatePromotion(m);
   if (isProbeRun(m)) return validateProbe(m);
   if (isMemoryRun(m)) {
     if (m.revision===12) {
@@ -85,11 +87,13 @@ export function largeParent(m) {
   const load=(name,hash)=>{const b=fs.readFileSync('config/'+name);assert.equal(sha256(b),hash);return JSON.parse(b);};
   const parent=load('PARENT_LOCK.json',l.parentLockSha256);
   const source=load('FIXTURE_SOURCE_LOCK.json',l.fixtureSourceLockSha256);
-  assert.equal(parent.invocationId,isProbeRun(m)?'37958947216':m.revision===12?'37916694988':m.revision===11?'37886233804':isMemoryRun(m)?l.recoveryRunId??'37623263031':'37604369041');
-  assert.equal(source.invocationId,isProbeRun(m)?'37623263031':m.revision===12?'37916694988':m.revision===11?'37886233804':isMemoryRun(m)?'37623263031':'37487586383');
+  assert.equal(parent.invocationId,isPromotion(m)?'38028248052':isProbeRun(m)?'37958947216':m.revision===12?'37916694988':m.revision===11?'37886233804':isMemoryRun(m)?l.recoveryRunId??'37623263031':'37604369041');
+  assert.equal(source.invocationId,isPromotion(m)||isProbeRun(m)?'37623263031':m.revision===12?'37916694988':m.revision===11?'37886233804':isMemoryRun(m)?'37623263031':'37487586383');
   assert.equal(parent.originMs,l.originMs); assert.equal(parent.endMs,l.endMs);
   assert.equal(source.originMs,l.originMs); assert.equal(source.endMs,l.endMs);
-  for(const ref of m.inputs)assert.deepEqual(ref,source.manifest.inputs.find(f=>f.id===ref.id));
+  if(isPromotion(m)) {
+    verifyPromotionCatalog(m);assert.deepEqual(m.sourceFiles.product,parent.manifest.sourceFiles.product);
+  } else for(const ref of m.inputs)assert.deepEqual(ref,source.manifest.inputs.find(f=>f.id===ref.id));
   const a=load('PRIOR_ACCOUNTING.json',l.accountingSha256);
   assert.equal(a.reservedCalls,l.priorCalls); assert.equal(a.cumulativeCpSyntheticCalls,l.priorCpCalls);
   assert.equal(a.cumulativeReservedRunnerHours,l.priorRunnerHours);
