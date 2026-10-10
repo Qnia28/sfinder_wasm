@@ -8,7 +8,7 @@ import { PROBE_ARMS,PROBE_JOB,PROBE_PHASE } from '../tools/secondary-bench/commo
 import { compileTasks,chunksFor } from '../tools/secondary-bench/common/triage/protocol.mjs';
 
 test('P15 changes only non-hard d15/16; baseline and invalid structures preserved',()=>{
-  assert.equal(DEFAULT_SECONDARY_TRIAGE_POLICY,'A_H9');
+  assert.equal(DEFAULT_SECONDARY_TRIAGE_POLICY,'P15');
   for(const hard of [false,true])for(let d=0;d<=40;d++) {
     const s={candidateCount:100,count:d+2,forcedCount:2};
     const h=decideExperimentalProbe('A_H9',hard,s),p=decideExperimentalProbe('P15',hard,s);
@@ -21,13 +21,14 @@ test('P15 changes only non-hard d15/16; baseline and invalid structures preserve
 test('real product P15 skips d15 probe and defers original seed, H9 still probes',()=>{
   const keys=Array.from({length:20},(_,i)=>String(i).padStart(2,'0'));
   const m=createNumericCoverage(keys,new Map([[0,keys.map((_,i)=>[i,1])]]),[{caseId:0}]);
-  for(const policy of ['P15','A_H9']) {
+  for(const policy of [undefined,'P15','A_H9']) {
+    const resolved=policy??DEFAULT_SECONDARY_TRIAGE_POLICY;
     const searches=[];const probe={completed:false,count:15,keys:keys.slice(1,16),searchedStates:100000};
     const result=solveExactSecondary(m.coverage,{solver:{minimumCoverAtCount(_c,_k,o){searches.push(o);return probe;}},
       qualityFor:()=>1,primary:{count:15,backend:'rust'},primaryKeys:keys.slice(0,15),primaryHard:false,
       kernelStats:{},experimentalTriagePolicy:policy,deferThreshold:c=>c});
-    assert.equal(searches.length,policy==='P15'?0:1);assert.equal(result.experimentalTriagePolicy,policy);
-    assert.deepEqual(result.primaryKeys,keys.slice(0,15));assert.equal(result.integratedProbe,policy==='P15'?undefined:probe);
+    assert.equal(searches.length,resolved==='P15'?0:1);assert.equal(result.experimentalTriagePolicy,resolved);
+    assert.deepEqual(result.primaryKeys,keys.slice(0,15));assert.equal(result.integratedProbe,resolved==='P15'?undefined:probe);
   }
 });
 test('P15 paired plan preserves18 chunks and independent Python call/hash/packing parity',()=>{

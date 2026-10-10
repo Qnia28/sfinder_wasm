@@ -14,7 +14,7 @@ import { hash } from '../tools/secondary-bench/contracts.mjs';
 import { isORToolsSupported } from '../src/ortools-min-cover.mjs';
 
 test('H9 preserves non-hard A and bounds the new hard probe at d9',()=>{
-  assert.equal(DEFAULT_SECONDARY_TRIAGE_POLICY,'A_H9');assert.equal(SECONDARY_CP_LIMIT_MS,null);
+  assert.equal(DEFAULT_SECONDARY_TRIAGE_POLICY,'P15');assert.equal(SECONDARY_CP_LIMIT_MS,null);
   for(const hard of [false,true])for(const d of [0,7,9,10,11,16,17,40]) {
     const s={candidateCount:100,count:d+2,forcedCount:2};
     assert.equal(decideExperimentalProbe('A_H9',hard,s).useProbe,hard?d<=9:d<=16);

@@ -1,5 +1,6 @@
 // The bounded probe policy is independent of the lifetime of the exact engines.
-export const DEFAULT_SECONDARY_TRIAGE_POLICY = 'A_H9';
+// r14: broad ALL/per-save paired comparison and selected confirmation.
+export const DEFAULT_SECONDARY_TRIAGE_POLICY = 'P15';
 export function decideExperimentalProbe(policy = 'baseline', primaryHard, structure) {
   if (!['baseline', 'A', 'B', 'A_H9', 'P15'].includes(policy)) throw new Error('invalid experimental triage policy');
   const n = structure?.candidateCount, k = structure?.count, f = structure?.forcedCount;
