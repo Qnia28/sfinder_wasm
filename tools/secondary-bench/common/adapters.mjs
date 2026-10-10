@@ -36,6 +36,8 @@ export function requestFor(call, task, bundle, outputDir, { input = null, probeS
   if (task.adapter === 'triage-fixture') {
     assert(input && input.id===call.inputId);
     const file=safePath(bundle,input.member);assert.equal(sha256(fs.readFileSync(file)),call.inputHash);
+    if(input.metadata.productCommand)return {action:'product-command',variant:call.variant,commandPath:file,commandSha256:call.inputHash,
+      exactHumanQuality:'true',productRoot:path.resolve(call.variant==='DEV'?'dev-product':'rc-product'),bundleRoot:path.resolve(bundle)};
     return { action:'triage',variant:call.variant,fixturePath:file,fixtureSha256:call.inputHash,
       exactHumanQuality:'true',baselineRoot:path.resolve('triage-baseline'),expectedWitness:input.expectedWitness??null,
       ...(['CP_MEMORY_R9','CP_COMPACT_R11','CP_FAILURE_R12'].includes(call.phase)?{memoryDiagnostic:'cp-memory-v1'}:{}),

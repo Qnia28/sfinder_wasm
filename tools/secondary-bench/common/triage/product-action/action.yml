@@ -1,0 +1,58 @@
+name: RC product comparison operation
+description: Frozen product commands using common scopes and evidence transport
+inputs:
+  mode:
+    required: true
+    description: activate, plan, run, audit
+  phase:
+    required: false
+    description: Round identity
+  config-id:
+    required: false
+    description: Activation artifact
+  config-digest:
+    required: false
+    description: Activation SHA256
+  artifact-id:
+    required: false
+    description: Chunk artifact
+  digest:
+    required: false
+    description: Chunk SHA256
+  job-started-ms:
+    required: false
+    description: Job clock before setup
+outputs:
+  artifact-id:
+    value: ${{ steps.operation.outputs.artifact-id }}
+    description: Activation ID
+  digest:
+    value: ${{ steps.operation.outputs.digest }}
+    description: Activation SHA256
+  matrix:
+    value: ${{ steps.operation.outputs.matrix }}
+    description: Frozen workers
+  has-work:
+    value: ${{ steps.operation.outputs.has-work }}
+    description: Nonempty round
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 24.13.0
+    - run: npm ci --ignore-scripts --no-audit --no-fund
+      shell: bash
+    - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      shell: bash
+    - id: operation
+      run: node tools/secondary-bench/common/triage/product-action.mjs
+      shell: bash
+      env:
+        INPUT_MODE: ${{ inputs.mode }}
+        INPUT_PHASE: ${{ inputs.phase }}
+        CONFIG_ID: ${{ inputs.config-id }}
+        CONFIG_DIGEST: ${{ inputs.config-digest }}
+        INPUT_ARTIFACT_ID: ${{ inputs.artifact-id }}
+        INPUT_DIGEST: ${{ inputs.digest }}
+        JOB_STARTED_MS: ${{ inputs.job-started-ms }}

@@ -1,0 +1,76 @@
+name: RC product dev comparison 16VM
+on:
+  push:
+    branches: [experiment/secondary-routing-20261005]
+    paths: [.github/secondary-triage/RC_START.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: secondary-triage-probe-seed
+  cancel-in-progress: false
+jobs:
+  activate:
+    if: contains(github.event.head_commit.message, '[RUN_RC_DEV_16VM]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      artifact-id: ${{ steps.activate.outputs.artifact-id }}
+      digest: ${{ steps.activate.outputs.digest }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: activate
+        uses: ./tools/secondary-bench/common/triage/product-action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: activate
+  initial-1:
+    needs: activate
+    uses: ./.github/workflows/secondary-rc-stage.yml
+    with:
+      phase: RC_INITIAL_1
+      config-id: ${{ needs.activate.outputs.artifact-id }}
+      config-digest: ${{ needs.activate.outputs.digest }}
+  initial-2:
+    needs: [activate, initial-1]
+    uses: ./.github/workflows/secondary-rc-stage.yml
+    with:
+      phase: RC_INITIAL_2
+      config-id: ${{ needs.activate.outputs.artifact-id }}
+      config-digest: ${{ needs.activate.outputs.digest }}
+  initial-3:
+    needs: [activate, initial-2]
+    uses: ./.github/workflows/secondary-rc-stage.yml
+    with:
+      phase: RC_INITIAL_3
+      config-id: ${{ needs.activate.outputs.artifact-id }}
+      config-digest: ${{ needs.activate.outputs.digest }}
+  confirmation-1:
+    needs: [activate, initial-3]
+    uses: ./.github/workflows/secondary-rc-stage.yml
+    with:
+      phase: RC_CONFIRMATION_1
+      config-id: ${{ needs.activate.outputs.artifact-id }}
+      config-digest: ${{ needs.activate.outputs.digest }}
+  confirmation-2:
+    needs: [activate, confirmation-1]
+    uses: ./.github/workflows/secondary-rc-stage.yml
+    with:
+      phase: RC_CONFIRMATION_2
+      config-id: ${{ needs.activate.outputs.artifact-id }}
+      config-digest: ${{ needs.activate.outputs.digest }}
+  audit:
+    needs: [activate, initial-1, initial-2, initial-3, confirmation-1, confirmation-2]
+    if: always() && needs.activate.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/common/triage/product-action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: audit
+          config-id: ${{ needs.activate.outputs.artifact-id }}
+          config-digest: ${{ needs.activate.outputs.digest }}

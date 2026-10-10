@@ -93,8 +93,9 @@ def timeout_map(text):
 
 
 def job_accounting(jobs, workflows):
-    campaign = timeout_map(workflows.get('.github/workflows/secondary-triage-campaign.yml', ''))
-    stage = timeout_map(workflows.get('.github/workflows/secondary-triage-stage.yml', ''))
+    prefix='secondary-rc' if '.github/workflows/secondary-rc-campaign.yml' in workflows else 'secondary-triage'
+    campaign = timeout_map(workflows.get(f'.github/workflows/{prefix}-campaign.yml', ''))
+    stage = timeout_map(workflows.get(f'.github/workflows/{prefix}-stage.yml', ''))
     details = []; unknown = []; seen = {}
     for job in jobs:
         if job.get('conclusion') == 'skipped': continue
@@ -217,7 +218,8 @@ def inspect_artifacts(root, inventory, run, workflows):
     planned_matrix=sum(plan.get('chunks',0) for plan in current_plans)
     allocated_matrix=sum(' / run (' in j['name'] for j in jobs['jobs'])
     unallocated=max(0,planned_matrix-allocated_matrix)
-    matrix_minutes=timeout_map(workflows.get('.github/workflows/secondary-triage-stage.yml','')).get('run')
+    prefix='secondary-rc' if '.github/workflows/secondary-rc-campaign.yml' in workflows else 'secondary-triage'
+    matrix_minutes=timeout_map(workflows.get(f'.github/workflows/{prefix}-stage.yml','')).get('run')
     jobs.update(scheduledMatrixJobs=planned_matrix,unmaterializedScheduledJobs=unallocated)
     if unallocated:
         jobs['reservedHours']=jobs['reservedHours']+unallocated*matrix_minutes/60 if jobs['reservedHours'] is not None and matrix_minutes is not None else None
@@ -351,7 +353,8 @@ def collect(repository, run_id, out, allow_active=False):
         except (ValueError, OSError, subprocess.SubprocessError) as exc:
             failures.append(dict(artifactId=a['id'], error=str(exc)))
     workflows = {}
-    for name in ['.github/workflows/secondary-triage-campaign.yml','.github/workflows/secondary-triage-stage.yml']:
+    prefix='secondary-rc' if run.get('path','').split('@')[0]=='.github/workflows/secondary-rc-campaign.yml' else 'secondary-triage'
+    for name in [f'.github/workflows/{prefix}-campaign.yml',f'.github/workflows/{prefix}-stage.yml']:
         value = api(repository, f'contents/{name}?ref={run["head_sha"]}')
         workflows[name] = base64.b64decode(value['content']).decode()
     final = api(repository, f'actions/runs/{run_id}')

@@ -1,0 +1,56 @@
+name: RC product round
+on:
+  workflow_call:
+    inputs:
+      phase:
+        type: string
+        required: true
+      config-id:
+        type: string
+        required: true
+      config-digest:
+        type: string
+        required: true
+permissions:
+  contents: read
+  actions: read
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      has-work: ${{ steps.plan.outputs.has-work }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: plan
+        uses: ./tools/secondary-bench/common/triage/product-action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: plan
+          phase: ${{ inputs.phase }}
+          config-id: ${{ inputs.config-id }}
+          config-digest: ${{ inputs.config-digest }}
+  run:
+    needs: plan
+    if: needs.plan.outputs.has-work == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - id: clock
+        run: echo "started=$(node -p 'Date.now()')" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+      - uses: ./tools/secondary-bench/common/triage/product-action
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: run
+          artifact-id: ${{ matrix.artifactId }}
+          digest: ${{ matrix.digest }}
+          job-started-ms: ${{ steps.clock.outputs.started }}

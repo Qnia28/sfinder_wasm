@@ -7,6 +7,7 @@ import { FAST_PHASE, FAST_ARMS, validateFast } from './fast-followup.mjs';
 import { LARGE_PHASE, LARGE_ARMS, validateLarge, isMemoryRun, largePhase } from './large-run.mjs';
 import { isProbeRun, PROBE_ARMS } from './probe-followup.mjs';
 import { isPromotion, PROMOTION_PHASES } from './promotion.mjs';
+import { isProductIntegration, INTEGRATION_PROFILE, INTEGRATION_PHASES, validateIntegration, integrationTasks } from './product-integration.mjs';
 
 export const PROFILE = Object.freeze({ id: 'triage-cold-v1', lifecycle: 'fresh-process-cold',
   exactHumanQuality: 'true', timingContract: 'post-primary-policy-settled-v1',
@@ -19,9 +20,10 @@ export const AUDIT_CONTRACT = Object.freeze({ id: 'independent-python-evidence-v
   prerequisiteJobs: ['CANARY','CALIBRATION'], finalDedicatedVm: true, performancePass: false, independentOptimality: false });
 export const CP_PREFLIGHT_CONTRACT = Object.freeze({ id: 'scoped-cpsat-weighted-tie-v1', activationCalls: 1,
   maxCanaryVmCalls: 3, callMs: 30000, populationCalls: 0 });
-export const profileForTriage = m => m.largeRun ? { ...PROFILE, cpLimitMs:null, arms:isProbeRun(m)||isPromotion(m)?PROBE_ARMS:LARGE_ARMS, callTimeoutMs:600000 } : PROFILE;
-export const phasesFor = m => isPromotion(m)?PROMOTION_PHASES:m.largeRun ? [largePhase(m)] : m.followup ? [FAST_PHASE] : PHASES;
+export const profileForTriage = m => isProductIntegration(m)?INTEGRATION_PROFILE:m.largeRun ? { ...PROFILE, cpLimitMs:null, arms:isProbeRun(m)||isPromotion(m)?PROBE_ARMS:LARGE_ARMS, callTimeoutMs:600000 } : PROFILE;
+export const phasesFor = m => isProductIntegration(m)?INTEGRATION_PHASES:isPromotion(m)?PROMOTION_PHASES:m.largeRun ? [largePhase(m)] : m.followup ? [FAST_PHASE] : PHASES;
 export function validateManifest(m) {
+  if(isProductIntegration(m))return validateIntegration(m);
   strict(m,['schemaVersion','campaignId','purpose','freshValidation','profile','profileContract','maxParallel','maxCalls',
     'maxRunnerHours','overallMs','job','inputs','baselineFiles','sourceFiles','tasksHash','design','provenance','runtime',
     'auditContract','cpPreflightContract','activationRecovery','startupContinuation','revision','approval','analysis',
@@ -68,6 +70,7 @@ export function validateLock(lock) {
   assert(/^[a-zA-Z0-9_-]+$/.test(lock.invocationId)); return lock;
 }
 export function compileTasks(m, templates, phase, selected = null) {
+  if(isProductIntegration(m))return integrationTasks(m,templates,phase,selected);
   assert(phasesFor(m).includes(phase));
   const index = new Map(m.inputs.map(f => [f.id, f]));
   return templates.filter(t => t.phase === phase && (!t.conditional || selected?.includes(t.fixture_ids[0]))).map(t => {

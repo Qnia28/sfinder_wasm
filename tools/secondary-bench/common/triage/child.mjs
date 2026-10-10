@@ -18,6 +18,7 @@ export function historicalWitnessHash(verified, expected) {
   return hash(JSON.stringify(value));
 }
 export async function executeTriage(job) {
+  if(job.action==='product-command')return (await import('./product-child.mjs')).executeProduct(job);
   let memoryDiagnostic, memoryTimer;
   if (job.memoryDiagnostic === 'cp-memory-v1') {
     const { installMemoryTrace } = await import('./memory-trace.mjs');
