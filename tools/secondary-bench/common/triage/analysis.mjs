@@ -2,6 +2,16 @@ import assert from 'node:assert/strict';
 import { digest, sha256 } from '../contracts.mjs';
 import { evidenceFirst } from './gates.mjs';
 
+// Quarantine is scoped to one worker/input/arm and an earlier reclaimed OOM.
+export function normalOomSkipIds(rows, expected) {
+  const order=new Map(expected.map((c,i)=>[c.callId,i]));
+  return new Set(rows.filter(r=>r.status==='NOT_RUN_AFTER_OOM'&&r.executionAttemptId===null&&r.ms===null&&!r.execution
+    &&order.has(r.callId)&&rows.some(p=>p.status==='OOM'&&p.executionAttemptId&&p.execution?.reaped===true
+      &&order.has(p.callId)&&order.get(p.callId)<order.get(r.callId)
+      &&['inputId','variant','invocationId','phase','runnerId'].every(k=>r[k]!==undefined&&r[k]===p[k])))
+    .map(r=>r.callId));
+}
+
 const median = values => { const s = [...values].sort((a,b) => a-b), n = s.length; return n ? (s[Math.floor((n-1)/2)] + s[Math.floor(n/2)]) / 2 : null; };
 export const percentile = (values, p) => { const s = [...values].sort((a,b) => a-b); if (!s.length) return null;
   const x = (s.length-1)*p, a = Math.floor(x); return s[a]+(s[Math.min(a+1,s.length-1)]-s[a])*(x-a); };

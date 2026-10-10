@@ -174,14 +174,15 @@ def evidence_first(contract):
     require(contract==GATE_CONTRACT,'unsupported gate contract')
     return True
 
-def phase_gate(db, phase, contract=None):
+def phase_gate(db, phase, contract=None, normal_skips=()):
     collect=evidence_first(contract);require(phase in ['CANARY','CALIBRATION'],'unknown prerequisite phase')
     observations=[]
     pairs = collections.defaultdict(list); groups = collections.defaultdict(list)
     for (text,) in db.execute('SELECT raw FROM records WHERE phase=?', (phase,)):
         r = json.loads(text)
-        require(r['status'] in ['EXACT','TIMEOUT_CALL','INCOMPLETE']+(['OOM'] if collect else [])
-            and r['execution'].get('reaped') is True, 'gate execution/OOM/coverage')
+        normal_skip=collect and r.get('callId') in normal_skips and r['status']=='NOT_RUN_AFTER_OOM'
+        require(normal_skip or (r['status'] in ['EXACT','TIMEOUT_CALL','INCOMPLETE']+(['OOM'] if collect else [])
+            and r['execution'].get('reaped') is True), 'gate execution/OOM/coverage')
         if r['status']=='OOM':
             scope=r['execution'].get('memoryScope') or {}
             require(scope.get('memoryMax')==3221225472 and scope.get('swapMax')==0,'unproven OOM scope')
@@ -278,6 +279,30 @@ def required_confirmation(db, m, phase):
         if changed or i['issues'] or variability or fast or resources:selected.add(i['id'])
     selected.update(fid for fid in m['design']['retest']['always_include_fixture_ids'] if any(i['id']==fid for i in inputs.values()))
     return selected
+
+ADJUDICATION_VERSION='triage-evidence-v3-unknown-route-oom-quarantine'
+
+def probe_route_check(structure,hard,variant):
+    """Mirror the product's integer validation and unknown-structure fallback."""
+    n,k,f=(structure.get(key) for key in ['candidateCount','count','forcedCount'])
+    valid=all(type(x) is int for x in [n,k,f]) and 0<=f<=k<=n
+    d=k-f if valid else None
+    expected=(d<=9 if hard else d<=(14 if variant=='P15_OPEN' else 16)) if valid else not hard
+    require(structure.get('validStructure') is valid and structure.get('d')==d
+        and structure.get('useProbe') is expected,'P15 observed route')
+    if not valid:require(structure.get('reason')=='unknown-baseline','unknown route fallback reason')
+
+def oom_skip_cause(row,prior,location,prior_location):
+    """Only the same worker's earlier reclaimed OOM can justify quarantine."""
+    return (row.get('status')=='NOT_RUN_AFTER_OOM' and row.get('executionAttemptId') is None and row.get('ms') is None
+        and not row.get('execution') and prior.get('status')=='OOM' and prior.get('executionAttemptId') is not None
+        and (prior.get('execution') or {}).get('reaped') is True
+        and all(row.get(k)==prior.get(k) for k in ['inputId','variant','invocationId','phase','runnerId'])
+        and all(location[k]==prior_location[k] for k in ['phase','chunk'])
+        and (prior_location['part'],prior['position'])<(location['part'],row['position']))
+
+def evidence_status(errors,missing,not_run,normal_skips):
+    return 'FAIL' if errors else 'INCOMPLETE' if missing or set(not_run)-set(normal_skips) else 'PASS'
 
 def promotion_selection(m,rows):
     """Independent tail/loop selection, with no JS selector imports."""
@@ -691,7 +716,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
             for index in range(plan['chunks']):
                 if not any(r.get('receipts') and r['receipts'][0]['identity'].get('phase') == p
                            and r['receipts'][0]['identity'].get('chunk') == index for r in receipts): missing.append(f'receipt/{p}/{index}')
-    consensus = {}; not_run = []; observed_attempts = set()
+    consensus = {}; not_run = []; normal_skips = []; observed_attempts = set()
     for ref in m['inputs']:
         try:
             file = member(config, ref['member']); require(sha(file) == ref['sha256'], 'fixture byte hash')
@@ -709,7 +734,16 @@ def audit(config, history, output, phase=None, inputs_only=False):
                     and r['invocationId'] == owner['invocationId'] and r['condition'] == m['profileContract'], 'execution lock/profile')
                 ident = snapshots[checkpoint]['identity']; require(all(ident.get(k) == v for k,v in location.items()), 'chunk placement')
                 if r['executionAttemptId'] is None:
-                    require(r['status'].startswith('NOT_RUN_') and r['ms'] is None, 'NOT_RUN semantics'); not_run.append(c['callId']); continue
+                    require(r['status'].startswith('NOT_RUN_') and r['ms'] is None, 'NOT_RUN semantics'); not_run.append(c['callId'])
+                    if r['status']=='NOT_RUN_AFTER_OOM':
+                        prior_rows=[json.loads(t) for (t,) in db.execute('SELECT raw FROM records WHERE input_id=? AND phase=?',(r['inputId'],r['phase']))]
+                        causes=[p for p in prior_rows if p['callId'] in expected
+                            and oom_skip_cause(r,p,location,expected[p['callId']][1])]
+                        require(bool(causes),'OOM skip without earlier same-worker reclaimed OOM')
+                        require(not db.execute('SELECT 1 FROM starts WHERE attempt=?',
+                            (digest(dict(invocation=owner['invocationId'],call=c['callId'])),)).fetchone(),'skipped call has durable start')
+                        normal_skips.append(c['callId'])
+                    continue
                 require(r['executionAttemptId'] == digest(dict(invocation=owner['invocationId'],call=c['callId'])), 'attempt identity')
                 require(r['executionAttemptId'] not in observed_attempts, 'attempt replay'); observed_attempts.add(r['executionAttemptId'])
                 start = db.execute('SELECT raw FROM starts WHERE attempt=?', (r['executionAttemptId'],)).fetchone(); require(start, 'durable start missing')
@@ -784,9 +818,7 @@ def audit(config, history, output, phase=None, inputs_only=False):
                     if structure is None:
                         require(promotion_run(m) and bool(ref['metadata']['trivial']),'missing nontrivial route')
                     else:
-                        d=structure['count']-structure['forcedCount'];hard=bool(f['primaryHard'])
-                        expected_probe=d<=9 if hard else d<=(14 if r['variant']=='P15_OPEN' else 16)
-                        require(structure['validStructure'] and structure['d']==d and structure['useProbe']==expected_probe,'P15 observed route')
+                        probe_route_check(structure,bool(f['primaryHard']),r['variant'])
                 result = record['result']; require(result['count'] == f['K'], 'result K')
                 require(all(k in index for k in result['keys']), 'unknown result key')
                 chosen = sorted(index[k] for k in result['keys']); quality = vector(f, chosen)
@@ -815,12 +847,13 @@ def audit(config, history, output, phase=None, inputs_only=False):
     if not inputs_only:
         for p in ['CANARY','CALIBRATION']:
             if p in plans:
-                try: assessments[p]=phase_gate(db,p,m.get('gateContract')); gates[p]='PASS'
+                try: assessments[p]=phase_gate(db,p,m.get('gateContract'),normal_skips); gates[p]='PASS'
                 except Exception as exc: gates[p]='HOLD'; error('gate/'+p,exc)
         if 'CANARY' in plans and runner_preflights != plans['CANARY']['chunks']:
             error('canary VM preflights','missing actual CP check on canary VM')
     observed = db.execute('SELECT count(*) FROM records').fetchone()[0]; db.close()
-    report = dict(schemaVersion=1, status='FAIL' if errors else 'INCOMPLETE' if missing or not_run else 'PASS',
+    report = dict(schemaVersion=1, status=evidence_status(errors,missing,not_run,normal_skips),
+        adjudicationVersion=ADJUDICATION_VERSION,normalOomSkips=normal_skips,
         role='INDEPENDENT_PYTHON_STDLIB_EVIDENCE_AUDIT', phase=phase or ('INPUTS_ONLY' if inputs_only else 'ALL'),
         fixtureFilesChecked=fixtures, witnessRecordsChecked=checked, observedCalls=observed, scheduledCalls=len(expected),
         statusCounts=dict(statuses), errors=errors, missing=missing, notRun=not_run, solverCalls=0,
@@ -843,6 +876,7 @@ def main():
     print(json.dumps({k:r[k] for k in ['status','phase','fixtureFilesChecked','witnessRecordsChecked','solverCalls']}))
     for error in r['errors']:print('EVIDENCE_ERROR '+json.dumps(error))
     for missing in r['missing']:print('EVIDENCE_MISSING '+missing)
+    if r['normalOomSkips']:print('NORMAL_OOM_QUARANTINE '+json.dumps(dict(count=len(r['normalOomSkips']),preservedStatus='NOT_RUN_AFTER_OOM',workflowFailure=False)))
     for phase,assessment in r.get('prerequisiteAssessments',{}).items():
         calibration=assessment.get('calibration')
         if calibration:

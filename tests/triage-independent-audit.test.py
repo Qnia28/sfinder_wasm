@@ -103,6 +103,28 @@ def campaign(base, gate_contract=None):
     return config,history
 
 class IndependentAudit(unittest.TestCase):
+    def test_unknown_probe_route_matches_product_without_null_arithmetic(self):
+        for hard in [False,True]:
+            for arm in ['H9_OPEN','P15_OPEN']:
+                s=dict(candidateCount=4,count=4,forcedCount=None,validStructure=False,d=None,useProbe=not hard,reason='unknown-baseline')
+                audit.probe_route_check(s,hard,arm)
+                s['useProbe']=hard
+                with self.assertRaises(ValueError):audit.probe_route_check(s,hard,arm)
+        for arm,probe in [('H9_OPEN',True),('P15_OPEN',False)]:
+            audit.probe_route_check(dict(candidateCount=30,count=18,forcedCount=3,validStructure=True,d=15,useProbe=probe),False,arm)
+    def test_oom_quarantine_needs_causal_predecessor_and_does_not_mask_missing(self):
+        row=dict(status='NOT_RUN_AFTER_OOM',executionAttemptId=None,ms=None,inputId='f',variant='P15_OPEN',invocationId='1',phase='ALL_INITIAL',runnerId='r',position=1)
+        prior=dict(row,status='OOM',executionAttemptId='attempt',execution=dict(reaped=True),position=0)
+        loc=dict(phase='ALL_INITIAL',chunk=0,part=1);prev=dict(loc,part=0)
+        self.assertTrue(audit.oom_skip_cause(row,prior,loc,prev))
+        for altered in [dict(prior,runnerId='other'),dict(prior,variant='H9_OPEN'),dict(prior,execution=dict(reaped=False)),dict(prior,status='TIMEOUT_CALL')]:
+            self.assertFalse(audit.oom_skip_cause(row,altered,loc,prev))
+        self.assertFalse(audit.oom_skip_cause(row,prior,loc,dict(prev,chunk=1)))
+        self.assertFalse(audit.oom_skip_cause(row,prior,loc,dict(prev,part=2)))
+        self.assertEqual(audit.evidence_status([],[],['skip'],['skip']),'PASS')
+        self.assertEqual(audit.evidence_status([],['missing'],['skip'],['skip']),'INCOMPLETE')
+        self.assertEqual(audit.evidence_status([],[],['budget'],[]),'INCOMPLETE')
+        self.assertEqual(audit.evidence_status(['bad'],[],['skip'],['skip']),'FAIL')
     def test_compact_preflight_requires_weighted_vector_and_multiple_quality_stages(self):
         p=preflight()
         with self.assertRaises(ValueError):audit.cp_check(p,compact=True)

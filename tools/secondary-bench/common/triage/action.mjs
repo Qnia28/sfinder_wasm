@@ -11,7 +11,7 @@ import { seal, verifySnapshot, loadHistory, deadlineClient, historyReservation }
 import { activate as activateCommon, validateLock as validateCommonLock } from '../manifest.mjs';
 import { requireDisk } from '../../followup-storage.mjs';
 import { validateManifest, validateLock, PROFILE, PHASES, chunksFor, compileTasks } from './protocol.mjs';
-import { prerequisiteGate, selectConfirmation, developmentReport } from './analysis.mjs';
+import { prerequisiteGate, selectConfirmation, developmentReport, normalOomSkipIds } from './analysis.mjs';
 import { runChunk } from './executor.mjs';
 import { isolatedScope } from '../../followup-scope.mjs';
 import { verifyReuse, collectedHistory } from './reuse.mjs';
@@ -304,8 +304,10 @@ try {
     report.unknownExecution=history.unknown;report.evidenceWarnings=history.warnings;
     report.phaseCompleteness=PHASES.map(phase=>({phase,planned:plans.some(p=>p.phase===phase),
       scheduled:expected.filter(c=>c.phase===phase).length,observed:history.rows.filter(r=>r.phase===phase).length}));
+    const normalSkips=normalOomSkipIds(history.rows,expected);
+    report.normalOomSkips=[...normalSkips];report.adjudicationVersion='triage-evidence-v3-unknown-route-oom-quarantine';
     report.executionCompleteness=report.phaseCompleteness.every(p=>p.planned&&p.scheduled===p.observed)
-      &&!history.rows.some(r=>r.status.startsWith('NOT_RUN_'))&&!missing.length?'COMPLETE':'INCOMPLETE';
+      &&!history.rows.some(r=>r.status.startsWith('NOT_RUN_')&&!normalSkips.has(r.callId))&&!missing.length?'COMPLETE':'INCOMPLETE';
     summarize('Collection completeness and candidate review',report);
     writeJson('report/REPORT.json',report);await upload(`triage-final-${lock.manifest.campaignId}`,'report',180000);
     if(missing.length||history.unknown.length||history.warnings.length||report.executionCompleteness!=='COMPLETE')process.exitCode=1;
