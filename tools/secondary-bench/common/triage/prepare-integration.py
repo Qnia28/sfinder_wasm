@@ -24,11 +24,12 @@ def prepare(files,out,release_assets):
     db=sqlite3.connect((collection/'per-save/per-save.sqlite').as_uri()+'?mode=ro',uri=True);db.row_factory=sqlite3.Row
     groups=collections.defaultdict(list)
     for r in db.execute('SELECT f.*,s.workspace_path FROM fixtures f JOIN sources s ON s.source_id=f.fixture_source_id'):groups[r['command_id']].append(dict(r))
-    with zipfile.ZipFile(files/'archive/workspace-cleanup-20261010/HISTORY.zip') as z:
+    with zipfile.ZipFile(files/'archive/workspace-cleanup-20261010/HISTORY.zip') as z, zipfile.ZipFile(files/'archive/secondary-cleanup-20261006/HISTORY.zip') as original_archive:
         for c in db.execute('SELECT * FROM captures ORDER BY command_id'):
             original=None;fr=[]
             for r in groups[c['command_id']]:
-                p=Path(r['workspace_path']);data=p.read_bytes() if p.is_file() else z.read('objects/'+r['fixture_sha256'])
+                p=Path(r['workspace_path']);member='objects/'+r['fixture_sha256']
+                data=p.read_bytes() if p.is_file() else (z if member in z.namelist() else original_archive).read(member)
                 f,ref=fixture(data);assert ref['sha256']==r['fixture_sha256'];fr.append(ref);original=f['origin']['command']
             if original is None:
                 original=dict(id=c['command_id'],kind='per-save',sourceFumen=c['fumen'],pattern=c['pattern'],family=c['family'],
