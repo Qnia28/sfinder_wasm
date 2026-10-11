@@ -1,0 +1,87 @@
+name: RC regression R16 localization 12VM cap
+on:
+  push:
+    branches: [experiment/secondary-routing-20261005]
+    paths: [.github/secondary-triage/R16_START.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: secondary-triage-probe-seed
+  cancel-in-progress: false
+jobs:
+  plan:
+    if: contains(github.event.head_commit.message, '[RUN_R16_12VM]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - id: plan
+        run: node tools/secondary-bench/common/triage/regression-action.mjs plan
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r16-activation
+          path: activation/
+          retention-days: 30
+  audit:
+    needs: [plan, run]
+    if: always() && needs.plan.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: r16-*
+          path: download/
+      - run: python -B tools/secondary-bench/common/triage/regression-audit.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r16-audit
+          path: audit/
+          retention-days: 30
+  run:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - id: clock
+        run: echo "started=$(node -p 'Date.now()')" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        with:
+          name: r16-activation
+          path: activation/
+      - run: node tools/secondary-bench/common/triage/regression-action.mjs run
+        env:
+          R16_INPUT: ${{ matrix.input }}
+          R16_REPEAT: ${{ matrix.repeat }}
+          R16_CHUNK: ${{ matrix.index }}
+          JOB_STARTED_MS: ${{ steps.clock.outputs.started }}
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r16-worker-${{ matrix.index }}
+          path: |
+            evidence/
+            diagnostic-traces/
+          if-no-files-found: error
+          retention-days: 30
