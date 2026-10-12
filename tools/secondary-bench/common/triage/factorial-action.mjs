@@ -24,7 +24,7 @@ if(mode==='plan'){
   assert(Date.now()+JOB.jobMinutes*60000+45*60000<originMs+48*3600000,'parent campaign deadline cannot fit factorial stage');
   const manifest={schemaVersion:1,campaignId:CAMPAIGN,revision:17,diagnostic:{id:'rc-regression-factorial-v1'},inputs:refs,job:JOB,
     maxParallel:12,maxCalls:64,maxRunnerHours:21,overallMs:48*3600000,approval:'USER_CONTINUE_EXPERIMENT_AND_MINIMAL_FIX_20261012',
-    parentRunId:38148652911,recoveryRunId:38223727424,recoveryObservedCalls:0,priorReservedCalls:80,priorReservedRunnerHours:30,cumulativeReservedCalls:144,cumulativeReservedRunnerHours:51,
+    parentRunId:38148652911,recoveryRunIds:[38223727424,38224519856],recoveryObservedCalls:0,priorReservedCalls:144,priorReservedRunnerHours:51,cumulativeReservedCalls:208,cumulativeReservedRunnerHours:72,
     inputZipSha256:marker.inputZipSha256,factorPatchSha256:marker.factorPatchSha256,arms:ARMS,baseCommit:'2c406b98cadc186bfaf4490f4b8568535a60ea01',
     factors:{P:['DEV_BASELINE','P15'],C:[120000,null],M:['DEV_LINMAX','RC_COMPACT']},productionCpDeadline:null,automaticPromotion:false};
   manifest.profileContract=profileForTriage(manifest);
@@ -34,7 +34,7 @@ if(mode==='plan'){
   writeJson('activation/LOCK.json',lock);writeJson('activation/MANIFEST.json',manifest);writeJson('activation/BLOCKS.json',blocks);
   writeJson('activation/STAGE_PLAN.json',{manifestHash:lock.manifestHash,phase:PHASE,expectedCalls:blocks.flatMap(b=>b.tasks.flatMap(t=>t.calls))});
   await seal('activation',{campaignId:CAMPAIGN,invocationId:lock.invocationId,name:'activation'});
-  fs.appendFileSync(process.env.GITHUB_OUTPUT,'matrix='+JSON.stringify(blocks.map(({tasks,...b})=>b))+'\n');summary({calls:64,workers:8,maxParallel:12,maxRunnerHours:21,cumulativeReservedCalls:144,cumulativeReservedRunnerHours:51,recoveryObservedCalls:0});
+  fs.appendFileSync(process.env.GITHUB_OUTPUT,'matrix='+JSON.stringify(blocks.map(({tasks,...b})=>b))+'\n');summary({calls:64,workers:8,maxParallel:12,maxRunnerHours:21,cumulativeReservedCalls:208,cumulativeReservedRunnerHours:72,recoveryObservedCalls:0});
 }else if(mode==='run'){
   assert.equal(process.env.GITHUB_RUN_ATTEMPT,'1');assert.equal(process.version,'v24.13.0');verifySnapshot('activation');
   const lock=readJson('activation/LOCK.json');assert.equal(digest(lock.manifest),lock.manifestHash);assert.equal(lock.commit,process.env.GITHUB_SHA);assert.equal(lock.invocationId,process.env.GITHUB_RUN_ID);

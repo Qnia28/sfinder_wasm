@@ -7,7 +7,7 @@ def prepare():
     changes=[]
     for arm,commit in COMMITS.items():
         root=Path('dev-product' if arm=='DEV' else 'rc-product');root.mkdir(exist_ok=False)
-        archive=root.with_suffix('.zip');subprocess.run(['git','archive','--format=zip','--output='+str(archive),commit],check=True)
+        archive=root.with_suffix('.zip');subprocess.run(['git','-c','core.autocrlf=false','-c','core.eol=lf','archive','--format=zip','--output='+str(archive),commit],check=True)
         with zipfile.ZipFile(archive) as z:z.extractall(root)
         source={p.relative_to(root).as_posix():sha(p.read_bytes()) for p in root.rglob('*') if p.is_file()}
         trace=Path('tools/secondary-bench/common/triage/regression-trace.mjs').read_bytes();(root/'src/regression-trace.mjs').write_bytes(trace)

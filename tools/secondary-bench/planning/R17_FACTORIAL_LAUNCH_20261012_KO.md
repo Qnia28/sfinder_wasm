@@ -36,3 +36,11 @@ solver0/원감사FAIL. 제품hash는동일한 채 목록순서와Windows JSON줄
 실패예약21h/64슬롯을유지하고 신규21h/64슬롯을별도로예약한다.
 누적예약51h/144슬롯, 실제측정예정은parent16+신규64=80호출.
 원origin/end는동일하다. 실패로그·activation·감사를별도수집한다.
+
+두번째run38224519856도plan hash검사에서중단(solver0,worker미배정).
+수집된Linux FACTOR_PATCHES와비교하여 Git archive의core.autocrlf에따른
+원문변환도확인했다. archive에core.autocrlf=false/core.eol=lf를명시한후
+8제품 전체metadata bytes가Linux원본과완전히일치함을검증했다.
+최종동결hash=52ef96ce23ea16f133c575e20617ad4e2eac7e1f4bd41c20c81c75405222103b.
+두실패예약을보수적으로유지한신규예약포함누적72h/208슬롯이다.
+실제기존측정16호출/이번예정64호출과구분한다. origin/end불변.
