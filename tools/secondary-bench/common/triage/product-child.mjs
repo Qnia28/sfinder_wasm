@@ -8,7 +8,7 @@ import { digest,sha256,safePath } from '../contracts.mjs';
 import { validateFixture,selectedVector } from '../../contracts.mjs';
 
 export async function executeProduct(job) {
-  assert.equal(job.exactHumanQuality,'true');assert(['DEV','RC'].includes(job.variant)||/^P[01]C[01]M[01]$/.test(job.variant));
+  assert.equal(job.exactHumanQuality,'true');assert(['DEV','RC','RC2'].includes(job.variant)||/^P[01]C[01]M[01]$/.test(job.variant));
   const bytes=fs.readFileSync(job.commandPath);assert.equal(sha256(bytes),job.commandSha256);
   const input=JSON.parse(bytes),c=input.command;assert.equal(c.clear,4);assert.equal(c.useHold,true);
   assert(c.queueLength!==11,'excluded empty-board 11P');

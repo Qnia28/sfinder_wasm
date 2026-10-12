@@ -1,0 +1,50 @@
+name: RC2 uninstrumented worker
+on:
+  workflow_call:
+    inputs:
+      round:
+        type: number
+        required: true
+      matrix:
+        type: string
+        required: true
+permissions:
+  contents: read
+  actions: read
+jobs:
+  run:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      # Leave one slot for the separately triggered 10-minute contract workflow.
+      max-parallel: 11
+      matrix:
+        include: ${{ fromJSON(inputs.matrix) }}
+    steps:
+      - id: clock
+        run: echo "started=$(node -p 'Date.now()')" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        with:
+          name: triage-lock-RC2_LINMAX_RELEASE_VALIDATION_R18_20261012
+          path: activation/
+      - uses: ./tools/secondary-bench/common/triage/rc2-native
+        env:
+          R18_ROUND: ${{ inputs.round }}
+          R18_CHUNK: ${{ matrix.index }}
+          JOB_STARTED_MS: ${{ steps.clock.outputs.started }}
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: triage-data-RC2_LINMAX_RELEASE_VALIDATION_R18_20261012-worker-${{ inputs.round }}-${{ matrix.index }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 30

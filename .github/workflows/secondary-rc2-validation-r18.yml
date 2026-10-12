@@ -1,0 +1,75 @@
+name: RC2 linMax release validation 130 inputs 12VM
+on:
+  push:
+    branches: [experiment/secondary-routing-20261005]
+    paths: [.github/secondary-triage/R18_START.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: secondary-triage-probe-seed
+  cancel-in-progress: false
+jobs:
+  plan:
+    if: contains(github.event.head_commit.message, '[RUN_RC2_12VM]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - id: plan
+        run: node tools/secondary-bench/common/triage/rc2-action.mjs plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: triage-lock-RC2_LINMAX_RELEASE_VALIDATION_R18_20261012
+          path: activation/
+          if-no-files-found: error
+          retention-days: 30
+  round1:
+    needs: plan
+    uses: ./.github/workflows/secondary-rc2-worker.yml
+    with:
+      round: 1
+      matrix: ${{ needs.plan.outputs.matrix }}
+  round2:
+    needs: [plan, round1]
+    uses: ./.github/workflows/secondary-rc2-worker.yml
+    with:
+      round: 2
+      matrix: ${{ needs.plan.outputs.matrix }}
+  round3:
+    needs: [plan, round2]
+    uses: ./.github/workflows/secondary-rc2-worker.yml
+    with:
+      round: 3
+      matrix: ${{ needs.plan.outputs.matrix }}
+  audit:
+    needs: [plan, round1, round2, round3]
+    if: always() && needs.plan.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: triage-*
+          path: download/
+      - run: python -B tools/secondary-bench/common/triage/rc2-audit.py
+      - if: always()
+        run: node --input-type=module -e "import {seal} from './tools/secondary-bench/common/evidence.mjs'; await seal('audit',{campaignId:'RC2_LINMAX_RELEASE_VALIDATION_R18_20261012',name:'independent-audit'});"
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: triage-independent-RC2_LINMAX_RELEASE_VALIDATION_R18_20261012-FINAL
+          path: audit/
+          retention-days: 30

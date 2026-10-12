@@ -1,0 +1,5 @@
+name: RC2 native artifact operation
+description: Uninstrumented product calls through common executor and durable checkpoints
+runs:
+  using: node24
+  main: index.mjs
