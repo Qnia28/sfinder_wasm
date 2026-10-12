@@ -44,3 +44,9 @@ solver0/원감사FAIL. 제품hash는동일한 채 목록순서와Windows JSON줄
 최종동결hash=52ef96ce23ea16f133c575e20617ad4e2eac7e1f4bd41c20c81c75405222103b.
 두실패예약을보수적으로유지한신규예약포함누적72h/208슬롯이다.
 실제기존측정16호출/이번예정64호출과구분한다. origin/end불변.
+
+세번째run38226458711은제품hash통과후환경기록의cpu.max ENOENT로
+8worker모두executeTask전중단(solver0). CPU quota보조정보는파일부재/권한오류를
+UNKNOWN+errorCode로보존하도록수정했다. 실제scope자원검증은기존대로필수다.
+관련합성검사및공통검사29개PASS. 재실행승인에따라신규64슬롯/21h추가,
+누적예약272슬롯/93h; 실제기존측정16+예정64, origin/end불변.

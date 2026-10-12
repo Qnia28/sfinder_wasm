@@ -2,6 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {ARMS,JOB,LIMITS,tasksFor,validateReservation} from '../tools/secondary-bench/common/triage/factorial-plan.mjs';
 import {capacity,worstCall} from '../tools/secondary-bench/common/budget.mjs';
+import {optionalFile} from '../tools/secondary-bench/common/triage/factorial-environment.mjs';
+test('missing or denied auxiliary CPU telemetry remains explicitly unknown',()=>{
+  for(const code of ['ENOENT','EACCES']) {
+    const value=optionalFile('/sys/fs/cgroup/cpu.max',()=>{throw Object.assign(new Error('unavailable'),{code});});
+    assert.deepEqual(value,{path:'/sys/fs/cgroup/cpu.max',status:'UNKNOWN',value:null,errorCode:code});
+  }
+  assert.equal(optionalFile('cpu.max',()=> 'max 100000\n').value,'max 100000\n');
+});
 test('factorial reserves all 64 fresh calls in independent reverse-order VM blocks',()=>{
   validateReservation();const ids=new Set();
   for(let input=0;input<4;input++){

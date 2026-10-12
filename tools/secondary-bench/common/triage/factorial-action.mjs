@@ -8,6 +8,7 @@ import {executeTask} from '../executor.mjs';
 import {profileForTriage} from './protocol.mjs';
 import {seal,verifySnapshot,deliver,deadlineClient} from '../evidence.mjs';
 import {CAMPAIGN,PHASE,ARMS,JOB,tasksFor,validateReservation} from './factorial-plan.mjs';
+import {optionalFile} from './factorial-environment.mjs';
 const inputZip='tools/secondary-bench/common/triage/regression-inputs-r16.zip';
 const mode=process.argv[2];validateReservation();
 const summary=v=>{console.log(JSON.stringify(v));if(process.env.GITHUB_STEP_SUMMARY)fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,`## R17 factorial\n\n\`\`\`json\n${JSON.stringify(v,null,2)}\n\`\`\`\n`);};
@@ -24,7 +25,7 @@ if(mode==='plan'){
   assert(Date.now()+JOB.jobMinutes*60000+45*60000<originMs+48*3600000,'parent campaign deadline cannot fit factorial stage');
   const manifest={schemaVersion:1,campaignId:CAMPAIGN,revision:17,diagnostic:{id:'rc-regression-factorial-v1'},inputs:refs,job:JOB,
     maxParallel:12,maxCalls:64,maxRunnerHours:21,overallMs:48*3600000,approval:'USER_CONTINUE_EXPERIMENT_AND_MINIMAL_FIX_20261012',
-    parentRunId:38148652911,recoveryRunIds:[38223727424,38224519856],recoveryObservedCalls:0,priorReservedCalls:144,priorReservedRunnerHours:51,cumulativeReservedCalls:208,cumulativeReservedRunnerHours:72,
+    parentRunId:38148652911,recoveryRunIds:[38223727424,38224519856,38226458711],recoveryObservedCalls:0,priorReservedCalls:208,priorReservedRunnerHours:72,cumulativeReservedCalls:272,cumulativeReservedRunnerHours:93,
     inputZipSha256:marker.inputZipSha256,factorPatchSha256:marker.factorPatchSha256,arms:ARMS,baseCommit:'2c406b98cadc186bfaf4490f4b8568535a60ea01',
     factors:{P:['DEV_BASELINE','P15'],C:[120000,null],M:['DEV_LINMAX','RC_COMPACT']},productionCpDeadline:null,automaticPromotion:false};
   manifest.profileContract=profileForTriage(manifest);
@@ -34,7 +35,7 @@ if(mode==='plan'){
   writeJson('activation/LOCK.json',lock);writeJson('activation/MANIFEST.json',manifest);writeJson('activation/BLOCKS.json',blocks);
   writeJson('activation/STAGE_PLAN.json',{manifestHash:lock.manifestHash,phase:PHASE,expectedCalls:blocks.flatMap(b=>b.tasks.flatMap(t=>t.calls))});
   await seal('activation',{campaignId:CAMPAIGN,invocationId:lock.invocationId,name:'activation'});
-  fs.appendFileSync(process.env.GITHUB_OUTPUT,'matrix='+JSON.stringify(blocks.map(({tasks,...b})=>b))+'\n');summary({calls:64,workers:8,maxParallel:12,maxRunnerHours:21,cumulativeReservedCalls:208,cumulativeReservedRunnerHours:72,recoveryObservedCalls:0});
+  fs.appendFileSync(process.env.GITHUB_OUTPUT,'matrix='+JSON.stringify(blocks.map(({tasks,...b})=>b))+'\n');summary({calls:64,workers:8,maxParallel:12,maxRunnerHours:21,cumulativeReservedCalls:272,cumulativeReservedRunnerHours:93,recoveryObservedCalls:0});
 }else if(mode==='run'){
   assert.equal(process.env.GITHUB_RUN_ATTEMPT,'1');assert.equal(process.version,'v24.13.0');verifySnapshot('activation');
   const lock=readJson('activation/LOCK.json');assert.equal(digest(lock.manifest),lock.manifestHash);assert.equal(lock.commit,process.env.GITHUB_SHA);assert.equal(lock.invocationId,process.env.GITHUB_RUN_ID);
@@ -46,7 +47,7 @@ if(mode==='plan'){
   for(const name of ['PRODUCT_PATCHES.json','FACTOR_PATCHES.json'])fs.copyFileSync(name,'evidence/'+name);
   assert.equal(sha256(fs.readFileSync('FACTOR_PATCHES.json')),lock.manifest.factorPatchSha256,'frozen diagnostic product hashes');
   const client=(await import('../../artifact-action/node_modules/@actions/artifact/lib/artifact.js')).default;
-  writeJson('evidence/ENVIRONMENT.json',{node:process.version,cpus:os.cpus(),availableParallelism:os.availableParallelism(),totalMemory:os.totalmem(),cpuMax:fs.readFileSync('/sys/fs/cgroup/cpu.max','utf8'),commit:process.env.GITHUB_SHA,runnerName:process.env.RUNNER_NAME,chunk});
+  writeJson('evidence/ENVIRONMENT.json',{node:process.version,cpus:os.cpus(),availableParallelism:os.availableParallelism(),totalMemory:os.totalmem(),cpuMax:optionalFile('/sys/fs/cgroup/cpu.max'),selfCgroup:optionalFile('/proc/self/cgroup'),commit:process.env.GITHUB_SHA,runnerName:process.env.RUNNER_NAME,chunk});
   const quarantine={oom:[],fatal:null},rows=[];
   try{
     for(const [position,task] of block.tasks.entries()){
