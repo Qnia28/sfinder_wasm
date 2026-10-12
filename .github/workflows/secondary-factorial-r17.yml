@@ -18,6 +18,8 @@ jobs:
       matrix: ${{ steps.plan.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 24.13.0
@@ -25,6 +27,7 @@ jobs:
       - id: plan
         run: node tools/secondary-bench/common/triage/factorial-action.mjs plan
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: triage-lock-RC_REGRESSION_R17_FACTORIAL_20261012
           path: activation/

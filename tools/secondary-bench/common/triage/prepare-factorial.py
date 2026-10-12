@@ -23,9 +23,9 @@ def prepare():
         # Same coarse CP stage markers for all eight arms. No native callbacks/search-loop logging.
         change('secondary-engine.worker.mjs',"import { WasmPcSolver }", "import {diagnostic} from './regression-trace.mjs';\nglobalThis.__secondaryMemoryTrace=(event,details={})=>{\n  if(['model-begin','quality-batch-begin','stage-model-ready','stage-solve-return','native-solve-enter','native-solve-return'].includes(event)) diagnostic('cp-'+event,details);\n};\nimport { WasmPcSolver }")
         after={f.relative_to(root).as_posix():anchor.sha(f.read_bytes()) for f in root.rglob('*') if f.is_file()}
-        changed=[n for n,h in after.items() if before[n]!=h]
+        changed=sorted(n for n,h in after.items() if before[n]!=h)
         assert set(changed)<=set(['src/min-cover-triage-experiment.mjs','src/min-cover-three-engine.mjs','src/cpsat-secondary-model.mjs','src/secondary-engine.worker.mjs'])
         assert all(after[n]==h for n,h in before.items() if n.endswith('.wasm'))
         records.append(dict(arm=arm,P=p,C=c,M=m,commit=anchor.COMMITS['RC'],before=before,after=after,changed=changed,patch=''.join(patches)))
-    Path('FACTOR_PATCHES.json').write_text(json.dumps(records,sort_keys=True,indent=2)+'\n',encoding='utf8')
+    Path('FACTOR_PATCHES.json').write_text(json.dumps(records,sort_keys=True,indent=2)+'\n',encoding='utf8',newline='\n')
 if __name__=='__main__':prepare()

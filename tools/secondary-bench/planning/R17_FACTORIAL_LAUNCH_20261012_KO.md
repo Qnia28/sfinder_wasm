@@ -25,3 +25,14 @@ run16의 실제call/FAIL/PASS를 새실행으로 다시 세지 않는다.
 로컬은8제품정적패치/JSsyntax/동결plan 검증 및공통합성검사28개PASS.
 로컬population solver0. 체크point용Actions artifacts만 사용.
 실행중 후처리개선은독립postprocess에 두고 실행source는 동결한다.
+
+## zero-call activation 복구
+
+run38223727424는8worker 모두 executeTask 이전 FACTOR_PATCHES 해시검사에서중단,
+solver0/원감사FAIL. 제품hash는동일한 채 목록순서와Windows JSON줄바꿈의
+비정규직렬화를수정했다. sorted changed목록 및LF고정 후 metadata hash는
+0fa7c34678b3a963f666f7ce52c206b12821d98e7b105d5aa26220ad43657133.
+이제 Linux plan에서도제품정적생성/hash검사를먼저수행하여 worker배정전검증한다.
+실패예약21h/64슬롯을유지하고 신규21h/64슬롯을별도로예약한다.
+누적예약51h/144슬롯, 실제측정예정은parent16+신규64=80호출.
+원origin/end는동일하다. 실패로그·activation·감사를별도수집한다.
