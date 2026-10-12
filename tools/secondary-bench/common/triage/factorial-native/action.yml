@@ -1,0 +1,5 @@
+name: R17 native artifact operation
+description: Common executor and durable checkpoint transport
+runs:
+  using: node24
+  main: index.mjs

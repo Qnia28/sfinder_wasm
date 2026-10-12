@@ -20,7 +20,7 @@ export const AUDIT_CONTRACT = Object.freeze({ id: 'independent-python-evidence-v
   prerequisiteJobs: ['CANARY','CALIBRATION'], finalDedicatedVm: true, performancePass: false, independentOptimality: false });
 export const CP_PREFLIGHT_CONTRACT = Object.freeze({ id: 'scoped-cpsat-weighted-tie-v1', activationCalls: 1,
   maxCanaryVmCalls: 3, callMs: 30000, populationCalls: 0 });
-export const profileForTriage = m => m.diagnostic?.id==='rc-regression-anchor-v1'?{...INTEGRATION_PROFILE,productPolicy:'COMMITTED_DEFAULT_WITH_BOUNDARY_TRACE',diagnostic:'rc-regression-anchor-v1'}:isProductIntegration(m)?INTEGRATION_PROFILE:m.largeRun ? { ...PROFILE, cpLimitMs:null, arms:isProbeRun(m)||isPromotion(m)?PROBE_ARMS:LARGE_ARMS, callTimeoutMs:600000 } : PROFILE;
+export const profileForTriage = m => m.diagnostic?.id==='rc-regression-factorial-v1'?{...INTEGRATION_PROFILE,productPolicy:'RC_PINNED_P_C_M_FACTORIAL',diagnostic:m.diagnostic.id}:m.diagnostic?.id==='rc-regression-anchor-v1'?{...INTEGRATION_PROFILE,productPolicy:'COMMITTED_DEFAULT_WITH_BOUNDARY_TRACE',diagnostic:'rc-regression-anchor-v1'}:isProductIntegration(m)?INTEGRATION_PROFILE:m.largeRun ? { ...PROFILE, cpLimitMs:null, arms:isProbeRun(m)||isPromotion(m)?PROBE_ARMS:LARGE_ARMS, callTimeoutMs:600000 } : PROFILE;
 export const phasesFor = m => isProductIntegration(m)?INTEGRATION_PHASES:isPromotion(m)?PROMOTION_PHASES:m.largeRun ? [largePhase(m)] : m.followup ? [FAST_PHASE] : PHASES;
 export function validateManifest(m) {
   if(isProductIntegration(m))return validateIntegration(m);
