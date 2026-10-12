@@ -48,7 +48,7 @@ function oracle(f) {
   return {keys:selected.map(i=>f.keys[i]),qualityVector:quality};
 }
 
-test('linMax candidate and compact comparator match original-row oracle over all stages',async()=>{
+test('compact Boolean model matches original-row oracle and legacy linMax over all stages',async()=>{
   const cases=[
     {keys:['a','b','c','d'],count:1,seed:[0],rows:[[[0,1],[1,6],[2,6],[3,3]],[[0,1],[1,6],[2,6],[3,3]],[[0,6],[1,5],[2,5],[3,2]],[[0,4],[1,2],[2,2],[3,4]]]},
     {keys:['a','b','c'],count:2,seed:[0,1],rows:[[[0,1]],[[0,1],[1,1],[2,1]],[[1,1],[2,1]]]},
@@ -57,16 +57,18 @@ test('linMax candidate and compact comparator match original-row oracle over all
   for(let sample=0;sample<12;sample++)cases.push({keys:['a','b','c'],count:sample%2+1,seed:sample%2?[0,1]:[0],
     rows:Array.from({length:4},(_,r)=>[0,1,2].filter(i=>i===0||(sample+r+i)%3!==0).map(i=>[i,(sample*7+r*3+i*5)%6+1]))});
   for(const api of [nodeApi,browserApi]) {
-    // Recreate the frozen RC comparator in the independent tiny evaluator.
-    class CompactModel extends api.CpModel {
-      addMaxEquality(y,xs) {
-        super.addBoolOr(xs).onlyEnforceIf(y);
-        return super.addBoolAnd(xs.map(x=>x.not())).onlyEnforceIf(y.not());
+    // A model-class adapter restores the historical encoding only in this tiny test.
+    class LegacyModel extends api.CpModel {
+      addBoolOr(xs) {
+        const c=super.addBoolOr(xs);
+        c.onlyEnforceIf=y=>{this.proto().constraints.pop();super.addMaxEquality(y,xs);return c;};
+        return c;
       }
+      addBoolAnd(){return {onlyEnforceIf(){}};}
     }
     for(const f of cases) {
       const expected=oracle(f);
-      for(const CpModel of [api.CpModel,CompactModel]) {
+      for(const CpModel of [api.CpModel,LegacyModel]) {
         const r=await solveCpSecondaryModel(f,{...api,CpModel,CpSolver:EnumeratingSolver});
         assert.equal(r.completed,true);assert.equal(r.qualityComplete,true);assert.equal(r.tieComplete,true);
         assert.deepEqual({keys:r.keys,qualityVector:r.qualityVector},expected);
@@ -80,8 +82,8 @@ test('new constraints fix each auxiliary in both directions independently of the
   class Capture {async solve(m){proto=m.proto();return 'UNKNOWN';}statusName(s){return s;}}
   await solveCpSecondaryModel({keys:['a','b','c'],count:1,seed:[0],rows:[[[0,1],[1,3],[2,3]]]},
     {...nodeApi,CpSolver:Capture});
-  const pair={constraints:proto.constraints.filter(c=>c.linMax)};
-  assert.equal(pair.constraints.length,1);
+  const pair={constraints:proto.constraints.filter(c=>c.enforcementLiteral)};
+  assert.equal(pair.constraints.length,2);
   for(let x1=0;x1<2;x1++)for(let x2=0;x2<2;x2++)for(let y=0;y<2;y++)
     assert.equal(feasible([0,x1,x2,y],pair),y===(x1||x2));
 });
