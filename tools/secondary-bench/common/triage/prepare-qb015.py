@@ -26,6 +26,6 @@ def prepare():
         change('secondary-engine.worker.mjs',"import { WasmPcSolver }", "import {diagnostic} from './regression-trace.mjs';\nglobalThis.__secondaryMemoryTrace=(event,details={})=>{\n  if(['model-begin','quality-batch-begin','stage-model-ready','stage-solve-return','native-solve-enter','native-solve-return'].includes(event)) diagnostic('cp-'+event,details);\n};\nimport { WasmPcSolver }")
         after={f.relative_to(root).as_posix():anchor.sha(f.read_bytes()) for f in root.rglob('*') if f.is_file()}
         assert all(after[n]==h for n,h in before.items() if n.endswith('.wasm'))
-        records.append(dict(arm=arm,commit=anchor.COMMITS['DEV' if arm=='R19_DEV' else 'RC'],probeBudget=budget,before=before,after=after,changed=[n for n,h in after.items() if h!=before[n]],patch=''.join(patches)))
+        records.append(dict(arm=arm,commit=anchor.COMMITS['DEV' if arm=='R19_DEV' else 'RC'],probeBudget=budget,before=before,after=after,changed=sorted(n for n,h in after.items() if h!=before[n]),patch=''.join(patches)))
     Path('QB015_PATCHES.json').write_text(json.dumps(records,sort_keys=True,indent=2)+'\n',encoding='utf8',newline='\n')
 if __name__=='__main__':prepare()

@@ -6,6 +6,10 @@
   "measurementMaxParallel": 2,
   "projectMaxParallel": 12,
   "maxRunnerHours": 6,
+  "originUtc": "2026-10-13T13:00:58Z",
+  "setupRecoveryOf": 38401634316,
+  "priorReservedCalls": 16,
+  "priorReservedRunnerHours": 6,
   "approval": "USER_QB015_CAUSE_AND_LOW_COST_INVESTIGATION_20261013",
   "releasePublication": "ON_HOLD_PENDING_USER_REVIEW"
 }

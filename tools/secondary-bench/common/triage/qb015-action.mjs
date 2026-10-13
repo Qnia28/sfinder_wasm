@@ -17,9 +17,10 @@ if(process.argv[2]==='plan'){
   const marker=readJson('.github/secondary-triage/R19_START.json');assert.equal(marker.confirm,'RUN_QB015_R19');
   assert.equal(sha256(fs.readFileSync(inputZip)),marker.inputZipSha256);prepare();
   assert.equal(sha256(fs.readFileSync('QB015_PATCHES.json')),marker.productPatchSha256);
-  const refs=inputs();assert.equal(refs.length,1);const originMs=Date.now();
+  const refs=inputs();assert.equal(refs.length,1);const originMs=Date.parse(marker.originUtc);
+  assert(Number.isFinite(originMs)&&Date.now()+JOB.jobMinutes*60000+45*60000<originMs+48*3600000,'original deadline cannot fit diagnosis');
   const manifest={schemaVersion:1,campaignId:CAMPAIGN,revision:19,diagnostic:{id:'qb015-causal-v1'},inputs:refs,job:JOB,maxParallel:2,maxCalls:16,maxRunnerHours:6,overallMs:48*3600000,
-    approval:'USER_QB015_CAUSE_AND_LOW_COST_INVESTIGATION_20261013',parentRunId:38241601404,newCampaign:true,priorExperiments:'PRESERVED_IN_LEDGER',inputZipSha256:marker.inputZipSha256,productPatchSha256:marker.productPatchSha256,arms:ARMS,productionCpDeadline:null,automaticPromotion:false};
+    approval:'USER_QB015_CAUSE_AND_LOW_COST_INVESTIGATION_20261013',parentRunId:38241601404,newCampaign:true,priorExperiments:'PRESERVED_IN_LEDGER',setupRecoveryOf:marker.setupRecoveryOf,priorReservedCalls:marker.priorReservedCalls,priorReservedRunnerHours:marker.priorReservedRunnerHours,cumulativeReservedCalls:32,cumulativeReservedRunnerHours:12,inputZipSha256:marker.inputZipSha256,productPatchSha256:marker.productPatchSha256,arms:ARMS,productionCpDeadline:null,automaticPromotion:false};
   manifest.profileContract=profileForTriage(manifest);
   const lock={manifest,manifestHash:digest(manifest),profileHash:digest(manifest.profileContract),invocationId:process.env.GITHUB_RUN_ID,commit:process.env.GITHUB_SHA,originMs,endMs:originMs+manifest.overallMs,endUtc:new Date(originMs+manifest.overallMs).toISOString()};
   const blocks=[1,2].map(repeat=>({index:repeat-1,repeat,tasks:tasksFor(refs[0],repeat)}));
