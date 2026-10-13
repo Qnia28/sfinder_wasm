@@ -76,9 +76,10 @@ function solveInspectedSecondary(coverage, options, trivial, structure, decision
     // attempt so pathological quality structures can fall back to the
     // sequential-threshold exact prover without sacrificing exactness.
     if (decision.useProbe) {
-      emit('probe-start', { stateBudget: FAST_EXACT_STATE_BUDGET, reused: integratedProbe != null });
+      const probeBudget = decision.probeBudget ?? FAST_EXACT_STATE_BUDGET;
+      emit('probe-start', { stateBudget: probeBudget, reused: integratedProbe != null });
       const integrated = integratedProbe ?? search({
-        qualityFor, seedKeys: primaryKeys, stateBudget: FAST_EXACT_STATE_BUDGET, integrated: true,
+        qualityFor, seedKeys: primaryKeys, stateBudget: probeBudget, integrated: true,
       });
       emit('probe-end', { completed: integrated?.completed === true, states: integrated?.searchedStates ?? null,
         seedKeys: integrated?.keys ?? null });

@@ -8,7 +8,7 @@ import { PROBE_ARMS,PROBE_JOB,PROBE_PHASE } from '../tools/secondary-bench/commo
 import { compileTasks,chunksFor } from '../tools/secondary-bench/common/triage/protocol.mjs';
 
 test('P15 changes only non-hard d15/16; baseline and invalid structures preserved',()=>{
-  assert.equal(DEFAULT_SECONDARY_TRIAGE_POLICY,'P15');
+  assert.equal(DEFAULT_SECONDARY_TRIAGE_POLICY,'P15_SEED1K');
   for(const hard of [false,true])for(let d=0;d<=40;d++) {
     const s={candidateCount:100,count:d+2,forcedCount:2};
     const h=decideExperimentalProbe('A_H9',hard,s),p=decideExperimentalProbe('P15',hard,s);
