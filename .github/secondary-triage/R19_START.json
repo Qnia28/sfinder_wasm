@@ -1,0 +1,11 @@
+{
+  "confirm": "RUN_QB015_R19",
+  "inputZipSha256": "edbb0639e8cb3677f77dce21c68e1ed4b6822abb1e1264b81b6ac897463568dd",
+  "productPatchSha256": "7e1f5c339a7917a904687fdea7a3d77a6069f6b336a3232f285466d975fe20e2",
+  "maxCalls": 16,
+  "measurementMaxParallel": 2,
+  "projectMaxParallel": 12,
+  "maxRunnerHours": 6,
+  "approval": "USER_QB015_CAUSE_AND_LOW_COST_INVESTIGATION_20261013",
+  "releasePublication": "ON_HOLD_PENDING_USER_REVIEW"
+}

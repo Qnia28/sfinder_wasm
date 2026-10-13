@@ -1,0 +1,86 @@
+name: QB015 R19 cause and low-cost probe diagnosis
+on:
+  push:
+    branches: [experiment/secondary-routing-20261005]
+    paths: [.github/secondary-triage/R19_START.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: secondary-triage-probe-seed
+  cancel-in-progress: false
+jobs:
+  plan:
+    if: contains(github.event.head_commit.message, '[RUN_QB015_R19]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: node tools/secondary-bench/common/triage/qb015-action.mjs plan
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: triage-lock-QB015_CAUSAL_R19_20261013
+          path: activation/
+          retention-days: 30
+  run:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        index: [0, 1]
+    steps:
+      - id: clock
+        run: echo "started=$(node -p 'Date.now()')" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        with:
+          name: triage-lock-QB015_CAUSAL_R19_20261013
+          path: activation/
+      - uses: ./tools/secondary-bench/common/triage/qb015-native
+        env:
+          R19_CHUNK: ${{ matrix.index }}
+          JOB_STARTED_MS: ${{ steps.clock.outputs.started }}
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: triage-data-QB015_CAUSAL_R19_20261013-worker-${{ matrix.index }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 30
+  audit:
+    needs: [plan, run]
+    if: always() && needs.plan.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: triage-*
+          path: download/
+      - run: python -B tools/secondary-bench/common/triage/qb015-audit.py
+      - if: always()
+        run: node --input-type=module -e "import {seal} from './tools/secondary-bench/common/evidence.mjs'; await seal('audit',{campaignId:'QB015_CAUSAL_R19_20261013',name:'independent-audit'});"
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: triage-independent-QB015_CAUSAL_R19_20261013-FINAL
+          path: audit/
+          retention-days: 30

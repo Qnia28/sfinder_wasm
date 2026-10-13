@@ -1,0 +1,5 @@
+name: QB015 native artifact operation
+description: Common executor and durable checkpoints
+runs:
+  using: node24
+  main: index.mjs
