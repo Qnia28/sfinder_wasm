@@ -21,12 +21,14 @@ p=importlib.util.module_from_spec(spec);spec.loader.exec_module(p)
 import ledger
 
 
-def fixture(root, bad_db=False, missing_start=False, censored=False):
+def fixture(root, bad_db=False, missing_start=False, censored=False, r18=False):
     root.mkdir();(root/'objects').mkdir()
     manifest=dict(campaignId='test',maxCalls=10,maxRunnerHours=100,maxParallel=16,provenance={},screen=5.0)
+    if r18: manifest.update(campaignId='RC2_LINMAX_RELEASE_VALIDATION_R18_20261012',priorReservedRunnerHours=93,priorReservedCalls=272,cumulativeReservedCalls=1832,cumulativeReservedRunnerHours=485,accountingScope='test')
     h=p.digest(manifest); lock=dict(manifest=manifest,manifestHash=h,invocationId='10',originMs=100,endMs=200,commit='frozen')
     row=dict(campaignId='test',invocationId='10',callId='call',manifestHash=h,phase='ALL_INITIAL',
              status='TIMEOUT_CALL' if censored else 'EXACT',ms=None if censored else 3,executionAttemptId='attempt')
+    row['campaignId']=manifest['campaignId']
     start={k:v for k,v in row.items() if k not in ['status','ms']}
     raw=(p.encode(row)+'\n').encode(); start_bytes=(p.encode(start)+'\n').encode()
     plan=dict(phase='ALL_INITIAL',manifestHash=h,expectedCalls=[dict(callId='call',phase='ALL_INITIAL'),dict(callId='not-run',phase='ALL_INITIAL')])
@@ -41,17 +43,22 @@ def fixture(root, bad_db=False, missing_start=False, censored=False):
             z.writestr('SNAPSHOT.json',p.encode(snapshot))
         digest=p.sha(tmp);dest=root/'objects'/(digest+'.zip');tmp.rename(dest)
         artifacts.append(dict(id=len(artifacts)+1,name=name,digest='sha256:'+digest,size_in_bytes=dest.stat().st_size,expired=False))
-    artifact('triage-lock-test',{'LOCK.json':p.encode(lock).encode(),'MANIFEST.json':p.encode(manifest).encode(),
-        'TASKS.jsonl':b'{}\n','fixtures/original.json':b'{"weightedRows":[1,2]}\n'})
+    activation={'LOCK.json':p.encode(lock).encode(),'MANIFEST.json':p.encode(manifest).encode(),
+        'TASKS.jsonl':b'{}\n','fixtures/original.json':b'{"weightedRows":[1,2]}\n'}
+    if r18: activation['BLOCKS.json']=b'[{}]'
+    artifact('triage-lock-'+manifest['campaignId'],activation)
     artifact('triage-data-test-plan',{'STAGE_PLAN.json':p.encode(plan).encode()})
-    artifact('triage-data-test-raw',{'raw.jsonl':raw,'starts.jsonl':start_bytes,'scope/events.jsonl':b'{"event":"ready"}\n'})
-    artifact('triage-final-test',{'REPORT.json':p.encode(dict(executionCompleteness='INCOMPLETE')).encode()})
+    artifact('triage-data-test-raw',{'raw.jsonl':raw,'starts.jsonl':b'' if r18 and missing_start else start_bytes,'scope/events.jsonl':b'{"event":"ready"}\n'})
+    if not r18: artifact('triage-final-test',{'REPORT.json':p.encode(dict(executionCompleteness='INCOMPLETE')).encode()})
     dbfile=root/'index.sqlite';db=sqlite3.connect(dbfile)
     db.executescript('CREATE TABLE records(raw TEXT); CREATE TABLE starts(raw TEXT);')
     db.execute('INSERT INTO records VALUES(?)',(p.encode({**row,'ms':99} if bad_db else row),))
     if not missing_start:db.execute('INSERT INTO starts VALUES(?)',(p.encode(start),))
     db.commit();db.close()
-    artifact('triage-independent-test-FINAL',{'INDEPENDENT_AUDIT.json':p.encode(dict(status='INCOMPLETE')).encode(),'AUDIT_INDEX.sqlite':dbfile.read_bytes()})
+    if r18:
+        db=sqlite3.connect(dbfile);db.execute('DROP TABLE starts');db.commit();db.close()
+        artifact('triage-independent-'+manifest['campaignId']+'-FINAL',{'INDEPENDENT_AUDIT.json':p.encode(dict(status='PASS')).encode(),'RAW.sqlite':dbfile.read_bytes(),'REPORT.json':p.encode(dict(executionCompleteness='COMPLETE')).encode()})
+    else: artifact('triage-independent-test-FINAL',{'INDEPENDENT_AUDIT.json':p.encode(dict(status='INCOMPLETE')).encode(),'AUDIT_INDEX.sqlite':dbfile.read_bytes()})
     dbfile.unlink()
     workflows={'.github/workflows/secondary-triage-campaign.yml':'jobs:\n  activate:\n    timeout-minutes: 30\n',
         '.github/workflows/secondary-triage-stage.yml':'jobs:\n  run:\n    timeout-minutes: 150\n'}
@@ -99,6 +106,21 @@ class PackageTests(unittest.TestCase):
             root=self.root/name;fixture(root,**kwargs);s=p.package(root)
             self.assertEqual(s['rawDatabaseParity'],'FAIL');self.assertEqual(s['analysisMaterials'],'PARTIAL')
             self.assertEqual(s['collectionState'],'INCOMPLETE')
+
+    def test_r18_raw_only_database_requires_matching_saved_starts(self):
+        for name,kwargs in [('good',{}),('forged',dict(bad_db=True)),('missing',dict(missing_start=True))]:
+            root=self.root/name;fixture(root,r18=True,**kwargs);s=p.package(root)
+            self.assertEqual(s['rawDatabaseParity'],'PASS' if name=='good' else 'FAIL')
+            self.assertEqual(s['executionCompleteness'],'COMPLETE')
+            self.assertEqual(s['analysisMaterials'],'AVAILABLE' if name=='good' else 'PARTIAL')
+
+    def test_r18_reservations_use_frozen_workflows(self):
+        names=['plan','audit']+[f'round{r} / run ({i})' for r in [1,2,3] for i in range(26)]
+        jobs=[dict(id=i,name=n,status='completed',conclusion='success') for i,n in enumerate(names)]
+        workflows={f'.github/workflows/{name}':(ROOT/'.github/workflows'/name).read_text() for name in ['secondary-rc2-validation-r18.yml','secondary-rc2-worker.yml']}
+        result=p.job_accounting(jobs,workflows)
+        self.assertEqual(result['unknownReservationJobs'],[])
+        self.assertAlmostEqual(result['reservedHours'],391+5/6)
 
     def test_rerun_selects_newest_final_preserving_old_failure_and_checks_new_db(self):
         root=self.root/'result';capture=fixture(root)

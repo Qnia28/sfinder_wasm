@@ -40,6 +40,9 @@ def api(repository, endpoint, paged=False):
 
 
 def role(name):
+    if name == 'r16-activation': return 'activation'
+    if re.fullmatch(r'r16-worker-\d+', name): return 'evidence'
+    if name == 'r16-audit': return 'audit'
     if name.startswith('triage-lock-'): return 'activation'
     if name.startswith('triage-data-'): return 'evidence'
     if name.startswith('triage-final-'): return 'report'
@@ -96,6 +99,9 @@ def job_accounting(jobs, workflows):
     prefix='secondary-rc' if '.github/workflows/secondary-rc-campaign.yml' in workflows else 'secondary-triage'
     campaign = timeout_map(workflows.get(f'.github/workflows/{prefix}-campaign.yml', ''))
     stage = timeout_map(workflows.get(f'.github/workflows/{prefix}-stage.yml', ''))
+    if '.github/workflows/secondary-rc2-validation-r18.yml' in workflows:
+        campaign = timeout_map(workflows['.github/workflows/secondary-rc2-validation-r18.yml'])
+        stage = timeout_map(workflows['.github/workflows/secondary-rc2-worker.yml'])
     details = []; unknown = []; seen = {}
     for job in jobs:
         if job.get('conclusion') == 'skipped': continue
@@ -118,7 +124,7 @@ def job_accounting(jobs, workflows):
 
 def inspect_artifacts(root, inventory, run, workflows):
     locks = {}; plans = []; raw = {}; starts = {}; cp_ids = set(); errors = []; analysis_files = []
-    reports = []; audits = []; dbs = []; environments = []
+    reports = []; audits = []; dbs = []; environments = []; r18_blocks = []
     # Reruns retain original final artifacts. Select the newest version of each
     # exact final artifact name, while retaining every version in the archive.
     selected_finals = set()
@@ -155,6 +161,8 @@ def inspect_artifacts(root, inventory, run, workflows):
                         old = locks.setdefault(value['manifestHash'], value)
                         if old != value: raise ValueError('conflicting lock')
                     if leaf == 'STAGE_PLAN.json': plans.append((json.loads(z.read(name)), pointer))
+                    if leaf == 'BLOCKS.json' and a['name'] == 'triage-lock-RC2_LINMAX_RELEASE_VALIDATION_R18_20261012':
+                        r18_blocks.append(json.loads(z.read(name)))
                     if leaf in ['raw.jsonl', 'starts.jsonl']:
                         with z.open(name) as stream:
                             for number, line in enumerate(stream, 1):
@@ -172,15 +180,17 @@ def inspect_artifacts(root, inventory, run, workflows):
                                 or role(a['name']) == 'activation' and name.startswith('cp-preflight/')):
                             cp_ids.add(value['callId'])
                     if leaf == 'ENVIRONMENT.json': environments.append(pointer)
-                    if leaf == 'REPORT.json' and role(a['name']) == 'report': reports.append((json.loads(z.read(name)), pointer))
+                    r18_final = a['name'] == 'triage-independent-RC2_LINMAX_RELEASE_VALIDATION_R18_20261012-FINAL'
+                    if leaf == 'REPORT.json' and (role(a['name']) == 'report' or r18_final): reports.append((json.loads(z.read(name)), pointer))
                     if leaf == 'INDEPENDENT_AUDIT.json' and a['name'].endswith('-FINAL'): audits.append((json.loads(z.read(name)), pointer))
                     if leaf == 'AUDIT_INDEX.sqlite' and a['name'].endswith('-FINAL'): dbs.append(pointer)
+                    if leaf == 'RAW.sqlite' and r18_final: dbs.append(pointer)
                     if leaf in ['MANIFEST.json','TASKS.jsonl','LOCK.json','PARENT_LOCK.json','ANCESTOR_LOCK.json',
                                 'STAGE_PLAN.json','SELECTION.json','ENVIRONMENT.json','REPORT.json','INDEPENDENT_AUDIT.json',
                                 'GATE.json','PREREQUISITE_REUSE.json','ORIGINAL_WITNESS_AUDIT.json','PARENT_VALIDATION.json',
                                 'CP_PREFLIGHT.json','PARENT_CP_PREFLIGHT.json','PRIOR_JOBS.json','PRIOR_RUN.json',
                                 'PARENT_BACKEND.json','ANCESTOR_BACKEND.json','PRIOR_ARTIFACTS.json','HISTORY_INDEX.json',
-                                'DOWNLOAD_INDEX.json','DOWNLOAD_COMPLETE.json','TRANSPORT_COMPLETE.json'] or pointer in dbs:
+                                'DOWNLOAD_INDEX.json','DOWNLOAD_COMPLETE.json','TRANSPORT_COMPLETE.json','BLOCKS.json','PRODUCTS.json'] or pointer in dbs:
                         analysis_files.append(pointer)
         except (ValueError, KeyError, zipfile.BadZipFile) as exc:
             errors.append(dict(artifactId=a['id'], error=str(exc)))
@@ -216,15 +226,21 @@ def inspect_artifacts(root, inventory, run, workflows):
     jobs = job_accounting(run.get('priorAttemptJobs', []) + run['jobs'], workflows)
     current_plans=[plan for plan,_ in plans if lock and plan['manifestHash']==lock['manifestHash']]
     planned_matrix=sum(plan.get('chunks',0) for plan in current_plans)
+    is_r18 = bool(lock and lock['manifest'].get('campaignId') == 'RC2_LINMAX_RELEASE_VALIDATION_R18_20261012')
+    if is_r18:
+        if len(r18_blocks)!=1: errors.append(dict(error='R18_BLOCKS_MISSING_OR_AMBIGUOUS'))
+        else: planned_matrix=len(r18_blocks[0])
     allocated_matrix=sum(' / run (' in j['name'] for j in jobs['jobs'])
     unallocated=max(0,planned_matrix-allocated_matrix)
     prefix='secondary-rc' if '.github/workflows/secondary-rc-campaign.yml' in workflows else 'secondary-triage'
     matrix_minutes=timeout_map(workflows.get(f'.github/workflows/{prefix}-stage.yml','')).get('run')
+    if is_r18: matrix_minutes=timeout_map(workflows.get('.github/workflows/secondary-rc2-worker.yml','')).get('run')
     jobs.update(scheduledMatrixJobs=planned_matrix,unmaterializedScheduledJobs=unallocated)
     if unallocated:
         jobs['reservedHours']=jobs['reservedHours']+unallocated*matrix_minutes/60 if jobs['reservedHours'] is not None and matrix_minutes is not None else None
     m = lock['manifest'] if lock else {}
     prior_hours = m.get('provenance', {}).get('priorReservedRunnerHours', 0)
+    if is_r18: prior_hours=m['priorReservedRunnerHours']
     prior_cp = m.get('provenance', {}).get('priorCpSyntheticCalls', 0)
     current_cp = len(cp_ids) if lock and not errors else None
     database_check = 'MISSING'
@@ -264,12 +280,22 @@ def inspect_artifacts(root, inventory, run, workflows):
                         observed.add(key)
                     if observed!=set(expected): raise ValueError('SQLite missing raw records')
                     expected_starts={k:v for k,v in starts.items() if v['value'].get('manifestHash') in eligible}
-                    observed_starts=set()
-                    for (text,) in db.execute('SELECT raw FROM starts'):
-                        s=json.loads(text);key=(s['campaignId'],s['invocationId'],s['executionAttemptId'])
-                        if key in observed_starts or key not in expected_starts or s!=expected_starts[key]['value']: raise ValueError('SQLite/start disagreement')
-                        observed_starts.add(key)
-                    if observed_starts!=set(expected_starts): raise ValueError('SQLite missing start records')
+                    if m.get('campaignId') == 'RC2_LINMAX_RELEASE_VALIDATION_R18_20261012' and pointer['member'] == 'RAW.sqlite':
+                        # R18's original DB stores raw only; compare every saved start
+                        # directly with its raw record rather than inventing a DB table.
+                        observed_starts=set()
+                        for record in expected.values():
+                            r=record['value'];key=(r['campaignId'],r['invocationId'],r['executionAttemptId'])
+                            s=expected_starts.get(key,{}).get('value')
+                            if not s or any(r.get(k)!=v for k,v in s.items()): raise ValueError('R18 raw/start disagreement')
+                            observed_starts.add(key)
+                    else:
+                        observed_starts=set()
+                        for (text,) in db.execute('SELECT raw FROM starts'):
+                            s=json.loads(text);key=(s['campaignId'],s['invocationId'],s['executionAttemptId'])
+                            if key in observed_starts or key not in expected_starts or s!=expected_starts[key]['value']: raise ValueError('SQLite/start disagreement')
+                            observed_starts.add(key)
+                    if observed_starts!=set(expected_starts): raise ValueError('missing start records')
                     database_check='PASS'
                 finally: db.close()
         except (ValueError, KeyError, sqlite3.Error) as exc:
@@ -283,6 +309,7 @@ def inspect_artifacts(root, inventory, run, workflows):
             selectedArtifactIds=sorted(selected_finals), historicalReports=historical_reports,
             historicalAudits=historical_audits, historicalRawDatabases=historical_dbs),
         accounting=dict(calls=list(calls.values()), starts=start_rows, budget=budget, runnerAllocation=jobs,
+            **(dict(declaredLineage=dict(scope=m['accountingScope'],priorReservedCalls=m['priorReservedCalls'],priorReservedRunnerHours=m['priorReservedRunnerHours'],cumulativeReservedCalls=m['cumulativeReservedCalls'],cumulativeReservedRunnerHours=m['cumulativeReservedRunnerHours'],note='Frozen declaration includes a separate 10-minute contract job; runnerAllocation covers this run only.')) if is_r18 else {}),
             **(dict(priorReservedCalls=m['largeRun']['priorCalls'],priorCampaignId=m['provenance']['priorCampaignId']) if m.get('largeRun') else {}),
             priorReservedRunnerHours=prior_hours, cumulativeReservedRunnerHours=prior_hours+jobs['reservedHours'] if jobs['reservedHours'] is not None else None,
             priorCpSyntheticCalls=prior_cp, currentCpSyntheticCalls=current_cp,
@@ -354,7 +381,10 @@ def collect(repository, run_id, out, allow_active=False):
             failures.append(dict(artifactId=a['id'], error=str(exc)))
     workflows = {}
     prefix='secondary-rc' if run.get('path','').split('@')[0]=='.github/workflows/secondary-rc-campaign.yml' else 'secondary-triage'
-    for name in [f'.github/workflows/{prefix}-campaign.yml',f'.github/workflows/{prefix}-stage.yml']:
+    workflow_names = [f'.github/workflows/{prefix}-campaign.yml',f'.github/workflows/{prefix}-stage.yml']
+    if run.get('path','').split('@')[0] == '.github/workflows/secondary-rc2-validation-r18.yml':
+        workflow_names = ['.github/workflows/secondary-rc2-validation-r18.yml', '.github/workflows/secondary-rc2-worker.yml']
+    for name in workflow_names:
         value = api(repository, f'contents/{name}?ref={run["head_sha"]}')
         workflows[name] = base64.b64decode(value['content']).decode()
     final = api(repository, f'actions/runs/{run_id}')
