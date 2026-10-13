@@ -1,6 +1,6 @@
 # Current architecture
 
-This document describes the production architecture as of Release 3.0.
+This document describes the production architecture as of Release 3.1.
 
 The primary minimals selector now chooses Auto/Rust/HiGHS/ORTools. Auto routes
 wide residual kernels to OR-Tools CP-SAT; the ORTools adapter owns a disposable
@@ -211,8 +211,14 @@ a human-quality provider must have an integer `playableOrderCount` in
 Calling the generic minimum-cover API with `qualityFor == null` is explicitly
 cardinality-only and skips secondary refinement.
 
-Production secondary search keeps exact K fixed throughout. `True` retains the
-100,000-state integrated probe followed by the exact sequential-threshold prover.
+Production secondary search keeps exact K fixed throughout. In the default
+non-decomposed Auto path, P15 selects the 100,000-state integrated probe using
+unforced slots `d = K - forcedCount`: `d <= 9` for hard primary instances and
+`d <= 14` otherwise. The exact sequential-threshold prover handles unresolved
+work. CP joins after 60 seconds without a product deadline, using the linMax
+quality model; either engine may finish, and failure of one preserves the other.
+Exact Human quality and stable-ID proof are both required. See
+[Release 3.1](RELEASE_3_1.md) for validation scope and known regressions.
 
 `Fast` uses a layered bounded strategy:
 

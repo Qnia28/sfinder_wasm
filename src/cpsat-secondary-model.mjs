@@ -40,11 +40,9 @@ export async function solveCpSecondaryModel({ keys, rows, count, seed }, api, { 
     const key = ids.join(','); let variable = ors.get(key);
     if (!variable) {
       variable = model.newBoolVar('y' + ors.size);
-      // Exact Boolean equivalence: y => OR(xs), !y => AND(!xs).
-      // Keep two literal lists instead of a LinearExpressionProto per input.
-      // Both directions are required: earlier quality objectives are later locked.
-      model.addBoolOr(ids.map(id => x[id])).onlyEnforceIf(variable);
-      model.addBoolAnd(ids.map(id => x[id].not())).onlyEnforceIf(variable.not());
+      // R17 minimal candidate: restore the DEV encoding for exact quality ORs.
+      // Boolean-equivalent encodings have different CP search behaviour.
+      model.addMaxEquality(variable, ids.map(id => x[id]));
       ors.set(key, variable);
     }
     return variable;

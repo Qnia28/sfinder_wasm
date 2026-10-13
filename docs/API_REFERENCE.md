@@ -1,6 +1,6 @@
 # JavaScript API reference
 
-This is the current public/runtime contract for Release 3.0.
+This is the current public/runtime contract for Release 3.1.
 
 ## Recommended entry points
 
