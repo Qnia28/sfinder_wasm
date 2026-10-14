@@ -108,7 +108,7 @@ only; it does not change exact cover selection.
 See `API_REFERENCE.md` for the public result shape.
 
 
-## Exact secondary workers (2026-09-12)
+## Exact secondary workers
 
 The asynchronous per-save-minimals API accepts `secondaryWorkers`:
 
@@ -118,6 +118,6 @@ The asynchronous per-save-minimals API accepts `secondaryWorkers`:
 
 Primary routing and settings are unchanged: Rust/HiGHS stay on the existing single execution lane, and ORTools retains two workers. Primary jobs remain sequential; a completed primary can enqueue its secondary while the next save proceeds. Tiny integrated Auto cases and single-queue shortcuts retain their existing execution paths. Fast quality mode does not dispatch secondary jobs. Custom solver objects retain local execution.
 
-Each child owns an independent WASM instance and receives a copy of the original quality CSR, including duplicate row weights. It does not load the legal pack. The cardinality-reduced matrix is never substituted for the quality matrix. Threshold levels remain sequential within each job; the exact objective, selected-key ordering, and result metadata are preserved. Pending jobs are rejected and workers terminated on pool failure or request completion. Public client cancellation terminates the parent Worker; a new request uses a fresh parent.
+Worker parallelism preserves the exact objective, selected-key ordering, and result metadata. A pool failure rejects pending work. Public client cancellation terminates the request's workers; a new request uses a fresh parent Worker.
 
 Parallelism has initialization and matrix-copy costs. It cannot accelerate pattern expansion or candidate enumeration before the primary/secondary boundary. The default avoids spawning workers for exact searches completed by the existing bounded integrated search. A fixed worker count is primarily useful for measured heavy workloads; four workers are not universally faster.

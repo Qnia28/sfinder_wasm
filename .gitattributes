@@ -1,0 +1,4 @@
+/.gitattributes export-ignore
+/rust export-ignore
+/scripts export-ignore
+/docs/BUILD_AND_RELEASE.md export-ignore

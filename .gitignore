@@ -1,3 +1,5 @@
 node_modules/
+rust/target/
+rust/generated/
 *.log
 *.tmp

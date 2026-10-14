@@ -18,6 +18,18 @@ repository.
 
 See `docs/API_REFERENCE.md` for APIs and compatibility notes.
 
+## What's new in 3.1
+
+- Exact human-quality minimals offer `secondary` engine selection, with automatic
+  Rust/CP-SAT cooperation and complete quality and stable-ID proof.
+- Per-save minimals support `secondaryWorkers` to control concurrent exact
+  quality work. Worker-client cancellation stops request-owned workers.
+- Batch APIs provide compact coverage/count output options and explicit
+  solution limits; see the API reference for each operation's result shape.
+
+The minimum solution count remains exact. Exact quality has no built-in time
+limit; use client cancellation when an application needs to stop a request.
+
 ## Documentation map
 
 Start here, then use the focused references as needed:

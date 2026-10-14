@@ -431,7 +431,7 @@ silently coercing it. Examples include:
 - per-save geometry whose remaining cells are not a positive multiple of four.
 
 
-## 2026-09-12 추가 계약
+## Batch output modes and limits
 
 `congruent-cover`는 `outputMode: 'variants'`(기본), `'coverage'`, `'count'`를 지원한다.
 coverage는 상세 Fumen/solutions/orders/variants를 생략하며 실패 큐는 유지한다.
@@ -440,7 +440,7 @@ count는 큐 목록도 생략하고 가중 prefix 및 BigInt로 정확 합계를
 `maxSolutions`는 Rust/JS 모두 큐 검증 후의 고유 Congruent 해를 제한한다. 한도를 넘는 다음 해에서 오류가 나며 부분 결과는 반환하지 않는다.
 
 
-## Exact secondary workers (2026-09-12)
+## Exact secondary workers
 
 The asynchronous per-save-minimals API accepts `secondaryWorkers`:
 
@@ -450,6 +450,6 @@ The asynchronous per-save-minimals API accepts `secondaryWorkers`:
 
 Primary routing and settings are unchanged: Rust/HiGHS stay on the existing single execution lane, and ORTools retains two workers. Primary jobs remain sequential; a completed primary can enqueue its secondary while the next save proceeds. Tiny integrated Auto cases and single-queue shortcuts retain their existing execution paths. Fast quality mode does not dispatch secondary jobs. Custom solver objects retain local execution.
 
-Each child owns an independent WASM instance and receives a copy of the original quality CSR, including duplicate row weights. It does not load the legal pack. The cardinality-reduced matrix is never substituted for the quality matrix. Threshold levels remain sequential within each job; the exact objective, selected-key ordering, and result metadata are preserved. Pending jobs are rejected and workers terminated on pool failure or request completion. Public client cancellation terminates the parent Worker; a new request uses a fresh parent.
+Worker parallelism preserves the exact objective, selected-key ordering, and result metadata. A pool failure rejects pending work. Public client cancellation terminates the request's workers; a new request uses a fresh parent Worker.
 
 Parallelism has initialization and matrix-copy costs. It cannot accelerate pattern expansion or candidate enumeration before the primary/secondary boundary. The default avoids spawning workers for exact searches completed by the existing bounded integrated search. A fixed worker count is primarily useful for measured heavy workloads; four workers are not universally faster.
