@@ -12,21 +12,8 @@ export function normalizePrimaryProof(value = "standard") {
   return value;
 }
 
-// Auto chooses only the *primary cardinality* backend.  Do not use the old
-// legacy exact-search timings here: those mixed cardinality proof with exact
-// secondary human-quality enumeration and badly misclassified matrices such as
-// pcinfo-019.  The exact primary kernel is cheap enough to build first, removes
-// duplicate/raw-size inflation, and exposes the structure that matters to the
-// Rust cardinality-only search.
-//
-// The two guards are intentionally conservative and use primary-only data.
-// Current full-matrix Rust cardinality-only measurements after kernelization:
-//   pcinfo-019  10/8/20       ~8 ms
-//   pcinfo-022  232/94/2428   ~44 ms
-//   pcinfo-024  456/95/5028   ~38 ms
-// BOX-derived sampled kernels such as 239/113/2435 and 712/141/7483 exceeded
-// the Rust cardinality-only timeout and are routed to HiGHS. Secondary-quality
-// timings are deliberately excluded from these guards.
+// Auto selects the primary cardinality backend from the reduced kernel.
+// These guards use primary structure, independently of secondary quality work.
 const AUTO_PRIMARY_WIDE_MIN_CASES = 200;
 const AUTO_PRIMARY_WIDE_MIN_SOLUTIONS = 112;
 const AUTO_PRIMARY_WIDE_MIN_ENTRIES = 2200;

@@ -71,8 +71,7 @@ export function variantSatisfiesMode(variant,mode='normal'){
  return false
 }
 
-// Queue/Hold state space for a single concrete queue. Kept as the scalar
-// fallback and as an independent oracle for queue-trie regression tests.
+// Scalar Queue/Hold fallback for a single concrete queue.
 export function canQueueBuildOrder(queue,order,useHold=true){
  const n=queue.length,q=new Int8Array(n);for(let i=0;i<n;i++){q[i]=PIECE_CODE[queue[i]]??-1;if(q[i]<0)return false}
  const size=(n+1)*8;let cur=new Uint8Array(size),next=new Uint8Array(size);cur[7]=1;

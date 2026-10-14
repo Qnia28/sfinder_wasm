@@ -7,7 +7,7 @@ function compare(a, b) {
   return 0;
 }
 
-// Experimental, explicitly invoked fixed-K portfolio. Production callers keep
+// Opt-in fixed-K portfolio. Production callers use
 // solveExactSecondary. Rust budgets count states (including repeated search),
 // not milliseconds; a supervising worker/process must enforce a hard deadline.
 // CP loading/model preparation belongs inside solveCpsat and its remaining time.

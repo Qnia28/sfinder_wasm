@@ -5,7 +5,7 @@ import { isORToolsSupported, assertORToolsSupported } from './ortools-min-cover.
 import { prepareSecondaryEngineInput, startSecondaryEngine, raceSecondaryEngines } from './secondary-engine-runner.mjs';
 
 export const SECONDARY_CP_DELAY_MS = 60000;
-// null means no product deadline. Benchmarks own a separate whole-call watchdog.
+// null means no product deadline.
 export const SECONDARY_CP_LIMIT_MS = null;
 export function normalizeSecondary(value = 'auto') {
   const mode = String(value).trim().toLowerCase();

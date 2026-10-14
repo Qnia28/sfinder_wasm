@@ -1,4 +1,4 @@
-// Fixed-K exact secondary model, promoted from the audited batched CP experiment.
+// Fixed-K exact secondary model.
 // Original row multiplicities are weights; stable IDs are proved AFTER quality.
 const check = (condition, message) => { if (!condition) throw new Error(message); };
 export function secondaryQualityVector(rows, selected) {

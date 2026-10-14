@@ -42,8 +42,7 @@ function solveInspectedSecondary(coverage, options, trivial, structure, decision
       qualitySearchedStates: 0, fastProbeBudget: null, fastProbeStates: null, fastFallback: false,
       qualityDecision: 'trivial-exact',
     };
-    // auto is an explicit experimental policy; the production default remains
-    // off until short-probe and component thresholds have independent evidence.
+    // Automatic decomposition is opt-in; the default is off.
     if (decomposition === 'auto') {
       // A legacy probe has no routing budget/ownership metadata. Do not
       // silently discard it and repeat its work under another policy.

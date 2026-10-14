@@ -193,7 +193,7 @@ export function calculateSaves({
     success: 0,
     failedQueues: [],
   }));
-  // Opt-in pending bounded measurements; ALL and public Set evaluators are unchanged.
+  // Opt-in cache; ALL and public Set evaluators are unchanged.
   const cache = outcomeCache && !masks ? createSaveOutcomeCache(evaluators) : null;
   for (let index = 0; index < cases.length; index += 1) {
     if (masks) {
