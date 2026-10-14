@@ -38,7 +38,7 @@ export async function calculateMinimalsFeature({
   clear = 4,
   solver,
   useHold = true,
-  exactHumanQuality = "Fast",
+  exactHumanQuality = undefined,
   primary = undefined, Primary = undefined,
   useHiGHS = undefined,
   UseHiGHS = undefined,

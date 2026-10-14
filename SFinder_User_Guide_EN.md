@@ -106,11 +106,20 @@ When these capabilities are unavailable, Auto uses HiGHS for kernels that meet
 the ORTools threshold. Explicit ORTools still reports an unsupported-environment
 error. Small kernels continue to use Rust, and solved kernels bypass all solvers.
 Legacy UseHiGHS remains a compatibility alias.
-`exactHumanQuality` controls the secondary objective:
+`secondary` controls the quality policy for minimals and per-save minimals:
 
-- `Fast`: exact secondary result if the fixed-K proof completes within budget;
-  otherwise deterministic exact-K incumbent plus 2↔2 refinement.
-- `True`: continue the exact secondary proof to completion.
+- `auto` (default): bounded exact attempts, then 2↔2 refinement if needed.
+- `quality`: complete quality proof with automatic Rust/CP-SAT cooperation.
+- `2x2`: direct 2↔2 refinement without exact-quality probes.
+- `nocpsat`: complete quality proof with Rust only.
+- `integrated`: unbounded Rust integrated proof.
+- `threshold`: unbounded Rust sequential-threshold proof.
+- `cpsat`: unbounded CP-SAT quality and stable-ID proof.
+
+Both operations default to `auto`. To retain the former exact per-save behavior,
+set `secondary: 'quality'`. The old `exactHumanQuality` input is rejected for
+these two operations. `fastStateBudget` only adjusts the bounded attempts in
+`auto`; it does not control exact modes or `2x2`.
 
 `minimalCount` is always exact. `humanQualityExact` reports secondary exactness.
 

@@ -170,7 +170,7 @@ Minimals는 성공 case를 모두 커버하는 **해법 수 K가 가장 작은 �
   clear: 4,
   wantedSave: 'ALL',
   useHold: true,
-  exactHumanQuality: 'Fast',
+  secondary: 'auto',
   Primary: 'Auto',
 }
 ```
@@ -214,16 +214,24 @@ XY == X&&Y
 미지원 오류를 반환합니다. 작은 커널의 Rust 경로와 커널 완료 처리는 유지합니다.
 기존 UseHiGHS True/False/Auto는 HiGHS/Rust/Auto로 호환되며 Primary가 우선합니다.
 
-`exactHumanQuality`:
+minimals와 per-save-minimals의 품질 정책은 `secondary`로 선택합니다.
 
 ```text
-Fast    secondary exact proof가 예산 안에 끝나면 exact,
-        아니면 exact-K incumbent를 deterministic 2↔2 refine
-True    secondary까지 끝까지 exact proof
+auto        제한된 exact 탐색 후 필요하면 2↔2 개선 (기본값)
+quality     Rust/CP-SAT 자동 협력으로 품질·stable-ID 증명 완료
+2x2         exact 품질 probe 없이 바로 2↔2 개선
+nocpsat     Rust만으로 품질 증명 완료
+integrated  Rust integrated 방식으로 제한 없이 증명
+threshold   Rust threshold 방식으로 제한 없이 증명
+cpsat       CP-SAT으로 품질·stable-ID 증명 완료
 ```
 
 `humanQualityExact`가 secondary quality까지 증명됐는지 알려줍니다.
-K 자체는 Fast에서도 exact입니다.
+K 자체는 모든 모드에서 exact입니다. 두 기능 모두 기본값은 `auto`입니다.
+기존 per-save의 exact 동작을 원하면 `secondary: 'quality'`를 지정하십시오.
+이 두 기능에서 기존 `exactHumanQuality` 입력은 오류로 처리됩니다.
+`fastStateBudget`은 `auto`의 제한된 탐색만 조절하며 exact 모드나 `2x2`에는
+적용되지 않습니다.
 
 ### 결과 해석
 

@@ -20,7 +20,7 @@ Deprecated UseHiGHS True maps to HiGHS; False maps to Rust.
 HiGHS is lazy-loaded. Deploy its assets for Auto's fallback even if most users
 can run ORTools.
 
-`exactHumanQuality` is independent of the primary backend. It controls the
+`secondary` is independent of the primary backend. It controls the
 secondary fixed-K quality proof/refinement and does not make K approximate.
 
 ## Bundled files

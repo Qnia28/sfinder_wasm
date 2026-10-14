@@ -53,6 +53,7 @@ export function normalizeExactHumanQuality(value = "fast") {
   if (typeof value === "string") {
     const normalized = value.trim().toLowerCase();
     if (normalized === "true" || normalized === "exact") return "true";
+    if (normalized === "2x2") return "2x2";
     if (normalized === "fast" || normalized === "false" || normalized === "auto") return "fast";
   }
   throw new Error(`invalid exactHumanQuality value: ${String(value)}`);
@@ -103,7 +104,7 @@ export async function minimumCoverAdaptiveAsync(coverage, {
   const requestedPrimary = primaryRequest({primary: primaryOption, Primary, useHiGHS});
   const requested = requestedPrimary === "highs" ? true : requestedPrimary === "rust" ? false : "auto";
   const tinyLimit = Math.max(0, Math.floor(Number(tinyExactMaxCandidates) || 0));
-  if (['auto', 'rust'].includes(secondary) && requestedPrimary === "auto" && tinyLimit > 0 && candidateCountUpTo(coverage, tinyLimit) <= tinyLimit) {
+  if (qualityMode !== '2x2' && ['auto', 'rust'].includes(secondary) && requestedPrimary === "auto" && tinyLimit > 0 && candidateCountUpTo(coverage, tinyLimit) <= tinyLimit) {
     const legacy = minimumCover(coverage, { qualityFor, solver });
     const hasQuality = qualityFor !== null;
     return {
@@ -221,7 +222,7 @@ export async function minimumCoverAsync(coverage, {
     return solveExactSecondaryAsync(coverage, { ...context, solver, qualityFor, signal });
   }
 
-  if (primaryHard) {
+  if (qualityMode === '2x2' || primaryHard) {
     const refined = refineMinimumCoverQuality(prepared, primary.selected);
     return {
       count: primary.count,
@@ -240,10 +241,10 @@ export async function minimumCoverAsync(coverage, {
       minimumCoverKernelEntries: kernelStats.entries,
       primarySearchedStates: primary.searchedStates ?? 0,
       qualitySearchedStates: 0,
-      fastProbeBudget: FAST_EXACT_STATE_BUDGET,
+      fastProbeBudget: qualityMode === '2x2' ? null : FAST_EXACT_STATE_BUDGET,
       fastProbeStates: 0,
-      fastFallback: true,
-      fastDecision: "primary-hard",
+      fastFallback: qualityMode !== '2x2',
+      fastDecision: qualityMode === '2x2' ? "explicit-2x2" : "primary-hard",
       qualityRefinementPasses: refined.passes,
     };
   }

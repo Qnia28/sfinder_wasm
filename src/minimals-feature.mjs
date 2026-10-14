@@ -4,6 +4,7 @@ import { encodePages } from "./fumen.mjs";
 import { makeOrderCountQuality, recordOrderCount } from "./human-ranking.mjs";
 import { minimumCover } from "./min-cover.mjs";
 import { minimumCoverAsync } from "./min-cover-adaptive.mjs";
+import { resolveSecondaryPolicy } from "./secondary-policy.mjs";
 import { orderMinimalKeysByCoverage } from "./minimal-order.mjs";
 import { expandPatternCases } from "./pattern.mjs";
 import { collectCompactMinimals } from "./minimals-compact.mjs";
@@ -138,16 +139,17 @@ export function calculateLegacySaveMinimals(input, context) {
 }
 
 export async function calculateSaveMinimals(input, context) {
+  const policy = resolveSecondaryPolicy(input.secondary, input.exactHumanQuality);
   const collected = collectSaveMinimals(input, context);
   const minimal = await minimumCoverAsync(collected.coverage, {
     qualityFor: makeOrderCountQuality(collected.qualityIndex),
     solver: input.solver,
-    exactQuality: input.exactHumanQuality ?? "fast",
+    exactQuality: policy.exactQuality,
     primary: input.primary ?? input.Primary,
     useHiGHS: input.useHiGHS ?? input.UseHiGHS ?? "auto",
     fastStateBudget: input.fastStateBudget,
     primaryProof: input.primaryProof ?? "standard",
-    secondary: input.secondary ?? 'auto',
+    secondary: policy.engine,
     signal: input.signal ?? null,
   });
   return finishSaveMinimals(collected, minimal);

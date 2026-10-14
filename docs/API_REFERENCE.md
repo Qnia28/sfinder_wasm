@@ -182,10 +182,9 @@ See `SAVE_EXPRESSIONS.md`.
   wantedSave,             // optional; ALL = no filter
   clear: 4,
   useHold: true,
-  exactHumanQuality: 'Fast',
   Primary: 'Auto',
   fastStateBudget,        // optional expert tuning: main integrated Fast probe budget
-  secondary: 'auto',      // applies when exactHumanQuality is 'true'
+  secondary: 'auto',      // quality policy; default for both minimals APIs
 }
 ```
 
@@ -199,24 +198,37 @@ ORTools retains its support error. Fallback metadata keeps primaryRequested='aut
 and reports primaryResolved/cardinalityBackend='highs', useHiGHSResolved=true.
 See [ORTools runtime setup](../ORTOOLS_INTEGRATION_AND_LICENSE.md) for deployment requirements.
 
-For exact quality, `secondary` accepts `auto`, `rust`, `integrated`, `threshold`,
-or `cpsat` (case-insensitive). Auto uses a bounded structural seed probe before threshold and starts
-a 1-worker CP-SAT helper after 60 seconds of secondary work, keeping threshold
-running. The first complete quality **and stable-ID** proof wins. Unsupported CP
-environments retain the Rust path. `rust` selects the Rust-only policy;
-`integrated` and `threshold` select their unbounded fixed-K prover. Explicit
-`cpsat` has no built-in time limit and requires complete quality and stable-ID
-proof. Use client cancellation to stop a request. Common trivial
-proofs run before the selected engine.
-Auto's CP helper also has no built-in time limit. If one exact engine fails,
-the other can continue to a complete proof. Fast and cardinality-only behavior
-is independent of this setting.
+`secondary` accepts these case-insensitive values:
 
-`fastStateBudget` controls the historical integrated fixed-K Fast probe. Fast may
+| Value | Quality policy |
+|---|---|
+| `auto` | Default: bounded exact attempts, then 2↔2 refinement if necessary |
+| `quality` | Complete proof with a structural seed probe, Rust threshold, and late CP-SAT cooperation |
+| `2x2` | Exact primary K, then direct 2↔2 refinement; no exact-quality probe |
+| `nocpsat` | Complete proof using the structural seed probe and Rust threshold only |
+| `integrated` | Unbounded Rust integrated fixed-K proof |
+| `threshold` | Unbounded Rust sequential-threshold fixed-K proof |
+| `cpsat` | Unbounded CP-SAT quality and stable-ID proof |
+
+In `quality`, a one-worker CP-SAT helper joins after 60 seconds of secondary
+work while Rust continues. The first complete quality **and stable-ID** proof
+wins. Unsupported CP environments retain the Rust path; an engine failure can
+leave the other engine running. Common trivial proofs may finish first.
+Exact modes have no built-in deadline; use client cancellation to stop a request.
+`nocpsat` disables secondary CP only; `primary` remains an independent choice.
+
+Migration: `exactHumanQuality` is no longer accepted for minimals/per-save
+minimals. Replace Fast with `secondary: 'auto'`, True plus old auto with
+`secondary: 'quality'`, and old rust with `secondary: 'nocpsat'`.
+The previous `secondary: 'auto'` alone no longer means unbounded exact quality.
+
+`fastStateBudget` controls the integrated fixed-K probe in `secondary: 'auto'`. Auto may
 also run a small exact-only candidate-dominance preview and, after an integrated
 timeout, a bounded sequential-threshold grace probe. Those extra probes have
 separate conservative caps derived from the main Fast budget and are reported
 independently in the result metadata.
+It does not affect `2x2` or the exact policies, including their structural seed
+probes. A per-save request applies the budget separately to each save problem.
 
 Result includes:
 
@@ -266,9 +278,8 @@ compatibility/reference. Production callers should prefer `minimals`.
   pattern,
   targetLines: 4,
   useHold: true,
-  exactHumanQuality: 'true',
   Primary: 'Auto',
-  secondary: 'auto', // same exact-secondary policy/options as minimals
+  secondary: 'auto', // same quality policies and default as minimals
   candidateLimit: 16, // compatibility only; does not truncate exact single-queue results
 }
 ```
@@ -448,7 +459,7 @@ The asynchronous per-save-minimals API accepts `secondaryWorkers`:
 - `0`: serial reference execution.
 - `1` through `4`: dispatch the complete exact secondary after each save's primary finishes, using that many workers.
 
-Primary routing and settings are unchanged: Rust/HiGHS stay on the existing single execution lane, and ORTools retains two workers. Primary jobs remain sequential; a completed primary can enqueue its secondary while the next save proceeds. Tiny integrated Auto cases and single-queue shortcuts retain their existing execution paths. Fast quality mode does not dispatch secondary jobs. Custom solver objects retain local execution.
+Primary routing and settings are unchanged: Rust/HiGHS stay on the existing single execution lane, and ORTools retains two workers. Primary jobs remain sequential; a completed primary can enqueue its secondary while the next save proceeds. Tiny automatic cases and single-queue shortcuts retain their existing execution paths except in direct `2x2` mode. `secondary: 'auto'` and `'2x2'` do not dispatch exact-secondary jobs. Custom solver objects retain local execution.
 
 Worker parallelism preserves the exact objective, selected-key ordering, and result metadata. A pool failure rejects pending work. Public client cancellation terminates the request's workers; a new request uses a fresh parent Worker.
 
