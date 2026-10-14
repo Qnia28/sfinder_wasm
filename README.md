@@ -144,7 +144,7 @@ const result = await runWorkerRequest({
     pattern: '*p7',
     clear: 4,
     wantedSave: 'ALL',
-    exactHumanQuality: 'Fast',
+    secondary: 'auto',
     Primary: 'Auto',
   },
 });
@@ -254,16 +254,24 @@ Explicit Primary=ORTools returns a clear error in an unsupported environment;
 Primary=Auto handles that environment with the HiGHS fallback. Solver/proof errors
 are still reported. See [ORTools integration](ORTOOLS_INTEGRATION_AND_LICENSE.md).
 
-`exactHumanQuality` controls the secondary objective independently:
+`secondary` controls quality optimization independently of `primary`:
 
 ```text
-"Fast"  exact when the fixed-K proof fits the budget; otherwise deterministic
-        exact-K incumbent + 2↔2 quality refinement
-"True"  continue exact fixed-K quality proof until completion
+auto        bounded exact attempts, then 2↔2 refinement (default)
+quality     complete quality proof with automatic Rust/CP-SAT cooperation
+2x2         direct 2↔2 refinement without exact-quality probes
+nocpsat     complete quality proof with Rust only
+integrated  unbounded Rust integrated quality proof
+threshold   unbounded Rust sequential-threshold quality proof
+cpsat       unbounded CP-SAT quality and stable-ID proof
 ```
 
 `minimalCount` remains exact in every mode. `humanQualityExact` reports whether
 the secondary quality objective was proven exactly.
+
+Both minimals and per-save minimals default to `secondary: 'auto'`.
+The former `exactHumanQuality` input is no longer accepted for these operations.
+Use `secondary: 'quality'` when migrating a request that required exact quality.
 
 ## Per-save minimals
 

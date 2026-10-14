@@ -52,11 +52,12 @@ All cases share enumeration work where possible. For each saved piece:
 Small matrices can use the integrated exact solver path. Broad matrices keep
 numeric solution IDs through the Rust/WASM minimum-cover call.
 
-The exact `secondary` setting is shared with ordinary minimals: `auto` (default),
-`rust`, `integrated`, `threshold`, or `cpsat`. Auto keeps integrated100k → threshold
-and adds a CP-SAT helper only after 60 seconds of secondary work; threshold keeps
-running. This is independent of which save piece is being analyzed. See the
-[three-engine policy](SECONDARY_THREE_ENGINE_20260927.md).
+The `secondary` setting is shared with ordinary minimals: `auto` (default),
+`quality`, `2x2`, `nocpsat`, `integrated`, `threshold`, or `cpsat`.
+Auto uses bounded exact attempts followed by 2↔2 refinement if necessary.
+Choose `quality` for complete quality proof with automatic Rust/CP-SAT
+cooperation, or `nocpsat` for Rust-only secondary proof.
+See [secondary options](API_REFERENCE.md#minimals).
 
 Broad per-save requests consume one compact pattern export for all seven save
 groups. `compact-geometry.mjs` shares key and piece-usage decoding with minimals;
@@ -65,7 +66,7 @@ its prepared numeric rows and packed CSR through the shared minimum-cover
 adapters, without converting to string Sets and packing the matrix again.
 Tiny integrated solves use their existing numeric rows directly. The direct
 calculation API still materializes its requested coverage Map; the Worker
-feature skips that unused output. Exact quality remains the default, and save
+feature skips that unused output. Bounded automatic quality is the default, and save
 grouping still uses the queue multiset minus solution usage.
 
 The same shared PC-enumeration policy applies as other PC features: 4-line small
@@ -116,7 +117,7 @@ The asynchronous per-save-minimals API accepts `secondaryWorkers`:
 - `0`: serial reference execution.
 - `1` through `4`: dispatch the complete exact secondary after each save's primary finishes, using that many workers.
 
-Primary routing and settings are unchanged: Rust/HiGHS stay on the existing single execution lane, and ORTools retains two workers. Primary jobs remain sequential; a completed primary can enqueue its secondary while the next save proceeds. Tiny integrated Auto cases and single-queue shortcuts retain their existing execution paths. Fast quality mode does not dispatch secondary jobs. Custom solver objects retain local execution.
+Primary routing and settings are unchanged: Rust/HiGHS stay on the existing single execution lane, and ORTools retains two workers. Primary jobs remain sequential; a completed primary can enqueue its secondary while the next save proceeds. Tiny automatic cases and single-queue shortcuts retain their existing execution paths except in direct `2x2` mode. `secondary: 'auto'` and `'2x2'` do not dispatch exact-secondary jobs. Custom solver objects retain local execution.
 
 Each child owns an independent WASM instance and receives a copy of the original quality CSR, including duplicate row weights. It does not load the legal pack. The cardinality-reduced matrix is never substituted for the quality matrix. Threshold levels remain sequential within each job; the exact objective, selected-key ordering, and result metadata are preserved. Pending jobs are rejected and workers terminated on pool failure or request completion. Public client cancellation terminates the parent Worker; a new request uses a fresh parent.
 

@@ -66,7 +66,7 @@ export async function calculatePerSaveMinimalsFeature({
   solver,
   useHold = true,
   candidateLimit = 16,
-  exactHumanQuality = "true",
+  exactHumanQuality = undefined,
   primary = undefined, Primary = undefined,
   useHiGHS = undefined,
   UseHiGHS = undefined,

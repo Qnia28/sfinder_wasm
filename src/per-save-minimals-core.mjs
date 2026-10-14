@@ -292,7 +292,7 @@ async function compactPerSaveResults({ board, cases, solver, useHold, displayOrd
   for (const piece of displayOrder) {
     const group = groups.get(piece), activeRows = group.rows.filter(Boolean);
     let view = null, minimal = null;
-    if (['auto', 'rust'].includes(secondary) && activeRows.length && requestedPrimary === 'auto' && tinyLimit > 0 && group.candidates <= tinyLimit) {
+    if (exactHumanQuality !== '2x2' && ['auto', 'rust'].includes(secondary) && activeRows.length && requestedPrimary === 'auto' && tinyLimit > 0 && group.candidates <= tinyLimit) {
       const exact = solver.minimumCoverIds(activeRows, keys.length);
       if (exact && Number.isFinite(exact.count)) minimal = {
         count: exact.count, keys: exact.selectedIds.map(id => keys[id]),
@@ -392,7 +392,7 @@ async function calculatePerSaveMinimalsFromBoardInternal({
   signal?.throwIfAborted();
   const cases = normalizeCases(queues);
   const requestedPrimary = primaryRequest({primary, Primary, useHiGHS});
-  const direct = ['auto', 'rust'].includes(secondary) && requestedPrimary === "auto" ? maybeDirect({ board, cases, solver, useHold, candidateLimit, displayOrder }) : null;
+  const direct = exactHumanQuality !== '2x2' && ['auto', 'rust'].includes(secondary) && requestedPrimary === "auto" ? maybeDirect({ board, cases, solver, useHold, candidateLimit, displayOrder }) : null;
   if (direct) return direct;
 
   const tinyLimit = Math.max(0, Math.floor(Number(tinyExactMaxCandidates) || 0));
@@ -416,7 +416,7 @@ async function calculatePerSaveMinimalsFromBoardInternal({
         let minimal = null;
         let coverageCountForKey = null;
 
-        if (['auto', 'rust'].includes(secondary) && requestedPrimary === "auto" && activeRows.length > 0 && tinyLimit > 0 && candidateCount <= tinyLimit) {
+        if (exactHumanQuality !== '2x2' && ['auto', 'rust'].includes(secondary) && requestedPrimary === "auto" && activeRows.length > 0 && tinyLimit > 0 && candidateCount <= tinyLimit) {
           const exact = solver.minimumCoverIds(activeRows, numeric.solutions.length);
           if (exact && Number.isFinite(exact.count)) {
             minimal = {

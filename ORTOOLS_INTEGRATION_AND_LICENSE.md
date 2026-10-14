@@ -74,9 +74,9 @@ the browser bundler.
 
 ## Quality
 
-K and coverage remain exact. Fast's bounded secondary result can change when
+K and coverage remain exact. The bounded `secondary: 'auto'` result can change when
 the primary solver supplies a different exact-K witness. Rust remains selectable.
-ExactHumanQuality=True keeps the complete fixed-K quality proof.
+Use `secondary: 'quality'` for the complete fixed-K quality proof.
 
 ## License audit
 
