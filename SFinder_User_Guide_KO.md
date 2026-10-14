@@ -1,6 +1,6 @@
 # sfinder-wasm 사용자 가이드
 
-이 문서는 현재 Release 3.0의 기능을 사용자 관점에서 설명합니다.
+이 문서는 sfinder-wasm 3.1의 기능을 사용자 관점에서 설명합니다.
 과거 Java/Python wrapper의 CLI 사용법이 아니라 현재 sfinder-wasm의 동작을
 기준으로 합니다.
 

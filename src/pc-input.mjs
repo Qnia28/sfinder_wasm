@@ -1,5 +1,5 @@
 import { decoder } from "tetris-fumen";
-import { boardFromFumenPage, highestOccupiedRow, popcount } from "./board.mjs";
+import { scanFumenField, popcount } from "./board.mjs";
 import { expandPattern } from "./pattern.mjs";
 
 export class UnsupportedClearHeightError extends Error {
@@ -34,10 +34,11 @@ export function decodeAndValidate(sourceFumen, clear = 4) {
   validateTargetLines(clear);
   const page = decoder.decode(sourceFumen)[0];
   if (!page) throw new Error("empty fumen");
-  const highest = highestOccupiedRow(page);
+  const field = page.field;
+  const { board, highest } = scanFumenField(field, clear);
   if (highest >= 6) throw new UnsupportedBoardHeightError(highest + 1);
   if (highest >= clear) throw new BoardExceedsClearHeightError(highest + 1, clear);
-  return { page, board: boardFromFumenPage(page, clear) };
+  return { page, board };
 }
 
 export function pcGeometry(sourceFumen, targetLines = 4) {

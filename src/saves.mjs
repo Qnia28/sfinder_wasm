@@ -10,6 +10,31 @@ const SOLUTION_INDEX=Object.fromEntries([...MASK_PIECES].map((p,i)=>[p,i]));
 const expressionTables=new Map();
 const exactExpressionPredicates=new Map();
 const bagInfoCache=new Map();
+const predicateMemos=new WeakMap();
+const GLOBAL_CACHE_LIMIT=512,MEMO_CACHE_LIMIT=256,MAX_RETAINED_KEY_CHARS=4096;
+
+function retainBounded(map,key,value,limit=GLOBAL_CACHE_LIMIT){
+  if(typeof key==='string'&&key.length>MAX_RETAINED_KEY_CHARS)return;
+  if(!map.has(key)&&map.size>=limit)map.delete(map.keys().next().value);
+  map.set(key,value);
+}
+
+// Diagnostic snapshots are explicit, never scanned on a normal evaluation.
+export function saveCacheSnapshot(predicate){
+  const describe=map=>{
+    let keyChars=0,maxKeyChars=0;
+    for(const key of map.keys())if(typeof key==='string'){
+      keyChars+=key.length;maxKeyChars=Math.max(maxKeyChars,key.length);
+    }
+    return{entries:map.size,keyChars,maxKeyChars};
+  };
+  return{
+    expressionTables:describe(expressionTables),
+    exactExpressionPredicates:describe(exactExpressionPredicates),
+    bagInfoCache:describe(bagInfoCache),
+    memo:predicateMemos.has(predicate)?describe(predicateMemos.get(predicate)):null,
+  };
+}
 
 export const tetrisSort=s=>[...new Set(s)].sort((a,b)=>ORDER.indexOf(a)-ORDER.indexOf(b)).join('');
 export const tetrisSortExact=s=>[...s].sort((a,b)=>ORDER.indexOf(a)-ORDER.indexOf(b)).join('');
@@ -17,7 +42,7 @@ export const tetrisSortExact=s=>[...s].sort((a,b)=>ORDER.indexOf(a)-ORDER.indexO
 function resolveBagInfo(analysis){
   if(typeof analysis==='string'){
     let info=bagInfoCache.get(analysis);
-    if(!info){info=lastBagInfo(analysis);bagInfoCache.set(analysis,info)}
+    if(!info){info=lastBagInfo(analysis);retainBounded(bagInfoCache,analysis,info)}
     return info;
   }
   if(analysis?.pieces instanceof Set&&Number.isInteger(analysis.drawCount))return analysis;
@@ -233,7 +258,8 @@ function compileSaveOutcomeAst(source){
 function matchOutcomeAtom(allSaves,node){
   const matched=new Set();
   if(node.kind==='regex'){
-    const re=new RegExp(node.value);
+    // Keep invalid-regex errors at first evaluation, not AST compilation.
+    const re=node.regex??=new RegExp(node.value);
     for(const save of allSaves)if(re.test(save))matched.add(save);
     return matched;
   }
@@ -288,7 +314,14 @@ function evaluateSaveOutcomeAstScalar(save,node){
 
 export function parseSaveExpressionSpec(value){
   const raw=String(value??'').trim();
-  const hash=raw.indexOf('#');
+  let hash=-1,inRegex=false,escaped=false;
+  for(let index=0;index<raw.length;index++){
+    const char=raw[index];
+    if(escaped){escaped=false;continue}
+    if(char==='\\'){escaped=true;continue}
+    if(char==='/'){inRegex=!inRegex;continue}
+    if(char==='#'&&!inRegex){hash=index;break}
+  }
   const expression=(hash<0?raw:raw.slice(0,hash)).trim();
   const alias=hash<0?null:raw.slice(hash+1).trim();
   if(!expression)throw new SyntaxError('Wanted Saves: Empty save expression');
@@ -299,6 +332,45 @@ export function compileSaveOutcomeExpression(expr){
   const{expression}=parseSaveExpressionSpec(expr);
   const ast=compileSaveOutcomeAst(expression);
   return allSaves=>evaluateSaveOutcomeAst(allSaves,ast);
+}
+
+// Internal fixed-dictionary evaluator. Bits identify COMPLETE save strings, not
+// piece kinds: e.g. T and TT occupy different bits. Keep the queue-level AST.
+export function compileSaveOutcomeMaskExpression(expr){
+  const{expression}=parseSaveExpressionSpec(expr);
+  const ast=compileSaveOutcomeAst(expression);
+  return outcomes=>{
+    const values=[...outcomes];
+    if(values.length>31||new Set(values).size!==values.length)throw new RangeError('expected at most 31 distinct save outcomes');
+    const compile=node=>{
+      if(node.kind==='match'||node.kind==='regex'){
+        let matches;
+        return universe=>{
+          if(matches===undefined){
+            // Lazy even for an empty universe: preserve invalid-regex timing.
+            const subset=matchOutcomeAtom(new Set(values),node);
+            matches=0;
+            for(let i=0;i<values.length;i++)if(subset.has(values[i]))matches|=1<<i;
+          }
+          return universe&matches;
+        };
+      }
+      const terms=node.terms.map(term=>({...term,run:compile(term.expression)}));
+      return universe=>{
+        let current=0;
+        for(const term of terms){
+          let matched=term.run(universe);
+          if(term.complement)matched=universe&~matched;
+          if(term.absenceTest)matched=matched?0:universe;
+          if(term.connector==='and')current=current&&matched?current|matched:0;
+          else if(term.connector==='or')current|=matched;
+          else current=matched;
+        }
+        return current;
+      };
+    };
+    return compile(ast);
+  };
 }
 
 export function evaluateSaveOutcomeExpression(allSaves,expr){
@@ -333,10 +405,11 @@ export function compileExactSaveExpression(expr){
     let value=cache.get(code);
     if(value!==undefined)return value;
     value=evaluateSaveOutcomeAstScalar(saveMultiplicityCodeToString(code),ast);
-    cache.set(code,value);
+    retainBounded(cache,code,value,MEMO_CACHE_LIMIT);
     return value;
   };
-  exactExpressionPredicates.set(expression,predicate);
+  predicateMemos.set(predicate,cache);
+  retainBounded(exactExpressionPredicates,expression,predicate);
   return predicate;
 }
 
@@ -350,7 +423,7 @@ export function compileSaveExpression(expr){
   if(table)return table;
   table=new Uint8Array(128);
   for(let mask=0;mask<128;mask++)table[mask]=evaluateSaveExpressionRaw(saveMaskToString(mask),key)?1:0;
-  expressionTables.set(key,table);
+  retainBounded(expressionTables,key,table);
   return table;
 }
 

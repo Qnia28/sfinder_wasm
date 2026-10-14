@@ -17,8 +17,8 @@ function collectSaveMinimals({
   solver,
   useHold = true,
   height = 4,
-}) {
-  const board = boardFromFumenPage(decoder.decode(sourceFumen)[0], height);
+}, context) {
+  const board = context?.board ?? boardFromFumenPage(decoder.decode(sourceFumen)[0], height);
   const cases = expandPatternCases(analysisPattern);
   const queues = cases.map((entry) => entry.queue);
   if (canUsePatternEnumeration({ cases, solver }) && typeof solver.enumeratePcPatternCompact === 'function') {
@@ -128,8 +128,8 @@ function finishSaveMinimals(collected, minimal) {
   };
 }
 
-export function calculateLegacySaveMinimals(input) {
-  const collected = collectSaveMinimals(input);
+export function calculateLegacySaveMinimals(input, context) {
+  const collected = collectSaveMinimals(input, context);
   const minimal = minimumCover(collected.coverage, {
     qualityFor: makeOrderCountQuality(collected.qualityIndex),
     solver: input.solver,
@@ -137,8 +137,8 @@ export function calculateLegacySaveMinimals(input) {
   return finishSaveMinimals(collected, minimal);
 }
 
-export async function calculateSaveMinimals(input) {
-  const collected = collectSaveMinimals(input);
+export async function calculateSaveMinimals(input, context) {
+  const collected = collectSaveMinimals(input, context);
   const minimal = await minimumCoverAsync(collected.coverage, {
     qualityFor: makeOrderCountQuality(collected.qualityIndex),
     solver: input.solver,
@@ -147,6 +147,8 @@ export async function calculateSaveMinimals(input) {
     useHiGHS: input.useHiGHS ?? input.UseHiGHS ?? "auto",
     fastStateBudget: input.fastStateBudget,
     primaryProof: input.primaryProof ?? "standard",
+    secondary: input.secondary ?? 'auto',
+    signal: input.signal ?? null,
   });
   return finishSaveMinimals(collected, minimal);
 }

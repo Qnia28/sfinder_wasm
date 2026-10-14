@@ -47,7 +47,6 @@ license.
 - License: MIT for the main HiGHS codebase.
 - Main notice: `third_party/HiGHS.LICENSE`.
 - Upstream third-party notice: `third_party/HiGHS-THIRD_PARTY_NOTICES.md`.
-- Preserved source archive: `third_party/source/HiGHS-1.15.1.zip`.
 - Bundled binary: `wasm/highs.wasm`.
 - Upstream: https://github.com/ERGO-Code/HiGHS
 
@@ -69,7 +68,7 @@ The complete upstream HiGHS notice is authoritative for the HiGHS source tree.
 The extracted files are provided to make binary/source redistribution easier,
 not to narrow the upstream notice.
 
-## ORTools and runtime dependencies added in 3.0
+## ORTools and runtime dependencies
 
 Project-owned code is Apache-2.0. Bundled components retain the licenses below.
 
@@ -98,27 +97,26 @@ translation unit. See ORTools/Eigen/SOURCE.md.
 Distinct original license/copyright headers from recorded build dependencies
 are preserved in ORTools/UPSTREAM_HEADER_NOTICES.txt.
 Toolchain notices are retained conservatively even where LTO may remove code.
-Vite/Playwright are development-only tools and are not runtime dependencies.
 
 Sources:
 - https://github.com/google/or-tools
 - https://github.com/Axelwickm/or-tools-wasm
 - https://www.mozilla.org/en-US/MPL/2.0/FAQ/
 
-When redistributing the complete 3.0 package, preserve NOTICE, the ORTools/Rust
+When redistributing the complete package, preserve NOTICE, the ORTools/Rust
 notices, and the supplied Eigen source in addition to the existing notices below.
 
 ## Compatibility references and acknowledgements
 
 ### eight04/sfinder-strict-minimal 0.2.0
 
-- Historical role: exact-minimal behavior/reference during early development.
+- Role: exact-minimal behavioral reference.
 - License: MIT.
 - Notice retained at `third_party/sfinder-strict-minimal.LICENSE`.
 - Upstream: https://github.com/eight04/sfinder-strict-minimal
 
 The current production minimum-cover implementation is independently structured
-in `rust/pc-core/src/min_cover.rs`; `src/min-cover.mjs` is the current JavaScript
+in the bundled Rust/WASM runtime; `src/min-cover.mjs` is the JavaScript
 fallback/reference implementation. The MIT notice is retained for provenance
 and for any historical/adapted portions that may remain relevant.
 
@@ -140,7 +138,7 @@ oracle during validation.
 
 ### wirelyre/tetra-tools
 
-- Role: algorithmic/architecture reference during development of selected search optimizations.
+- Role: algorithmic reference for selected search optimizations.
 - No tetra-tools crate or source code is included or linked.
 - Upstream tetra-tools is GPL-3.0-or-later; this acknowledgement does not claim that
   its source is part of sfinder-wasm.

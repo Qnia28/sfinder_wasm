@@ -33,26 +33,7 @@ third_party/highs-js.LICENSE  highs-js MIT license
 third_party/HiGHS.LICENSE     HiGHS MIT license
 third_party/HiGHS-THIRD_PARTY_NOTICES.md
 third_party/HiGHS-third-party/*
-third_party/source/HiGHS-1.15.1.zip
 ```
-
-The source archive is preserved for binary provenance and reproducibility. It is
-not required by the MIT license as a source-offer mechanism; it is an explicit
-project packaging choice.
-
-## highs-js build provenance
-
-The upstream highs-js 1.15.1 build script configures HiGHS as a static library
-with:
-
-```text
--DZLIB=OFF
--DFAST_BUILD=OFF
--DBUILD_SHARED_LIBS=OFF
-```
-
-HiGHS' HIPO option defaults to OFF. The upstream build then links the produced
-static library with Emscripten and exports the C API used by highs-js.
 
 `src/vendor/highs.mjs` is derived from the upstream highs-js runtime so it can be
 loaded as an ES module in the browser/Vite-style asset environment. Its upstream
@@ -77,8 +58,7 @@ For the library configuration used by highs-js 1.15.1, `pdqsort` and
 `filereaderlp` are the most directly relevant embedded notices. HIPO components
 (AMD/METIS/RCM) are disabled by default; zstr is disabled by `-DZLIB=OFF`; CLI11
 belongs to the command-line executable path rather than the library interface.
-The full notice set is nevertheless retained because the HiGHS source archive is
-also redistributed.
+The full upstream notice set is retained with the bundled binary.
 
 ## Runtime loading
 

@@ -41,6 +41,7 @@ function compileBranch(branch) {
       const weight = count(state);
       if (weight) yield {
         queue: prefix, weight,
+        completions: () => prefixes(branch.depth, state, prefix),
         extend: () => next(...state).map(([piece, child]) => ({ queue: prefix + piece, weight: count(child) })).filter(entry => entry.weight > 0n),
       };
       return;

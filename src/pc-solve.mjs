@@ -64,7 +64,7 @@ export function solveOnePc({
       key: solution.key,
       label: "playableOrderCount",
     }),
-    fumen: combineWithIntro(sourceFumen, title, [page]),
+    fumen: combineWithIntro(sourceFumen, title, [page], current.page),
   };
 }
 
@@ -80,7 +80,9 @@ export function solveAllPc({
   const { height, current, queue } = prepareSingleQueueInput(
     { sourceFumen, pattern, targetLines, clear }, 0, "solve-all",
   );
-  const solutions = sortedSolutions(solver.enumeratePc(current.board, queue, useHold));
+  const solutions = sortedSolutions(typeof solver.enumeratePcGeometry === 'function'
+    ? solver.enumeratePcGeometry(current.board, queue, useHold)
+    : solver.enumeratePc(current.board, queue, useHold));
   const pages = solutions.map((solution, index) =>
     solutionPage(current.board, solution, `Solution ${index + 1}`, height));
   return {
@@ -89,7 +91,7 @@ export function solveAllPc({
     remainingCells: current.remainingCells,
     piecesNeeded: current.piecesNeeded,
     solutionCount: solutions.length,
-    fumen: pages.length > 0 ? combineWithIntro(sourceFumen, title, pages) : null,
+    fumen: pages.length > 0 ? combineWithIntro(sourceFumen, title, pages, current.page) : null,
   };
 }
 
@@ -106,7 +108,9 @@ export function solvePerSaveAllPc({
     { sourceFumen, pattern, targetLines, clear }, 1, "per-save-all",
   );
   const expectedQueueLength = current.piecesNeeded + 1;
-  const solutions = sortedSolutions(solver.enumeratePc(current.board, queue, useHold));
+  const solutions = sortedSolutions(typeof solver.enumeratePcGeometry === 'function'
+    ? solver.enumeratePcGeometry(current.board, queue, useHold)
+    : solver.enumeratePc(current.board, queue, useHold));
   const grouped = new Map([...PER_SAVE_DISPLAY_ORDER].map((piece) => [piece, []]));
   for (const solution of solutions) grouped.get(selectedSavedPiece(queue, solution)).push(solution);
 
@@ -127,7 +131,7 @@ export function solvePerSaveAllPc({
     expectedQueueLength,
     solutionCount: solutions.length,
     pageCounts,
-    fumen: pages.length > 0 ? combineWithIntro(sourceFumen, title, pages) : null,
+    fumen: pages.length > 0 ? combineWithIntro(sourceFumen, title, pages, current.page) : null,
   };
 }
 

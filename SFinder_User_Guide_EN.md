@@ -1,6 +1,6 @@
 # sfinder-wasm User Guide
 
-This guide describes the current Release 3.0 behavior. It documents the
+This guide describes sfinder-wasm 3.1. It documents the
 browser/JavaScript engine rather than the historical Java/Python CLI wrappers.
 
 ## Choosing a feature

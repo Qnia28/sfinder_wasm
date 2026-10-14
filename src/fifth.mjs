@@ -24,8 +24,8 @@ function caseSeesPiece(entry, piece) {
   return drawCount > 0 && entry.queue.slice(-drawCount).includes(piece);
 }
 
-function collectFifth({ sourceFumen, analysisPattern, solver, useHold }) {
-  const board = boardFromFumenPage(decoder.decode(sourceFumen)[0]);
+function collectFifth({ sourceFumen, analysisPattern, solver, useHold }, context) {
+  const board = context?.board ?? boardFromFumenPage(decoder.decode(sourceFumen)[0]);
   const cases = expandPatternCases(analysisPattern);
   const queues = cases.map((entry) => entry.queue);
   const all = new Map(cases.map((entry) => [entry.caseId, []]));
@@ -118,8 +118,8 @@ function finishFifthPiece(collected, piece, data, minimal) {
 }
 
 // Legacy synchronous exact implementation retained for compatibility/reference.
-export function fifthMinimalsPerSaves({ sourceFumen, analysisPattern, solver, useHold = true }) {
-  const collected = collectFifth({ sourceFumen, analysisPattern, solver, useHold });
+export function fifthMinimalsPerSaves({ sourceFumen, analysisPattern, solver, useHold = true }, context) {
+  const collected = collectFifth({ sourceFumen, analysisPattern, solver, useHold }, context);
   const usages = {};
   const results = {};
   for (const piece of FIFTH_DISPLAY_ORDER) {
@@ -145,8 +145,8 @@ export async function fifthMinimalsPerSavesAsync({
   useHiGHS = "auto",
   fastStateBudget = undefined,
   tinyExactMaxCandidates = 48,
-}) {
-  const collected = collectFifth({ sourceFumen, analysisPattern, solver, useHold });
+}, context) {
+  const collected = collectFifth({ sourceFumen, analysisPattern, solver, useHold }, context);
   const usages = {};
   const results = {};
   for (const piece of FIFTH_DISPLAY_ORDER) {
@@ -170,7 +170,7 @@ export async function fifthMinimalsPerSavesAsync({
   return { board: collected.board, cases: collected.cases, queues: collected.queues, all: collected.all, usages, results, bestsave };
 }
 
-export function encodeFifthCombined({ sourceFumen, title, calculation }) {
+export function encodeFifthCombined({ sourceFumen, title, calculation }, sourcePage) {
   const pages = [];
   const pageCounts = {};
   for (const piece of FIFTH_DISPLAY_ORDER) {
@@ -182,5 +182,5 @@ export function encodeFifthCombined({ sourceFumen, title, calculation }) {
       pages.push(solutionPage(calculation.board, solution, comment));
     }
   }
-  return { fumen: combineWithIntro(sourceFumen, title, pages), pageCounts };
+  return { fumen: combineWithIntro(sourceFumen, title, pages, sourcePage), pageCounts };
 }

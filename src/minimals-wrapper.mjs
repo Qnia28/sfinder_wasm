@@ -10,7 +10,7 @@ export function calculateLegacyMinimalsFeature({
   solver,
   useHold = true,
 }) {
-  decodeAndValidate(sourceFumen, clear);
+  const context = decodeAndValidate(sourceFumen, clear);
   const calculation = calculateLegacySaveMinimals({
     sourceFumen,
     analysisPattern: pattern,
@@ -18,7 +18,7 @@ export function calculateLegacyMinimalsFeature({
     solver,
     useHold,
     height: clear,
-  });
+  }, context);
   return {
     pathPattern: queuesForFinder(pattern),
     analysisPattern: pattern,
@@ -44,8 +44,10 @@ export async function calculateMinimalsFeature({
   UseHiGHS = undefined,
   fastStateBudget = undefined,
   primaryProof = "standard",
+  secondary = 'auto',
+  signal = null,
 }) {
-  decodeAndValidate(sourceFumen, clear);
+  const context = decodeAndValidate(sourceFumen, clear);
   const calculation = await calculateSaveMinimals({
     sourceFumen,
     analysisPattern: pattern,
@@ -58,7 +60,9 @@ export async function calculateMinimalsFeature({
     useHiGHS: useHiGHS ?? UseHiGHS ?? "auto",
     fastStateBudget,
     primaryProof,
-  });
+    secondary,
+    signal,
+  }, context);
   return {
     pathPattern: queuesForFinder(pattern),
     analysisPattern: pattern,

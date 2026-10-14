@@ -15,7 +15,7 @@ WASM bridge/API port commit: a16c07886b1db846248a477ed5c06ba93c484493
 (Axelwickm/or-tools-wasm).
 
 Profile: numWorkers=2, subsolvers=['max_lp'], randomSeed=1,
-addZeroHalfCuts=false, useSatInprocessing=false. No benchmark-derived time cap
+addZeroHalfCuts=false, useSatInprocessing=false. No built-in time cap
 is imposed in production. Only OPTIMAL with matching objective and lower bound
 is accepted. Selected IDs, forced IDs, uniqueness and all kernel rows are checked.
 A failed proof throws instead of returning an approximate minimalCount.
@@ -33,8 +33,7 @@ cross-origin isolation. Serve HTTPS or localhost with:
     Cross-Origin-Opener-Policy: same-origin
     Cross-Origin-Embedder-Policy: require-corp
 
-Assets must be same-origin or satisfy the embedder policy. Chrome 152 was
-verified against a Vite production build. Only JSPI assets are included; there
+Assets must be same-origin or satisfy the embedder policy. Only JSPI assets are included; there
 is no Asyncify runtime. Before an Auto ORTools solve, check JSPI, SharedArrayBuffer
 and browser cross-origin isolation. If any is unavailable (including deployments
 without COOP/COEP), use HiGHS for that kernel. No ORTools Worker or runtime is loaded
@@ -53,7 +52,7 @@ without COOP/COEP. Those headers improve backend availability; they are not a
 requirement for the HiGHS fallback. Do not disable Auto solely because isolation
 is unavailable. Surface explicit ORTools support errors when users force that mode.
 
-Node 24.13.0 was verified with:
+For Node 24.13.0, use:
 
     node --experimental-wasm-stack-switching your-script.mjs
 
@@ -66,11 +65,9 @@ Keep src/ortools-min-cover.mjs, src/ortools-primary-worker.mjs and
 src/vendor/ortools/ together. Browser and Node use separate glue files. Their
 8,038,746-byte WASM files contain the same CP-SAT runtime.
 
-The existing src/worker-client.mjs factory was verified in Vite 8.2.2 production.
-Browser bundle/loader modifications remove unused Asyncify/other-solver asset
-references and the unused upstream executor worker factory. The sfinder adapter
-owns its Worker and chooses direct execution. Node-only imports are ignored by
-the browser bundler.
+Use the factory in `src/worker-client.mjs` for browser Worker integration.
+The sfinder adapter owns its Worker. Browser deployments use the browser glue;
+Node deployments use the separate Node glue.
 
 ## Quality
 
@@ -78,15 +75,12 @@ K and coverage remain exact. Fast's bounded secondary result can change when
 the primary solver supplies a different exact-K witness. Rust remains selectable.
 ExactHumanQuality=True keeps the complete fixed-K quality proof.
 
-## License audit
+## Licenses and redistribution
 
 Project-owned source is Apache-2.0. OR-Tools and the port are Apache-2.0.
 Other bundled components retain their own licenses, including Eigen MPL-2.0
-source and Rust runtime notices. The reviewed distribution and recorded build
-inputs did not identify a GPL dependency requiring the project to remain GPL.
-Historical tetra-tools use is recorded as reference-only with no source/crate
-linked; this relies on the existing provenance record, not a new line-by-line
-historical authorship audit.
+source and Rust runtime notices. Historical tetra-tools use is recorded as
+reference-only with no source/crate linked.
 
 Preserve LICENSE, NOTICE, THIRD_PARTY_NOTICES.md and third_party/.
 See `THIRD_PARTY_NOTICES.md` and `third_party/ORTools/Eigen/SOURCE.md` for

@@ -1,6 +1,6 @@
 # sfinder-wasm
 
-**Current release: 3.0 (2026-09-06)**
+**sfinder-wasm 3.1**
 
 `sfinder-wasm` is a browser-native Rust/WebAssembly implementation of selected
 Tetris Perfect Clear analysis workflows. It reproduces the intended output
@@ -15,7 +15,6 @@ repository.
 - Runtime npm dependency: `tetris-fumen@1.1.3`
 - Wide-kernel primary backend: optimized OR-Tools 9.15 CP-SAT, bundled and lazy-loaded
 - Legacy primary backend: HiGHS 1.15.1, explicitly selectable and lazy-loaded
-- Rust workspace: no external crates
 
 See `docs/API_REFERENCE.md` for APIs and compatibility notes.
 
@@ -30,8 +29,7 @@ Start here, then use the focused references as needed:
 - `docs/PER_SAVE_MINIMALS.md` — per-save minimals contract
 - `docs/SINGLE_QUEUE_SOLVER.md` — exact concrete-queue solver
 - `docs/BATCH_ENGINE.md` — cover/congruent engine and modes
-- `docs/ARCHITECTURE.md` — current solver architecture and dispatch policy
-- `docs/BUILD_AND_RELEASE.md` — installation, builds and deployment assets
+- `docs/DEPLOYMENT.md` — installation and browser/Node deployment
 - `HIGHS_INTEGRATION_AND_LICENSE.md` — HiGHS runtime/provenance details
 - `THIRD_PARTY_NOTICES.md` — third-party licenses and acknowledgements
 
@@ -80,7 +78,8 @@ wasm/highs.wasm
 wasm/legal_boards_4.lgb
 ```
 
-Rust is required only to rebuild WASM or regenerate the legal-board asset.
+The bundled runtime is ready to use; no Rust toolchain is required.
+Keep `src/vendor/ortools/` with the runtime for CP-SAT support.
 
 ## Quick start: Worker API
 
@@ -149,7 +148,7 @@ const result = await runWorkerRequest({
 style for batch commands.
 
 The lower-level exported feature functions accept an explicit solver and are
-primarily useful for tests or applications that deliberately own solver
+useful for applications that deliberately own solver
 lifetime. See `docs/API_REFERENCE.md`.
 
 ## Queue pattern syntax
@@ -244,7 +243,7 @@ cross-origin isolation is unavailable, Auto falls back to HiGHS before loading
 ORTools. Smaller kernels still use Rust, and solved kernels bypass all solvers.
 
 ORTools requires WebAssembly JSPI and SharedArrayBuffer. Browser deployments
-need COOP/COEP. Node 24.13 is tested with --experimental-wasm-stack-switching.
+need COOP/COEP. Node 24.13 requires --experimental-wasm-stack-switching.
 Explicit Primary=ORTools returns a clear error in an unsupported environment;
 Primary=Auto handles that environment with the HiGHS fallback. Solver/proof errors
 are still reported. See [ORTools integration](ORTOOLS_INTEGRATION_AND_LICENSE.md).
@@ -309,59 +308,6 @@ must preserve placement/order history.
 
 See `docs/BATCH_ENGINE.md` for all cover modes, validation scope, and Fumen
 semantics.
-
-## Current runtime architecture
-
-```text
-PC request
-  -> worker-runtime.mjs
-  -> shared input/pattern validation
-  -> pc-enumeration-engine.mjs dispatch
-       -> pc-routing-policy.mjs execution profile
-       -> 4L scalar legal-board/oracle path for smaller workloads
-       -> shared multiset geometry DAG + Queue/Hold trie for broad workloads
-       -> generic 5-6L compatibility path
-  -> feature-specific aggregation
-  -> optional exact minimum cover
-       -> Rust/WASM
-       -> lazy ORTools for wide Auto kernels
-       -> lazy HiGHS when explicitly selected or ORTools is unavailable in Auto
-
-Batch request
-  -> batch-worker-runtime.mjs
-  -> batch feature facade
-       -> cover / cover-percent / congruent feature modules
-  -> batch_wasm.wasm + order-aware engine
-```
-
-The PC WASM JavaScript boundary is split into lifecycle, raw enumeration ABI,
-minimum-cover ABI, and compatibility-routing modules. Compatibility facades such
-as `path-engine.mjs` and `highs-min-cover.mjs` remain available, but production
-features import the focused internal modules directly.
-
-The 4-line engine retains the packed legal-board asset and late-stage oracles.
-Broad 4-line full enumeration switches to shared pattern DAG execution from 64
-cases; 5–6 line full enumeration switches from 8 cases. Broad existence uses
-separate conservative thresholds (2048 on 4L and 256 on 5–6L), while PATH keeps
-its compact-result profile (64 on 4L and 4 on 5–6L). `fourth` remains on cached
-scalar enumeration.
-
-See `docs/ARCHITECTURE.md` for details.
-
-## Build
-
-```bash
-npm run build:wasm
-```
-
-Regenerate the legal-board pack:
-
-```bash
-npm run generate:legal
-```
-
-The release build expects a Rust toolchain with `wasm32-unknown-unknown`.
-Detailed reproducibility and packaging notes are in `docs/BUILD_AND_RELEASE.md`.
 
 ## License and redistribution
 

@@ -93,15 +93,8 @@ for the requested spin mode. `tsm` accepts a line-clearing Mini or Regular
 T-spin. `tss`, `tsd`, and `tst` require a Regular T-spin clearing at least 1, 2,
 and 3 lines respectively; these threshold semantics match solution-finder 1.42.
 
-The current Jstris-180 path has been cross-checked against solution-finder 1.42:
-320 one-page T-operation targets across all four spin modes matched 1,280/1,280
-classifications, 30 generated Regular-TSS operation histories matched queue
-coverage, four generated Regular-TSD histories (including an I-piece CCW tuck)
-matched queue coverage, and a continuous six-row Regular-TST history matched the
-Java oracle including its required upper-row blockers. Mirrored TSS/TSD/TST spot
-checks and the legacy congruent-cover TSM fixture also match. These are
-compatibility tests, not a claim that every possible custom kick table is
-supported; Cover uses the bundled Jstris-180 rules.
+Cover uses the bundled Jstris-180 rules; arbitrary custom kick tables are not
+supported.
 
 ## Fumen handling
 
