@@ -1,0 +1,92 @@
+name: Fast v2 resume and authorized interrupted-group remeasurement
+on:
+  workflow_dispatch:
+  push:
+    branches: [experiment/fast-budget-20261015]
+    paths: [.github/workflows/fast-budget-resume.yml]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: fast-budget-20261015
+  cancel-in-progress: false
+env:
+  GH_TOKEN: ${{ github.token }}
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: harness
+      - uses: actions/checkout@v4
+        with:
+          ref: cf6b930942381cfdcf3eeb94db1b47cbef13c7bd
+          path: product
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --prefix product --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix harness/tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      - id: plan
+        uses: ./harness/tools/fast-bench/recover-action
+        with:
+          mode: plan
+  measure:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 340
+    strategy:
+      max-parallel: 16
+      fail-fast: true
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: harness
+      - uses: actions/checkout@v4
+        with:
+          ref: cf6b930942381cfdcf3eeb94db1b47cbef13c7bd
+          path: product
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --prefix product --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix harness/tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      - name: Original solver source, fixed artifact IDs and original clock
+        uses: ./harness/tools/fast-bench/recover-action
+        with:
+          mode: measure
+          shard: ${{ matrix.shard }}
+      - if: failure() || cancelled()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fast-resume-failure-${{ matrix.shard }}
+          path: fast-resume/
+          compression-level: 1
+          retention-days: 30
+  audit:
+    needs: [plan, measure]
+    if: always() && needs.plan.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: harness
+      - uses: actions/checkout@v4
+        with:
+          ref: cf6b930942381cfdcf3eeb94db1b47cbef13c7bd
+          path: product
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --prefix product --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix harness/tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      - name: Merge attempts without rewriting historical failures
+        uses: ./harness/tools/fast-bench/recover-action
+        with:
+          mode: audit

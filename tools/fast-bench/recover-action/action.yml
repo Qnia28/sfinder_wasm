@@ -1,0 +1,15 @@
+name: Resume Fast comparison campaign
+description: Original source and schedule, fixed artifact IDs, explicitly authorized interrupted-group remeasurement
+inputs:
+  mode:
+    required: true
+    description: plan, measure or audit
+  shard:
+    default: '0'
+    description: Original shard index
+outputs:
+  matrix:
+    description: Frozen continuation chunks
+runs:
+  using: node24
+  main: index.mjs
