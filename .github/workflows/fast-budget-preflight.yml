@@ -1,6 +1,9 @@
 name: Fast budget contract and artifact preflight
 on:
   workflow_dispatch:
+  push:
+    branches: [experiment/fast-budget-20261015]
+    paths: [.github/workflows/fast-budget-preflight.yml]
 permissions:
   contents: read
   actions: read
