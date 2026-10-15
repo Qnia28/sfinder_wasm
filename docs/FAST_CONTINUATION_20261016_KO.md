@@ -43,3 +43,14 @@
 - 재개 driver commit: `73625b3`; 측정 source는 원 `cf6b930942381cfdcf3eeb94db1b47cbef13c7bd`를 별도 checkout한다.
 - 원 run의 input/raw/failure artifacts는 `../../fast2nd/20261015/actions-38759068303/preserved/`로 ZIP digest 및 member hash를 검증하며 보존 중이다.
 - 최종 결과는 이 재개 run의 `fast-analysis-index`와 두 run의 raw/input artifacts를 함께 읽어야 한다.
+
+## 측정 종료 및 통합 감사
+
+- 재개 run38766815700: plan + measure80개 + audit 모두 성공.
+- 통합 감사 `COLLECTION_COMPLETE`: expected/observed **30,480/30,480**, missing0, errors0.
+- RETURNED_EXACT16,248 / RETURNED_APPROX14,133 / RETURNED_EMPTY60 / TIMEOUT_CALL39. TIMEOUT은 완료 시간이나 OOM으로 변환하지 않는다.
+- 로컬에서 호출ID 유일성30,480개 및 원 schedule ID 집합과의 완전 일치를 독립 대조했다.
+- `ATTEMPTS.jsonl.gz`31,166행은 과거 NOT_RUN 기록까지 포함한 이력이며 실제 solver 실행 횟수가 아니다. 원 INVALID 감사 및 취소·UNKNOWN 이력을 함께 보존한다.
+- 최종 index artifact11991549626은 ZIP digest/member hash 검증 후 `D:/AI/sfinder-wasm/fast2nd/20261015/actions-38766815700/preserved/fast-analysis-index-11991549626/`에 보존했다.
+- solver 없는 scalar 재집계 완료: `actions-38766815700/scalar-analysis/`의 pairs.csv53,480행, trace-pairs.csv192행, SUMMARY.json.
+- 두 run의 전체 raw/input artifact 로컬 보존은 별도 다운로드 작업으로 진행한다. 수집 완료는 정책 채택을 뜻하지 않는다. 품질 hash 차이만으로 우열을 판정하지 않으며 후보 채택은 보류한다.
