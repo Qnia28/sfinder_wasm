@@ -35,14 +35,28 @@ for (const a of wanted) {
   }
   assert(!fs.existsSync(directory), 'unverified partial directory; inspect before resuming: ' + directory);
   const disk = fs.statfsSync(root); assert(disk.bavail * disk.bsize > a.size_in_bytes * 2 + 1024 ** 3, 'disk admission');
-  const archive = directory + '.zip'; assert(!fs.existsSync(archive), 'unverified partial ZIP: ' + archive);
-  const fd = fs.openSync(archive, 'wx');
-  try {
-    await new Promise((resolve, reject) => {
-      const child = spawn('gh', ['api', `repos/${repo}/actions/artifacts/${a.id}/zip`], { stdio: ['ignore', fd, 'inherit'] });
-      child.once('error', reject); child.once('close', code => code === 0 ? resolve() : reject(new Error('download exit ' + code)));
-    });
-  } finally { fs.closeSync(fd); }
+  const archive = directory + '.zip';
+  const quarantine = reason => {
+    const retained = archive + '.incomplete-' + Date.now();
+    fs.renameSync(archive, retained);
+    fs.appendFileSync(path.join(root, 'TRANSPORT_ERRORS.jsonl'), JSON.stringify({ artifactId: a.id, reason, retained }) + '\n');
+  };
+  if (fs.existsSync(archive) && 'sha256:' + await hashFile(archive) !== a.digest) quarantine('previous incomplete download');
+  for (let attempt = 0; !fs.existsSync(archive) && attempt < 3; attempt++) {
+    const fd = fs.openSync(archive, 'wx');
+    let failure;
+    try {
+      await new Promise((resolve, reject) => {
+        const child = spawn('gh', ['api', `repos/${repo}/actions/artifacts/${a.id}/zip`], { stdio: ['ignore', fd, 'inherit'] });
+        child.once('error', reject); child.once('close', code => code === 0 ? resolve() : reject(new Error('download exit ' + code)));
+      });
+    } catch (error) { failure = error; }
+    finally { fs.closeSync(fd); }
+    if (failure) {
+      quarantine(failure.message);
+      if (attempt === 2) throw failure;
+    }
+  }
   const sha = await hashFile(archive);
   assert.equal('sha256:' + sha, a.digest, 'backend ZIP digest mismatch');
   execFileSync('python', [fileURLToPath(new URL('../secondary-bench/followup-extract.py', import.meta.url)),
