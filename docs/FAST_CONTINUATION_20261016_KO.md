@@ -53,4 +53,5 @@
 - `ATTEMPTS.jsonl.gz`31,166행은 과거 NOT_RUN 기록까지 포함한 이력이며 실제 solver 실행 횟수가 아니다. 원 INVALID 감사 및 취소·UNKNOWN 이력을 함께 보존한다.
 - 최종 index artifact11991549626은 ZIP digest/member hash 검증 후 `D:/AI/sfinder-wasm/fast2nd/20261015/actions-38766815700/preserved/fast-analysis-index-11991549626/`에 보존했다.
 - solver 없는 scalar 재집계 완료: `actions-38766815700/scalar-analysis/`의 pairs.csv53,480행, trace-pairs.csv192행, SUMMARY.json.
-- 두 run의 전체 raw/input artifact 로컬 보존은 별도 다운로드 작업으로 진행한다. 수집 완료는 정책 채택을 뜻하지 않는다. 품질 hash 차이만으로 우열을 판정하지 않으며 후보 채택은 보류한다.
+- 두 run의 전체 raw/input artifact 로컬 보존 완료: 원 run1,497개 + 재개 run183개 = **1,680개**, inventory 대비 보존 영수증 누락0. 다운로드 시 ZIP digest 및 snapshot member hash를 검증했으며 각 run 디렉터리에 `PRESERVATION_SUMMARY.json`을 저장했다. 전송 ZIP 기준 총1,015,801,078바이트이며 압축 해제 크기와 다르다.
+- 수집 완료는 정책 채택을 뜻하지 않는다. 품질 hash 차이만으로 우열을 판정하지 않으며 후보 채택은 보류한다.
