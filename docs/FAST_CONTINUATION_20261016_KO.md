@@ -19,6 +19,7 @@
 - 이 중 이전에 시작된 호출163개가 포함된다. 완료/취소/UNKNOWN 등 이전 상태를 보존하고 새로운 attempt로 기록한다.
 - 중단 묶음은 전체를 다시 실행하여 동일 입력의 모든 비교군/반복/trace가 같은VM에 있다는 조건을 유지한다. 정상 종료된 묶음의 TIMEOUT/OOM은 재시도하지 않는다.
 - 최종 기본 조회본은 새로 완결한 묶음을 사용한다. ATTEMPTS.jsonl.gz, PARENT_CALLS, PARENT_AUDIT, 원 raw artifact에는 이전 기록을 모두 남긴다.
+- 원 비교 슬롯30,480개는 늘리지 않지만 이전 시작163개를 추가 attempt로 보존한다. 모두 시작된다고 가정하면 누적 실행 단위 상한은 capture1,113+preflight43+측정30,480+추가attempt163=**31,799**다. 이는 최초31,711 단위 상한보다88개 많으며, 사용자의 중단 묶음 재측정 승인에 따른 continuation 범위 변경이다.1,200h/96h/16VM 상한은 늘리지 않는다.
 
 ## 실행 조건·예산
 
@@ -35,3 +36,10 @@
 - audit는 종료한 재개 run의 명시적 summary 이름만 서버 측 필터링으로 조회한다.
 - 동결 명세: `tools/fast-bench/CONTINUATION_38759068303.json`.
 - 생성기/증거 대조는 solver0회로 수행했으며18,879+11,601=30,480의 원 슬롯 정합과 추가 승인 범위를 검증했다.
+
+## 재개 실행
+
+- Actions: https://github.com/Qnia28/sfinder_wasm/actions/runs/38766815700
+- 재개 driver commit: `73625b3`; 측정 source는 원 `cf6b930942381cfdcf3eeb94db1b47cbef13c7bd`를 별도 checkout한다.
+- 원 run의 input/raw/failure artifacts는 `../../fast2nd/20261015/actions-38759068303/preserved/`로 ZIP digest 및 member hash를 검증하며 보존 중이다.
+- 최종 결과는 이 재개 run의 `fast-analysis-index`와 두 run의 raw/input artifacts를 함께 읽어야 한다.
