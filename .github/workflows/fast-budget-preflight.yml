@@ -1,0 +1,53 @@
+name: Fast budget contract and artifact preflight
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: fast-budget-20261015
+  cancel-in-progress: false
+jobs:
+  contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      artifact-ids: ${{ steps.preflight.outputs.artifact-ids }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      - name: Seed and transport contracts (no population calls)
+        run: node --test tests/fast-bench-adapter.test.mjs tests/fast-bench-transport.test.mjs
+      - name: Linux scope, Fast parity and real payload upload
+        id: preflight
+        run: node tools/fast-bench/remote-preflight.mjs run
+      - name: Preserve all starts, outcomes and upload receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fast-preflight-evidence
+          path: fast-preflight/
+          compression-level: 1
+          retention-days: 30
+          if-no-files-found: error
+  round-trip:
+    needs: contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Download only the three exact payload IDs
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ needs.contracts.outputs.artifact-ids }}
+          path: fast-round-trip
+      - name: Verify all sealed member hashes
+        run: node tools/fast-bench/remote-preflight.mjs verify fast-round-trip
