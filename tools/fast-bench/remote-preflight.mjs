@@ -23,7 +23,7 @@ if (mode === 'verify') {
   assert.equal(members.length, 3, 'three shard payloads required');
   const snapshots = members.map(e => verifySnapshot(path.join(output, e.name)));
   assert.equal(new Set(snapshots.map(s => s.identity.shard)).size, 3);
-  assert(snapshots.every(s => s.identity.runId === process.env.GITHUB_RUN_ID));
+  assert(snapshots.every(s => s.identity.runId === (process.env.SOURCE_RUN_ID ?? process.env.GITHUB_RUN_ID)));
   summary('## Fast artifact round trip PASS\n3 distinct payloads: all member sizes and SHA256 verified.\nThis is transport/contract evidence, not population performance.');
 } else {
   assert.equal(mode, 'run'); assert.equal(process.platform, 'linux');

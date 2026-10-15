@@ -10,6 +10,9 @@ permissions:
 concurrency:
   group: fast-budget-20261015
   cancel-in-progress: false
+env:
+  # Completed solver evidence is reused; this revision repairs transport only.
+  SOURCE_RUN_ID: '38755030086'
 jobs:
   contracts:
     runs-on: ubuntu-24.04
@@ -25,9 +28,16 @@ jobs:
       - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
       - name: Seed and transport contracts (no population calls)
         run: node --test tests/fast-bench-adapter.test.mjs tests/fast-bench-transport.test.mjs
-      - name: Linux scope, Fast parity and real payload upload
+      - name: Reuse completed contracts and immutable payloads
+        uses: actions/download-artifact@v4
+        with:
+          name: fast-preflight-evidence
+          run-id: ${{ env.SOURCE_RUN_ID }}
+          github-token: ${{ github.token }}
+          path: fast-preflight
+      - name: Retry transport only with Actions runtime credentials
         id: preflight
-        run: node tools/fast-bench/remote-preflight.mjs run
+        uses: ./tools/fast-bench/action
       - name: Preserve all starts, outcomes and upload receipts
         if: always()
         uses: actions/upload-artifact@v4

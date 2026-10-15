@@ -33,4 +33,14 @@ task 묶음은 실험군/반복/seed/VM pairing을 바꾸지 않고 전송 경�
 - 계획/요약 분리·delta checkpoint·download cache는 **Fast 실행 adapter/workflow를 연결하면서 구현할 다음 항목**이다. 현재 helper가 기존 캠페인 속도를 이미 바꿨다는 뜻은 아니다.
 - 다음 원격 준비 검사는 작은 파일의 실제 upload/download/해시 대조다. 그 뒤 Fast capture와 측정 workflow를 연결한다. 아직 population benchmark는 시작하지 않았다.
 
+## 원격 준비 검사 구현 (후속)
+
+- `.github/workflows/fast-budget-preflight.yml`: 별도 실험 브랜치에서만 최초 push로 등록하고 workflow_dispatch도 지원한다. default branch에 없는 새 workflow는 이름 기반 dispatch가404이므로 branch-local push trigger로 시작했다.
+- `tools/fast-bench/adapter.mjs`: 12군의 fixed-K 실험 계약. 미완료 preview 폐기, integrated/grace seed 전달, hard 가드, 기존2x2, 단계별 incumbent 및 원 행 검산을 구현했다. exact-only 하네스의 거부 계약은 그대로 사용한다.
+- `remote-preflight.mjs`: synthetic weighted triangle1개에서 12군×trace ON/OFF24회, 현재 제품 경로와5군 대조5회, 동기 무응답 watchdog/회수1회 = **30단위**. 모집단 입력은 호출하지 않는다.
+- 필요성: adapter와 제품의 다른 seed/목표를 같은 정책으로 비교하는 오류, trace가 결과를 바꾸는 오류, 동기 WASM 정지 시 프로세스가 남는 오류를 사전 검출한다. 별도 성능 우열/overhead 판정 검사가 아니다.
+- 비용: 1측정 VM, 준비 job15분+별도 다운로드 검증 job5분 상한. 전체 preflight64슬롯 중30슬롯을 예약한다. timeout/reap·process-tree3GiB/swap0은 기존 supervisor를 재사용한다.
+- 실제 SDK로3개 payload를 최대3개 병렬 업로드하고, 다음 job은 receipt의 **artifact ID3개만** 다운로드한다. 원 starts/raw/lock/receipt는 별도 evidence artifact에 보존한다.
+- 이 단계의 LOCK은 준비 검사 전용이다. 모집단 본 실행의 source/runtime/schedule lock이나96시간 origin을 대신하지 않는다. 준비 검사 소비도 본 캠페인의 누적 자원 산정에 포함해야 한다.
+
 기존1,200runner-hours/96시간 상한은 유지한다. 실제 artifact 시간을 확인하기 전 절감률이나 최악 startup 예약을 낮추지 않는다.

@@ -1,0 +1,8 @@
+name: Fast artifact transport recovery
+description: Retry sealed payloads with Actions runtime credentials and no solver calls
+outputs:
+  artifact-ids:
+    description: Verified backend IDs for targeted download
+runs:
+  using: node24
+  main: index.mjs
