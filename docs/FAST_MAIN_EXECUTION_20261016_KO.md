@@ -45,3 +45,15 @@
 - 최종 audit는 전체 schedule의 중복/누락/회수 및 trace ON/OFF 결과 정합을 확인한다. 입력 witness 검산은 각 worker가 수행하며 전체 원자료는 delta/input artifacts에 있다.
 - 분석 index의 calls.jsonl.gz는 scalar 조회본이다. 완전한 seed/원행렬/품질 벡터를 대체하지 않는다. audit에는 전체 원자료 artifact pointer를 남긴다.
 - 완료/미완료/실패/품질proof를 분리하며 실행 성공을 정책 채택으로 해석하지 않는다.
+
+## 보존·재집계 도구
+
+```
+node tools/fast-bench/download-results.mjs RUN_ID OUTPUT_DIR
+node tools/fast-bench/download-results.mjs RUN_ID OUTPUT_DIR --full
+node tools/fast-bench/analyze-index.mjs ANALYSIS_ARTIFACT_DIR NEW_ANALYSIS_DIR
+```
+
+기본 다운로드는 작은 계획/summary/analysis index만 받는다. `--full`은 input과 raw delta 및 failure 자료까지 받으며 artifact ZIP digest/member hash, 디스크 여유를 검증한다. 이미 받은 자료는 receipt/hash 검사 후 재사용한다. 불완전한 로컬 다운로드는 덮어쓰지 않고 중단한다.
+
+scalar 재집계는 BASE100/DIRECT 대비 완료쌍 비용과 전체 상태 전이, trace 원쌍을 CSV로 만든다. quality hash가 다르면 DIFFERENT로만 표시하고 better/worse를 추측하지 않는다. 품질 순서 판정에는 원 raw의 가중 벡터를 사용해야 한다.
