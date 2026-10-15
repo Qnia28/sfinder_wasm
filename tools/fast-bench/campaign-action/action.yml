@@ -1,0 +1,21 @@
+name: Fast budget campaign
+description: Capture, freeze, measure and audit the approved Fast scope
+inputs:
+  mode:
+    required: true
+    description: bootstrap, capture, plan, measure or audit
+  shard:
+    default: '0'
+    description: Frozen chunk index
+  artifact-prefix:
+    default: ''
+    description: Exact name or prefix ending in star for paginated discovery
+  destination:
+    default: ''
+    description: New download directory
+outputs:
+  matrix:
+    description: Frozen measurement chunk matrix
+runs:
+  using: node24
+  main: index.mjs

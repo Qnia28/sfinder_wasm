@@ -19,7 +19,13 @@ export function prepareFastFixture(fixture, solver) {
   const kernel = solver.primaryKernelize(fixture.rows.map(r => r.map(([id]) => id)), fixture.keys.length);
   assert(kernel, 'primary kernel ABI required');
   const stats = primaryKernelStats(kernel);
-  return { fixture, ...packedView(fixture),
+  let view;
+  if (fixture.representation === 'Map') {
+    const coverage = new Map(fixture.rows.map((r, i) => [i, new Set(r.map(([id]) => fixture.keys[id]))]));
+    const qualities = fixture.rows.map(r => new Map(r.map(([id, q]) => [fixture.keys[id], q])));
+    view = { coverage, qualityFor: (key, row) => qualities[row].get(key) };
+  } else view = packedView(fixture);
+  return { fixture, ...view,
     prepared: { keys: fixture.keys, cases: fixture.rows },
     kernelStats: stats, primaryHard: isHardPrimaryKernel(kernel),
     previewEligible: stats.entries <= 512 && fixture.keys.length <= 256
