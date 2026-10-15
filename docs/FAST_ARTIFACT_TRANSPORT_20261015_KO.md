@@ -42,5 +42,6 @@ task 묶음은 실험군/반복/seed/VM pairing을 바꾸지 않고 전송 경�
 - 비용: 1측정 VM, 준비 job15분+별도 다운로드 검증 job5분 상한. 전체 preflight64슬롯 중30슬롯을 예약한다. timeout/reap·process-tree3GiB/swap0은 기존 supervisor를 재사용한다.
 - 실제 SDK로3개 payload를 최대3개 병렬 업로드하고, 다음 job은 receipt의 **artifact ID3개만** 다운로드한다. 원 starts/raw/lock/receipt는 별도 evidence artifact에 보존한다.
 - 이 단계의 LOCK은 준비 검사 전용이다. 모집단 본 실행의 source/runtime/schedule lock이나96시간 origin을 대신하지 않는다. 준비 검사 소비도 본 캠페인의 누적 자원 산정에 포함해야 한다.
+- [실행 기록](FAST_ACTIONS_PROGRESS_20261015_KO.md): 첫 run은30개 계약 검사 PASS 뒤 shell SDK 인증 오류로 전송 FAIL. 후속 run38755431827에서 JavaScript Action으로 수정하여 solver 재실행 없이 전송·왕복 검증까지 PASS했다. 초기 failure와 후속 success를 모두 보존한다.
 
 기존1,200runner-hours/96시간 상한은 유지한다. 실제 artifact 시간을 확인하기 전 절감률이나 최악 startup 예약을 낮추지 않는다.
