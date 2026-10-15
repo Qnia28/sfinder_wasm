@@ -38,7 +38,7 @@ export function collect(command, solver) {
     }
   }
   const coverages = new Map(filters.map(f => [f, new Map()])), qualityIndex = new Map();
-  const saveCases = cases.map(c => prepareSaveCase(c.queue, c.lastBag));
+  const saveCases = command.kind === 'minimals' ? cases.map(c => prepareSaveCase(c.queue, c.lastBag)) : null;
   const counts = cases.map(c => prepareQueuePieceCounts(c.queue));
   const matches = command.kind === 'minimals' ? compileExactSaveExpression(command.wantedSave) : null;
   const result = visitCaseSolutions({ board, cases, solver, useHold: command.useHold,

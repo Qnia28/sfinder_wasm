@@ -24,6 +24,13 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
       - run: node --test tests/fast-bench-adapter.test.mjs tests/fast-bench-transport.test.mjs tests/fast-bench-planner.test.mjs
+      - name: Reuse prior successful contracts and original campaign clock
+        uses: actions/download-artifact@v4
+        with:
+          name: fast-bootstrap-diagnostics
+          run-id: '38758374047'
+          github-token: ${{ github.token }}
+          path: previous-bootstrap
       - name: Freeze source, origin, commands and collector contracts
         uses: ./tools/fast-bench/campaign-action
         with:

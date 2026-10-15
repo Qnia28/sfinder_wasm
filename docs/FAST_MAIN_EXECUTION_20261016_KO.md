@@ -19,6 +19,14 @@
 - 이는 synthetic-only adapter 검증으로는 잡지 못하는 collection/save/K/witness 불일치를 검출한다. preflight64개 예약 중 총42개를 사용한다. GRACE K45를 현재 구현에서 확인한다.
 - 로컬은 pure 계약/스케줄 검사만 수행한다. 모집단 solver는 Linux Actions에서만 실행한다.
 
+### 첫 bootstrap의 수집기 오류와 재개
+
+- run38758374047은 GRACE와 N+1 per-save의10개 검사를 통과한 뒤 단일큐 capture에서 중단됐다. 모집단 실행0.
+- 원인: scalar per-save 수집기가 일반 minimals에만 필요한 `prepareSaveCase(lastBag)`를 불필요하게 호출했다. 이를 minimals 경로로 한정하고 mock scalar 회귀 검사로 확인했다.
+- 이전10개 성공 결과를 재사용하고 실패한 capture+미실행 e2e2개만 실행한다. 소비한 preflight는30+11+2=43개이며64상한 안이다.
+- 원 origin `2026-10-15T15:13:29.732Z`와96시간 deadline을 승계한다. 원 실패 기록·source·hash는 새 LOCK에 연결하며 population 측정은 수정된 source로만 수행한다.
+- JavaScript Action의 실제 Node는 runner 내장24.19.0으로 관측됐다. setup-node24.13.0은 shell 계약 검사에만 적용된다. child는 Action의 `process.execPath`를 사용하므로 실제 runtime 버전을 LOCK에 고정하고 각 VM에서 일치 여부를 검사한다.
+
 ## 전송·자원
 
 - capture32개job, max-parallel16. 각 명령 입력은 압축 fixture들과 hash snapshot으로 별도1회 게시한다.

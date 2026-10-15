@@ -77,13 +77,27 @@ function verifyLock(lock) {
 async function boot() {
   assert.equal(process.env.GITHUB_RUN_ATTEMPT, '1', 'do not rerun campaign; explicit continuation required');
   const commands = commandPlan(scope), now = Date.now();
-  const lock = { schema: 1, study: scope.study, runId, originUtc: new Date(now).toISOString(), deadlineMs: now + 96 * 3600000,
+  const previous = read('previous-bootstrap/bootstrap/LOCK.json');
+  assert.equal(previous.runId, '38758374047');
+  assert.equal(previous.commandPlanHash, digest(commands));
+  for (let i = 0; i < 10; i++) {
+    const completed = read(`previous-bootstrap/collector-contract-${i}/SCOPE_COMPLETE.json`);
+    assert(completed.reaped && ['CAPTURED', 'RETURNED_EXACT', 'RETURNED_APPROX'].includes(completed.status), 'prior successful contract missing');
+  }
+  const failed = read('previous-bootstrap/collector-contract-10/SCOPE_COMPLETE.json');
+  assert.equal(failed.status, 'ERROR');
+  assert(failed.result.error.includes('missing last-bag metadata'));
+  const lock = { schema: 1, study: scope.study, runId, originUtc: previous.originUtc, deadlineMs: previous.deadlineMs,
     commit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
     node: process.version, sources: sourceLock(), scopeSha256: hash(fs.readFileSync('tools/fast-bench/SCOPE_20261015_v2.json')),
     runner: { os: os.release(), cpu: os.cpus()[0].model }, commandPlanHash: digest(commands),
     approval: 'User: 본 벤치 실행까지 완료하라; separate branch; maximum16VM',
     resourceCaps: scope.resourceCaps, preflight: { runId: '38755030086', units: 30, recoveryRunId: '38755431827', runnerSeconds: 62,
-      currentCollectorUnits: 12, totalPreflightUnits: 42 },
+      priorCollectorRunId: previous.runId, priorCollectorUnits: 11, reusedCollectorUnits: 10,
+      currentCollectorUnits: 2, totalPreflightUnits: 43 },
+    continuation: { previousCommit: previous.commit, previousRunId: previous.runId,
+      reason: 'fix per-save scalar collector erroneous last-bag requirement; population calls0',
+      priorEvidenceHashes: Object.fromEntries(files('previous-bootstrap').map(p => [p, hash(fs.readFileSync(p))])) },
     reservedHours: scope.totalReservationHours, maxCaptureChunks: 32,
     semantics: { staticEquivalentSkipping: false, sameVMWholeFixtureRepeats: true,
       inputEncoding: 'gzip original rows with duplicates; representation retained',
@@ -92,12 +106,12 @@ async function boot() {
   assert(lock.reservedHours <= 1200);
   const dir = path.join(root, 'bootstrap'); write(path.join(dir, 'LOCK.json'), lock); write(path.join(dir, 'COMMANDS.json'), commands);
   // Real collector/public-API compatibility: this prevents a synthetic-only gate.
-  // Twelve calls use the already reserved preflight64 allowance, not population repeats.
+  // Resume the failed edge capture and its previously unexecuted public API check.
   const grace = commands.captures.find(c => c.population === 'regression');
   const perSave = commands.captures.find(c => c.population === 'per-save' && c.mirrorGroup === grace.mirrorGroup && c.family === 'bag');
   const edge = commands.captures.find(c => c.population === 'edge' && c.kind === 'per-save');
   assert(grace && perSave && edge);
-  let calls = 0;
+  let calls = 10;
   async function check(job, seconds) {
     const callId = 'collector-contract-' + calls++;
     const r = await isolatedScope({ callId, contractChildFile: 'tools/fast-bench/child.mjs', job,
@@ -107,7 +121,7 @@ async function boot() {
       `${callId}: ${r.status}; ${r.result?.error ?? ''}`);
     return r.result;
   }
-  for (const command of [grace, perSave, edge]) {
+  for (const command of [edge]) {
     const inputRoot = path.join(root, 'preflight-input-' + command.captureIndex);
     const captured = await check({ mode: 'capture', command, fixtureDir: inputRoot }, 340);
     if (command === grace) {
@@ -118,9 +132,9 @@ async function boot() {
     for (const arm of arms) await check({ mode: 'e2e', command, inputRoot, filters: captured.filters, arm, trace: false }, 220);
   }
   assert.equal(calls, 12);
-  write(path.join(dir, 'COLLECTOR_CONTRACTS.json'), { status: 'PASS', units: calls });
+  write(path.join(dir, 'COLLECTOR_CONTRACTS.json'), { status: 'PASS', reused: 10, currentUnits: 2, failedPriorUnits: 1 });
   await upload('fast-bootstrap', dir);
-  summary(`## Fast main campaign authorized\n1113 captures, <=16 concurrent VMs, <=1200 runner-hours, origin ${lock.originUtc}.\nPreflight42 units charged (30 previous +12 collector/API); no automatic reruns.`);
+  summary(`## Fast main campaign authorized\n1113 captures, <=16 concurrent VMs, <=1200 runner-hours, original origin ${lock.originUtc}.\nPreflight43 units charged (30 previous +11 prior collector +2 current); prior successful10 contracts reused.`);
 }
 
 function scalar(call, result) {

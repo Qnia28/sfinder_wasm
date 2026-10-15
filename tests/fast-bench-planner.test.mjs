@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { commandPlan, measurementPlan } from '../tools/fast-bench/planner.mjs';
+import { collect } from '../tools/fast-bench/capture.mjs';
 const scope = JSON.parse(fs.readFileSync(new URL('../tools/fast-bench/SCOPE_20261015_v2.json', import.meta.url)));
 const commands = commandPlan(scope);
 function records() {
@@ -16,6 +17,13 @@ test('exact command denominators and concrete edge queues', () => {
   const edge = commands.captures.filter(c => c.population === 'edge' && c.kind === 'per-save');
   assert.equal(edge.length, 8); assert(edge.every(c => /^[IJLOSTZ]+$/.test(c.pattern)));
   assert.equal(commands.captures.at(-1).pattern, '*p7');
+});
+test('single-queue per-save collector does not require minimals last-bag metadata', () => {
+  const command = commands.captures.find(c => c.population === 'edge' && c.kind === 'per-save');
+  let calls = 0;
+  const result = collect(command, { height: 4, enumeratePc: () => { calls++; return []; } });
+  assert.equal(calls, 1); assert.equal(result.cases.length, 1);
+  assert.equal(result.groups.size, 7); assert([...result.groups.values()].every(g => g.coverage.size === 0));
 });
 test('full structural schedule keeps denominators, group caps and whole fixture repeats', () => {
   const plan = measurementPlan(scope, commands, records());
