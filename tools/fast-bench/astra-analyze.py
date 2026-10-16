@@ -30,7 +30,7 @@ for dimension in ['population','primaryHard','previewEligible']:
 reg=[r for r in rows if r['quality'] in ['WORSE','MIXED_FILTERS']]
 with (p/'ASTRA_REGRESSIONS.csv').open('w',newline='',encoding='utf-8') as f:
     w=csv.DictWriter(f,fieldnames=list(reg[0]));w.writeheader();w.writerows(reg)
-db=sqlite3.connect(p/'analysis.sqlite')
+db=sqlite3.connect(pathlib.Path(sys.argv[2]) if len(sys.argv)>2 else p/'analysis.sqlite')
 assert db.execute('PRAGMA integrity_check').fetchone()[0]=='ok'
 assert db.execute('SELECT count(*) FROM calls').fetchone()[0]==30480
 timeouts=db.execute("SELECT phase,arm,fixture_id,count(*) FROM calls WHERE status='TIMEOUT_CALL' GROUP BY phase,arm,fixture_id").fetchall()
