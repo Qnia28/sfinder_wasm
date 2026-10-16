@@ -125,6 +125,7 @@ function finishSaveMinimals(collected, minimal) {
     fastThresholdStates: minimal.fastThresholdStates ?? null,
     fastFallback: minimal.fastFallback ?? false,
     fastDecision: minimal.fastDecision ?? null,
+    fastTelemetry: minimal.fastTelemetry ?? null,
     humanQualityExact: minimal.qualityExact ?? true,
   };
 }
@@ -148,6 +149,8 @@ export async function calculateSaveMinimals(input, context) {
     primary: input.primary ?? input.Primary,
     useHiGHS: input.useHiGHS ?? input.UseHiGHS ?? "auto",
     fastStateBudget: input.fastStateBudget,
+    fastPolicy: input.fastPolicy, fastPreviewBudget: input.fastPreviewBudget,
+    fastGraceBudget: input.fastGraceBudget, fastDiagnostics: input.fastDiagnostics,
     primaryProof: input.primaryProof ?? "standard",
     secondary: policy.engine,
     signal: input.signal ?? null,

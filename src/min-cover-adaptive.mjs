@@ -9,6 +9,7 @@ import {
   normalizePrimaryProof,
 } from "./highs-cardinality.mjs";
 import { refineMinimumCoverQuality } from "./min-cover-quality-refine.mjs";
+import { resolveFastBudgets, selectFastBudget, createFastTelemetry } from './fast-budget-policy.mjs';
 
 // Release 2.1: ordinary fixed-K quality uses canonical-style integrated
 // BestSetSearch with a deterministic state budget. Fast falls back to 2x2 on
@@ -89,7 +90,8 @@ export async function minimumCoverAdaptiveAsync(coverage, {
   exactQuality = "true",
   primary: primaryOption = undefined, Primary = undefined,
   useHiGHS = "auto",
-  fastStateBudget = FAST_EXACT_STATE_BUDGET,
+  fastStateBudget = undefined,
+  fastPolicy = 'legacy', fastPreviewBudget = undefined, fastGraceBudget = undefined, fastDiagnostics = false,
   tinyExactMaxCandidates = 48,
   primaryProof = "standard",
   deferExactSecondary = null,
@@ -105,7 +107,10 @@ export async function minimumCoverAdaptiveAsync(coverage, {
   const requested = requestedPrimary === "highs" ? true : requestedPrimary === "rust" ? false : "auto";
   const tinyLimit = Math.max(0, Math.floor(Number(tinyExactMaxCandidates) || 0));
   if (qualityMode !== '2x2' && ['auto', 'rust'].includes(secondary) && requestedPrimary === "auto" && tinyLimit > 0 && candidateCountUpTo(coverage, tinyLimit) <= tinyLimit) {
+    const telemetry = createFastTelemetry(fastDiagnostics, fastPolicy);
+    const start = telemetry?.begin();
     const legacy = minimumCover(coverage, { qualityFor, solver });
+    telemetry?.end('tiny', start, legacy);
     const hasQuality = qualityFor !== null;
     return {
       ...legacy,
@@ -120,11 +125,12 @@ export async function minimumCoverAdaptiveAsync(coverage, {
       minimumCoverKernelEntries: null,
       primarySearchedStates: legacy.searchedStates ?? 0,
       qualitySearchedStates: hasQuality ? legacy.searchedStates ?? 0 : 0,
-      fastProbeBudget: hasQuality && qualityMode === "fast" ? fastStateBudget : null,
+      fastProbeBudget: hasQuality && qualityMode === "fast" ? fastStateBudget ?? FAST_EXACT_STATE_BUDGET : null,
       fastProbeStates: 0,
       fastFallback: false,
       fastDecision: hasQuality ? "tiny-legacy-exact" : "cardinality-only",
       qualityDecision: hasQuality ? "tiny-legacy-exact" : "cardinality-only",
+      fastTelemetry: telemetry?.finish('tiny-legacy-exact') ?? null,
     };
   }
   return minimumCoverAsync(coverage, {
@@ -134,6 +140,7 @@ export async function minimumCoverAdaptiveAsync(coverage, {
     primary: requestedPrimary,
     useHiGHS: requested,
     fastStateBudget,
+    fastPolicy, fastPreviewBudget, fastGraceBudget, fastDiagnostics,
     primaryProof,
     deferExactSecondary,
     signal,
@@ -147,7 +154,8 @@ export async function minimumCoverAsync(coverage, {
   exactQuality = "fast",
   primary: primaryOption = undefined, Primary = undefined,
   useHiGHS = "auto",
-  fastStateBudget = FAST_EXACT_STATE_BUDGET,
+  fastStateBudget = undefined,
+  fastPolicy = 'legacy', fastPreviewBudget = undefined, fastGraceBudget = undefined, fastDiagnostics = false,
   primaryProof = "standard",
   deferExactSecondary = null,
   signal = null,
@@ -158,7 +166,11 @@ export async function minimumCoverAsync(coverage, {
   normalizePrimaryProof(primaryProof);
   assertQualityProvider(qualityFor);
   const qualityMode = normalizeExactHumanQuality(exactQuality);
+  const budgets = qualityMode === 'fast' ? resolveFastBudgets({ fastStateBudget, fastPolicy, fastPreviewBudget, fastGraceBudget }) : null;
+  const telemetry = createFastTelemetry(fastDiagnostics, fastPolicy);
+  let stageStart = telemetry?.begin();
   const prepared = prepareCoverageMatrix(coverage, qualityFor);
+  telemetry?.end('prepare', stageStart);
   const requestedPrimary = primaryRequest({primary: primaryOption, Primary, useHiGHS});
   const requested = requestedPrimary === "highs" ? true : requestedPrimary === "rust" ? false : "auto";
   if (!prepared.cases.length) {
@@ -167,11 +179,13 @@ export async function minimumCoverAsync(coverage, {
       backend: "kernel", cardinalityBackend: "kernel",
       qualityBackend: qualityFor === null ? "none" : qualityMode === "true" ? "rust-quality-bnb" : "fast-exact-probe",
       qualityExact: true, primaryRequested: requestedPrimary, primaryResolved: "kernel", useHiGHSRequested: requested, useHiGHSResolved: false,
-      fastProbeBudget: qualityFor !== null && qualityMode === "fast" ? fastStateBudget : null,
+      fastProbeBudget: qualityFor !== null && qualityMode === "fast" ? budgets.integrated : null,
       fastProbeStates: 0, fastFallback: false,
+      fastTelemetry: telemetry?.finish('empty') ?? null,
     };
   }
 
+  stageStart = telemetry?.begin();
   const primaryCases = prepared.primaryCases ?? prepared.cases.map((row) => row.map(([id]) => id));
   const primaryKernel = solver?.primaryKernelize?.(primaryCases, prepared.keys.length)
     ?? kernelizeCardinality(primaryCases, prepared.keys.length);
@@ -186,6 +200,7 @@ export async function minimumCoverAsync(coverage, {
       ? await solvePreparedCardinalityKernel(primaryKernel, { primaryProof })
       : solvePreparedRustCardinalityKernel(prepared, primaryKernel, solver);
   const primaryKeys = primary.selected.map((id) => prepared.keys[id]);
+  telemetry?.end('primary', stageStart, { ...primary, keys: primaryKeys });
   signal?.throwIfAborted();
 
   if (qualityFor === null) {
@@ -223,7 +238,9 @@ export async function minimumCoverAsync(coverage, {
   }
 
   if (qualityMode === '2x2' || primaryHard) {
+    stageStart = telemetry?.begin();
     const refined = refineMinimumCoverQuality(prepared, primary.selected);
+    telemetry?.end('refine', stageStart, { ...refined, keys: refined.selected.map(id => prepared.keys[id]) }, primaryKeys);
     return {
       count: primary.count,
       keys: refined.selected.map((id) => prepared.keys[id]),
@@ -246,10 +263,11 @@ export async function minimumCoverAsync(coverage, {
       fastFallback: qualityMode !== '2x2',
       fastDecision: qualityMode === '2x2' ? "explicit-2x2" : "primary-hard",
       qualityRefinementPasses: refined.passes,
+      fastTelemetry: telemetry?.finish(qualityMode === '2x2' ? 'explicit-2x2' : 'primary-hard') ?? null,
     };
   }
 
-  const budget = Math.max(1, Math.floor(Number(fastStateBudget) || FAST_EXACT_STATE_BUDGET));
+  let budget = budgets.integrated;
 
   // Exact-only speculative preview. Candidate dominance is sound for the final
   // fixed-K objective, but it changes bounded DFS traversal. Therefore only a
@@ -259,12 +277,10 @@ export async function minimumCoverAsync(coverage, {
     && prepared.keys.length <= FAST_DOMINANCE_PREVIEW_MAX_CANDIDATES
     && prepared.keys.length * prepared.cases.length <= FAST_DOMINANCE_PREVIEW_MAX_MATRIX_CELLS;
   const dominancePreviewBudget = dominancePreviewEligible
-    ? Math.max(1, Math.min(
-      FAST_DOMINANCE_PREVIEW_STATE_BUDGET,
-      Math.floor(budget / 20),
-    ))
+    ? budgets.preview
     : null;
-  const dominancePreview = dominancePreviewEligible
+  stageStart = telemetry?.begin();
+  const dominancePreview = dominancePreviewBudget > 0
     ? solver?.minimumCoverAtCount?.(coverage, primary.count, {
       qualityFor,
       seedKeys: primaryKeys,
@@ -273,6 +289,7 @@ export async function minimumCoverAsync(coverage, {
       dominance: true,
     })
     : null;
+  if (dominancePreview) telemetry?.end('preview', stageStart, dominancePreview, primaryKeys, dominancePreviewBudget);
   if (dominancePreview?.completed
       && Number.isFinite(dominancePreview.count)
       && dominancePreview.count === primary.count) {
@@ -297,12 +314,20 @@ export async function minimumCoverAsync(coverage, {
       fastProbeStates: 0,
       fastFallback: false,
       fastDecision: "dominance-preview-exact",
+      fastTelemetry: telemetry?.finish('dominance-preview-exact') ?? null,
     };
   }
 
+  stageStart = telemetry?.begin();
+  const selection = selectFastBudget(prepared, primary.count, budgets);
+  budget = selection.budget;
+  if (telemetry) telemetry.data.selection = selection;
+  telemetry?.end('features', stageStart);
+  stageStart = telemetry?.begin();
   const probe = solver?.minimumCoverAtCount?.(coverage, primary.count, {
     qualityFor, seedKeys: primaryKeys, stateBudget: budget, integrated: true,
   });
+  if (probe) telemetry?.end('integrated', stageStart, probe, primaryKeys, budget);
   if (probe?.completed && Number.isFinite(probe.count) && probe.count === primary.count) {
     return {
       ...probe,
@@ -325,6 +350,7 @@ export async function minimumCoverAsync(coverage, {
       fastProbeStates: probe.searchedStates ?? 0,
       fastFallback: false,
       fastDecision: "integrated-exact",
+      fastTelemetry: telemetry?.finish('integrated-exact') ?? null,
     };
   }
 
@@ -333,17 +359,16 @@ export async function minimumCoverAsync(coverage, {
   // exactly after the integrated probe times out, and is cheaper than spending
   // the same extra states on the integrated tree. Scale the grace down when a
   // caller deliberately requests a tiny Fast budget (tests/custom callers).
-  const thresholdGraceBudget = Math.max(1, Math.min(
-    FAST_THRESHOLD_GRACE_STATE_BUDGET,
-    Math.floor(budget / 10),
-  ));
+  const thresholdGraceBudget = budgets.grace;
   const thresholdSeedKeys = probe?.keys?.length === primary.count ? probe.keys : primaryKeys;
-  const thresholdProbe = solver?.minimumCoverAtCount?.(coverage, primary.count, {
+  stageStart = telemetry?.begin();
+  const thresholdProbe = thresholdGraceBudget > 0 ? solver?.minimumCoverAtCount?.(coverage, primary.count, {
     qualityFor,
     seedKeys: thresholdSeedKeys,
     stateBudget: thresholdGraceBudget,
     integrated: false,
-  });
+  }) : null;
+  if (thresholdProbe) telemetry?.end('grace', stageStart, thresholdProbe, thresholdSeedKeys, thresholdGraceBudget);
   if (thresholdProbe?.completed
       && Number.isFinite(thresholdProbe.count)
       && thresholdProbe.count === primary.count) {
@@ -370,6 +395,7 @@ export async function minimumCoverAsync(coverage, {
       fastThresholdStates: thresholdProbe.searchedStates ?? 0,
       fastFallback: false,
       fastDecision: "threshold-exact-after-integrated-budget",
+      fastTelemetry: telemetry?.finish('threshold-exact-after-integrated-budget') ?? null,
     };
   }
 
@@ -381,7 +407,9 @@ export async function minimumCoverAsync(coverage, {
   if (fallbackIds.some((id) => id === undefined)) {
     throw new Error("Fast fixed-K probe returned an unknown candidate");
   }
+  stageStart = telemetry?.begin();
   const refined = refineMinimumCoverQuality(prepared, fallbackIds);
+  telemetry?.end('refine', stageStart, { ...refined, keys: refined.selected.map(id => prepared.keys[id]) }, fallbackKeys);
   return {
     count: primary.count,
     keys: refined.selected.map((id) => prepared.keys[id]),
@@ -408,5 +436,6 @@ export async function minimumCoverAsync(coverage, {
     fastFallback: true,
     fastDecision: "integrated-budget-exceeded",
     qualityRefinementPasses: refined.passes,
+    fastTelemetry: telemetry?.finish('integrated-budget-exceeded') ?? null,
   };
 }

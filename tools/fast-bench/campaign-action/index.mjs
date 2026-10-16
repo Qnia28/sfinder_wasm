@@ -5,6 +5,7 @@ import os from 'node:os';
 import { execFileSync } from 'node:child_process';
 import { gzipSync } from 'node:zlib';
 import { commandPlan, measurementPlan, digest } from '../planner.mjs';
+import { triageCommands, triagePlan, triageTraceAudit } from '../../fast-triage/planner.mjs';
 import { isolatedScope } from '../../secondary-bench/followup-scope.mjs';
 import { seal, verifySnapshot } from '../../secondary-bench/common/evidence.mjs';
 import { hash } from '../../secondary-bench/contracts.mjs';
@@ -17,7 +18,8 @@ const write = (p, v) => { fs.mkdirSync(path.dirname(p), { recursive: true }); fs
 const summary = text => { console.log(text); fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, text + '\n'); };
 const output = (key, value) => fs.appendFileSync(process.env.GITHUB_OUTPUT, `${key}=${value}\n`);
 const root = path.resolve('fast-work'); fs.mkdirSync(root, { recursive: true });
-const scope = read('tools/fast-bench/SCOPE_20261015_v2.json');
+const scopePath = process.env.FAST_CAMPAIGN_SCOPE ?? 'tools/fast-bench/SCOPE_20261015_v2.json';
+const scope = read(scopePath), triage = scope.study === 'fast-triage-e2e-20261017';
 const transport = [];
 async function fetchArtifacts() {
   const pattern = process.env['INPUT_ARTIFACT-PREFIX'], destination = process.env.INPUT_DESTINATION;
@@ -65,16 +67,18 @@ function loadSummaries(directory) { return files(directory).filter(f => path.bas
   verifySnapshot(path.dirname(f)); return read(f);
 }); }
 function sourceLock() {
-  const names = execFileSync('git', ['ls-files', 'src', 'wasm', 'tools/fast-bench', 'tools/secondary-bench'], { encoding: 'utf8' }).trim().split('\n');
+  const names = execFileSync('git', ['ls-files', 'src', 'wasm', 'tools/fast-bench', 'tools/fast-triage', 'tools/secondary-bench',
+    'package.json', 'package-lock.json', '.github/workflows/fast-triage-comparison.yml'], { encoding: 'utf8' }).trim().split('\n');
   return Object.fromEntries(names.map(p => [p, hash(fs.readFileSync(p))]));
 }
 function verifyLock(lock) {
   assert.equal(lock.runId, runId); assert.equal(lock.node, process.version);
-  assert.equal(lock.scopeSha256, hash(fs.readFileSync('tools/fast-bench/SCOPE_20261015_v2.json')));
+  assert.equal(lock.scopeSha256, hash(fs.readFileSync(scopePath)));
   for (const [p, h] of Object.entries(lock.sources)) assert.equal(hash(fs.readFileSync(p)), h, 'changed source ' + p);
   assert(Date.now() < lock.deadlineMs, '96-hour campaign deadline');
 }
 async function boot() {
+  if (triage) return bootTriage();
   assert.equal(process.env.GITHUB_RUN_ATTEMPT, '1', 'do not rerun campaign; explicit continuation required');
   const commands = commandPlan(scope), now = Date.now();
   const previous = read('previous-bootstrap/bootstrap/LOCK.json');
@@ -137,15 +141,73 @@ async function boot() {
   summary(`## Fast main campaign authorized\n1113 captures, <=16 concurrent VMs, <=1200 runner-hours, original origin ${lock.originUtc}.\nPreflight43 units charged (30 previous +11 prior collector +2 current); prior successful10 contracts reused.`);
 }
 
+async function bootTriage() {
+  assert.equal(process.env.GITHUB_REPOSITORY, scope.repository);
+  assert.equal(process.env.GITHUB_REF, 'refs/heads/' + scope.branch);
+  assert.equal(process.env.GITHUB_RUN_ATTEMPT, '1', 'new run required; do not mix rerun evidence');
+  assert.equal(hash(fs.readFileSync(scope.sourceScope, 'utf8').replace(/\r\n/g, '\n')), scope.sourceScopeSha256);
+  const commands = triageCommands(scope, read(scope.sourceScope)), now = Date.now();
+  const lock = { schema: 1, study: scope.study, runId, originUtc: new Date(now).toISOString(),
+    deadlineMs: now + scope.resourceCaps.deadlineHours * 3600000,
+    commit: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+    node: process.version, sources: sourceLock(), scopeSha256: hash(fs.readFileSync(scopePath)),
+    runner: { os: os.release(), cpu: os.cpus()[0].model }, commandPlanHash: digest(commands),
+    resourceCaps: scope.resourceCaps, developmentNotFresh: true, release: false };
+  const dir = path.join(root, 'bootstrap'); write(path.join(dir, 'LOCK.json'), lock); write(path.join(dir, 'COMMANDS.json'), commands);
+  // This gate tests the actual collector/API/options/trace path on the remote host.
+  // 3 captures + 6 arms x 3 commands + 3 baseline diagnostics-off = 24 isolated calls.
+  const selected = [commands.captures.find(c => c.population === 'regression'),
+    commands.captures.find(c => c.id === 'c7-2plus2-qb-row-140/all/restricted-split/per-save'),
+    commands.captures.find(c => c.population === 'edge' && c.kind === 'per-save')];
+  assert(selected.every(Boolean));
+  let calls = 0;
+  const results = [];
+  async function check(job, seconds) {
+    assert(Date.now() + seconds * 1000 < now + 6900000, 'preflight reservation exhausted');
+    const callId = 'triage-contract-' + calls++;
+    const r = await isolatedScope({ callId, contractChildFile: 'tools/fast-bench/child.mjs', job,
+      limits: { startupMs: 30000, callMs: (seconds - 40) * 1000, reapMs: 5000 },
+      ...(job.mode === 'capture' ? { phaseLimits: { enumeration: 60000 } } : {}) }, path.join(root, callId));
+    results.push({ callId, job, status: r.status, result: r.result, reaped: r.reaped });
+    assert(r.reaped && ['CAPTURED', 'RETURNED_EMPTY', 'RETURNED_EXACT', 'RETURNED_APPROX'].includes(r.status),
+      `${callId}: ${r.status}; ${r.result?.error ?? ''}`);
+    return r.result;
+  }
+  for (const command of selected) {
+    const inputRoot = path.join(root, 'preflight-input-' + command.captureIndex);
+    const capture = await check({ mode: 'capture', command, fixtureDir: inputRoot }, scope.resourceCaps.captureSeconds);
+    let baseline;
+    for (const arm of scope.arms) {
+      const result = await check({ mode: 'e2e', study: scope.study, command, inputRoot, filters: capture.filters,
+        arm, diagnostics: 'trace' }, scope.resourceCaps.callSeconds);
+      if (arm === 'BASE100') baseline = result;
+    }
+    const off = await check({ mode: 'e2e', study: scope.study, command, inputRoot, filters: capture.filters,
+      arm: 'BASE100', diagnostics: false }, scope.resourceCaps.callSeconds);
+    for (const [filter, o] of Object.entries(baseline.outcomes)) {
+      assert.deepEqual(o.keys, off.outcomes[filter].keys, 'preflight trace changed keys');
+      assert.deepEqual(o.qualityVector, off.outcomes[filter].qualityVector, 'preflight trace changed quality');
+      assert.equal(o.qualityExact, off.outcomes[filter].qualityExact, 'preflight trace changed proof');
+    }
+  }
+  assert.equal(calls, 24);
+  write(path.join(dir, 'COLLECTOR_CONTRACTS.json'), { status: 'PASS', calls, results });
+  await upload('fast-bootstrap', dir);
+  summary(`## Fast triage preflight PASS\n${calls} isolated calls; ${commands.captures.length} frozen commands; six arms; three repeats.\nTrace witnesses, actual budgets and public API options verified. No performance winner selected. Historical development population, not holdout.`);
+}
+
 function scalar(call, result) {
   const r = result.result;
-  return { callId: call.callId, phase: call.phase, fixtureId: call.fixture?.id, arm: call.arm, repeat: call.repeat, trace: call.trace,
+  return { callId: call.callId, phase: call.phase, fixtureId: call.fixture?.id, commandId: call.commandId,
+    diagnostics: call.diagnostics, arm: call.arm, repeat: call.repeat, trace: call.trace,
     status: result.status, reaped: result.reaped, wallMs: result.wallMs, memoryScope: result.memoryScope,
-    policyMs: r?.policyMs, qualityExact: r?.qualityExact,
+    policyMs: r?.policyMs, apiMs: r?.apiMs, qualityExact: r?.qualityExact,
     qualityHash: r?.qualityVector ? digest(r.qualityVector) : null, keysHash: r?.keys ? digest([...r.keys].sort()) : null,
     states: r?.searchedStates, decision: r?.decision,
     outcomes: r?.outcomes ? Object.fromEntries(Object.entries(r.outcomes).map(([f, o]) => [f, {
       ...o, keys: undefined, selected: undefined, qualityVector: undefined,
+      fastTelemetry: o.fastTelemetry ? { ...o.fastTelemetry, stages: o.fastTelemetry.stages.map(s => ({ ...s,
+        keys: undefined, inputKeys: undefined, qualityVector: undefined })) } : null,
       qualityHash: o.qualityVector ? digest(o.qualityVector) : null, keysHash: o.keys ? digest([...o.keys].sort()) : null }])) : null };
 }
 async function worker(lock, commands, chunk) {
@@ -213,7 +275,8 @@ async function worker(lock, commands, chunk) {
           let result;
           if (!available) result = { status: 'NOT_RUN_CAPTURE_MISSING', reaped: true };
           else if (oom.has(key)) result = { status: 'NOT_RUN_AFTER_OOM', reaped: true };
-          else result = await run(call, { mode: call.phase === 'e2e' ? 'e2e' : 'matrix',
+          else result = await run(call, { mode: triage || call.phase === 'e2e' ? 'e2e' : 'matrix',
+            study: scope.study, diagnostics: call.diagnostics,
             command: task.command, fixture: call.fixture, inputRoot,
             filters: task.capture.result.filters, arm: call.arm, trace: call.trace }, call.reservationSeconds);
           if (result.status === 'OOM') oom.add(key);
@@ -241,9 +304,10 @@ async function plan(lock, commands) {
   const summaries = loadSummaries('capture-summaries');
   assert.equal(summaries.length, 32); assert(summaries.every(s => !s.stopped && s.runId === runId));
   const records = summaries.flatMap(s => s.records);
-  assert.equal(records.length, 1113); assert.equal(new Set(records.map(r => r.command.captureIndex)).size, 1113);
-  const plan = measurementPlan(scope, commands, records);
-  assert(plan.reservationSeconds / 3600 + 1113 * 340 / 3600 + 64 * 340 / 3600 + 100 <= 1200);
+  assert.equal(records.length, commands.captures.length); assert.equal(new Set(records.map(r => r.command.captureIndex)).size, commands.captures.length);
+  const plan = triage ? triagePlan(scope, commands, records) : measurementPlan(scope, commands, records);
+  assert(triage ? plan.totalReservedSeconds <= scope.resourceCaps.maxRunnerHours * 3600
+    : plan.reservationSeconds / 3600 + 1113 * 340 / 3600 + 64 * 340 / 3600 + 100 <= 1200);
   assert(32 * 300 + plan.chunks.length * 900 + 3 * 1800 + 62 < 100 * 3600, 'control reservation exceeds100h');
   plan.lock = lock;
   const dir = path.join(root, 'plan'); write(path.join(dir, 'PLAN.json'), plan);
@@ -267,10 +331,11 @@ async function audit(plan) {
   }
   const missing = [...expected.keys()].filter(id => !seen.has(id));
   const trace = new Map();
-  for (const row of rows.filter(r => r.phase === 'trace')) {
+  for (const row of rows.filter(r => !triage && r.phase === 'trace')) {
     const key = row.fixtureId + ':' + row.arm + ':' + row.repeat;
     if (!trace.has(key)) trace.set(key, []); trace.get(key).push(row);
   }
+  if (triage) anomalies.push(...triageTraceAudit(rows));
   for (const [key, pair] of trace) {
     if (pair.length === 2 && pair.every(r => r.status.startsWith('RETURNED'))) {
       for (const field of ['status', 'qualityHash', 'keysHash', 'states', 'decision'])
@@ -279,7 +344,8 @@ async function audit(plan) {
   }
   const artifactIndex = summaries.flatMap(s => s.checkpoints);
   const report = { runId, scheduleHash: plan.scheduleHash, expected: expected.size, observed: rows.length, missing, statuses, anomalies,
-    status: anomalies.length ? 'INVALID' : missing.length || rows.some(r => r.status.startsWith('NOT_RUN')) ? 'INCOMPLETE' : 'COLLECTION_COMPLETE',
+    status: anomalies.length || rows.some(r => r.status.startsWith('ERROR')) ? 'INVALID'
+      : missing.length || rows.some(r => r.status.startsWith('NOT_RUN')) ? 'INCOMPLETE' : 'COLLECTION_COMPLETE',
     performanceWinner: 'NOT_ADJUDICATED', artifactIndex,
     captureSummaryArtifacts: 'fast-capture-summary-*', selectedInputs: plan.selection.main.map(f => ({ id: f.id, artifact: f.inputArtifact, sha256: f.sha256 })),
     auditContract: 'Original-row witnesses verified per worker; global call/trace reconciliation; raw delta artifacts retained separately' };
@@ -291,6 +357,7 @@ async function audit(plan) {
   await upload('fast-analysis-index', dir);
   summary(`## Fast collection ${report.status}\nExpected ${expected.size}, observed ${rows.length}, missing ${missing.length}, anomalies ${anomalies.length}.\n\`\`\`json\n${JSON.stringify(statuses, null, 2)}\n\`\`\`\nThis is collection status, not a policy recommendation.`);
   assert.equal(anomalies.length, 0, 'invalid measurements; see analysis index');
+  if (triage) assert.equal(report.status, 'COLLECTION_COMPLETE', 'incomplete/invalid comparison; see analysis index');
 }
 
 try {

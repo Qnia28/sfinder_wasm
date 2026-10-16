@@ -71,6 +71,7 @@ export async function calculatePerSaveMinimalsFeature({
   useHiGHS = undefined,
   UseHiGHS = undefined,
   fastStateBudget = undefined,
+  fastPolicy = 'legacy', fastPreviewBudget = undefined, fastGraceBudget = undefined, fastDiagnostics = false,
   secondaryWorkers = 'auto',
   secondary = 'auto',
   filterWorkers = 0,
@@ -89,6 +90,7 @@ export async function calculatePerSaveMinimalsFeature({
     primary: primary ?? Primary,
     useHiGHS: useHiGHS ?? UseHiGHS ?? "auto",
     fastStateBudget,
+    fastPolicy, fastPreviewBudget, fastGraceBudget, fastDiagnostics,
     includeCoverage: false,
     secondaryWorkers,
     secondary,
@@ -115,6 +117,8 @@ export async function calculatePerSaveMinimalsFeature({
       primaryResolved: result.primaryResolved,
       cardinalityBackend: result.cardinalityBackend,
       qualityBackend: result.qualityBackend,
+      fastTelemetry: result.fastTelemetry,
+      fastDecision: result.fastDecision,
     };
   }
   return {

@@ -8,3 +8,5 @@
 /tests/triage-independent-audit.test.py -text
 /.github/workflows/secondary-triage-*.yml -text
 /.github/secondary-triage/** -text
+/tools/fast-triage/** -text
+/.github/workflows/fast-triage-comparison.yml -text

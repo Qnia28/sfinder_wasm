@@ -13,6 +13,8 @@ export function packFilterTask(coverage, qualityFor, options = {}) {
     options: {
       primary: primaryRequest(options), exactQuality: options.exactQuality ?? 'true',
       fastStateBudget: options.fastStateBudget,
+      fastPolicy: options.fastPolicy, fastPreviewBudget: options.fastPreviewBudget,
+      fastGraceBudget: options.fastGraceBudget, fastDiagnostics: options.fastDiagnostics,
       tinyExactMaxCandidates: options.tinyExactMaxCandidates ?? 48,
       primaryProof: options.primaryProof ?? 'standard',
       secondary: options.secondary ?? 'auto',

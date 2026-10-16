@@ -174,6 +174,12 @@ function finishPieceResultNow({
     primaryResolved: minimal?.primaryResolved ?? null,
     cardinalityBackend: minimal?.cardinalityBackend ?? null,
     qualityBackend: minimal?.qualityBackend ?? null,
+    fastDecision: minimal?.fastDecision ?? null,
+    fastProbeBudget: minimal?.fastProbeBudget ?? null,
+    fastProbeStates: minimal?.fastProbeStates ?? null,
+    fastDominancePreviewBudget: minimal?.fastDominancePreviewBudget ?? null,
+    fastThresholdBudget: minimal?.fastThresholdBudget ?? null,
+    fastTelemetry: minimal?.fastTelemetry ?? null,
     humanQualityExact: minimal?.qualityExact ?? true,
   };
   data.label = perSaveLabel(piece, data);
@@ -257,6 +263,7 @@ function numericRowsToCoverage(rows, cases, solutions) {
 
 async function compactPerSaveResults({ board, cases, solver, useHold, displayOrder,
   requestedPrimary, exactHumanQuality, primary, useHiGHS, fastStateBudget,
+  fastPolicy, fastPreviewBudget, fastGraceBudget, fastDiagnostics,
   tinyExactMaxCandidates, includeCoverage, deferExactSecondary, deferFilterCover, secondary, signal }) {
   if (typeof solver.enumeratePcPatternCompact !== 'function') return null;
   const compact = solver.enumeratePcPatternCompact(board, cases.map(entry => entry.queue), useHold);
@@ -308,6 +315,7 @@ async function compactPerSaveResults({ board, cases, solver, useHold, displayOrd
       minimal = await minimumForFilter(view.coverage, {
         qualityFor: makeOrderCountQuality(view.qualityIndex), solver, exactQuality: exactHumanQuality,
         primary, useHiGHS, fastStateBudget, tinyExactMaxCandidates, deferExactSecondary, secondary, signal,
+        fastPolicy, fastPreviewBudget, fastGraceBudget, fastDiagnostics,
       }, deferFilterCover);
     }
     // Tiny integrated solves need no second numeric matrix or CSR packing.
@@ -381,6 +389,7 @@ async function calculatePerSaveMinimalsFromBoardInternal({
   primary = undefined, Primary = undefined,
   useHiGHS = "auto",
   fastStateBudget = undefined,
+  fastPolicy = 'legacy', fastPreviewBudget = undefined, fastGraceBudget = undefined, fastDiagnostics = false,
   tinyExactMaxCandidates = 48,
   includeCoverage = true,
   deferExactSecondary = null,
@@ -401,6 +410,7 @@ async function calculatePerSaveMinimalsFromBoardInternal({
   if (canUseNumericPattern) {
     const compact = await compactPerSaveResults({ board, cases, solver, useHold, displayOrder,
       requestedPrimary, exactHumanQuality, primary: primary ?? Primary, useHiGHS, fastStateBudget,
+      fastPolicy, fastPreviewBudget, fastGraceBudget, fastDiagnostics,
        tinyExactMaxCandidates, includeCoverage, deferExactSecondary, deferFilterCover, secondary, signal });
     if (compact) return compact;
     const numeric = collectPatternPerSaveNumeric({ board, cases, solver, useHold, displayOrder });
@@ -447,6 +457,7 @@ async function calculatePerSaveMinimalsFromBoardInternal({
             primary: primary ?? Primary,
             useHiGHS,
             fastStateBudget,
+            fastPolicy, fastPreviewBudget, fastGraceBudget, fastDiagnostics,
             tinyExactMaxCandidates, deferExactSecondary, secondary, signal,
           }, deferFilterCover);
         } else if (includeCoverage && activeRows.length > 0) {
@@ -487,6 +498,7 @@ async function calculatePerSaveMinimalsFromBoardInternal({
         primary: primary ?? Primary,
         useHiGHS,
         fastStateBudget,
+        fastPolicy, fastPreviewBudget, fastGraceBudget, fastDiagnostics,
         tinyExactMaxCandidates, deferExactSecondary, secondary, signal,
       }, deferFilterCover)
       : null;

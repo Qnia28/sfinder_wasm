@@ -6,6 +6,8 @@ import { createWasmSolver } from '../../src/wasm-backend.mjs';
 import { capture } from './capture.mjs';
 import { prepareFastFixture, runFastFixedK, ARMS } from './adapter.mjs';
 import { hash, selectedVector } from '../secondary-bench/contracts.mjs';
+import { ARM_OPTIONS } from '../fast-triage/planner.mjs';
+import { verifyTelemetry } from '../fast-triage/verify.mjs';
 
 const send = m => new Promise((resolve, reject) => process.send(m, e => e ? reject(e) : resolve()));
 const phase = name => process.send({ event: 'phase', name });
@@ -45,19 +47,24 @@ async function execute(job) {
     }
     assert.equal(job.mode, 'e2e');
     const c = job.command, secondary = job.arm === 'DIRECT' ? '2x2' : 'auto';
+    const triage = job.study === 'fast-triage-e2e-20261017';
+    if (triage) assert(Object.hasOwn(ARM_OPTIONS, job.arm));
+    const budgetOptions = triage ? { ...ARM_OPTIONS[job.arm], fastDiagnostics: job.diagnostics }
+      : { fastStateBudget: ARMS[job.arm][0] || undefined };
+    const apiStart = performance.now();
     let result, encoded, empty = false;
     try {
       if (c.kind === 'minimals') {
         const api = await import('../../src/minimals-feature.mjs');
         result = await api.calculateSaveMinimals({ sourceFumen: c.sourceFumen, analysisPattern: c.pattern,
           wantedSave: c.wantedSave, solver, useHold: true, height: 4, primary: 'auto', secondary,
-          fastStateBudget: ARMS[job.arm][0] || undefined });
+          ...budgetOptions });
         encoded = api.encodeSaveMinimalFumen(result);
       } else {
         const api = await import('../../src/per-save-minimals.mjs');
         result = await api.calculatePerSaveMinimalsAsync({ sourceFumen: c.sourceFumen, pattern: c.pattern,
           solver, useHold: true, targetLines: 4, primary: 'auto', secondary,
-          fastStateBudget: ARMS[job.arm][0] || undefined, secondaryWorkers: 0, filterWorkers: 0, includeCoverage: false });
+          ...budgetOptions, secondaryWorkers: 0, filterWorkers: 0, includeCoverage: false });
         encoded = api.encodePerSaveMinimals({ sourceFumen: c.sourceFumen, calculation: result });
       }
     } catch (error) {
@@ -65,6 +72,7 @@ async function execute(job) {
       else throw error;
     }
     const policyMs = performance.now() - started;
+    const apiMs = performance.now() - apiStart;
     const groups = empty ? {} : c.kind === 'minimals' ? { [c.wantedSave]: result } : result.results;
     const outcomes = {};
     for (const f of job.filters) {
@@ -78,18 +86,24 @@ async function execute(job) {
       assert.equal(r.minimalCount, fixture.K);
       const selected = r.keys.map(k => indices.get(k));
       assert.deepEqual(r.humanQualityVector, selectedVector(fixture, selected));
+      if (triage) verifyTelemetry(fixture, r, job.arm, job.diagnostics);
       outcomes[f.filter] = { keys: r.keys, selected, qualityVector: r.humanQualityVector,
         qualityExact: r.humanQualityExact, K: r.minimalCount, cardinalityBackend: r.cardinalityBackend,
         qualityBackend: r.qualityBackend, primaryResolved: r.primaryResolved,
         fastDecision: r.fastDecision ?? null, fastProbeStates: r.fastProbeStates ?? null,
-        captureIdentity: fixture.contentIdentity, primarySeedIdentity: 'UNOBSERVED_PRODUCT_API',
+        fastTelemetry: r.fastTelemetry ?? null,
+        fastBypass: ['rust-legacy-exact', 'direct-exact'].includes(r.qualityBackend) ? r.qualityBackend : null,
+        captureIdentity: fixture.contentIdentity,
+        primarySeedIdentity: r.fastTelemetry?.stages.find(s => s.name === 'primary')?.keys
+          ? hash(JSON.stringify(r.fastTelemetry.stages.find(s => s.name === 'primary').keys)) : 'UNOBSERVED_PRODUCT_API',
         sameCaptureK: true, witnessAudit: 'PASS' };
     }
     assert(Object.keys(groups).every(f => job.filters.some(x => x.filter === f)), 'unexpected product filter');
     return { status: empty ? 'RETURNED_EMPTY' : Object.values(outcomes).every(r => r.status === 'EMPTY' || r.qualityExact)
-      ? 'RETURNED_EXACT' : 'RETURNED_APPROX', policyMs, initMs: initialized - started,
+      ? 'RETURNED_EXACT' : 'RETURNED_APPROX', policyMs, apiMs, initMs: initialized - started,
       outcomes, encoded, primary: 'auto', secondaryWorkers: 0, filterWorkers: 0,
-      phaseBreakdown: 'UNOBSERVED_TRACE_OFF_PUBLIC_API', command: c, arm: job.arm };
+      phaseBreakdown: triage ? 'PER_FILTER_FAST_TELEMETRY; API includes enumeration and encoding' : 'UNOBSERVED_TRACE_OFF_PUBLIC_API',
+      command: c, arm: job.arm, diagnostics: job.diagnostics ?? false };
   } finally { solver?.close(); }
 }
 process.once('message', async ({ job }) => {

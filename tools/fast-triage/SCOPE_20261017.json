@@ -1,0 +1,2149 @@
+{
+  "schema": 1,
+  "study": "fast-triage-e2e-20261017",
+  "status": "PREPARED_NOT_EXECUTION_AUTHORIZATION",
+  "branch": "experiment/fast-triage-20261017",
+  "repository": "Qnia28/sfinder_wasm",
+  "sourceScope": "tools/fast-bench/SCOPE_20261015_v2.json",
+  "sourceScopeHashEncoding": "UTF-8 with CRLF normalized to LF (Git blob bytes)",
+  "sourceScopeSha256": "13549352d676905797e6ec01ff5b2213b26c4bc78865c08526a7bcbaaf4701e4",
+  "historicalDatabaseSha256": "98441a87c73449e38c97a4cec31a7f30634f2bc3a03dfff488ec77365a5369a0",
+  "developmentNotFresh": true,
+  "selection": "Prior 273 E2E commands UNION all observed nonhard u168..228 or d14..17 commands UNION named regressions",
+  "boundaryCommandIds": [
+    "c7-2plus2-qb-row-002/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-003/all/restricted-split",
+    "c7-2plus2-qb-row-003/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-007/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-008/all/restricted-split",
+    "c7-2plus2-qb-row-014/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-019/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-026/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-035/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-037/all/restricted-split",
+    "c7-2plus2-qb-row-038/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-039/all/restricted-split",
+    "c7-2plus2-qb-row-045/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-046/all/restricted-split",
+    "c7-2plus2-qb-row-051/all/restricted-split",
+    "c7-2plus2-qb-row-058/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-062/all/restricted-split",
+    "c7-2plus2-qb-row-068/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-075/all/restricted-split",
+    "c7-2plus2-qb-row-075/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-079/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-084/all/restricted-split",
+    "c7-2plus2-qb-row-085/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-090/all/restricted-split",
+    "c7-2plus2-qb-row-092/all/restricted-split",
+    "c7-2plus2-qb-row-094/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-097/all/restricted-split",
+    "c7-2plus2-qb-row-108/all/restricted-split",
+    "c7-2plus2-qb-row-113/all/restricted-split",
+    "c7-2plus2-qb-row-114/all/restricted-split",
+    "c7-2plus2-qb-row-116/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-118/all/restricted-split",
+    "c7-2plus2-qb-row-122/all/restricted-split",
+    "c7-2plus2-qb-row-122/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-126/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-127/all/restricted-split",
+    "c7-2plus2-qb-row-132/all/restricted-split",
+    "c7-2plus2-qb-row-140/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-141/all/restricted-split",
+    "c7-2plus2-qb-row-142/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-144/all/restricted-split",
+    "c7-2plus2-qb-row-149/all/restricted-split",
+    "c7-2plus2-qb-row-157/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-161/all/restricted-split",
+    "c7-2plus2-qb-row-161/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-170/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-201/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-213/all/restricted-split",
+    "c7-2plus2-qb-row-213/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-215/all/restricted-split",
+    "c7-2plus2-qb-row-218/all/restricted-split",
+    "c7-2plus2-qb-row-219/all/restricted-split",
+    "c7-2plus2-qb-row-228/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-273/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-275/all/restricted-split",
+    "c7-2plus2-qb-row-278/all/restricted-split",
+    "c7-2plus2-qb-row-278/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-282/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-283/all/bag",
+    "c7-2plus2-qb-row-283/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-286/all/restricted-split",
+    "c7-2plus2-qb-row-290/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-292/all/restricted-split",
+    "c7-2plus2-qb-row-294/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-299/all/restricted-split",
+    "c7-2plus2-qb-row-299/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-301/all/restricted-split",
+    "c7-2plus2-qb-row-301/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-307/all/restricted-split",
+    "c7-2plus2-qb-row-312/all/restricted-split",
+    "c7-2plus2-qb-row-316/all/bag",
+    "c7-2plus2-qb-row-317/all/restricted-split",
+    "c7-2plus2-qb-row-318/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-322/all/restricted-split",
+    "c7-2plus2-qb-row-324/all/restricted-split",
+    "c7-2plus2-qb-row-328/all/restricted-split",
+    "c7-2plus2-qb-row-339/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-342/all/restricted-split",
+    "c7-2plus2-qb-row-346/all/restricted-split/per-save",
+    "cycle1-alt-shoes-a/all/restricted-split",
+    "cycle1-alt-shoes-a/all/restricted-split/per-save",
+    "cycle1-elephant-j-a/all/restricted-split/per-save",
+    "cycle1-grace-system-a/all/bag/per-save",
+    "cycle1-grace-system-a/all/restricted-split",
+    "cycle1-pcinfo-007/all/restricted-split/per-save",
+    "cycle1-pcinfo-016/all/restricted-split",
+    "cycle1-pcinfo-018/all/restricted-split/per-save",
+    "cycle1-pcinfo-019/all/restricted-split/per-save",
+    "cycle1-pcinfo-023/all/restricted-split",
+    "cycle1-pcinfo-024/all/restricted-split",
+    "cycle1-pcinfo-024/all/restricted-split/per-save",
+    "cycle1-pcinfo-026/all/restricted-split",
+    "cycle1-pcinfo-030/all/bag-plus-next-draw/per-save",
+    "cycle1-pcinfo-032/all/bag-plus-next-draw/per-save",
+    "cycle1-pcinfo-034/all/bag-plus-next-draw",
+    "cycle1-pcinfo-034/all/bag-plus-next-draw/per-save",
+    "cycle1-pcinfo-035/all/bag-plus-next-draw",
+    "cycle1-pcinfo-035/all/bag-plus-next-draw/per-save",
+    "cycle1-pcinfo-036/all/bag-plus-next-draw/per-save",
+    "cycle1-pcinfo-039/all/bag-plus-next-draw/per-save",
+    "cycle1-pcinfo-040/all/bag-plus-next-draw/per-save",
+    "cycle1-pcinfo-041/all/bag-plus-next-draw/per-save",
+    "cycle1-shoes-a/all/restricted-split",
+    "pcinfokorea-c2-006/all/restricted-split/per-save",
+    "pcinfokorea-c2-010-f0/all/restricted-split",
+    "pcinfokorea-c2-016-f0/all/restricted-split",
+    "pcinfokorea-c2-016-f0/all/restricted-split/per-save",
+    "pcinfokorea-c2-020/all/restricted-split/per-save",
+    "pcinfokorea-c2-021/all/restricted-split/per-save",
+    "pcinfokorea-c2-029/all/restricted-split/per-save",
+    "pcinfokorea-c2-034/all/restricted-split",
+    "pcinfokorea-c2-036-f0/all/bag",
+    "pcinfokorea-c2-036-f0/all/restricted-split/per-save",
+    "pcinfokorea-c2-036-f1/all/bag",
+    "pcinfokorea-c2-036-f1/all/restricted-split/per-save",
+    "pcinfokorea-c2-046/all/restricted-split/per-save"
+  ],
+  "boundaryEvidence": [
+    {
+      "id": "c7-2plus2-qb-row-002/all/restricted-split/per-save/S",
+      "features": {
+        "S": 443,
+        "N": 1728,
+        "E": 21822,
+        "F": 11,
+        "d": 14,
+        "u": 432,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 25
+    },
+    {
+      "id": "c7-2plus2-qb-row-002/all/restricted-split/per-save/Z",
+      "features": {
+        "S": 464,
+        "N": 1704,
+        "E": 22844,
+        "F": 13,
+        "d": 15,
+        "u": 451,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 28
+    },
+    {
+      "id": "c7-2plus2-qb-row-003/all/restricted-split/ALL",
+      "features": {
+        "S": 350,
+        "N": 4672,
+        "E": 61638,
+        "F": 17,
+        "d": 14,
+        "u": 333,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 31
+    },
+    {
+      "id": "c7-2plus2-qb-row-003/all/restricted-split/per-save/I",
+      "features": {
+        "S": 275,
+        "N": 2258,
+        "E": 13750,
+        "F": 48,
+        "d": 14,
+        "u": 227,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 62
+    },
+    {
+      "id": "c7-2plus2-qb-row-007/all/restricted-split/per-save/T",
+      "features": {
+        "S": 645,
+        "N": 1728,
+        "E": 35990,
+        "F": 0,
+        "d": 17,
+        "u": 645,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 17
+    },
+    {
+      "id": "c7-2plus2-qb-row-008/all/restricted-split/ALL",
+      "features": {
+        "S": 208,
+        "N": 4868,
+        "E": 28368,
+        "F": 27,
+        "d": 13,
+        "u": 181,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 40
+    },
+    {
+      "id": "c7-2plus2-qb-row-014/all/restricted-split/per-save/L",
+      "features": {
+        "S": 224,
+        "N": 1988,
+        "E": 11312,
+        "F": 32,
+        "d": 16,
+        "u": 192,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 48
+    },
+    {
+      "id": "c7-2plus2-qb-row-014/all/restricted-split/per-save/T",
+      "features": {
+        "S": 200,
+        "N": 1698,
+        "E": 12258,
+        "F": 5,
+        "d": 19,
+        "u": 195,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 24
+    },
+    {
+      "id": "c7-2plus2-qb-row-014/all/restricted-split/per-save/Z",
+      "features": {
+        "S": 231,
+        "N": 1966,
+        "E": 13306,
+        "F": 16,
+        "d": 19,
+        "u": 215,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 35
+    },
+    {
+      "id": "c7-2plus2-qb-row-019/all/restricted-split/per-save/L",
+      "features": {
+        "S": 196,
+        "N": 1824,
+        "E": 10596,
+        "F": 28,
+        "d": 15,
+        "u": 168,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 43
+    },
+    {
+      "id": "c7-2plus2-qb-row-026/all/restricted-split/per-save/I",
+      "features": {
+        "S": 250,
+        "N": 2348,
+        "E": 10788,
+        "F": 40,
+        "d": 25,
+        "u": 210,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 65
+    },
+    {
+      "id": "c7-2plus2-qb-row-035/all/restricted-split/per-save/S",
+      "features": {
+        "S": 233,
+        "N": 1940,
+        "E": 14696,
+        "F": 9,
+        "d": 19,
+        "u": 224,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 28
+    },
+    {
+      "id": "c7-2plus2-qb-row-037/all/restricted-split/ALL",
+      "features": {
+        "S": 208,
+        "N": 4868,
+        "E": 28368,
+        "F": 27,
+        "d": 13,
+        "u": 181,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 40
+    },
+    {
+      "id": "c7-2plus2-qb-row-038/all/restricted-split/per-save/O",
+      "features": {
+        "S": 326,
+        "N": 1748,
+        "E": 17784,
+        "F": 8,
+        "d": 14,
+        "u": 318,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 22
+    },
+    {
+      "id": "c7-2plus2-qb-row-038/all/restricted-split/per-save/S",
+      "features": {
+        "S": 407,
+        "N": 1776,
+        "E": 24920,
+        "F": 5,
+        "d": 15,
+        "u": 402,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 20
+    },
+    {
+      "id": "c7-2plus2-qb-row-039/all/restricted-split/ALL",
+      "features": {
+        "S": 517,
+        "N": 4896,
+        "E": 61896,
+        "F": 10,
+        "d": 15,
+        "u": 507,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 25
+    },
+    {
+      "id": "c7-2plus2-qb-row-045/all/restricted-split/per-save/S",
+      "features": {
+        "S": 214,
+        "N": 1944,
+        "E": 12154,
+        "F": 17,
+        "d": 17,
+        "u": 197,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 34
+    },
+    {
+      "id": "c7-2plus2-qb-row-045/all/restricted-split/per-save/T",
+      "features": {
+        "S": 189,
+        "N": 1680,
+        "E": 11360,
+        "F": 12,
+        "d": 14,
+        "u": 177,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 26
+    },
+    {
+      "id": "c7-2plus2-qb-row-046/all/restricted-split/ALL",
+      "features": {
+        "S": 205,
+        "N": 4868,
+        "E": 47170,
+        "F": 14,
+        "d": 14,
+        "u": 191,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 28
+    },
+    {
+      "id": "c7-2plus2-qb-row-051/all/restricted-split/ALL",
+      "features": {
+        "S": 350,
+        "N": 4672,
+        "E": 61638,
+        "F": 17,
+        "d": 14,
+        "u": 333,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 31
+    },
+    {
+      "id": "c7-2plus2-qb-row-058/all/restricted-split/per-save/I",
+      "features": {
+        "S": 40,
+        "N": 560,
+        "E": 1368,
+        "F": 4,
+        "d": 17,
+        "u": 36,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 21
+    },
+    {
+      "id": "c7-2plus2-qb-row-062/all/restricted-split/ALL",
+      "features": {
+        "S": 183,
+        "N": 2634,
+        "E": 41680,
+        "F": 8,
+        "d": 7,
+        "u": 175,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 15
+    },
+    {
+      "id": "c7-2plus2-qb-row-068/all/restricted-split/per-save/T",
+      "features": {
+        "S": 554,
+        "N": 1668,
+        "E": 31132,
+        "F": 4,
+        "d": 14,
+        "u": 550,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 18
+    },
+    {
+      "id": "c7-2plus2-qb-row-075/all/restricted-split/ALL",
+      "features": {
+        "S": 350,
+        "N": 4688,
+        "E": 63592,
+        "F": 15,
+        "d": 15,
+        "u": 335,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 30
+    },
+    {
+      "id": "c7-2plus2-qb-row-075/all/restricted-split/per-save/I",
+      "features": {
+        "S": 275,
+        "N": 2264,
+        "E": 14266,
+        "F": 48,
+        "d": 14,
+        "u": 227,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 62
+    },
+    {
+      "id": "c7-2plus2-qb-row-079/all/restricted-split/per-save/J",
+      "features": {
+        "S": 193,
+        "N": 1466,
+        "E": 9908,
+        "F": 21,
+        "d": 17,
+        "u": 172,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 38
+    },
+    {
+      "id": "c7-2plus2-qb-row-084/all/restricted-split/ALL",
+      "features": {
+        "S": 101,
+        "N": 4410,
+        "E": 19902,
+        "F": 16,
+        "d": 16,
+        "u": 85,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 32
+    },
+    {
+      "id": "c7-2plus2-qb-row-085/all/restricted-split/per-save/Z",
+      "features": {
+        "S": 351,
+        "N": 1674,
+        "E": 20062,
+        "F": 8,
+        "d": 14,
+        "u": 343,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 22
+    },
+    {
+      "id": "c7-2plus2-qb-row-090/all/restricted-split/ALL",
+      "features": {
+        "S": 338,
+        "N": 4578,
+        "E": 55162,
+        "F": 19,
+        "d": 14,
+        "u": 319,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 33
+    },
+    {
+      "id": "c7-2plus2-qb-row-092/all/restricted-split/ALL",
+      "features": {
+        "S": 283,
+        "N": 4252,
+        "E": 47302,
+        "F": 28,
+        "d": 14,
+        "u": 255,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 42
+    },
+    {
+      "id": "c7-2plus2-qb-row-094/all/restricted-split/per-save/J",
+      "features": {
+        "S": 230,
+        "N": 2934,
+        "E": 10318,
+        "F": 44,
+        "d": 19,
+        "u": 186,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 63
+    },
+    {
+      "id": "c7-2plus2-qb-row-094/all/restricted-split/per-save/O",
+      "features": {
+        "S": 177,
+        "N": 1620,
+        "E": 8254,
+        "F": 19,
+        "d": 15,
+        "u": 158,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 34
+    },
+    {
+      "id": "c7-2plus2-qb-row-097/all/restricted-split/ALL",
+      "features": {
+        "S": 217,
+        "N": 4714,
+        "E": 25566,
+        "F": 23,
+        "d": 12,
+        "u": 194,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 35
+    },
+    {
+      "id": "c7-2plus2-qb-row-108/all/restricted-split/ALL",
+      "features": {
+        "S": 350,
+        "N": 4688,
+        "E": 63568,
+        "F": 15,
+        "d": 15,
+        "u": 335,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 30
+    },
+    {
+      "id": "c7-2plus2-qb-row-113/all/restricted-split/ALL",
+      "features": {
+        "S": 240,
+        "N": 4460,
+        "E": 28268,
+        "F": 25,
+        "d": 16,
+        "u": 215,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 41
+    },
+    {
+      "id": "c7-2plus2-qb-row-114/all/restricted-split/ALL",
+      "features": {
+        "S": 306,
+        "N": 4758,
+        "E": 45248,
+        "F": 9,
+        "d": 17,
+        "u": 297,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 26
+    },
+    {
+      "id": "c7-2plus2-qb-row-116/all/restricted-split/per-save/S",
+      "features": {
+        "S": 456,
+        "N": 1730,
+        "E": 20578,
+        "F": 23,
+        "d": 17,
+        "u": 433,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 40
+    },
+    {
+      "id": "c7-2plus2-qb-row-116/all/restricted-split/per-save/Z",
+      "features": {
+        "S": 460,
+        "N": 1806,
+        "E": 20812,
+        "F": 20,
+        "d": 16,
+        "u": 440,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 36
+    },
+    {
+      "id": "c7-2plus2-qb-row-118/all/restricted-split/ALL",
+      "features": {
+        "S": 190,
+        "N": 4638,
+        "E": 39042,
+        "F": 12,
+        "d": 17,
+        "u": 178,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 29
+    },
+    {
+      "id": "c7-2plus2-qb-row-122/all/restricted-split/ALL",
+      "features": {
+        "S": 564,
+        "N": 4828,
+        "E": 119448,
+        "F": 10,
+        "d": 16,
+        "u": 554,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 26
+    },
+    {
+      "id": "c7-2plus2-qb-row-122/all/restricted-split/per-save/L",
+      "features": {
+        "S": 262,
+        "N": 2326,
+        "E": 14808,
+        "F": 36,
+        "d": 13,
+        "u": 226,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 49
+    },
+    {
+      "id": "c7-2plus2-qb-row-122/all/restricted-split/per-save/Z",
+      "features": {
+        "S": 352,
+        "N": 2024,
+        "E": 22734,
+        "F": 14,
+        "d": 15,
+        "u": 338,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 29
+    },
+    {
+      "id": "c7-2plus2-qb-row-126/all/restricted-split/per-save/Z",
+      "features": {
+        "S": 226,
+        "N": 750,
+        "E": 13482,
+        "F": 4,
+        "d": 11,
+        "u": 222,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 15
+    },
+    {
+      "id": "c7-2plus2-qb-row-127/all/restricted-split/ALL",
+      "features": {
+        "S": 265,
+        "N": 4692,
+        "E": 42830,
+        "F": 11,
+        "d": 16,
+        "u": 254,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 27
+    },
+    {
+      "id": "c7-2plus2-qb-row-132/all/restricted-split/ALL",
+      "features": {
+        "S": 125,
+        "N": 4634,
+        "E": 29112,
+        "F": 12,
+        "d": 15,
+        "u": 113,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 27
+    },
+    {
+      "id": "c7-2plus2-qb-row-140/all/restricted-split/per-save/L",
+      "features": {
+        "S": 257,
+        "N": 2888,
+        "E": 9990,
+        "F": 68,
+        "d": 15,
+        "u": 189,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 83
+    },
+    {
+      "id": "c7-2plus2-qb-row-141/all/restricted-split/ALL",
+      "features": {
+        "S": 202,
+        "N": 2648,
+        "E": 27128,
+        "F": 9,
+        "d": 7,
+        "u": 193,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 16
+    },
+    {
+      "id": "c7-2plus2-qb-row-142/all/restricted-split/per-save/S",
+      "features": {
+        "S": 226,
+        "N": 750,
+        "E": 13482,
+        "F": 4,
+        "d": 11,
+        "u": 222,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 15
+    },
+    {
+      "id": "c7-2plus2-qb-row-144/all/restricted-split/ALL",
+      "features": {
+        "S": 228,
+        "N": 2604,
+        "E": 44864,
+        "F": 10,
+        "d": 9,
+        "u": 218,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 19
+    },
+    {
+      "id": "c7-2plus2-qb-row-149/all/restricted-split/ALL",
+      "features": {
+        "S": 314,
+        "N": 4866,
+        "E": 37512,
+        "F": 32,
+        "d": 15,
+        "u": 282,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 47
+    },
+    {
+      "id": "c7-2plus2-qb-row-157/all/restricted-split/per-save/T",
+      "features": {
+        "S": 186,
+        "N": 1600,
+        "E": 11626,
+        "F": 10,
+        "d": 13,
+        "u": 176,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 23
+    },
+    {
+      "id": "c7-2plus2-qb-row-161/all/restricted-split/ALL",
+      "features": {
+        "S": 564,
+        "N": 4828,
+        "E": 119448,
+        "F": 10,
+        "d": 16,
+        "u": 554,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 26
+    },
+    {
+      "id": "c7-2plus2-qb-row-161/all/restricted-split/per-save/I",
+      "features": {
+        "S": 304,
+        "N": 2262,
+        "E": 15020,
+        "F": 43,
+        "d": 16,
+        "u": 261,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 59
+    },
+    {
+      "id": "c7-2plus2-qb-row-161/all/restricted-split/per-save/L",
+      "features": {
+        "S": 262,
+        "N": 2326,
+        "E": 14808,
+        "F": 36,
+        "d": 13,
+        "u": 226,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 49
+    },
+    {
+      "id": "c7-2plus2-qb-row-161/all/restricted-split/per-save/O",
+      "features": {
+        "S": 294,
+        "N": 2016,
+        "E": 17518,
+        "F": 16,
+        "d": 14,
+        "u": 278,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 30
+    },
+    {
+      "id": "c7-2plus2-qb-row-170/all/restricted-split/per-save/O",
+      "features": {
+        "S": 167,
+        "N": 1800,
+        "E": 8296,
+        "F": 25,
+        "d": 16,
+        "u": 142,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 41
+    },
+    {
+      "id": "c7-2plus2-qb-row-170/all/restricted-split/per-save/T",
+      "features": {
+        "S": 246,
+        "N": 1692,
+        "E": 16036,
+        "F": 7,
+        "d": 16,
+        "u": 239,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 23
+    },
+    {
+      "id": "c7-2plus2-qb-row-201/all/restricted-split/per-save/I",
+      "features": {
+        "S": 246,
+        "N": 2458,
+        "E": 10948,
+        "F": 49,
+        "d": 16,
+        "u": 197,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 65
+    },
+    {
+      "id": "c7-2plus2-qb-row-213/all/restricted-split/ALL",
+      "features": {
+        "S": 465,
+        "N": 4592,
+        "E": 64958,
+        "F": 18,
+        "d": 17,
+        "u": 447,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 35
+    },
+    {
+      "id": "c7-2plus2-qb-row-213/all/restricted-split/per-save/S",
+      "features": {
+        "S": 275,
+        "N": 1592,
+        "E": 11774,
+        "F": 12,
+        "d": 14,
+        "u": 263,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 26
+    },
+    {
+      "id": "c7-2plus2-qb-row-215/all/restricted-split/ALL",
+      "features": {
+        "S": 219,
+        "N": 4102,
+        "E": 30212,
+        "F": 24,
+        "d": 19,
+        "u": 195,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 43
+    },
+    {
+      "id": "c7-2plus2-qb-row-218/all/restricted-split/ALL",
+      "features": {
+        "S": 207,
+        "N": 4494,
+        "E": 28812,
+        "F": 19,
+        "d": 12,
+        "u": 188,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 31
+    },
+    {
+      "id": "c7-2plus2-qb-row-219/all/restricted-split/ALL",
+      "features": {
+        "S": 239,
+        "N": 4632,
+        "E": 34720,
+        "F": 12,
+        "d": 14,
+        "u": 227,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 26
+    },
+    {
+      "id": "c7-2plus2-qb-row-228/all/restricted-split/per-save/L",
+      "features": {
+        "S": 193,
+        "N": 1466,
+        "E": 9908,
+        "F": 21,
+        "d": 17,
+        "u": 172,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 38
+    },
+    {
+      "id": "c7-2plus2-qb-row-228/all/restricted-split/per-save/Z",
+      "features": {
+        "S": 182,
+        "N": 738,
+        "E": 10320,
+        "F": 5,
+        "d": 11,
+        "u": 177,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 16
+    },
+    {
+      "id": "c7-2plus2-qb-row-273/all/restricted-split/per-save/O",
+      "features": {
+        "S": 162,
+        "N": 1640,
+        "E": 9010,
+        "F": 19,
+        "d": 17,
+        "u": 143,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 36
+    },
+    {
+      "id": "c7-2plus2-qb-row-275/all/restricted-split/ALL",
+      "features": {
+        "S": 160,
+        "N": 3848,
+        "E": 23158,
+        "F": 21,
+        "d": 14,
+        "u": 139,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 35
+    },
+    {
+      "id": "c7-2plus2-qb-row-278/all/restricted-split/ALL",
+      "features": {
+        "S": 343,
+        "N": 4558,
+        "E": 67030,
+        "F": 15,
+        "d": 15,
+        "u": 328,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 30
+    },
+    {
+      "id": "c7-2plus2-qb-row-278/all/restricted-split/per-save/Z",
+      "features": {
+        "S": 199,
+        "N": 1698,
+        "E": 12722,
+        "F": 7,
+        "d": 14,
+        "u": 192,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 21
+    },
+    {
+      "id": "c7-2plus2-qb-row-282/all/restricted-split/per-save/J",
+      "features": {
+        "S": 184,
+        "N": 2232,
+        "E": 8100,
+        "F": 43,
+        "d": 14,
+        "u": 141,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 57
+    },
+    {
+      "id": "c7-2plus2-qb-row-283/all/bag/ALL",
+      "features": {
+        "S": 197,
+        "N": 4904,
+        "E": 114184,
+        "F": 6,
+        "d": 4,
+        "u": 191,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 10
+    },
+    {
+      "id": "c7-2plus2-qb-row-283/all/restricted-split/per-save/S",
+      "features": {
+        "S": 551,
+        "N": 2100,
+        "E": 21464,
+        "F": 18,
+        "d": 17,
+        "u": 533,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 35
+    },
+    {
+      "id": "c7-2plus2-qb-row-286/all/restricted-split/ALL",
+      "features": {
+        "S": 196,
+        "N": 4396,
+        "E": 29464,
+        "F": 24,
+        "d": 12,
+        "u": 172,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 36
+    },
+    {
+      "id": "c7-2plus2-qb-row-290/all/restricted-split/per-save/I",
+      "features": {
+        "S": 219,
+        "N": 1564,
+        "E": 6712,
+        "F": 38,
+        "d": 19,
+        "u": 181,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 57
+    },
+    {
+      "id": "c7-2plus2-qb-row-290/all/restricted-split/per-save/S",
+      "features": {
+        "S": 298,
+        "N": 1760,
+        "E": 10996,
+        "F": 30,
+        "d": 16,
+        "u": 268,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 46
+    },
+    {
+      "id": "c7-2plus2-qb-row-292/all/restricted-split/ALL",
+      "features": {
+        "S": 472,
+        "N": 4884,
+        "E": 51630,
+        "F": 19,
+        "d": 17,
+        "u": 453,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 36
+    },
+    {
+      "id": "c7-2plus2-qb-row-294/all/restricted-split/per-save/L",
+      "features": {
+        "S": 252,
+        "N": 2320,
+        "E": 10482,
+        "F": 54,
+        "d": 18,
+        "u": 198,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 72
+    },
+    {
+      "id": "c7-2plus2-qb-row-299/all/restricted-split/ALL",
+      "features": {
+        "S": 418,
+        "N": 4690,
+        "E": 46260,
+        "F": 23,
+        "d": 16,
+        "u": 395,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 39
+    },
+    {
+      "id": "c7-2plus2-qb-row-299/all/restricted-split/per-save/I",
+      "features": {
+        "S": 251,
+        "N": 2632,
+        "E": 9632,
+        "F": 54,
+        "d": 15,
+        "u": 197,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 69
+    },
+    {
+      "id": "c7-2plus2-qb-row-301/all/restricted-split/ALL",
+      "features": {
+        "S": 532,
+        "N": 4706,
+        "E": 61402,
+        "F": 24,
+        "d": 15,
+        "u": 508,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 39
+    },
+    {
+      "id": "c7-2plus2-qb-row-301/all/restricted-split/per-save/I",
+      "features": {
+        "S": 296,
+        "N": 2016,
+        "E": 10140,
+        "F": 52,
+        "d": 14,
+        "u": 244,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 66
+    },
+    {
+      "id": "c7-2plus2-qb-row-301/all/restricted-split/per-save/L",
+      "features": {
+        "S": 258,
+        "N": 2014,
+        "E": 9102,
+        "F": 45,
+        "d": 17,
+        "u": 213,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 62
+    },
+    {
+      "id": "c7-2plus2-qb-row-307/all/restricted-split/ALL",
+      "features": {
+        "S": 235,
+        "N": 3578,
+        "E": 23744,
+        "F": 28,
+        "d": 10,
+        "u": 207,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 38
+    },
+    {
+      "id": "c7-2plus2-qb-row-312/all/restricted-split/ALL",
+      "features": {
+        "S": 599,
+        "N": 4894,
+        "E": 76234,
+        "F": 16,
+        "d": 15,
+        "u": 583,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 31
+    },
+    {
+      "id": "c7-2plus2-qb-row-316/all/bag/ALL",
+      "features": {
+        "S": 197,
+        "N": 4904,
+        "E": 114408,
+        "F": 6,
+        "d": 4,
+        "u": 191,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 10
+    },
+    {
+      "id": "c7-2plus2-qb-row-317/all/restricted-split/ALL",
+      "features": {
+        "S": 317,
+        "N": 4358,
+        "E": 42842,
+        "F": 13,
+        "d": 15,
+        "u": 304,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 28
+    },
+    {
+      "id": "c7-2plus2-qb-row-318/all/restricted-split/per-save/L",
+      "features": {
+        "S": 235,
+        "N": 2510,
+        "E": 9012,
+        "F": 51,
+        "d": 20,
+        "u": 184,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 71
+    },
+    {
+      "id": "c7-2plus2-qb-row-322/all/restricted-split/ALL",
+      "features": {
+        "S": 270,
+        "N": 4430,
+        "E": 23370,
+        "F": 47,
+        "d": 20,
+        "u": 223,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 67
+    },
+    {
+      "id": "c7-2plus2-qb-row-324/all/restricted-split/ALL",
+      "features": {
+        "S": 223,
+        "N": 4028,
+        "E": 29576,
+        "F": 18,
+        "d": 11,
+        "u": 205,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 29
+    },
+    {
+      "id": "c7-2plus2-qb-row-328/all/restricted-split/ALL",
+      "features": {
+        "S": 201,
+        "N": 4278,
+        "E": 21208,
+        "F": 32,
+        "d": 12,
+        "u": 169,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 44
+    },
+    {
+      "id": "c7-2plus2-qb-row-339/all/restricted-split/per-save/J",
+      "features": {
+        "S": 424,
+        "N": 2384,
+        "E": 18362,
+        "F": 41,
+        "d": 17,
+        "u": 383,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 58
+    },
+    {
+      "id": "c7-2plus2-qb-row-342/all/restricted-split/ALL",
+      "features": {
+        "S": 182,
+        "N": 2694,
+        "E": 31246,
+        "F": 13,
+        "d": 7,
+        "u": 169,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 20
+    },
+    {
+      "id": "c7-2plus2-qb-row-346/all/restricted-split/per-save/O",
+      "features": {
+        "S": 265,
+        "N": 1672,
+        "E": 8946,
+        "F": 38,
+        "d": 25,
+        "u": 227,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 63
+    },
+    {
+      "id": "c7-2plus2-qb-row-346/all/restricted-split/per-save/T",
+      "features": {
+        "S": 210,
+        "N": 1386,
+        "E": 6270,
+        "F": 39,
+        "d": 17,
+        "u": 171,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 56
+    },
+    {
+      "id": "cycle1-alt-shoes-a/all/restricted-split/ALL",
+      "features": {
+        "S": 564,
+        "N": 4828,
+        "E": 119448,
+        "F": 10,
+        "d": 16,
+        "u": 554,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 26
+    },
+    {
+      "id": "cycle1-alt-shoes-a/all/restricted-split/per-save/L",
+      "features": {
+        "S": 262,
+        "N": 2326,
+        "E": 14808,
+        "F": 36,
+        "d": 13,
+        "u": 226,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 49
+    },
+    {
+      "id": "cycle1-alt-shoes-a/all/restricted-split/per-save/Z",
+      "features": {
+        "S": 352,
+        "N": 2024,
+        "E": 22734,
+        "F": 14,
+        "d": 15,
+        "u": 338,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 29
+    },
+    {
+      "id": "cycle1-elephant-j-a/all/restricted-split/per-save/J",
+      "features": {
+        "S": 230,
+        "N": 2934,
+        "E": 10318,
+        "F": 44,
+        "d": 19,
+        "u": 186,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 63
+    },
+    {
+      "id": "cycle1-grace-system-a/all/bag/per-save/O",
+      "features": {
+        "S": 86,
+        "N": 778,
+        "E": 2496,
+        "F": 28,
+        "d": 16,
+        "u": 58,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 44
+    },
+    {
+      "id": "cycle1-grace-system-a/all/restricted-split/ALL",
+      "features": {
+        "S": 172,
+        "N": 252,
+        "E": 4584,
+        "F": 0,
+        "d": 7,
+        "u": 172,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 7
+    },
+    {
+      "id": "cycle1-pcinfo-007/all/restricted-split/per-save/I",
+      "features": {
+        "S": 247,
+        "N": 2108,
+        "E": 9988,
+        "F": 57,
+        "d": 16,
+        "u": 190,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 73
+    },
+    {
+      "id": "cycle1-pcinfo-007/all/restricted-split/per-save/Z",
+      "features": {
+        "S": 224,
+        "N": 1802,
+        "E": 12082,
+        "F": 21,
+        "d": 15,
+        "u": 203,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 36
+    },
+    {
+      "id": "cycle1-pcinfo-016/all/restricted-split/ALL",
+      "features": {
+        "S": 216,
+        "N": 4616,
+        "E": 31268,
+        "F": 25,
+        "d": 14,
+        "u": 191,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 39
+    },
+    {
+      "id": "cycle1-pcinfo-018/all/restricted-split/per-save/O",
+      "features": {
+        "S": 216,
+        "N": 1644,
+        "E": 13268,
+        "F": 10,
+        "d": 19,
+        "u": 206,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 29
+    },
+    {
+      "id": "cycle1-pcinfo-018/all/restricted-split/per-save/S",
+      "features": {
+        "S": 216,
+        "N": 1620,
+        "E": 14438,
+        "F": 12,
+        "d": 16,
+        "u": 204,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 28
+    },
+    {
+      "id": "cycle1-pcinfo-018/all/restricted-split/per-save/T",
+      "features": {
+        "S": 175,
+        "N": 1140,
+        "E": 12678,
+        "F": 7,
+        "d": 8,
+        "u": 168,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 15
+    },
+    {
+      "id": "cycle1-pcinfo-019/all/restricted-split/per-save/I",
+      "features": {
+        "S": 231,
+        "N": 1832,
+        "E": 11142,
+        "F": 30,
+        "d": 22,
+        "u": 201,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 52
+    },
+    {
+      "id": "cycle1-pcinfo-023/all/restricted-split/ALL",
+      "features": {
+        "S": 158,
+        "N": 4758,
+        "E": 24742,
+        "F": 28,
+        "d": 14,
+        "u": 130,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 42
+    },
+    {
+      "id": "cycle1-pcinfo-024/all/restricted-split/ALL",
+      "features": {
+        "S": 472,
+        "N": 4884,
+        "E": 51630,
+        "F": 19,
+        "d": 17,
+        "u": 453,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 36
+    },
+    {
+      "id": "cycle1-pcinfo-024/all/restricted-split/per-save/I",
+      "features": {
+        "S": 277,
+        "N": 2474,
+        "E": 10008,
+        "F": 59,
+        "d": 19,
+        "u": 218,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 78
+    },
+    {
+      "id": "cycle1-pcinfo-026/all/restricted-split/ALL",
+      "features": {
+        "S": 246,
+        "N": 4250,
+        "E": 27576,
+        "F": 28,
+        "d": 8,
+        "u": 218,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 36
+    },
+    {
+      "id": "cycle1-pcinfo-030/all/bag-plus-next-draw/per-save/L",
+      "features": {
+        "S": 188,
+        "N": 22292,
+        "E": 102872,
+        "F": 62,
+        "d": 14,
+        "u": 126,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 76
+    },
+    {
+      "id": "cycle1-pcinfo-030/all/bag-plus-next-draw/per-save/T",
+      "features": {
+        "S": 253,
+        "N": 15058,
+        "E": 165730,
+        "F": 38,
+        "d": 20,
+        "u": 215,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 58
+    },
+    {
+      "id": "cycle1-pcinfo-032/all/bag-plus-next-draw/per-save/O",
+      "features": {
+        "S": 361,
+        "N": 27582,
+        "E": 184592,
+        "F": 136,
+        "d": 23,
+        "u": 225,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 159
+    },
+    {
+      "id": "cycle1-pcinfo-032/all/bag-plus-next-draw/per-save/T",
+      "features": {
+        "S": 247,
+        "N": 14508,
+        "E": 149298,
+        "F": 53,
+        "d": 20,
+        "u": 194,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 73
+    },
+    {
+      "id": "cycle1-pcinfo-032/all/bag-plus-next-draw/per-save/Z",
+      "features": {
+        "S": 328,
+        "N": 27178,
+        "E": 198292,
+        "F": 100,
+        "d": 27,
+        "u": 228,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 127
+    },
+    {
+      "id": "cycle1-pcinfo-034/all/bag-plus-next-draw/ALL",
+      "features": {
+        "S": 671,
+        "N": 34394,
+        "E": 728672,
+        "F": 32,
+        "d": 14,
+        "u": 639,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 46
+    },
+    {
+      "id": "cycle1-pcinfo-034/all/bag-plus-next-draw/per-save/O",
+      "features": {
+        "S": 178,
+        "N": 24922,
+        "E": 143306,
+        "F": 84,
+        "d": 17,
+        "u": 94,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 101
+    },
+    {
+      "id": "cycle1-pcinfo-035/all/bag-plus-next-draw/ALL",
+      "features": {
+        "S": 970,
+        "N": 35280,
+        "E": 825054,
+        "F": 8,
+        "d": 14,
+        "u": 962,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 22
+    },
+    {
+      "id": "cycle1-pcinfo-035/all/bag-plus-next-draw/per-save/T",
+      "features": {
+        "S": 191,
+        "N": 14400,
+        "E": 118320,
+        "F": 55,
+        "d": 17,
+        "u": 136,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 72
+    },
+    {
+      "id": "cycle1-pcinfo-035/all/bag-plus-next-draw/per-save/Z",
+      "features": {
+        "S": 326,
+        "N": 28922,
+        "E": 199734,
+        "F": 118,
+        "d": 24,
+        "u": 208,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 142
+    },
+    {
+      "id": "cycle1-pcinfo-036/all/bag-plus-next-draw/per-save/S",
+      "features": {
+        "S": 219,
+        "N": 28384,
+        "E": 247010,
+        "F": 43,
+        "d": 17,
+        "u": 176,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 60
+    },
+    {
+      "id": "cycle1-pcinfo-036/all/bag-plus-next-draw/per-save/T",
+      "features": {
+        "S": 138,
+        "N": 15100,
+        "E": 145454,
+        "F": 16,
+        "d": 17,
+        "u": 122,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 33
+    },
+    {
+      "id": "cycle1-pcinfo-039/all/bag-plus-next-draw/per-save/Z",
+      "features": {
+        "S": 258,
+        "N": 25434,
+        "E": 117530,
+        "F": 152,
+        "d": 17,
+        "u": 106,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 169
+    },
+    {
+      "id": "cycle1-pcinfo-040/all/bag-plus-next-draw/per-save/O",
+      "features": {
+        "S": 330,
+        "N": 25246,
+        "E": 184282,
+        "F": 127,
+        "d": 22,
+        "u": 203,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 149
+    },
+    {
+      "id": "cycle1-pcinfo-040/all/bag-plus-next-draw/per-save/T",
+      "features": {
+        "S": 239,
+        "N": 14104,
+        "E": 144706,
+        "F": 52,
+        "d": 19,
+        "u": 187,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 71
+    },
+    {
+      "id": "cycle1-pcinfo-041/all/bag-plus-next-draw/per-save/T",
+      "features": {
+        "S": 198,
+        "N": 14212,
+        "E": 118530,
+        "F": 45,
+        "d": 14,
+        "u": 153,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 59
+    },
+    {
+      "id": "cycle1-shoes-a/all/restricted-split/ALL",
+      "features": {
+        "S": 227,
+        "N": 4850,
+        "E": 44350,
+        "F": 16,
+        "d": 14,
+        "u": 211,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 30
+    },
+    {
+      "id": "pcinfokorea-c2-006/all/restricted-split/per-save/S",
+      "features": {
+        "S": 182,
+        "N": 1476,
+        "E": 10838,
+        "F": 11,
+        "d": 13,
+        "u": 171,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 24
+    },
+    {
+      "id": "pcinfokorea-c2-010-f0/all/restricted-split/ALL",
+      "features": {
+        "S": 394,
+        "N": 4606,
+        "E": 46674,
+        "F": 17,
+        "d": 17,
+        "u": 377,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 34
+    },
+    {
+      "id": "pcinfokorea-c2-016-f0/all/restricted-split/ALL",
+      "features": {
+        "S": 220,
+        "N": 2292,
+        "E": 35072,
+        "F": 0,
+        "d": 11,
+        "u": 220,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 11
+    },
+    {
+      "id": "pcinfokorea-c2-016-f0/all/restricted-split/per-save/L",
+      "features": {
+        "S": 147,
+        "N": 1166,
+        "E": 9960,
+        "F": 0,
+        "d": 15,
+        "u": 147,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 15
+    },
+    {
+      "id": "pcinfokorea-c2-020/all/restricted-split/per-save/J",
+      "features": {
+        "S": 339,
+        "N": 9186,
+        "E": 65296,
+        "F": 42,
+        "d": 16,
+        "u": 297,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 58
+    },
+    {
+      "id": "pcinfokorea-c2-021/all/restricted-split/per-save/S",
+      "features": {
+        "S": 189,
+        "N": 4998,
+        "E": 45478,
+        "F": 10,
+        "d": 8,
+        "u": 179,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 18
+    },
+    {
+      "id": "pcinfokorea-c2-029/all/restricted-split/per-save/Z",
+      "features": {
+        "S": 203,
+        "N": 1604,
+        "E": 11596,
+        "F": 14,
+        "d": 13,
+        "u": 189,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 27
+    },
+    {
+      "id": "pcinfokorea-c2-034/all/restricted-split/ALL",
+      "features": {
+        "S": 193,
+        "N": 4878,
+        "E": 29554,
+        "F": 13,
+        "d": 20,
+        "u": 180,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 33
+    },
+    {
+      "id": "pcinfokorea-c2-036-f0/all/bag/ALL",
+      "features": {
+        "S": 144,
+        "N": 5038,
+        "E": 69958,
+        "F": 2,
+        "d": 16,
+        "u": 142,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 18
+    },
+    {
+      "id": "pcinfokorea-c2-036-f0/all/restricted-split/per-save/S",
+      "features": {
+        "S": 547,
+        "N": 1708,
+        "E": 30622,
+        "F": 12,
+        "d": 15,
+        "u": 535,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 27
+    },
+    {
+      "id": "pcinfokorea-c2-036-f1/all/bag/ALL",
+      "features": {
+        "S": 144,
+        "N": 5038,
+        "E": 69958,
+        "F": 2,
+        "d": 16,
+        "u": 142,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 18
+    },
+    {
+      "id": "pcinfokorea-c2-036-f1/all/restricted-split/per-save/Z",
+      "features": {
+        "S": 547,
+        "N": 1708,
+        "E": 30700,
+        "F": 12,
+        "d": 15,
+        "u": 535,
+        "nontrivial": true,
+        "previewEligible": false
+      },
+      "K": 27
+    },
+    {
+      "id": "pcinfokorea-c2-046/all/restricted-split/per-save/L",
+      "features": {
+        "S": 219,
+        "N": 2198,
+        "E": 9172,
+        "F": 38,
+        "d": 18,
+        "u": 181,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 56
+    },
+    {
+      "id": "pcinfokorea-c2-046/all/restricted-split/per-save/Z",
+      "features": {
+        "S": 226,
+        "N": 2008,
+        "E": 11902,
+        "F": 15,
+        "d": 17,
+        "u": 211,
+        "nontrivial": true,
+        "previewEligible": true
+      },
+      "K": 32
+    }
+  ],
+  "requiredCommandIds": [
+    "c7-2plus2-qb-row-076/all/bag",
+    "c7-2plus2-qb-row-140/all/restricted-split/per-save",
+    "cycle1-pcinfo-030/all/restricted-split",
+    "cycle1-pcinfo-039/all/restricted-split/per-save"
+  ],
+  "arms": [
+    "BASE100",
+    "I10_FIXED_AUX",
+    "U192",
+    "U228_OR_D16",
+    "U192_OR_D16",
+    "S200_OR_D16"
+  ],
+  "repeats": 3,
+  "traceCommands": 12,
+  "traceRepeats": 2,
+  "captureShards": 32,
+  "maxParallel": 16,
+  "resourceCaps": {
+    "captureSeconds": 340,
+    "callSeconds": 220,
+    "memoryBytes": 3221225472,
+    "maxRunnerHours": 1200,
+    "deadlineHours": 96
+  },
+  "clock": "New campaign origin; historical analysis is selection evidence, not resumed execution",
+  "release": false
+}
