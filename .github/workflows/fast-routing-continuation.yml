@@ -1,0 +1,72 @@
+name: Fast routing transport continuation
+on:
+  workflow_dispatch:
+  push:
+    branches: [experiment/fast-routing-20261017]
+    paths: [.github/workflows/fast-routing-continuation.yml]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: fast-routing-20261017
+  cancel-in-progress: false
+env:
+  GH_TOKEN: ${{ github.token }}
+jobs:
+  plan:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.ref == 'refs/heads/experiment/fast-routing-20261017'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: harness
+      - uses: actions/checkout@v4
+        with:
+          path: product
+          ref: 79217c64c5ad01117039b402c55d95e4ac2e1690
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --prefix product --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix harness/tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      - id: plan
+        run: node harness/tools/fast-routing/continue.mjs plan
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fast-routing-continuation-plan
+          path: routing-resume/
+          retention-days: 30
+  measure:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: true
+      max-parallel: 16
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: harness
+      - uses: actions/checkout@v4
+        with:
+          path: product
+          ref: 79217c64c5ad01117039b402c55d95e4ac2e1690
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --prefix product --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix harness/tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      - name: Complete frozen command blocks with original source and input artifacts
+        run: node harness/tools/fast-routing/continue.mjs measure ${{ matrix.shard }}
+      - if: failure() || cancelled()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fast-routing-resume-failure-${{ matrix.shard }}
+          path: routing-resume/
+          compression-level: 1
+          retention-days: 30

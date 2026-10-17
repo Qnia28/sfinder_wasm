@@ -27,10 +27,13 @@ const transport = [];
 async function fetchArtifacts() {
   const pattern = process.env['INPUT_ARTIFACT-PREFIX'], destination = process.env.INPUT_DESTINATION;
   assert(pattern && destination);
-  const pages = JSON.parse(execFileSync('gh', ['api', '--paginate', '--slurp',
-    `repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${runId}/artifacts?per_page=100`],
-  { encoding: 'utf8', maxBuffer: 64 * 1024 ** 2, timeout: 120000 }));
   const wildcard = pattern.endsWith('*');
+  // Exact-name fetches must not page the growing campaign inventory in every
+  // VM. The REST name filter reduces each bootstrap/plan lookup to one page.
+  const nameFilter = wildcard ? '' : '&name=' + encodeURIComponent(pattern);
+  const pages = JSON.parse(execFileSync('gh', ['api', '--paginate', '--slurp',
+    `repos/${process.env.GITHUB_REPOSITORY}/actions/runs/${runId}/artifacts?per_page=100${nameFilter}`],
+  { encoding: 'utf8', maxBuffer: 64 * 1024 ** 2, timeout: 120000 }));
   const matches = pages.flatMap(p => p.artifacts).filter(a => wildcard ? a.name.startsWith(pattern.slice(0, -1)) : a.name === pattern);
   assert(matches.length && (wildcard || matches.length === 1), 'required artifact missing/ambiguous: ' + pattern);
   assert(matches.every(a => !a.expired));
