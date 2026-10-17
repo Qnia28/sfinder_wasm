@@ -1,9 +1,13 @@
-function stableIdsLess(a, b) {
-  if (!b) return true;
-  for (let i = 0; i < Math.min(a.length, b.length); i += 1) {
-    if (a[i] !== b[i]) return a[i] < b[i];
+// base and (x, y) are sorted and disjoint. Compare the merged IDs without
+// allocating/sorting a candidate selection for every equal-quality pair.
+function mergedIdsLess(base, x, y, other) {
+  let bi = 0; let added = 0;
+  for (let i = 0; i < other.length; i += 1) {
+    const next = added === 0 ? x : added === 1 ? y : Infinity;
+    const id = bi < base.length && base[bi] < next ? base[bi++] : (added++, next);
+    if (id !== other[i]) return id < other[i];
   }
-  return a.length < b.length;
+  return false;
 }
 
 function compareHistograms(a, b) {
@@ -94,18 +98,33 @@ export function refineMinimumCoverQuality(prepared, initialSelected, { maxPasses
   let selected = [...initialSelected].sort((a, b) => a - b);
   let bestHistogram = selectedQualityHistogram(selected, dense, caseCount, qualityValues.length, weights);
   let passes = 0;
+  // Scratch arrays never escape. A winning histogram is snapshotted before
+  // these buffers are reused; passHistogram must remain immutable in a pass.
+  const coverCount = new Uint16Array(caseCount);
+  const selectedSet = new Uint8Array(solutionCount);
+  const top3Id = new Int32Array(caseCount * 3);
+  const top3Q = new Uint32Array(caseCount * 3);
+  const baseQuality = new Uint32Array(caseCount);
+  const baseHistogram = new Uint32Array(qualityValues.length);
+  const xQuality = new Uint32Array(caseCount);
+  const xHistogram = new Uint32Array(qualityValues.length);
+  const histogram = new Uint32Array(qualityValues.length);
+  const contributes = new Uint8Array(solutionCount);
+  let missingMasks = new Uint32Array(0);
 
   for (; passes < maxPasses; passes += 1) {
-    const coverCount = new Uint16Array(caseCount);
-    for (const id of selected) for (const ci of candidateCases[id]) coverCount[ci] += 1;
+    coverCount.fill(0);
+    selectedSet.fill(0);
+    for (const id of selected) {
+      selectedSet[id] = 1;
+      for (const ci of candidateCases[id]) coverCount[ci] += 1;
+    }
 
     // A 2-for-2 move removes exactly two selected candidates. Precompute the
     // three highest selected qualities for every case once per pass; for any
     // removal pair (a, b), the first top-3 entry owned by neither a nor b is
     // exactly max quality over selected \ {a, b}. Coverage membership remains
     // independent in `covers`; this table is quality-only.
-    const top3Id = new Int32Array(caseCount * 3).fill(-1);
-    const top3Q = new Uint32Array(caseCount * 3);
     for (let ci = 0; ci < caseCount; ci += 1) {
       let id0 = -1; let q0 = 0;
       let id1 = -1; let q1 = 0;
@@ -134,9 +153,7 @@ export function refineMinimumCoverQuality(prepared, initialSelected, { maxPasses
       for (let bi = ai + 1; bi < selected.length; bi += 1) {
         const a = selected[ai];
         const b = selected[bi];
-        const base = selected.filter((_, index) => index !== ai && index !== bi);
-        const baseSet = new Uint8Array(solutionCount);
-        for (const id of base) baseSet[id] = 1;
+        let base;
 
         const missing = [];
         for (let ci = 0; ci < caseCount; ci += 1) {
@@ -147,19 +164,28 @@ export function refineMinimumCoverQuality(prepared, initialSelected, { maxPasses
         }
         if (!missing.length) continue;
 
-        const candidates = [];
-        for (let id = 0; id < solutionCount; id += 1) {
-          if (baseSet[id]) continue;
-          let contributes = false;
-          const offset = id * caseCount;
-          for (const ci of missing) {
-            if (covers[offset + ci]) { contributes = true; break; }
+        // Encode membership (including quality zero), not quality rank. The
+        // original rows let us build the union without scanning S x missing.
+        const words = Math.ceil(missing.length / 32);
+        const maskLength = solutionCount * words;
+        if (missingMasks.length < maskLength) missingMasks = new Uint32Array(maskLength);
+        else missingMasks.fill(0, 0, maskLength);
+        contributes.fill(0);
+        for (let mi = 0; mi < missing.length; mi += 1) {
+          const word = mi >>> 5, bit = 1 << (mi & 31);
+          for (const [id] of cases[missing[mi]]) {
+            if (selectedSet[id] && id !== a && id !== b) continue;
+            missingMasks[id * words + word] |= bit;
+            contributes[id] = 1;
           }
-          if (contributes) candidates.push(id);
         }
+        const candidates = [];
+        for (let id = 0; id < solutionCount; id += 1) if (contributes[id]) candidates.push(id);
+        // >>> 0 keeps the high-bit/full-word comparison unsigned (32,64,...).
+        const lastMask = 0xffffffff >>> ((32 - (missing.length & 31)) & 31);
 
-        const baseQuality = new Uint32Array(caseCount);
-        const baseHistogram = new Uint32Array(qualityValues.length);
+        baseQuality.fill(0);
+        baseHistogram.fill(0);
         for (let ci = 0; ci < caseCount; ci += 1) {
           const offset = ci * 3;
           for (let rank = 0; rank < 3; rank += 1) {
@@ -176,22 +202,26 @@ export function refineMinimumCoverQuality(prepared, initialSelected, { maxPasses
         for (let xi = 0; xi < candidates.length; xi += 1) {
           const x = candidates[xi];
           const xo = x * caseCount;
-          let xQuality;
-          let xHistogram;
+          const xm = x * words;
+          let xReady = false;
           for (let yi = xi + 1; yi < candidates.length; yi += 1) {
             const y = candidates[yi];
             const yo = y * caseCount;
+            const ym = y * words;
             let coversMissing = true;
-            for (const ci of missing) {
-              if (!covers[xo + ci] && !covers[yo + ci]) { coversMissing = false; break; }
+            for (let word = 0; word < words; word += 1) {
+              const target = word === words - 1 ? lastMask : 0xffffffff;
+              if (((missingMasks[xm + word] | missingMasks[ym + word]) >>> 0) !== target) {
+                coversMissing = false; break;
+              }
             }
             if (!coversMissing) continue;
 
             // Build base+x only for an x participating in a feasible pair.
             // Adding y can change only rows actually covered by y.
-            if (!xQuality) {
-              xQuality = baseQuality.slice();
-              xHistogram = baseHistogram.slice();
+            if (!xReady) {
+              xQuality.set(baseQuality);
+              xHistogram.set(baseHistogram);
               for (const ci of candidateCases[x]) {
                 const q = dense[xo + ci], old = xQuality[ci];
                 if (q > old) {
@@ -199,19 +229,20 @@ export function refineMinimumCoverQuality(prepared, initialSelected, { maxPasses
                   xQuality[ci] = q;
                 }
               }
+              xReady = true;
             }
-            const histogram = xHistogram.slice();
+            histogram.set(xHistogram);
             for (const ci of candidateCases[y]) {
               const q = dense[yo + ci], old = xQuality[ci];
               if (q > old) { histogram[old] -= weights[ci]; histogram[q] += weights[ci]; }
             }
             const cmp = compareHistograms(histogram, passHistogram);
             if (cmp < 0) continue;
-            const candidateSelected = [...base, x, y].sort((l, r) => l - r);
-            if (cmp > 0 || (cmp === 0 && stableIdsLess(candidateSelected, passSelected))) {
+            base ??= selected.filter((_, index) => index !== ai && index !== bi);
+            if (cmp > 0 || (cmp === 0 && mergedIdsLess(base, x, y, passSelected))) {
               bestMove = [a, b, x, y];
-              passHistogram = histogram;
-              passSelected = candidateSelected;
+              passHistogram = histogram.slice();
+              passSelected = [...base, x, y].sort((l, r) => l - r);
             }
           }
         }

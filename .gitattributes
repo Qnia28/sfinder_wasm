@@ -10,3 +10,5 @@
 /.github/secondary-triage/** -text
 /tools/fast-triage/** -text
 /.github/workflows/fast-triage-comparison.yml -text
+/tools/fast-refine/** -text
+/.github/workflows/fast-refine-comparison.yml -text

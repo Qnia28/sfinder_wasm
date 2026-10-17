@@ -1,0 +1,100 @@
+name: Fast refine equivalent optimization screen
+on:
+  workflow_dispatch:
+  push:
+    branches: [experiment/fast-refine-20261017]
+    paths: [.github/workflows/fast-refine-comparison.yml]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: fast-refine-20261017
+  cancel-in-progress: false
+defaults:
+  run:
+    working-directory: candidate
+jobs:
+  plan:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.ref == 'refs/heads/experiment/fast-refine-20261017'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: candidate
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: node --test tests/min-cover-quality-refine.test.mjs tests/fast-refine-plan.test.mjs tests/fast-refine-analysis.test.mjs tests/fast-budget-policy.test.mjs tests/fast-triage-api.test.mjs tests/fast-bench-adapter.test.mjs
+      - run: node tools/fast-refine/run.mjs plan ../refine-plan
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fast-refine-plan
+          path: refine-plan/
+          retention-days: 30
+  measure:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 340
+    strategy:
+      fail-fast: true
+      max-parallel: 8
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: candidate
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          path: reference
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix ../reference --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        with:
+          name: fast-refine-plan
+          path: refine-plan/
+      - name: Compare only the refine implementation on fixed seeds and actual APIs
+        run: node tools/fast-refine/run.mjs measure ../refine-plan ../reference ${{ matrix.shard }} ../refine-results
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fast-refine-shard-${{ matrix.shard }}
+          path: refine-results/
+          compression-level: 1
+          retention-days: 30
+  audit:
+    needs: [plan, measure]
+    if: always() && needs.plan.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: candidate
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        with:
+          name: fast-refine-plan
+          path: refine-plan/
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: fast-refine-shard-*
+          path: shards/
+      - name: Verify complete evidence and report timing and quality distributions
+        run: node tools/fast-refine/analyze.mjs ../refine-plan ../shards ../refine-analysis
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fast-refine-analysis
+          path: refine-analysis/
+          retention-days: 30
