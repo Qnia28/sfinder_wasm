@@ -7,6 +7,7 @@ import os from 'node:os';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
+import { setTimeout as delay } from 'node:timers/promises';
 const harness = path.resolve('harness'), product = path.resolve('product');
 const manifest = JSON.parse(fs.readFileSync(path.join(harness, 'tools/fast-routing/CONTINUATION_39026013968.json')));
 const client = (await import(pathToFileURL(path.join(harness, 'tools/secondary-bench/artifact-action/node_modules/@actions/artifact/lib/artifact.js')))).default;
@@ -22,6 +23,21 @@ const root = path.resolve('../routing-resume'); fs.mkdirSync(root, { recursive: 
 const write = (name, value) => fs.writeFileSync(path.join(root, name), JSON.stringify(value) + '\n', { flag: 'wx' });
 const summary = text => { console.log(text); fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, text + '\n'); };
 const transport = [];
+// Installation quota is shared across runs: a new workflow does not reset it.
+// Wait against GitHub's declared reset once, before admitting measurement VMs.
+if (mode === 'plan') {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const quota = JSON.parse(execFileSync('gh', ['api', 'rate_limit'], { encoding: 'utf8', timeout: 30000 })).resources.core;
+    assert(Number.isFinite(quota.remaining) && Number.isFinite(quota.reset));
+    write(`QUOTA-${attempt}.json`, { ...quota, observedUtc: new Date().toISOString() });
+    if (quota.remaining >= 400) break;
+    assert.equal(attempt, 0, 'insufficient quota after reset; preserve evidence');
+    const waitMs = Math.max(1000, quota.reset * 1000 - Date.now() + 15000);
+    assert(waitMs <= 3700000 && Date.now() + waitMs < manifest.deadlineMs, 'quota wait exceeds original clock');
+    summary(`Installation quota ${quota.remaining}; waiting until ${new Date(Date.now() + waitMs).toISOString()} before downloads. No measurement calls started.`);
+    await delay(waitMs);
+  }
+}
 async function hashFile(file) { const h = createHash('sha256'); for await (const b of fs.createReadStream(file)) h.update(b); return h.digest('hex'); }
 async function download(ref, destination) {
   const archive = destination + '.zip', fd = fs.openSync(archive, 'wx');
@@ -58,12 +74,16 @@ assert.equal(execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).tr
 assert.equal(process.version, plan.lock.node);
 for (const [file, expected] of Object.entries(plan.lock.sources)) assert.equal(hash(fs.readFileSync(file)), expected, file);
 assert(Date.now() < manifest.deadlineMs, 'original clock exhausted');
-assert(manifest.budget.cumulativeConservativeHours <= 1200, 'cumulative budget');
+// Additional 2h conservatively covers failed plan39029765625 and this
+// pre-measurement quota wait. Original 96h deadline is never extended.
+const cumulativeHours = manifest.budget.cumulativeConservativeHours + 2;
+assert(cumulativeHours <= 1200, 'cumulative budget');
 if (mode === 'plan') {
   assert.equal(manifest.chunks.reduce((n, c) => n + c.callIds.length, 0), manifest.resumeCalls);
   fs.appendFileSync(process.env.GITHUB_OUTPUT, 'matrix=' + JSON.stringify({ include: manifest.chunks.map(c => ({ shard: c.shard })) }) + '\n');
   write('CONTINUATION.json', manifest);
-  summary(`## Routing transport continuation\n${manifest.resumeCalls} calls in ${manifest.chunks.length} chunks; original product, limits, clock and schedule retained.\nCompleted command blocks reused; interrupted command blocks run whole on one VM. Earlier attempts retained. Cumulative reservation ${manifest.budget.cumulativeConservativeHours.toFixed(3)} hours.`);
+  write('ADDITIONAL_CONTROL_BUDGET.json', { failedPlanRunId: '39029765625', extraControlReservationHours: 2, cumulativeHours });
+  summary(`## Routing transport continuation\n${manifest.resumeCalls} calls in ${manifest.chunks.length} chunks; original product, limits, clock and schedule retained.\nCompleted command blocks reused; interrupted command blocks run whole on one VM. Earlier attempts retained. Cumulative reservation ${cumulativeHours.toFixed(3)} hours.`);
 } else {
   assert.equal(mode, 'measure');
   const selected = manifest.chunks.find(c => c.shard === shard); assert(selected);

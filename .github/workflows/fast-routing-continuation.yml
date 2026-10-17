@@ -16,7 +16,7 @@ jobs:
   plan:
     if: github.repository == 'Qnia28/sfinder_wasm' && github.ref == 'refs/heads/experiment/fast-routing-20261017'
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 90
     outputs:
       matrix: ${{ steps.plan.outputs.matrix }}
     steps:
