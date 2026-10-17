@@ -29,7 +29,9 @@ jobs:
           ref: 79217c64c5ad01117039b402c55d95e4ac2e1690
       - uses: actions/setup-node@v4
         with:
-          node-version: 24.13.0
+          # Parent JavaScript action used the runner's node24 (lock: v24.19.0),
+          # not the shell version installed by its setup-node step.
+          node-version: 24.19.0
       - run: npm ci --prefix product --ignore-scripts --no-audit --no-fund
       - run: npm ci --prefix harness/tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
       - id: plan
@@ -58,7 +60,7 @@ jobs:
           ref: 79217c64c5ad01117039b402c55d95e4ac2e1690
       - uses: actions/setup-node@v4
         with:
-          node-version: 24.13.0
+          node-version: 24.19.0
       - run: npm ci --prefix product --ignore-scripts --no-audit --no-fund
       - run: npm ci --prefix harness/tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
       - name: Complete frozen command blocks with original source and input artifacts

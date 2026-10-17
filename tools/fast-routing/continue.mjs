@@ -71,7 +71,8 @@ const plan = read(path.join(planDirectory, 'PLAN.json'));
 assert.equal(digest(plan.schedule), manifest.scheduleHash); assert.equal(plan.scheduleHash, manifest.scheduleHash);
 assert.equal(plan.lock.commit, manifest.sourceCommit); assert.equal(plan.lock.deadlineMs, manifest.deadlineMs);
 assert.equal(execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(), manifest.sourceCommit);
-assert.equal(process.version, plan.lock.node);
+if (process.version !== plan.lock.node) summary(`## Runtime mismatch before measurement\nActual ${process.version}, original lock ${plan.lock.node}. No population calls admitted.`);
+assert.equal(process.version, plan.lock.node, 'continuation must match actual parent action runtime, not parent setup-node configuration');
 for (const [file, expected] of Object.entries(plan.lock.sources)) assert.equal(hash(fs.readFileSync(file)), expected, file);
 assert(Date.now() < manifest.deadlineMs, 'original clock exhausted');
 // Additional 2h conservatively covers failed plan39029765625 and this
