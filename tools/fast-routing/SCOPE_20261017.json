@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "study": "fast-routing-e2e-20261017",
+  "attributionLabel": "GLM",
+  "repository": "Qnia28/sfinder_wasm",
+  "branch": "experiment/fast-routing-20261017",
+  "sourceScope": "tools/fast-bench/SCOPE_20261015_v2.json",
+  "sourceScopeSha256": "13549352d676905797e6ec01ff5b2213b26c4bc78865c08526a7bcbaaf4701e4",
+  "selection": "All 1113 historical commands, no outcome/feature exclusion. Historical development population, not fresh holdout.",
+  "arms": ["BASE100", "DIRECT", "PREVIEW_ONLY", "I1K", "I10K", "S200_OR_D16", "U192_OR_D16"],
+  "repeats": 3,
+  "longRepeats": 7,
+  "traceCommands": 32,
+  "traceRepeats": 2,
+  "captureShards": 32,
+  "longCommandIds": [
+    "cycle1-pcinfo-030/all/restricted-split",
+    "cycle1-pcinfo-030/all/restricted-split/per-save",
+    "cycle1-pcinfo-031/all/restricted-split",
+    "cycle1-pcinfo-031/all/restricted-split/per-save",
+    "cycle1-pcinfo-039/all/restricted-split",
+    "cycle1-pcinfo-039/all/restricted-split/per-save",
+    "cycle1-pcinfo-032/all/bag-plus-next-draw/per-save",
+    "cycle1-pcinfo-035/all/bag-plus-next-draw/per-save",
+    "c7-2plus2-qb-row-076/all/bag",
+    "c7-2plus2-qb-row-140/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-019/all/restricted-split/per-save",
+    "c7-2plus2-qb-row-312/all/restricted-split/per-save",
+    "pcinfokorea-c2-029/all/restricted-split/per-save"
+  ],
+  "resourceCaps": {
+    "maxParallel": 16,
+    "maxRunnerHours": 1200,
+    "deadlineHours": 96,
+    "captureSeconds": 340,
+    "callSeconds": 140,
+    "longCallSeconds": 220,
+    "memoryGiB": 3,
+    "swapBytes": 0
+  },
+  "adjudication": {
+    "version": "routing-performance-first-v1",
+    "required": ["minimum K", "original-row coverage", "quality vector validity", "process reaping", "source lock", "complete evidence"],
+    "variation": "E2E primary engine/seed and final quality/proof variations are observations, never hash-equivalence validity gates.",
+    "censoring": "Retain TIMEOUT/OOM/NOT_RUN and capture failures in denominators. All arms of a command have the same call limit. Ordinary calls get 100s execution; named long commands 180s.",
+    "phases": "Main e2e 3 repeats timing; long-repeat additional4 separately; trace off/timing/trace 2 blocks separately. No overhead subtraction or automatic winner.",
+    "features": "Exact F/u/d from captured ORIGINAL singleton rows; distinguish captured features from runtime partial/lazy features and actual budgets.",
+    "scope": "All arms use optimized refine maxPasses16. DIRECT retains common tiny/direct/hard guards and only skips quality probes. No isolated matrix calls in this campaign.",
+    "analysis": "Full E2E time/tail and actual quality losses; ALL/per-save and mirrorGroup dependence explicit. Later triage fitting must use group-disjoint validation, not repeated calls as independent inputs."
+  }
+}

@@ -1,0 +1,164 @@
+name: Fast routing large-scale comparison
+on:
+  workflow_dispatch:
+  push:
+    branches: [experiment/fast-routing-20261017]
+    paths: [.github/workflows/fast-routing-comparison.yml]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: fast-routing-20261017
+  cancel-in-progress: false
+env:
+  GH_TOKEN: ${{ github.token }}
+  FAST_CAMPAIGN_SCOPE: tools/fast-routing/SCOPE_20261017.json
+jobs:
+  bootstrap:
+    if: github.repository == 'Qnia28/sfinder_wasm' && github.ref == 'refs/heads/experiment/fast-routing-20261017'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      - run: node --test tests/fast-routing.test.mjs tests/min-cover-quality-refine.test.mjs tests/fast-budget-policy.test.mjs tests/fast-triage-api.test.mjs tests/fast-bench-adapter.test.mjs tests/fast-bench-transport.test.mjs tests/fast-bench-planner.test.mjs
+      - name: Freeze source and validate actual API routes and witnesses
+        uses: ./tools/fast-bench/campaign-action
+        with:
+          mode: bootstrap
+      - name: Preserve preflight evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fast-routing-bootstrap-diagnostics
+          path: fast-work/
+          compression-level: 1
+          retention-days: 30
+  capture:
+    needs: bootstrap
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    strategy:
+      fail-fast: true
+      max-parallel: 16
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      - uses: ./tools/fast-bench/campaign-action
+        with:
+          mode: fetch
+          artifact-prefix: fast-bootstrap
+          destination: bootstrap
+      - name: Capture full original rows and proven minimum K for 1113 commands
+        uses: ./tools/fast-bench/campaign-action
+        with:
+          mode: capture
+          shard: ${{ matrix.shard }}
+      - if: failure() || cancelled()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fast-routing-capture-failure-${{ matrix.shard }}
+          path: fast-work/
+          compression-level: 1
+          retention-days: 30
+  plan:
+    needs: capture
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      - uses: ./tools/fast-bench/campaign-action
+        with:
+          mode: fetch
+          artifact-prefix: fast-bootstrap
+          destination: bootstrap
+      - uses: ./tools/fast-bench/campaign-action
+        with:
+          mode: fetch
+          artifact-prefix: fast-capture-summary-*
+          destination: capture-summaries
+      - name: Freeze seven-arm paired schedule including censored inputs
+        id: plan
+        uses: ./tools/fast-bench/campaign-action
+        with:
+          mode: plan
+  measure:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: true
+      max-parallel: 16
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      - uses: ./tools/fast-bench/campaign-action
+        with:
+          mode: fetch
+          artifact-prefix: fast-bootstrap
+          destination: bootstrap
+      - uses: ./tools/fast-bench/campaign-action
+        with:
+          mode: fetch
+          artifact-prefix: fast-measurement-plan
+          destination: plan
+      - name: Seven routes on optimized 2x2 in fresh isolated public API calls
+        uses: ./tools/fast-bench/campaign-action
+        with:
+          mode: measure
+          shard: ${{ matrix.shard }}
+      - if: failure() || cancelled()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fast-routing-measure-failure-${{ matrix.shard }}
+          path: fast-work/
+          compression-level: 1
+          retention-days: 30
+  audit:
+    needs: [plan, measure]
+    if: always() && needs.plan.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.13.0
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm ci --prefix tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
+      - uses: ./tools/fast-bench/campaign-action
+        with:
+          mode: fetch
+          artifact-prefix: fast-measurement-plan
+          destination: plan
+      - uses: ./tools/fast-bench/campaign-action
+        with:
+          mode: fetch
+          artifact-prefix: fast-measure-summary-*
+          destination: measure-summaries
+      - name: Audit evidence completeness; record allowed E2E variations
+        uses: ./tools/fast-bench/campaign-action
+        with:
+          mode: audit

@@ -1,6 +1,6 @@
 // Opt-in Fast experiment policies. The legacy budget contract remains the default.
 export const FAST_POLICIES = Object.freeze(['legacy', 'U192', 'U228', 'S200',
-  'U228_OR_D16', 'U192_OR_D16', 'S200_OR_D16', 'I10_FIXED_AUX']);
+  'U228_OR_D16', 'U192_OR_D16', 'S200_OR_D16', 'I10_FIXED_AUX', 'DIRECT_2X2', 'PREVIEW_ONLY']);
 
 export function resolveFastBudgets({ fastStateBudget, fastPolicy = 'legacy',
   fastPreviewBudget, fastGraceBudget } = {}) {
@@ -14,6 +14,14 @@ export function resolveFastBudgets({ fastStateBudget, fastPolicy = 'legacy',
     if (!Number.isSafeInteger(value) || value < 0) throw new RangeError(`${name} must be a nonnegative safe integer`);
     return value; // Explicit zero disables this auxiliary stage.
   };
+  // Route-only experiments preserve explicit integrated-budget precedence,
+  // including the historical fastStateBudget:0 => 100K contract.
+  if (!explicit && ['DIRECT_2X2', 'PREVIEW_ONLY'].includes(fastPolicy)) {
+    // Validate overrides even when this route does not execute their stages.
+    auxiliary(fastGraceBudget, 0, 'fastGraceBudget');
+    const preview = auxiliary(fastPreviewBudget, fastPolicy === 'PREVIEW_ONLY' ? 2500 : 0, 'fastPreviewBudget');
+    return { policy: fastPolicy, explicit, integrated: 0, preview: fastPolicy === 'PREVIEW_ONLY' ? preview : 0, grace: 0 };
+  }
   return { policy: fastPolicy, explicit, integrated,
     preview: auxiliary(fastPreviewBudget, legacy ? Math.max(1, Math.min(2500, Math.floor(integrated / 20))) : 2500, 'fastPreviewBudget'),
     grace: auxiliary(fastGraceBudget, legacy ? Math.max(1, Math.min(5000, Math.floor(integrated / 10))) : 5000, 'fastGraceBudget') };
@@ -28,6 +36,7 @@ export function selectFastBudget(prepared, K, budgets) {
     featuresComplete: exact, F: exact ? lower : null, u: exact ? S - lower : null, d: exact ? K - lower : null,
   });
   if (budgets.explicit || budgets.policy === 'legacy') return result(budgets.integrated, budgets.explicit ? 'explicit-budget' : 'legacy');
+  if (['DIRECT_2X2', 'PREVIEW_ONLY'].includes(budgets.policy)) return result(0, budgets.policy.toLowerCase());
   if (budgets.policy === 'I10_FIXED_AUX') return result(10000, 'fixed-10k');
   if (budgets.policy === 'S200') return result(S > 200 ? 10000 : 100000, 'S>200');
   if (budgets.policy === 'S200_OR_D16' && S >= 200) return result(10000, 'S>=200');
@@ -59,6 +68,7 @@ export function createFastTelemetry(mode, policy = 'legacy') {
       const ms = performance.now() - start;
       if (budget !== null) data.appliedBudgets[name] = budget;
       const stage = { name, ms, budget, completed: result?.completed ?? null, states: result?.searchedStates ?? null };
+      if (name === 'refine') stage.passes = result?.passes ?? null;
       if (mode === 'trace') Object.assign(stage, { inputKeys: seedKeys, keys: result?.keys ?? null,
         qualityVector: result?.qualityVector ?? null });
       data.stages.push(stage);

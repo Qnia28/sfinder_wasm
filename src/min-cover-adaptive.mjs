@@ -324,9 +324,9 @@ export async function minimumCoverAsync(coverage, {
   if (telemetry) telemetry.data.selection = selection;
   telemetry?.end('features', stageStart);
   stageStart = telemetry?.begin();
-  const probe = solver?.minimumCoverAtCount?.(coverage, primary.count, {
+  const probe = budget > 0 ? solver?.minimumCoverAtCount?.(coverage, primary.count, {
     qualityFor, seedKeys: primaryKeys, stateBudget: budget, integrated: true,
-  });
+  }) : null;
   if (probe) telemetry?.end('integrated', stageStart, probe, primaryKeys, budget);
   if (probe?.completed && Number.isFinite(probe.count) && probe.count === primary.count) {
     return {
@@ -410,6 +410,8 @@ export async function minimumCoverAsync(coverage, {
   stageStart = telemetry?.begin();
   const refined = refineMinimumCoverQuality(prepared, fallbackIds);
   telemetry?.end('refine', stageStart, { ...refined, keys: refined.selected.map(id => prepared.keys[id]) }, fallbackKeys);
+  const fallbackDecision = !budgets.explicit && budgets.policy === 'DIRECT_2X2' ? 'direct-2x2'
+    : !budgets.explicit && budgets.policy === 'PREVIEW_ONLY' ? 'preview-only-2x2' : 'integrated-budget-exceeded';
   return {
     count: primary.count,
     keys: refined.selected.map((id) => prepared.keys[id]),
@@ -434,8 +436,8 @@ export async function minimumCoverAsync(coverage, {
     fastThresholdBudget: thresholdGraceBudget,
     fastThresholdStates: thresholdProbe?.searchedStates ?? 0,
     fastFallback: true,
-    fastDecision: "integrated-budget-exceeded",
+    fastDecision: fallbackDecision,
     qualityRefinementPasses: refined.passes,
-    fastTelemetry: telemetry?.finish('integrated-budget-exceeded') ?? null,
+    fastTelemetry: telemetry?.finish(fallbackDecision) ?? null,
   };
 }

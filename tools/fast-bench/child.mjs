@@ -8,6 +8,8 @@ import { prepareFastFixture, runFastFixedK, ARMS } from './adapter.mjs';
 import { hash, selectedVector } from '../secondary-bench/contracts.mjs';
 import { ARM_OPTIONS } from '../fast-triage/planner.mjs';
 import { verifyTelemetry } from '../fast-triage/verify.mjs';
+import { STUDY as ROUTING_STUDY, ARM_OPTIONS as ROUTING_OPTIONS } from '../fast-routing/policies.mjs';
+import { verifyRoutingTelemetry } from '../fast-routing/verify.mjs';
 
 const send = m => new Promise((resolve, reject) => process.send(m, e => e ? reject(e) : resolve()));
 const phase = name => process.send({ event: 'phase', name });
@@ -46,10 +48,13 @@ async function execute(job) {
         representation: fixture.representation };
     }
     assert.equal(job.mode, 'e2e');
-    const c = job.command, secondary = job.arm === 'DIRECT' ? '2x2' : 'auto';
+    const routing = job.study === ROUTING_STUDY;
+    const c = job.command, secondary = job.arm === 'DIRECT' && !routing ? '2x2' : 'auto';
     const triage = job.study === 'fast-triage-e2e-20261017';
     if (triage) assert(Object.hasOwn(ARM_OPTIONS, job.arm));
-    const budgetOptions = triage ? { ...ARM_OPTIONS[job.arm], fastDiagnostics: job.diagnostics }
+    if (routing) assert(Object.hasOwn(ROUTING_OPTIONS, job.arm));
+    const budgetOptions = routing ? { ...ROUTING_OPTIONS[job.arm], fastDiagnostics: job.diagnostics }
+      : triage ? { ...ARM_OPTIONS[job.arm], fastDiagnostics: job.diagnostics }
       : { fastStateBudget: ARMS[job.arm][0] || undefined };
     const apiStart = performance.now();
     let result, encoded, empty = false;
@@ -87,10 +92,12 @@ async function execute(job) {
       const selected = r.keys.map(k => indices.get(k));
       assert.deepEqual(r.humanQualityVector, selectedVector(fixture, selected));
       if (triage) verifyTelemetry(fixture, r, job.arm, job.diagnostics);
+      if (routing) verifyRoutingTelemetry(fixture, r, job.arm, job.diagnostics);
       outcomes[f.filter] = { keys: r.keys, selected, qualityVector: r.humanQualityVector,
         qualityExact: r.humanQualityExact, K: r.minimalCount, cardinalityBackend: r.cardinalityBackend,
         qualityBackend: r.qualityBackend, primaryResolved: r.primaryResolved,
         fastDecision: r.fastDecision ?? null, fastProbeStates: r.fastProbeStates ?? null,
+        qualityRefinementPasses: r.qualityRefinementPasses ?? r.fastTelemetry?.stages.find(s => s.name === 'refine')?.passes ?? null,
         fastTelemetry: r.fastTelemetry ?? null,
         fastBypass: ['rust-legacy-exact', 'direct-exact'].includes(r.qualityBackend) ? r.qualityBackend : null,
         captureIdentity: fixture.contentIdentity,
@@ -102,7 +109,7 @@ async function execute(job) {
     return { status: empty ? 'RETURNED_EMPTY' : Object.values(outcomes).every(r => r.status === 'EMPTY' || r.qualityExact)
       ? 'RETURNED_EXACT' : 'RETURNED_APPROX', policyMs, apiMs, initMs: initialized - started,
       outcomes, encoded, primary: 'auto', secondaryWorkers: 0, filterWorkers: 0,
-      phaseBreakdown: triage ? 'PER_FILTER_FAST_TELEMETRY; API includes enumeration and encoding' : 'UNOBSERVED_TRACE_OFF_PUBLIC_API',
+      phaseBreakdown: triage || routing ? 'PER_FILTER_FAST_TELEMETRY; API includes enumeration and encoding' : 'UNOBSERVED_TRACE_OFF_PUBLIC_API',
       command: c, arm: job.arm, diagnostics: job.diagnostics ?? false };
   } finally { solver?.close(); }
 }
