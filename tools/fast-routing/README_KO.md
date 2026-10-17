@@ -68,3 +68,19 @@ node tools/fast-bench/download-results.mjs RUN_ID D:/AI/sfinder-wasm/fast2nd/202
 ```
 
 회수 후 backend archive digest·snapshot·schedule/terminal record·최종 witness·시간 합계를 검증한다. 결과 정리에는 전체 원자료, 호출별 scalar, 특징·품질 변화, 상태/검열, 한국어 요약과 출처 GLM·hash manifest를 포함한다.
+
+## 중단·재개 통합 결과 재검산
+
+`CONTINUATION_39030155561.json`에 따라 원본39026013968의915명령, 실패재개39030155561의 완결38명령, 최종재개39030482572의160명령을 선택한다. 시작-only8호출은 최종재개에서 입력 전체 블록과 함께 재측정한다. 이전 시도는 삭제하지 않는다.
+
+`analyze-results.mjs`는 세 run의 archive receipt와 schedule을 대조하고, raw byte offset 인덱스로 원행 witness·K·coverage·품질·trace·예산을 검산한다. 최종 선택과 이전 시도를 분리하며 BASE100과 DIRECT 양쪽 대비를 제공한다. `report-results.py`는 한국어 요약과 특징 구간·7반복·진단 차이 집계를 작성한다. 둘 다 solver를 실행하지 않는다.
+
+```powershell
+node --max-old-space-size=8192 tools/fast-routing/analyze-results.mjs D:/AI/sfinder-wasm/fast2nd/20261017 D:/AI/sfinder-wasm/fast2nd/20261017/fast-routing-results
+python tools/fast-routing/report-results.py D:/AI/sfinder-wasm/fast2nd/20261017/fast-routing-results
+python tools/fast-routing/check-results.py D:/AI/sfinder-wasm/fast2nd/20261017/fast-routing-results
+```
+
+실패재개39030155561의 digest 검증 회수 경로는 `fast-routing-run-39030155561-verified/`다. 최초 failure dump 회수본도 별도 보존한다. 분석 출력 경로는 새 디렉터리여야 한다. `MANIFEST.json`·`REPORT_MANIFEST.json`은 각각 분석과 보고서 파일 SHA256을 기록한다. 자료 회수는 `FAST_DOWNLOAD_WORKERS=1..4`로 병렬도를 설정할 수 있으며, 실패 archive를 보존하고 최대6회 제한된 backoff 재시도를 한다. 이는 전송에만 적용되고 원격 측정을 재실행하지 않는다.
+
+검산 완료 결과: 25,081/25,081 starts/raw/terminal, 최종 witness89,152개·trace witness7,086개, 선택 결과 timeout/오류/누락0. Python 독립검산은 모든 pair delta·입력 중앙값 합계·21개 품질쌍의 원행·18개 산출물 hash를 확인했다. 상세 보고서는 위 결과 폴더의 `RESULTS_KO.md`이며 성능·품질 판정은 해당 분모와 함께 읽는다.

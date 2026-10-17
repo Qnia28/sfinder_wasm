@@ -6,6 +6,7 @@ import path from 'node:path';
 import { execFileSync, spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { setTimeout as delay } from 'node:timers/promises';
 import { verifySnapshot } from '../secondary-bench/common/evidence.mjs';
 const [runId, destination, mode] = process.argv.slice(2);
 assert(/^\d+$/.test(runId) && destination && (!mode || mode === '--full'));
@@ -22,7 +23,9 @@ assert(wanted.length, 'no matching artifacts');
 const hashFile = async file => {
   const h = createHash('sha256'); for await (const bytes of fs.createReadStream(file)) h.update(bytes); return h.digest('hex');
 };
-for (const a of wanted) {
+const workers = Number(process.env.FAST_DOWNLOAD_WORKERS ?? 1);
+assert(Number.isInteger(workers) && workers >= 1 && workers <= 4, 'download workers must be 1..4');
+async function preserve(a) {
   assert(!a.expired, 'expired artifact ' + a.id);
   assert(/^fast-[a-zA-Z0-9-]+$/.test(a.name));
   const directory = path.join(root, a.name + '-' + a.id), receipt = directory + '.receipt.json';
@@ -31,7 +34,7 @@ for (const a of wanted) {
     assert.equal(old.artifactId, a.id); assert.equal(old.backendDigest, a.digest);
     if (fs.existsSync(path.join(directory, 'SNAPSHOT.json'))) verifySnapshot(directory);
     else assert.equal(await hashFile(directory + '.zip'), old.zipSha256);
-    console.log('VERIFIED_CACHE', a.name); continue;
+    console.log('VERIFIED_CACHE', a.name); return;
   }
   assert(!fs.existsSync(directory), 'unverified partial directory; inspect before resuming: ' + directory);
   const disk = fs.statfsSync(root); assert(disk.bavail * disk.bsize > a.size_in_bytes * 2 + 1024 ** 3, 'disk admission');
@@ -42,19 +45,24 @@ for (const a of wanted) {
     fs.appendFileSync(path.join(root, 'TRANSPORT_ERRORS.jsonl'), JSON.stringify({ artifactId: a.id, reason, retained }) + '\n');
   };
   if (fs.existsSync(archive) && 'sha256:' + await hashFile(archive) !== a.digest) quarantine('previous incomplete download');
-  for (let attempt = 0; !fs.existsSync(archive) && attempt < 3; attempt++) {
+  for (let attempt = 0; !fs.existsSync(archive) && attempt < 6; attempt++) {
     const fd = fs.openSync(archive, 'wx');
     let failure;
     try {
       await new Promise((resolve, reject) => {
-        const child = spawn('gh', ['api', `repos/${repo}/actions/artifacts/${a.id}/zip`], { stdio: ['ignore', fd, 'inherit'] });
+        const child = spawn('gh', ['api', `repos/${repo}/actions/artifacts/${a.id}/zip`], { stdio: ['ignore', fd, 'inherit'], timeout: 180000 });
         child.once('error', reject); child.once('close', code => code === 0 ? resolve() : reject(new Error('download exit ' + code)));
       });
     } catch (error) { failure = error; }
     finally { fs.closeSync(fd); }
     if (failure) {
       quarantine(failure.message);
-      if (attempt === 2) throw failure;
+      if (attempt === 5) throw failure;
+      // Transport retries only: preserve each failed archive and back off so
+      // a transient TLS/network outage does not trigger immediate repeat calls.
+      const waitMs = Math.min(120000, 10000 * 2 ** attempt);
+      console.log('TRANSPORT_RETRY', a.id, 'waitMs', waitMs);
+      await delay(waitMs);
     }
   }
   const sha = await hashFile(archive);
@@ -68,3 +76,12 @@ for (const a of wanted) {
   if (sealed) fs.unlinkSync(archive);
   console.log('PRESERVED', a.name, a.id);
 }
+let next = 0, failure;
+await Promise.all(Array.from({ length: workers }, async () => {
+  while (!failure && next < wanted.length) {
+    const artifact = wanted[next++];
+    try { await preserve(artifact); } catch (error) { failure ??= error; }
+  }
+}));
+if (failure) throw failure;
+console.log('COLLECTION_COMPLETE', runId, wanted.length);
