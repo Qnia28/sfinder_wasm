@@ -1,0 +1,15 @@
+name: Fast routing pinned-runtime continuation
+description: Run continuation with artifact service credentials and the pinned Node executable
+inputs:
+  mode:
+    description: plan or measure
+    required: true
+  shard:
+    description: Original frozen shard index
+    default: '0'
+outputs:
+  matrix:
+    description: Frozen continuation matrix
+runs:
+  using: node24
+  main: index.cjs

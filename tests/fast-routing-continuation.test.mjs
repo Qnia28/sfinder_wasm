@@ -8,6 +8,13 @@ import { fileURLToPath } from 'node:url';
 import { seal } from '../tools/secondary-bench/common/evidence.mjs';
 import { digest } from '../tools/fast-bench/planner.mjs';
 
+test('action wrapper rejects missing artifact credentials before spawning continuation', () => {
+  const env = { ...process.env }; delete env.ACTIONS_RUNTIME_TOKEN; delete env.ACTIONS_RESULTS_URL;
+  const result = spawnSync(process.execPath, [fileURLToPath(new URL('../tools/fast-routing/continuation-action/index.cjs', import.meta.url))], { env, encoding: 'utf8' });
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /Missing ACTIONS_RUNTIME_TOKEN; no measurement admitted/);
+});
+
 test('continuation reuses complete censored blocks, reruns entire interrupted block and rejects product errors', async t => {
   const temp = process.platform === 'win32' ? path.join(process.env.LOCALAPPDATA, 'Temp', 'opencode') : os.tmpdir();
   const root = fs.mkdtempSync(path.join(temp, 'routing-resume-'));

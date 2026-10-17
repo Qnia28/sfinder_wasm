@@ -35,7 +35,9 @@ jobs:
       - run: npm ci --prefix product --ignore-scripts --no-audit --no-fund
       - run: npm ci --prefix harness/tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
       - id: plan
-        run: node harness/tools/fast-routing/continue.mjs plan
+        uses: ./harness/tools/fast-routing/continuation-action
+        with:
+          mode: plan
       - if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -64,7 +66,10 @@ jobs:
       - run: npm ci --prefix product --ignore-scripts --no-audit --no-fund
       - run: npm ci --prefix harness/tools/secondary-bench/artifact-action --ignore-scripts --no-audit --no-fund
       - name: Complete frozen command blocks with original source and input artifacts
-        run: node harness/tools/fast-routing/continue.mjs measure ${{ matrix.shard }}
+        uses: ./harness/tools/fast-routing/continuation-action
+        with:
+          mode: measure
+          shard: ${{ matrix.shard }}
       - if: failure() || cancelled()
         uses: actions/upload-artifact@v4
         with:

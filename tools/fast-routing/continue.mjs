@@ -9,7 +9,7 @@ import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 import { setTimeout as delay } from 'node:timers/promises';
 const harness = path.resolve('harness'), product = path.resolve('product');
-const manifest = JSON.parse(fs.readFileSync(path.join(harness, 'tools/fast-routing/CONTINUATION_39026013968.json')));
+const manifest = JSON.parse(fs.readFileSync(path.join(harness, 'tools/fast-routing/CONTINUATION_39030155561.json')));
 const client = (await import(pathToFileURL(path.join(harness, 'tools/secondary-bench/artifact-action/node_modules/@actions/artifact/lib/artifact.js')))).default;
 process.chdir(product);
 const { isolatedScope } = await import(pathToFileURL(path.join(product, 'tools/secondary-bench/followup-scope.mjs')));
@@ -17,6 +17,9 @@ const { seal, verifySnapshot } = await import(pathToFileURL(path.join(product, '
 const [mode, shardText] = process.argv.slice(2), shard = Number(shardText), runId = process.env.GITHUB_RUN_ID;
 assert.equal(process.platform, 'linux'); assert.equal(process.env.GITHUB_REPOSITORY, 'Qnia28/sfinder_wasm');
 assert.equal(process.env.GITHUB_RUN_ATTEMPT, '1', 'preserve this attempt; no workflow retry');
+// Fail before downloads or solver calls if invoked outside the credentialed
+// JavaScript action. Do not discover missing credentials at checkpoint flush.
+for (const name of ['ACTIONS_RUNTIME_TOKEN', 'ACTIONS_RESULTS_URL']) assert(process.env[name], `Missing ${name}; use continuation-action`);
 const hash = b => createHash('sha256').update(b).digest('hex'), digest = v => hash(JSON.stringify(v));
 const read = p => JSON.parse(fs.readFileSync(p));
 const root = path.resolve('../routing-resume'); fs.mkdirSync(root, { recursive: false });
@@ -81,6 +84,14 @@ const cumulativeHours = manifest.budget.cumulativeConservativeHours + 2;
 assert(cumulativeHours <= 1200, 'cumulative budget');
 if (mode === 'plan') {
   assert.equal(manifest.chunks.reduce((n, c) => n + c.callIds.length, 0), manifest.resumeCalls);
+  // Exercise the same SDK upload path before admitting any measurement VM.
+  // One tiny metadata artifact, zero solver calls; prevents another campaign
+  // from discovering an artifact credential/configuration error at flush.
+  const probe = path.join(root, 'transport-check'); fs.mkdirSync(probe);
+  fs.writeFileSync(path.join(probe, 'CHECK.json'), JSON.stringify({ runId, node: process.version, sourceCommit: manifest.sourceCommit }) + '\n');
+  const receipt = await upload('fast-routing-transport-check', probe);
+  write('TRANSPORT_CHECK_RECEIPT.json', receipt);
+  summary('Artifact SDK upload check PASS (one metadata artifact, zero solver calls).');
   fs.appendFileSync(process.env.GITHUB_OUTPUT, 'matrix=' + JSON.stringify({ include: manifest.chunks.map(c => ({ shard: c.shard })) }) + '\n');
   write('CONTINUATION.json', manifest);
   write('ADDITIONAL_CONTROL_BUDGET.json', { failedPlanRunId: '39029765625', extraControlReservationHours: 2, cumulativeHours });
