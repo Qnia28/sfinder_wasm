@@ -267,6 +267,24 @@ export async function minimumCoverAsync(coverage, {
     };
   }
 
+  const session = solver?.createMinimumCoverAtCountSession?.(coverage, { qualityFor });
+  const releaseProbes = () => session?.close();
+  try {
+    return solveFastQuality({
+      prepared, primary, primaryKeys, requestedPrimary, requested, kernelStats,
+      budgets, telemetry, qualityFor, releaseProbes,
+      probeAtCount: session
+        ? (count, options) => session.minimumCoverAtCount(count, options)
+        : (count, options) => solver?.minimumCoverAtCount?.(coverage, count, options),
+    });
+  } finally {
+    releaseProbes();
+  }
+}
+
+function solveFastQuality({ prepared, primary, primaryKeys, requestedPrimary, requested,
+  kernelStats, budgets, telemetry, qualityFor, probeAtCount, releaseProbes }) {
+  let stageStart;
   let budget = budgets.integrated;
 
   // Exact-only speculative preview. Candidate dominance is sound for the final
@@ -281,7 +299,7 @@ export async function minimumCoverAsync(coverage, {
     : null;
   stageStart = telemetry?.begin();
   const dominancePreview = dominancePreviewBudget > 0
-    ? solver?.minimumCoverAtCount?.(coverage, primary.count, {
+    ? probeAtCount(primary.count, {
       qualityFor,
       seedKeys: primaryKeys,
       stateBudget: dominancePreviewBudget,
@@ -324,7 +342,7 @@ export async function minimumCoverAsync(coverage, {
   if (telemetry) telemetry.data.selection = selection;
   telemetry?.end('features', stageStart);
   stageStart = telemetry?.begin();
-  const probe = budget > 0 ? solver?.minimumCoverAtCount?.(coverage, primary.count, {
+  const probe = budget > 0 ? probeAtCount(primary.count, {
     qualityFor, seedKeys: primaryKeys, stateBudget: budget, integrated: true,
   }) : null;
   if (probe) telemetry?.end('integrated', stageStart, probe, primaryKeys, budget);
@@ -362,7 +380,7 @@ export async function minimumCoverAsync(coverage, {
   const thresholdGraceBudget = budgets.grace;
   const thresholdSeedKeys = probe?.keys?.length === primary.count ? probe.keys : primaryKeys;
   stageStart = telemetry?.begin();
-  const thresholdProbe = thresholdGraceBudget > 0 ? solver?.minimumCoverAtCount?.(coverage, primary.count, {
+  const thresholdProbe = thresholdGraceBudget > 0 ? probeAtCount(primary.count, {
     qualityFor,
     seedKeys: thresholdSeedKeys,
     stateBudget: thresholdGraceBudget,
@@ -399,6 +417,8 @@ export async function minimumCoverAsync(coverage, {
     };
   }
 
+  // Release retained WASM input before allocating the refine working set.
+  releaseProbes();
   const fallbackKeys = thresholdProbe?.keys?.length === primary.count
     ? thresholdProbe.keys
     : thresholdSeedKeys;
