@@ -1,6 +1,6 @@
 # sfinder-wasm 사용자 가이드
 
-이 문서는 sfinder-wasm 3.1의 기능을 사용자 관점에서 설명합니다.
+이 문서는 sfinder-wasm 3.2의 기능을 사용자 관점에서 설명합니다.
 과거 Java/Python wrapper의 CLI 사용법이 아니라 현재 sfinder-wasm의 동작을
 기준으로 합니다.
 
@@ -413,3 +413,7 @@ Congruent로 찾은 대체 배치 전체를 만든 뒤 Cover를 수행합니다.
 - `docs/SINGLE_QUEUE_SOLVER.md`
 - `docs/BATCH_ENGINE.md`
 - `docs/ARCHITECTURE.md`
+
+## Fast 정책 변경
+
+`secondary: "auto"`의 기본값은 U192_OR_D16입니다. 최소 K는 정확하며 secondary 품질은 근사일 수 있습니다. [Fast 설정](docs/API_REFERENCE.md#fast-policy-and-expert-tuning)을 참고하세요.

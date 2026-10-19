@@ -5,6 +5,7 @@ import {
   resolvePerSaveTargetLines,
 } from "./per-save-minimals.mjs";
 import { decodeAndValidate } from "./pc-input.mjs";
+import { DEFAULT_FAST_POLICY } from './fast-budget-policy.mjs';
 
 export function calculateLegacyPerSaveMinimalsFeature({
   sourceFumen,
@@ -71,6 +72,7 @@ export async function calculatePerSaveMinimalsFeature({
   useHiGHS = undefined,
   UseHiGHS = undefined,
   fastStateBudget = undefined,
+  fastPolicy = DEFAULT_FAST_POLICY, fastPreviewBudget = undefined, fastGraceBudget = undefined, fastDiagnostics = false,
   secondaryWorkers = 'auto',
   secondary = 'auto',
   filterWorkers = 0,
@@ -89,6 +91,7 @@ export async function calculatePerSaveMinimalsFeature({
     primary: primary ?? Primary,
     useHiGHS: useHiGHS ?? UseHiGHS ?? "auto",
     fastStateBudget,
+    fastPolicy, fastPreviewBudget, fastGraceBudget, fastDiagnostics,
     includeCoverage: false,
     secondaryWorkers,
     secondary,
@@ -115,6 +118,8 @@ export async function calculatePerSaveMinimalsFeature({
       primaryResolved: result.primaryResolved,
       cardinalityBackend: result.cardinalityBackend,
       qualityBackend: result.qualityBackend,
+      fastTelemetry: result.fastTelemetry,
+      fastDecision: result.fastDecision,
     };
   }
   return {

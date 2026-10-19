@@ -1082,6 +1082,8 @@ struct QualityThresholdData {
 
 impl QualityThresholdData {
     fn build(cases: &[Vec<(u32, u32)>], solution_count: usize, threshold: u32) -> Self {
+        #[cfg(test)]
+        THRESHOLD_DATA_BUILDS.with(|count| count.set(count.get() + 1));
         let mut grouped: HashMap<Vec<u32>, u32> = HashMap::new();
         for row in cases {
             let mut ids: Vec<u32> = row
@@ -1118,6 +1120,13 @@ impl QualityThresholdData {
             total_weight,
         }
     }
+}
+
+#[cfg(test)]
+std::thread_local! {
+    // Per-thread accounting keeps parallel unit tests independent. No product
+    // instrumentation or runtime branch is emitted for this counter.
+    static THRESHOLD_DATA_BUILDS: std::cell::Cell<usize> = const { std::cell::Cell::new(0) };
 }
 
 #[derive(Clone, Debug)]
@@ -2091,6 +2100,33 @@ fn fixed_quality_impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>(
     seed_selected: &[u32],
     locked_prefix: &[u32],
     state_budget: Option<u64>,
+    proven_prefix: Option<&mut Vec<u32>>,
+) -> Option<BoundedQualityResult> {
+    fixed_quality_with_preparation::<CURRENT_PROPAGATION, ROOT_FORCED, false>(
+        raw_cases,
+        solution_count,
+        exact_count,
+        seed_selected,
+        locked_prefix,
+        state_budget,
+        proven_prefix,
+    )
+}
+
+// EAGER is instantiated only by differential unit tests. Product entry points
+// always use lazy preparation; traversal, budgets and proof publication are
+// shared so the tests can compare every bounded result and searched-state count.
+fn fixed_quality_with_preparation<
+    const CURRENT_PROPAGATION: bool,
+    const ROOT_FORCED: bool,
+    const EAGER: bool,
+>(
+    raw_cases: &[Vec<(u32, u32)>],
+    solution_count: usize,
+    exact_count: usize,
+    seed_selected: &[u32],
+    locked_prefix: &[u32],
+    state_budget: Option<u64>,
     mut proven_prefix: Option<&mut Vec<u32>>,
 ) -> Option<BoundedQualityResult> {
     if let Some(prefix) = proven_prefix.as_deref_mut() {
@@ -2157,12 +2193,16 @@ fn fixed_quality_impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>(
     if levels.len() > 1 {
         levels.remove(0);
     }
-    let threshold_data: Vec<QualityThresholdData> = levels
-        .iter()
-        .map(|&threshold| QualityThresholdData::build(&normalized, solution_count, threshold))
-        .collect();
+    let mut threshold_data: Vec<QualityThresholdData> = if EAGER {
+        levels
+            .iter()
+            .map(|&threshold| QualityThresholdData::build(&normalized, solution_count, threshold))
+            .collect()
+    } else {
+        Vec::new()
+    };
 
-    if locked_prefix.len() > threshold_data.len() {
+    if locked_prefix.len() > levels.len() {
         return None;
     }
     for (index, &target) in locked_prefix.iter().enumerate() {
@@ -2176,7 +2216,7 @@ fn fixed_quality_impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>(
     let mut targets = locked_prefix.to_vec();
     let mut searched_states = 0u64;
 
-    for current_index in locked_prefix.len()..threshold_data.len() {
+    for current_index in locked_prefix.len()..levels.len() {
         let remaining_budget = state_budget.map(|limit| limit.saturating_sub(searched_states));
         if remaining_budget == Some(0) {
             return Some(BoundedQualityResult::BudgetExceeded(MinimumCoverResult {
@@ -2185,7 +2225,17 @@ fn fixed_quality_impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>(
                 searched_states,
             }));
         }
-        let stable_tie = current_index + 1 == threshold_data.len();
+        // Build only the prefix this search can consult, after checking budget.
+        // Imported locks require their data too; prior levels stay resident.
+        while threshold_data.len() <= current_index {
+            let threshold = levels[threshold_data.len()];
+            threshold_data.push(QualityThresholdData::build(
+                &normalized,
+                solution_count,
+                threshold,
+            ));
+        }
+        let stable_tie = current_index + 1 == levels.len();
         let active_candidate = threshold_static_active_candidates(
             &primary_coverage,
             &threshold_data,
@@ -2269,7 +2319,7 @@ fn fixed_quality_impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>(
         }
     }
 
-    if !threshold_data.is_empty() && locked_prefix.len() == threshold_data.len() {
+    if !levels.is_empty() && locked_prefix.len() == levels.len() {
         let remaining_budget = state_budget.map(|limit| limit.saturating_sub(searched_states));
         if remaining_budget == Some(0) {
             return Some(BoundedQualityResult::BudgetExceeded(MinimumCoverResult {
@@ -2278,7 +2328,17 @@ fn fixed_quality_impl<const CURRENT_PROPAGATION: bool, const ROOT_FORCED: bool>(
                 searched_states,
             }));
         }
-        let last = threshold_data.len() - 1;
+        // All quality levels may be locked, but stable-ID minimization still
+        // needs a final search and therefore the complete threshold prefix.
+        while threshold_data.len() < levels.len() {
+            let threshold = levels[threshold_data.len()];
+            threshold_data.push(QualityThresholdData::build(
+                &normalized,
+                solution_count,
+                threshold,
+            ));
+        }
+        let last = levels.len() - 1;
         let active_candidate =
             threshold_static_active_candidates(&primary_coverage, &threshold_data, last, true);
         let (full, mut case_candidates, solution_coverage) =

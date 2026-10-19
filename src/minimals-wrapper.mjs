@@ -1,6 +1,7 @@
 import { calculateLegacySaveMinimals, calculateSaveMinimals, encodeSaveMinimalFumen } from "./minimals-feature.mjs";
 import { queuesForFinder } from "./pattern.mjs";
 import { decodeAndValidate } from "./pc-input.mjs";
+import { DEFAULT_FAST_POLICY } from './fast-budget-policy.mjs';
 
 export function calculateLegacyMinimalsFeature({
   sourceFumen,
@@ -43,6 +44,7 @@ export async function calculateMinimalsFeature({
   useHiGHS = undefined,
   UseHiGHS = undefined,
   fastStateBudget = undefined,
+  fastPolicy = DEFAULT_FAST_POLICY, fastPreviewBudget = undefined, fastGraceBudget = undefined, fastDiagnostics = false,
   primaryProof = "standard",
   secondary = 'auto',
   signal = null,
@@ -59,6 +61,7 @@ export async function calculateMinimalsFeature({
     primary: primary ?? Primary,
     useHiGHS: useHiGHS ?? UseHiGHS ?? "auto",
     fastStateBudget,
+    fastPolicy, fastPreviewBudget, fastGraceBudget, fastDiagnostics,
     primaryProof,
     secondary,
     signal,
@@ -89,6 +92,7 @@ export async function calculateMinimalsFeature({
     fastThresholdStates: calculation.fastThresholdStates,
     fastFallback: calculation.fastFallback,
     fastDecision: calculation.fastDecision,
+    fastTelemetry: calculation.fastTelemetry,
     humanQualityExact: calculation.humanQualityExact,
   };
 }

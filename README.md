@@ -1,6 +1,6 @@
 # sfinder-wasm
 
-**sfinder-wasm 3.1**
+**sfinder-wasm 3.2**
 
 `sfinder-wasm` is a browser-native Rust/WebAssembly implementation of selected
 Tetris Perfect Clear analysis workflows. It reproduces the intended output
@@ -18,7 +18,16 @@ repository.
 
 See `docs/API_REFERENCE.md` for APIs and compatibility notes.
 
-## What's new in 3.1
+## What's new in 3.2
+
+- Faster default Fast minimals and per-save minimals through request-local WASM
+  input reuse, lazy threshold preparation and optimized 2-for-2 refinement.
+- A single U192_OR_D16 policy chooses 10K/100K integrated states. Explicit
+  `fastStateBudget` remains supported; legacy and experimental policies are removed.
+- Minimum K and coverage remain exact; bounded quality and selected solutions may
+  differ from 3.1. Use `secondary: 'quality'` for complete quality proof.
+
+## Previous release: 3.1
 
 - Exact human-quality minimals offer `secondary` engine selection, with automatic
   Rust/CP-SAT cooperation and complete quality and stable-ID proof.
@@ -344,3 +353,9 @@ See `THIRD_PARTY_NOTICES.md` and `HIGHS_INTEGRATION_AND_LICENSE.md`.
 
 For ORTools assets, runtime requirements, NOTICE and Eigen source redistribution,
 see [ORTools integration](ORTOOLS_INTEGRATION_AND_LICENSE.md).
+
+## Fast policy update
+
+The default bounded secondary now uses U192_OR_D16 (10K/100K integrated states),
+with exact-only preview and GRACE retained. Minimum solution count remains exact.
+See [Fast tuning](docs/API_REFERENCE.md#fast-policy-and-expert-tuning).

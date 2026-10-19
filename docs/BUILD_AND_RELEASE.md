@@ -1,4 +1,4 @@
-# Building sfinder-wasm 3.1
+# Building sfinder-wasm 3.2
 
 This guide applies to the source repository. The user distribution ZIP includes
 ready-to-use JavaScript, WASM and data assets; it excludes Rust source, build
@@ -8,7 +8,7 @@ scripts and this guide. For installation and runtime requirements, see
 ## Requirements
 
 - Node/npm for the pinned `tetris-fumen` dependency (`npm ci`).
-- Rust and Cargo, with `rustup target add wasm32-unknown-unknown`.
+- Rust 1.90.0 (the release build toolchain) and Cargo, with `rustup target add wasm32-unknown-unknown`.
 - Bash and standard shell utilities; on Windows use a suitable Bash environment.
 
 The Rust workspace contains `pc-core`, `pc-wasm`, `batch-wasm`, and `legal-gen`.
@@ -31,7 +31,7 @@ wasm/batch_wasm.wasm
 The default threshold configuration is `B`, enabling current propagation and
 root-forced handling. Leave `SFINDER_THRESHOLD_MODE` unset for the product
 configuration. The script also accepts `A` and `reference` as alternative source
-configurations; these are not the default 3.1 binaries.
+configurations; these are not the default 3.2 binaries.
 
 ## Generate the legal-board data
 
@@ -58,7 +58,7 @@ The committed `.gitattributes` excludes `rust/`, `scripts/`, this guide, and
 After review, create a ZIP from the approved commit:
 
 ```sh
-git archive --format=zip --prefix=sfinder-wasm-3.1/ --output=sfinder-wasm-3.1.zip APPROVED_COMMIT
+git archive --format=zip --prefix=sfinder-wasm-3.2/ --output=sfinder-wasm-3.2.zip APPROVED_COMMIT
 ```
 
 Replace `APPROVED_COMMIT` with the reviewed commit ID. Keep the archive outside

@@ -59,6 +59,22 @@ fn exercise<const CURRENT: bool, const ROOT: bool>(rows: &[Vec<(u32, u32)>], n: 
             Some(&mut prefix),
         )
         .unwrap();
+        let mut eager_prefix = Vec::new();
+        let eager = fixed_quality_with_preparation::<CURRENT, ROOT, true>(
+            rows,
+            n,
+            expected.selected.len(),
+            &seed,
+            &[],
+            budget,
+            Some(&mut eager_prefix),
+        )
+        .unwrap();
+        assert_eq!(
+            result, eager,
+            "lazy preparation must preserve bounded witness and states"
+        );
+        assert_eq!(prefix, eager_prefix);
         let (done, witness) = match result {
             BoundedQualityResult::Exact(w) => (true, w),
             BoundedQualityResult::BudgetExceeded(w) => (false, w),
@@ -105,6 +121,20 @@ fn exercise<const CURRENT: bool, const ROOT: bool>(rows: &[Vec<(u32, u32)>], n: 
                     None,
                 )
                 .unwrap();
+                let eager = fixed_quality_with_preparation::<CURRENT, ROOT, true>(
+                    rows,
+                    n,
+                    expected.selected.len(),
+                    &witness.selected,
+                    &prefix[..locks],
+                    None,
+                    None,
+                )
+                .unwrap();
+                assert_eq!(
+                    locked, eager,
+                    "partial/full locks must preserve stable-ID search"
+                );
                 let BoundedQualityResult::Exact(locked) = locked else {
                     panic!("unlimited locked search")
                 };
@@ -175,4 +205,74 @@ fn root_forced_duplicate_ids_equal_k_and_partial_budget_exits() {
     exercise::<false, true>(&rows, 3);
     exercise::<true, true>(&rows, 3);
     assert!(fixed_quality_impl::<true, true>(&rows, 3, 1, &[0], &[], None, None).is_none());
+}
+
+#[test]
+fn lazy_threshold_preparation_skips_unvisited_levels_and_validates_locks_first() {
+    // Many levels, two interchangeable candidates, deliberately noncanonical
+    // seed. Functional fixture only: count builds, do not measure wall time.
+    let rows: Vec<Vec<(u32, u32)>> = (1..=32).map(|q| vec![(0, q), (1, q)]).collect();
+    let seed = [1];
+    let mut full_prefix = Vec::new();
+    THRESHOLD_DATA_BUILDS.with(|count| count.set(0));
+    let exact =
+        fixed_quality_impl::<true, true>(&rows, 2, 1, &seed, &[], None, Some(&mut full_prefix))
+            .unwrap();
+    assert_eq!(THRESHOLD_DATA_BUILDS.with(|count| count.get()), 31);
+    assert_eq!(full_prefix.len(), 31);
+    let BoundedQualityResult::Exact(witness) = exact else {
+        panic!("unlimited search")
+    };
+    assert_eq!(witness.selected, vec![0]);
+
+    for locks in [0, 1, 30, 31] {
+        for budget in [Some(0), Some(1), Some(2), Some(5), None] {
+            let mut lazy_prefix = Vec::new();
+            THRESHOLD_DATA_BUILDS.with(|count| count.set(0));
+            let lazy = fixed_quality_impl::<true, true>(
+                &rows,
+                2,
+                1,
+                &seed,
+                &full_prefix[..locks],
+                budget,
+                Some(&mut lazy_prefix),
+            );
+            let built = THRESHOLD_DATA_BUILDS.with(|count| count.get());
+            let mut eager_prefix = Vec::new();
+            let eager = fixed_quality_with_preparation::<true, true, true>(
+                &rows,
+                2,
+                1,
+                &seed,
+                &full_prefix[..locks],
+                budget,
+                Some(&mut eager_prefix),
+            );
+            assert_eq!(lazy, eager);
+            assert_eq!(lazy_prefix, eager_prefix);
+            if budget == Some(0) {
+                assert_eq!(built, 0);
+            }
+            if locks == 0 && budget == Some(1) {
+                assert_eq!(built, 1);
+            }
+            if budget.is_none() {
+                assert_eq!(built, 31);
+            }
+            if locks == 31 && budget.is_none() {
+                let Some(BoundedQualityResult::Exact(result)) = lazy else {
+                    panic!("full lock tie")
+                };
+                assert_eq!(result.selected, vec![0]);
+            }
+        }
+    }
+
+    for locks in [vec![0], vec![32; 32]] {
+        THRESHOLD_DATA_BUILDS.with(|count| count.set(0));
+        let result = fixed_quality_impl::<true, true>(&rows, 2, 1, &seed, &locks, None, None);
+        assert!(result.is_none());
+        assert_eq!(THRESHOLD_DATA_BUILDS.with(|count| count.get()), 0);
+    }
 }

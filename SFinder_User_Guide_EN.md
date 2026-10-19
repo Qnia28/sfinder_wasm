@@ -1,6 +1,6 @@
 # sfinder-wasm User Guide
 
-This guide describes sfinder-wasm 3.1. It documents the
+This guide describes sfinder-wasm 3.2. It documents the
 browser/JavaScript engine rather than the historical Java/Python CLI wrappers.
 
 ## Choosing a feature
@@ -190,3 +190,8 @@ coverage.
 - `docs/SINGLE_QUEUE_SOLVER.md`
 - `docs/BATCH_ENGINE.md`
 - `docs/ARCHITECTURE.md`
+
+## Fast update
+
+`secondary: "auto"` uses U192_OR_D16 by default. Minimum K remains exact;
+secondary quality may be approximate. See [Fast tuning](docs/API_REFERENCE.md#fast-policy-and-expert-tuning).

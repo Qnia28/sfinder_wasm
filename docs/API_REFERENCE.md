@@ -1,6 +1,6 @@
 # JavaScript API reference
 
-This is the current public/runtime contract for Release 3.1.
+This is the public/runtime contract for Release 3.2.
 
 ## Recommended entry points
 
@@ -224,9 +224,9 @@ The previous `secondary: 'auto'` alone no longer means unbounded exact quality.
 
 `fastStateBudget` controls the integrated fixed-K probe in `secondary: 'auto'`. Auto may
 also run a small exact-only candidate-dominance preview and, after an integrated
-timeout, a bounded sequential-threshold grace probe. Those extra probes have
-separate conservative caps derived from the main Fast budget and are reported
-independently in the result metadata.
+timeout, a bounded sequential-threshold grace probe. Those extra probes have separate caps and are reported independently in
+the result metadata. The automatic policy retains 2,500/5,000-state auxiliary
+caps; an explicit fastStateBudget retains the previous scaled auxiliary caps.
 It does not affect `2x2` or the exact policies, including their structural seed
 probes. A per-save request applies the budget separately to each save problem.
 
@@ -464,3 +464,33 @@ Primary routing and settings are unchanged: Rust/HiGHS stay on the existing sing
 Worker parallelism preserves the exact objective, selected-key ordering, and result metadata. A pool failure rejects pending work. Public client cancellation terminates the request's workers; a new request uses a fresh parent Worker.
 
 Parallelism has initialization and matrix-copy costs. It cannot accelerate pattern expansion or candidate enumeration before the primary/secondary boundary. The default avoids spawning workers for exact searches completed by the existing bounded integrated search. A fixed worker count is primarily useful for measured heavy workloads; four workers are not universally faster.
+
+## Fast policy and expert tuning
+
+For `secondary: 'auto'`, the default Fast policy is `U192_OR_D16`.
+After the minimum count K is proved, the integrated quality search uses 10,000
+states if `S - F >= 192` or `K - F >= 16`, otherwise 100,000 states. S is the
+number of candidates in the original quality matrix; F counts distinct candidates
+forced by its singleton rows. These are not reduced primary-kernel statistics.
+
+The existing eligible exact-only preview (up to 2,500 states) and sequential
+threshold GRACE (up to 5,000 states) remain. An incomplete preview is discarded;
+the integrated result seeds GRACE and the final 2↔2 refinement. Existing tiny and
+hard-primary paths retain their routing. The minimum solution count and coverage
+are exact in every mode; bounded secondary quality and selected keys can change.
+
+Expert options, also available on per-save-minimals:
+
+- `fastStateBudget`: explicit integrated budget, taking precedence over automatic
+  routing; retains the previous scaled preview/GRACE caps. Historical zero handling
+  selects 100,000 states. An explicitly set budget is applied independently per save.
+- `fastPreviewBudget` / `fastGraceBudget`: nonnegative integer auxiliary budgets;
+  explicit zero disables that stage. Disabling GRACE can reduce final quality.
+- `fastDiagnostics`: off by default; `'timing'` adds stage timings and `'trace'`
+  additionally includes seed/selected keys. These diagnostics have overhead and
+  their internal fields are not a stable application contract.
+
+These options do not change the exact secondary policies or the primary engine.
+Use `secondary: 'quality'` when a complete secondary-quality proof is required.
+U192_OR_D16 is the only Fast policy. Legacy and experimental policy names are
+not supported. Set `fastStateBudget` to override the integrated search budget.

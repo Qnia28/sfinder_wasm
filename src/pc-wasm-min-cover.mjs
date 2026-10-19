@@ -4,9 +4,13 @@ import {
   packNumericIdRows,
   packNumericQualityRows,
   withWasmU32Buffers,
+  allocateWasmU32Buffers,
 } from "./pc-wasm-cover-matrix.mjs";
 import { assertQualityProvider } from "./quality-contract.mjs";
 import { U32_MAX, wasmU32 } from "./pc-wasm-abi.mjs";
+import { numericPacked } from "./numeric-cover-data.mjs";
+
+const fixedCountInput = Symbol('fixed-count-input');
 
 function searchedStates(solver) {
   return Number(solver.e.solver_min_cover_searched_states?.(solver.ptr) ?? 0n);
@@ -164,6 +168,66 @@ export const minCoverMethods = {
     );
   },
 
+  // Synchronous, request-local reuse across bounded engines. Coverage and the
+  // quality provider must remain immutable until close(); no global cache or
+  // search state is retained. Allocation is lazy (DIRECT/unsupported/empty use
+  // no matrix buffers). Close before refine and before closing the solver.
+  createMinimumCoverAtCountSession(coverage, { qualityFor = null, prepared = null } = {}) {
+    assertQualityProvider(qualityFor);
+    const owner = this;
+    let closed = false;
+    let universe;
+    let packed;
+    let buffers;
+    const checkOpen = () => {
+      if (closed) throw new Error('fixed-count session is closed');
+    };
+    const input = {
+      universe() {
+        checkOpen();
+        return universe ??= prepared ? {
+          rawCases: prepared.cases, keys: prepared.keys,
+          keyIndex: prepared.keyIndex ?? new Map(prepared.keys.map((key, id) => [key, id])),
+        } : coverageUniverse(coverage);
+      },
+      packed() {
+        checkOpen();
+        if (!packed) {
+          const { rawCases, keyIndex } = input.universe();
+          // Numeric product inputs already own a packed matrix; Map inputs can
+          // reuse the validated quality snapshot prepared before primary.
+          const matrix = prepared
+            ? (numericPacked(prepared.primaryCases) ?? packNumericQualityRows(prepared.cases, prepared.keys.length))
+            : packCoverageRows(rawCases, keyIndex, qualityFor);
+          buffers = allocateWasmU32Buffers(owner, {
+            offsets: matrix.offsets, ids: matrix.ids, qualities: matrix.qualities,
+          });
+          // Only counts and WASM pointers need to survive the first upload.
+          packed = { matrix: { caseCount: matrix.caseCount, entryCount: matrix.entryCount },
+            pointers: buffers.pointers };
+        }
+        return packed;
+      },
+    };
+    return {
+      minimumCoverAtCount(exactCount, options = {}) {
+        checkOpen();
+        if (options.qualityFor !== undefined && options.qualityFor !== qualityFor) {
+          throw new Error('fixed-count session quality provider cannot change');
+        }
+        return owner.minimumCoverAtCount(coverage, exactCount, {
+          ...options, qualityFor, [fixedCountInput]: input,
+        });
+      },
+      close() {
+        if (closed) return;
+        closed = true;
+        buffers?.close();
+        buffers = packed = universe = prepared = null;
+      },
+    };
+  },
+
   minimumCoverAtCount(coverage, exactCount, {
     qualityFor = null,
     seedKeys = [],
@@ -173,6 +237,7 @@ export const minCoverMethods = {
     dominance = false,
     partitioned = false,
     proofProgress = false,
+    [fixedCountInput]: input = null,
   } = {}) {
     assertQualityProvider(qualityFor);
     if (qualityFor === null) throw new Error("minimumCoverAtCount requires a positive human-quality provider");
@@ -200,7 +265,7 @@ export const minCoverMethods = {
       : (proofProgress ? this.e.solver_min_cover_at_count_progress_bounded : this.e.solver_min_cover_at_count_bounded);
     if ((integrated || bounded ? !boundedExport : !exactExport) || !this.e.wasm_alloc_u32 || !this.e.wasm_dealloc_u32) return null;
 
-    const { rawCases, keys, keyIndex } = coverageUniverse(coverage);
+    const { rawCases, keys, keyIndex } = input ? input.universe() : coverageUniverse(coverage);
     if (!rawCases.length) {
       const completed = Number(exactCount) === 0;
       return completed
@@ -215,18 +280,18 @@ export const minCoverMethods = {
     const locked = Uint32Array.from(
       lockedPrefix.map((value) => Math.max(0, Math.floor(Number(value) || 0))),
     );
-    const matrix = packCoverageRows(rawCases, keyIndex, qualityFor);
+    const shared = input?.packed();
+    const matrix = shared?.matrix ?? packCoverageRows(rawCases, keyIndex, qualityFor);
 
     return withWasmU32Buffers(
       this,
       {
-        offsets: matrix.offsets,
-        ids: matrix.ids,
-        qualities: matrix.qualities,
+        ...(!shared ? { offsets: matrix.offsets, ids: matrix.ids, qualities: matrix.qualities } : {}),
         seedIds,
         locked,
       },
-      ({ offsets, ids, qualities, seedIds: seedPointer, locked: lockedPointer }) => {
+      ({ seedIds: seedPointer, locked: lockedPointer, ...matrixPointers }) => {
+        const { offsets, ids, qualities } = shared?.pointers ?? matrixPointers;
         let status;
         if (integrated || bounded) {
           const budget = bounded

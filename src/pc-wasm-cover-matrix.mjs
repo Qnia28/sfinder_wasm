@@ -82,22 +82,37 @@ export function packCoverageRows(rawCases, keyIndex, qualityFor = null) {
   return { caseCount: rawCases.length, entryCount, offsets, ids, qualities };
 }
 
-export function withWasmU32Buffers(owner, arrays, callback) {
+// The owner must remain alive until close(). Store pointers, never memory views:
+// allocating another buffer or running the solver may grow WASM memory.
+export function allocateWasmU32Buffers(owner, arrays) {
   const pointers = {};
   const entries = Object.entries(arrays);
   const allocated = [];
+  const close = () => {
+    while (allocated.length) {
+      const [name, length] = allocated.pop();
+      owner.e.wasm_dealloc_u32(pointers[name], length);
+    }
+  };
   try {
     for (const [name, values] of entries) {
       const pointer = owner.e.wasm_alloc_u32(values.length);
       pointers[name] = pointer;
-      allocated.push([name, values]);
+      allocated.push([name, values.length]);
       if (values.length) new Uint32Array(owner.e.memory.buffer, pointer, values.length).set(values);
     }
-    return callback(pointers);
+    return { pointers, close };
+  } catch (error) {
+    close();
+    throw error;
+  }
+}
+
+export function withWasmU32Buffers(owner, arrays, callback) {
+  const buffers = allocateWasmU32Buffers(owner, arrays);
+  try {
+    return callback(buffers.pointers);
   } finally {
-    for (let index = allocated.length - 1; index >= 0; index -= 1) {
-      const [name, values] = allocated[index];
-      owner.e.wasm_dealloc_u32(pointers[name], values.length);
-    }
+    buffers.close();
   }
 }
