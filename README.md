@@ -20,10 +20,8 @@ See `docs/API_REFERENCE.md` for APIs and compatibility notes.
 
 ## What's new in 3.2
 
-- Faster default Fast minimals and per-save minimals through request-local WASM
-  input reuse, lazy threshold preparation and optimized 2-for-2 refinement.
-- A single U192_OR_D16 policy chooses 10K/100K integrated states. Explicit
-  `fastStateBudget` remains supported; legacy and experimental policies are removed.
+- Faster default Fast minimals and per-save minimals with automatic search-budget
+  adjustment and reduced processing overhead. `fastStateBudget` remains supported.
 - Minimum K and coverage remain exact; bounded quality and selected solutions may
   differ from 3.1. Use `secondary: 'quality'` for complete quality proof.
 
@@ -353,9 +351,3 @@ See `THIRD_PARTY_NOTICES.md` and `HIGHS_INTEGRATION_AND_LICENSE.md`.
 
 For ORTools assets, runtime requirements, NOTICE and Eigen source redistribution,
 see [ORTools integration](ORTOOLS_INTEGRATION_AND_LICENSE.md).
-
-## Fast policy update
-
-The default bounded secondary now uses U192_OR_D16 (10K/100K integrated states),
-with exact-only preview and GRACE retained. Minimum solution count remains exact.
-See [Fast tuning](docs/API_REFERENCE.md#fast-policy-and-expert-tuning).
