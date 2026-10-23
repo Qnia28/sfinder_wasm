@@ -1,4 +1,5 @@
 import { WasmPcSolver } from './wasm-backend.mjs';
+import { compareStableKeys } from './stable-key.mjs';
 import { withSecondaryPool } from "./exact-secondary-pool.mjs";
 import { withFilterCoverPool } from "./filter-cover-pool.mjs";
 import {primaryRequest} from "./primary-backend.mjs";
@@ -196,7 +197,7 @@ function maybeDirect({ board, cases, solver, useHold, candidateLimit, displayOrd
 function collectPatternPerSaveNumeric({ board, cases, solver, useHold, displayOrder }) {
   const path = enumerateCases({ board, cases, solver, useHold });
   if (path.mode !== "pattern") return null;
-  const solutions = [...path.rows].sort((left, right) => left.key.localeCompare(right.key));
+  const solutions = [...path.rows].sort((left, right) => compareStableKeys(left.key, right.key));
   const idByKey = new Map(solutions.map((solution, id) => [solution.key, id]));
   const byKey = new Map(solutions.map((solution) => [solution.key, solution]));
   const pieceIndex = new Map([...displayOrder].map((piece, index) => [piece, index]));
@@ -271,8 +272,8 @@ async function compactPerSaveResults({ board, cases, solver, useHold, displayOrd
   if (!compact) return null;
   const geometry = compactGeometry(compact);
   const queueCounts = cases.map(entry => prepareQueuePieceCounts(entry.queue));
-  // Assign the legacy stable IDs once, before distributing edges to save groups.
-  const order = geometry.keys.map((_, id) => id).sort((a, b) => geometry.keys[a].localeCompare(geometry.keys[b]));
+  // Assign canonical stable IDs once, before distributing edges to save groups.
+  const order = geometry.keys.map((_, id) => id).sort((a, b) => compareStableKeys(geometry.keys[a], geometry.keys[b]));
   const keys = order.map(id => geometry.keys[id]), ids = new Uint32Array(order.length);
   order.forEach((id, rank) => { ids[id] = rank; });
   const idByKey = new Map(keys.map((key, id) => [key, id]));

@@ -19,7 +19,7 @@ export function calculateChance(input) {
       const solved = empty % 4 === 0 ? solveQueuesExistence({ board, queues, solver, useHold }) : queues.map(() => false);
       const failedQueues = queues.filter((_, i) => !solved[i]);
       const total = queues.length, success = total - failedQueues.length;
-      return { total, success, failed: failedQueues.length, failedQueues, percent: 100 * success / total };
+      return { total, success, failed: failedQueues.length, failedQueues, percent: total ? 100 * success / total : 0 };
     };
     return solver.withProbabilitySession ? solver.withProbabilitySession(run) : run();
   }
@@ -43,7 +43,7 @@ export function calculateChance(input) {
     for (const entry of source.prefixes()) { batch.push(entry); if (batch.length >= 65536) flush(); }
     flush();
     const total = Number(source.total);
-    return { total, success, failed: failedQueues.length, failedQueues, percent: 100 * success / total };
+    return { total, success, failed: failedQueues.length, failedQueues, percent: total ? 100 * success / total : 0 };
   };
   return solver.withProbabilitySession ? solver.withProbabilitySession(run) : run();
 }

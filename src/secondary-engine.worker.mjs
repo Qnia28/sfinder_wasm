@@ -8,7 +8,7 @@ async function run({ engine, module, payload, limitMs }) {
   let solver, api, response, diagnostic;
   try {
     if (isNode && process.env.SECONDARY_MEMORY_DIRECTORY) {
-      const { installMemoryTrace } = await import(process.env.SECONDARY_MEMORY_MODULE);
+      const { installMemoryTrace } = await import(/* @vite-ignore */ process.env.SECONDARY_MEMORY_MODULE);
       diagnostic = installMemoryTrace(engine);
     }
     const trace = globalThis.__secondaryMemoryTrace;

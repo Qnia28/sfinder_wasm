@@ -125,6 +125,7 @@ function unfoldOperationSequence(pages, targetHeight) {
 
 function staticPageTargets(page, height) {
   const { base, operationSets } = coloredOperationSets(page, height, { assembleOperation: true });
+  if (!operationSets.length) throw new Error(`Fumen page ${(page.index ?? 0) + 1} has no valid colored-piece partition`);
   return operationSets.map((operations) => ({ base, operations, sourcePage: page }));
 }
 

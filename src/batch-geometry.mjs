@@ -21,7 +21,7 @@ export function allGeometricPlacements(piece,height=4){
  if(!entry||entry.signature!==signature){entry={signature,masks:computeGeometricPlacements(piece,height)};geometricCache.set(key,entry)}
  return entry.masks.slice();
 }
-export function fieldMasks(page,height=4){const field=page.field;let base=0n,fill=0n;const colors=Object.fromEntries(PIECES.map(p=>[p,0n]));for(let y=0;y<height;y++)for(let x=0;x<10;x++){const c=field.at(x,y);if(c==='X')base|=bit(x,y);else if(colors[c]!==undefined){colors[c]|=bit(x,y);fill|=bit(x,y)}}return{base,fill,colors}}
+export function fieldMasks(page,height=4){const field=page.field;for(let y=height;y<23;y++)for(let x=0;x<10;x++)if(field.at(x,y)!=='_')throw new RangeError(`Fumen page ${(page.index??0)+1} cell (${x},${y}) exceeds ${height}-line batch domain`);let base=0n,fill=0n;const colors=Object.fromEntries(PIECES.map(p=>[p,0n]));for(let y=0;y<height;y++)for(let x=0;x<10;x++){const c=field.at(x,y);if(c==='X')base|=bit(x,y);else if(colors[c]!==undefined){colors[c]|=bit(x,y);fill|=bit(x,y)}}return{base,fill,colors}}
 
 const OP_CELLS={
  I:{spawn:[[0,0],[-1,0],[1,0],[2,0]],right:[[0,0],[0,1],[0,-1],[0,-2]],reverse:[[0,0],[1,0],[-1,0],[-2,0]],left:[[0,0],[0,-1],[0,1],[0,2]]},
@@ -38,9 +38,36 @@ export function fumenOperationMask(operation,height=4){
 export function assembledFieldMasks(page,height=4){
  const out=fieldMasks(page,height);if(!page.operation)return out;const piece=page.operation.type,mask=fumenOperationMask(page.operation,height);out.base&=~mask;out.fill&=~mask;for(const p of PIECES)out.colors[p]&=~mask;out.colors[piece]|=mask;out.fill|=mask;return out
 }
-export function partitionPieceMask(piece,mask,height=4){if(mask===0n)return[[]];const candidates=allGeometricPlacements(piece,height).filter(m=>(m&mask)===m);const byCell=new Map();for(const m of candidates){for(let i=0;i<height*10;i++){const b=1n<<BigInt(i);if(m&b){const a=byCell.get(i)??[];a.push(m);byCell.set(i,a)}}}const out=[];function dfs(rem,ops){if(rem===0n){out.push([...ops]);return}let idx=0,t=rem;while((t&1n)===0n){idx++;t>>=1n}for(const m of byCell.get(idx)??[])if((m&rem)===m){ops.push({piece,mask:m});dfs(rem^m,ops);ops.pop()}}
+// Lift normal placements through every possible cleared-row set. Batch boards
+// pad cleared rows at the bottom; these artificial floor cells are not pieces.
+// These are candidates only: the order engine proves the actual clear history.
+export function originalRowPlacements(piece,height=4,clearableRows=(1<<height)-1){
+ const placements=allGeometricPlacements(piece,height),out=new Set();
+ for(let cleared=0;cleared<(1<<height);cleared++){
+  if(cleared&~clearableRows)continue;
+  const available=[];
+  for(let y=0;y<height;y++)if(!(cleared&(1<<y)))available.push(y);
+  const count=height-available.length,floor=(1n<<BigInt(count*10))-1n;
+  for(const mask of placements){
+   if(mask&floor)continue;
+   let original=0n;
+   for(let i=0;i<available.length;i++)original|=((mask>>BigInt((count+i)*10))&FULL_ROW)<<BigInt(available[i]*10);
+   out.add(original);
+  }
+ }
+ return [...out];
+}
+export function partitionPieceMask(piece,mask,height=4,{originalRows=false,clearableRows=(1<<height)-1}={}){if(mask===0n)return[[]];if(popcount(mask)%4)return[];const candidates=(originalRows?originalRowPlacements(piece,height,clearableRows):allGeometricPlacements(piece,height)).filter(m=>(m&mask)===m);const byCell=new Map();for(const m of candidates){for(let i=0;i<height*10;i++){const b=1n<<BigInt(i);if(m&b){const a=byCell.get(i)??[];a.push(m);byCell.set(i,a)}}}const out=[];function dfs(rem,ops){if(rem===0n){out.push([...ops]);return}let idx=0,t=rem;while((t&1n)===0n){idx++;t>>=1n}for(const m of byCell.get(idx)??[])if((m&rem)===m){ops.push({piece,mask:m});dfs(rem^m,ops);ops.pop()}}
 dfs(mask,[]);return out}
-export function coloredOperationSets(page,height=4,{assembleOperation=false}={}){const{base,colors}=(assembleOperation?assembledFieldMasks:fieldMasks)(page,height);let sets=[[]];for(const p of PIECES){const parts=partitionPieceMask(p,colors[p],height);const next=[];for(const a of sets)for(const b of parts)next.push([...a,...b]);sets=next}return{base,operationSets:sets}}
+export function coloredOperationSets(page,height=4,{assembleOperation=false}={}){
+ const{base,fill,colors}=(assembleOperation?assembledFieldMasks:fieldMasks)(page,height);
+ // A row missing cells even in the completed target cannot have been cleared.
+ const occupied=base|fill;let clearableRows=0;
+ for(let y=0;y<height;y++)if(((occupied>>BigInt(y*10))&FULL_ROW)===FULL_ROW)clearableRows|=1<<y;
+ let sets=[[]];
+ for(const p of PIECES){const parts=partitionPieceMask(p,colors[p],height,{originalRows:true,clearableRows});const next=[];for(const a of sets)for(const b of parts)next.push([...a,...b]);sets=next}
+ return{base,operationSets:sets}
+}
 export function normalizeBase(base,height=4){let cleared=0,complete=0;const incomplete=[];for(let y=0;y<height;y++){const row=(base>>BigInt(y*10))&FULL_ROW;if(row===FULL_ROW){cleared|=1<<y;complete++}else incomplete.push(row)}let board=0n;for(let y=0;y<complete;y++)board|=FULL_ROW<<BigInt(y*10);for(let i=0;i<incomplete.length;i++)board|=incomplete[i]<<BigInt((i+complete)*10);return{board,clearedRows:cleared}}
 export function mapOriginalMask(mask,clearedRows,height=4){const available=[];for(let r=0;r<height;r++)if(!(clearedRows&(1<<r)))available.push(r);const c=popcount(BigInt(clearedRows));let out=0n;for(let ai=0;ai<available.length;ai++){const r=available[ai],cy=c+ai;for(let x=0;x<10;x++)if(mask&bit(x,r))out|=bit(x,cy)}return out}
 export function advanceCleared(board,currentMask,clearedRows,height=4){const available=[];for(let r=0;r<height;r++)if(!(clearedRows&(1<<r)))available.push(r);const c=popcount(BigInt(clearedRows)),raw=board|currentMask;let next=clearedRows;for(let cy=c;cy<height;cy++){const row=(raw>>BigInt(cy*10))&FULL_ROW;if(row===FULL_ROW){const ai=cy-c;if(ai<available.length)next|=1<<available[ai]}}return next}

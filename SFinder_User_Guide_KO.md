@@ -82,6 +82,8 @@ solution key 오름차순으로 결정하여 결과 순서를 고정합니다. �
 ## 4. Chance
 
 Chance는 각 queue에서 **PC가 하나라도 가능한지**만 확인합니다.
+유효한 패턴이 0개 queue로 전개되면 queues/count 모두 total·success·failed·percent가
+0입니다. queues 모드의 failedQueues는 빈 배열입니다.
 
 입력 예:
 
@@ -299,6 +301,8 @@ P = (targetLines * 10 - occupiedCells) / 4
 
 queue 길이 = P. 가능한 solution 중 `playableOrderCount`가 가장 큰 하나를 선택하고,
 동률은 stable solution key로 결정합니다.
+정확 최적화의 stable key 비교는 locale과 무관한 코드 단위 오름차순이며,
+canonical hex key에 대한 Rust ASCII 순서와 같습니다.
 
 ### solve-all
 
@@ -326,6 +330,11 @@ Cover는 Fumen에 지정한 target operation들을 입력 queue/Hold로 실제 �
 - 2~4L: 전용 Rust/WASM batch engine
 - 5~6L: structural DAG + WASM exact lock checks
 - Cover physics: Jstris 180
+
+PC 출력처럼 줄 삭제 전의 원래 행 좌표로 색칠된 target도 지원합니다. 행이
+떨어져 보이는 미노는 가능한 줄 삭제 상태와 실제 배치 순서로 검증합니다.
+미노로 분할할 수 없는 색칠 입력은 오류입니다. 정적 Cover/Congruent 입력의
+목표 높이 위 셀은 색상에 관계없이 오류이며, 조용히 잘라내지 않습니다.
 
 주요 mode:
 

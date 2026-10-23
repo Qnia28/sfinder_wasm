@@ -62,6 +62,8 @@ expand to the same queue string, those branches still count as separate cases.
 
 Chance answers only whether at least one PC solution exists for each case. It
 returns total/success/failed counts, failed queues, and percentage.
+If a valid pattern expands to no queues, both queues/count modes return zero
+counts and zero percent; queues mode returns an empty failed-queue list.
 
 ## Saves
 
@@ -143,6 +145,8 @@ results.
 
 - `solve-one`: exact queue length P; select maximum playable-order count, then
   stable solution key.
+  Exact optimization compares canonical hex keys in locale-independent code-unit
+  order, matching Rust ASCII order.
 - `solve-all`: exact queue length P; return every distinct solution.
 - `per-save-all`: exact queue length P+1; group every solution by saved piece.
 
@@ -157,6 +161,11 @@ Cover checks actual operation-order-sensitive locked reachability. Ordinary
 2–4 line static targets use the dedicated batch WASM engine; 5–6 line
 compatibility targets use a shared structural DAG with exact WASM lock checks.
 Cover uses Jstris 180 physics.
+
+Colored PC outputs retain original row coordinates across line clears. Cover
+supports these separated-row pieces and verifies their actual placement order.
+Colors that cannot be partitioned into pieces are input errors. Static Cover
+and Congruent inputs reject all occupied cells above the requested height.
 
 T-spin modes are `any`/`tsm`, `tss`, `tsd`, and `tst`. `tsm` accepts a
 line-clearing Mini or Regular T-spin. The other three require a Regular T-spin

@@ -1,3 +1,5 @@
+import { compareStableKeys } from './stable-key.mjs';
+
 // Request-owned numeric matrix metadata. Weak keys cannot retain a completed request.
 const matrices = new WeakMap();
 const packedRows = new WeakMap();
@@ -14,7 +16,7 @@ export const numericPacked = rows => packedRows.get(rows);
 export function createNumericCoverage(allKeys, rows, cases) {
   const active = new Set();
   for (const row of rows.values()) for (const [id] of row) active.add(id);
-  const solutionIds = [...active].sort((a, b) => allKeys[a] < allKeys[b] ? -1 : allKeys[a] > allKeys[b] ? 1 : 0);
+  const solutionIds = [...active].sort((a, b) => compareStableKeys(allKeys[a], allKeys[b]));
   const keys = solutionIds.map(id => allKeys[id]), keyIndex = new Map(keys.map((key, id) => [key, id]));
   const idMap = new Map(solutionIds.map((id, i) => [id, i])), orderedCases = [...rows.keys()];
   const numericRows = [...rows.values()].map(row => row.map(([id, q]) => [idMap.get(id), q]));

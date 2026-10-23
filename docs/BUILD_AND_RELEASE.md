@@ -1,4 +1,4 @@
-# Building sfinder-wasm 3.2
+# Building sfinder-wasm 3.2.1
 
 This guide applies to the source repository. The user distribution ZIP includes
 ready-to-use JavaScript, WASM and data assets; it excludes Rust source, build
@@ -58,7 +58,7 @@ The committed `.gitattributes` excludes `rust/`, `scripts/`, this guide, and
 After review, create a ZIP from the approved commit:
 
 ```sh
-git archive --format=zip --prefix=sfinder-wasm-3.2/ --output=sfinder-wasm-3.2.zip APPROVED_COMMIT
+git archive --format=zip --prefix=sfinder-wasm-3.2.1/ --output=sfinder-wasm-3.2.1.zip APPROVED_COMMIT
 ```
 
 Replace `APPROVED_COMMIT` with the reviewed commit ID. Keep the archive outside

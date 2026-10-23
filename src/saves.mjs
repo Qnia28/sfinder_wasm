@@ -181,6 +181,19 @@ export function saveMultiplicityCodeToString(code){
 // ezsaves percent behavior without reusing the historical Python parser's
 // stack representation or control flow.
 function tokenizeSaveOutcomeExpression(source){
+  // Whitespace is insignificant only outside regex literals. In particular,
+  // T I is one multiplicity atom, not two adjacent expressions.
+  let normalized='',inRegex=false,escaped=false;
+  for(const char of source){
+    if(inRegex){
+      normalized+=char;
+      if(escaped)escaped=false;
+      else if(char==='\\')escaped=true;
+      else if(char==='/')inRegex=false;
+    }else if(char==='/'){normalized+=char;inRegex=true}
+    else if(!/\s/.test(char))normalized+=char;
+  }
+  source=normalized;
   const tokens=[];
   for(let index=0;index<source.length;){
     const char=source[index];
@@ -220,16 +233,21 @@ function tokenizeSaveOutcomeExpression(source){
 
 function parseSaveOutcomeSequence(tokens,cursor=0,nested=false){
   const terms=[];
-  let complement=false,absenceTest=false,connector=null;
+  let complement=false,absenceTest=false,connector=null,expectOperand=true;
   while(cursor<tokens.length){
     const token=tokens[cursor];
     if(token.kind==='close'){
       if(!nested)throw new SyntaxError('Wanted Saves: Missing opening parentheses');
+      if(expectOperand)throw new SyntaxError('Wanted Saves: Expected operand');
       return[{kind:'sequence',terms},cursor+1];
+    }
+    if(!expectOperand){
+      if(token.kind!=='and'&&token.kind!=='or')throw new SyntaxError('Wanted Saves: Expected && or ||');
+      connector=token.kind;expectOperand=true;cursor++;continue;
     }
     if(token.kind==='not'){absenceTest=!absenceTest;cursor++;continue}
     if(token.kind==='avoid'){complement=!complement;cursor++;continue}
-    if(token.kind==='and'||token.kind==='or'){connector=token.kind;cursor++;continue}
+    if(token.kind==='and'||token.kind==='or')throw new SyntaxError('Wanted Saves: Expected operand');
 
     let expression;
     if(token.kind==='open'){
@@ -241,12 +259,14 @@ function parseSaveOutcomeSequence(tokens,cursor=0,nested=false){
       throw new SyntaxError('Wanted Saves: Invalid save expression');
     }
     terms.push({expression,complement,absenceTest,connector});
+    expectOperand=false;
     // Prefix modifiers bind to this atom/group only, never to a later term.
     complement=false;
     absenceTest=false;
     connector=null;
   }
   if(nested)throw new SyntaxError('Wanted Saves: Missing closing parentheses');
+  if(expectOperand)throw new SyntaxError('Wanted Saves: Expected operand');
   return[{kind:'sequence',terms},cursor];
 }
 

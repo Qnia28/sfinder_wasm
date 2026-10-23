@@ -1,6 +1,6 @@
 # sfinder-wasm
 
-**sfinder-wasm 3.2**
+**sfinder-wasm 3.2.1**
 
 `sfinder-wasm` is a browser-native Rust/WebAssembly implementation of selected
 Tetris Perfect Clear analysis workflows. It reproduces the intended output
@@ -18,7 +18,14 @@ repository.
 
 See `docs/API_REFERENCE.md` for APIs and compatibility notes.
 
-## What's new in 3.2
+## What's new in 3.2.1
+
+- Fixed save-expression whitespace handling and syntax validation.
+- Fixed colored Cover targets across line clears and static input height validation.
+- Made per-save minimals tie-breaking independent of locale.
+- Fixed empty-pattern chance percentages and Vite worker import compatibility.
+
+## Previous release: 3.2
 
 - Faster default Fast minimals and per-save minimals with automatic search-budget
   adjustment and reduced processing overhead. `fastStateBudget` remains supported.

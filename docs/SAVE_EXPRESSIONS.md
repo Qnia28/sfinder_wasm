@@ -43,6 +43,12 @@ expression: `!O&&T` equals `(!O)&&T`, not `(!O)&&(!T)`. Repeated identical prefi
 cancel in pairs. If `!` and `^` are combined before a queue-level atom, the
 historical evaluator applies complement first, then the no-match test.
 
+For example, `T I` and `TI` are the same multiplicity atom. Adjacent atoms or
+groups require `&&` or `||`: `T(I)` is invalid. Empty groups, missing operands
+(`T&&`, `!`) and unmatched parentheses raise a syntax error. Regex contents and
+display aliases retain their whitespace; invalid regex patterns still fail at
+first evaluation.
+
 ## `saves`: queue-level semantics
 
 For one queue, `saves` first enumerates the set of all exact save outcomes.
